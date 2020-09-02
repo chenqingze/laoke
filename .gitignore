@@ -272,3 +272,5 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+/logs/
+/.idea/

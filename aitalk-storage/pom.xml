@@ -47,8 +47,7 @@
             </activation>
             <properties>
                 <env>review</env>
-                <storage.mongodb.connectionString>mongodb://192.168.100.226:21000
-                </storage.mongodb.connectionString>
+                <storage.mongodb.connectionString>mongodb://192.168.100.226:21000</storage.mongodb.connectionString>
                 <storage.mongodb.databaseName>aitalk</storage.mongodb.databaseName>
                 <storage.redis.host>192.168.100.240</storage.redis.host>
                 <storage.redis.port>6379</storage.redis.port>
@@ -95,10 +94,15 @@
     </profiles>
 
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
         <mongodb-driver.version>4.1.0</mongodb-driver.version>
         <spring.framework.data.version>2.3.3.RELEASE</spring.framework.data.version>
         <jedis.version>3.3.0</jedis.version>
         <lettuce-core.version>5.3.3.RELEASE</lettuce-core.version>
+        <guava.version>29.0-jre</guava.version>
+        <jackson.version>2.11.2</jackson.version>
     </properties>
     <dependencies>
         <dependency>
@@ -121,5 +125,54 @@
             <artifactId>lettuce-core</artifactId>
             <version>${lettuce-core.version}</version>
         </dependency>
+        <!-- guava tool  -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.module</groupId>
+            <artifactId>jackson-module-parameter-names</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jdk8</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+        </dependency>
     </dependencies>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.fasterxml.jackson</groupId>
+                <artifactId>jackson-bom</artifactId>
+                <version>${jackson.version}</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+    <build>
+        <!-- Loading all ${} -->
+        <!--<filters>
+            <filter>src/main/resources/env/config.${env}.properties</filter>
+        </filters>-->
+        <!-- map ${} variable filter -->
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <!--<includes>
+                    <include>*.properties</include>
+                </includes>-->
+            </resource>
+        </resources>
+    </build>
 </project>
