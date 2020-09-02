@@ -10,6 +10,116 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>aitalk-storage</artifactId>
+    <packaging>jar</packaging>
 
+    <profiles>
+        <profile>
+            <id>develop</id>
+            <activation>
+                <!-- activate if system properties 'env=develop' -->
+                <property>
+                    <name>env</name>
+                    <value>develop</value>
+                </property>
+                <!-- this profile is active by default -->
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <env>develop</env>
+                <storage.mongodb.connectionString>mongodb://192.168.100.226:21000
+                </storage.mongodb.connectionString>
+                <storage.mongodb.databaseName>aitalk</storage.mongodb.databaseName>
+                <storage.redis.host>192.168.100.240</storage.redis.host>
+                <storage.redis.port>6379</storage.redis.port>
+                <storage.redis.database>2</storage.redis.database>
+            </properties>
+        </profile>
+        <profile>
+            <id>review</id>
+            <activation>
+                <!-- activate if system properties 'env=review' -->
+                <property>
+                    <name>env</name>
+                    <value>review</value>
+                </property>
+                <!-- this profile is active by default -->
+                <!--<activeByDefault>true</activeByDefault>-->
+            </activation>
+            <properties>
+                <env>review</env>
+                <storage.mongodb.connectionString>mongodb://192.168.100.226:21000
+                </storage.mongodb.connectionString>
+                <storage.mongodb.databaseName>aitalk</storage.mongodb.databaseName>
+                <storage.redis.host>192.168.100.240</storage.redis.host>
+                <storage.redis.port>6379</storage.redis.port>
+                <storage.redis.database>2</storage.redis.database>
+            </properties>
+        </profile>
+        <profile>
+            <id>staging</id>
+            <activation>
+                <property>
+                    <name>env</name>
+                    <value>staging</value>
+                </property>
+            </activation>
+            <properties>
+                <env>staging</env>
+                <storage.mongodb.connectionString>mongodb://192.168.100.226:21000
+                </storage.mongodb.connectionString>
+                <storage.mongodb.databaseName>aitalk</storage.mongodb.databaseName>
+                <storage.redis.host>192.168.100.240</storage.redis.host>
+                <storage.redis.port>6379</storage.redis.port>
+                <storage.redis.database>2</storage.redis.database>
+            </properties>
+        </profile>
+        <profile>
+            <id>production</id>
+            <activation>
+                <property>
+                    <name>env</name>
+                    <value>production</value>
+                </property>
+            </activation>
+            <properties>
+                <env>production</env>
+                <storage.mongodb.connectionString>
+                    mongodb://172.19.26.12:21000,172.19.26.7:21000,172.19.26.11:21000
+                </storage.mongodb.connectionString>
+                <storage.mongodb.databaseName>aitalk</storage.mongodb.databaseName>
+                <storage.redis.host>172.19.26.13</storage.redis.host>
+                <storage.redis.port>6379</storage.redis.port>
+                <storage.redis.database>2</storage.redis.database>
+            </properties>
+        </profile>
+    </profiles>
 
+    <properties>
+        <mongodb-driver.version>4.1.0</mongodb-driver.version>
+        <spring.framework.data.version>2.3.3.RELEASE</spring.framework.data.version>
+        <jedis.version>3.3.0</jedis.version>
+        <lettuce-core.version>5.3.3.RELEASE</lettuce-core.version>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>org.mongodb</groupId>
+            <artifactId>mongodb-driver-sync</artifactId>
+            <version>${mongodb-driver.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-redis</artifactId>
+            <version>${spring.framework.data.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>${jedis.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.lettuce</groupId>
+            <artifactId>lettuce-core</artifactId>
+            <version>${lettuce-core.version}</version>
+        </dependency>
+    </dependencies>
 </project>

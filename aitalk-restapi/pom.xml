@@ -10,7 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>aitalk-restapi</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>aitalk-restapi</name>
+    <name>aitalk-com.aihangxunxi.aitalk.restapi</name>
     <description>aitalk server rest api application</description>
 
     <profiles>
@@ -27,19 +27,9 @@
             </activation>
             <properties>
                 <env>develop</env>
-                <server.ssl>false</server.ssl>
-                <server.bossGroupThreads>2</server.bossGroupThreads>
-                <server.workerGroupThreads>4</server.workerGroupThreads>
-                <server.processorGroupThreads>2</server.processorGroupThreads>
-                <common.spring.cloud.consul.enabled>true</common.spring.cloud.consul.enabled>
-                <common.spring.cloud.consul.host>192.168.100.223</common.spring.cloud.consul.host>
-                <common.spring.cloud.consul.port>8500</common.spring.cloud.consul.port>
-                <persistence.mongodb.connectionString>mongodb://192.168.100.226:21000
-                </persistence.mongodb.connectionString>
-                <persistence.mongodb.databaseName>aitalk</persistence.mongodb.databaseName>
-                <redis.host>192.168.100.240</redis.host>
-                <redis.port>6379</redis.port>
-                <redis.database>2</redis.database>
+                <spring.cloud.consul.enabled>true</spring.cloud.consul.enabled>
+                <spring.cloud.consul.host>192.168.100.223</spring.cloud.consul.host>
+                <spring.cloud.consul.port>8500</spring.cloud.consul.port>
             </properties>
         </profile>
         <profile>
@@ -55,19 +45,9 @@
             </activation>
             <properties>
                 <env>review</env>
-                <server.ssl>false</server.ssl>
-                <server.bossGroupThreads>2</server.bossGroupThreads>
-                <server.workerGroupThreads>4</server.workerGroupThreads>
-                <server.processorGroupThreads>2</server.processorGroupThreads>
-                <common.spring.cloud.consul.enabled>true</common.spring.cloud.consul.enabled>
-                <common.spring.cloud.consul.host>192.168.100.223</common.spring.cloud.consul.host>
-                <common.spring.cloud.consul.port>8500</common.spring.cloud.consul.port>
-                <persistence.mongodb.connectionString>mongodb://192.168.100.226:21000
-                </persistence.mongodb.connectionString>
-                <persistence.mongodb.databaseName>aitalk</persistence.mongodb.databaseName>
-                <redis.host>192.168.100.240</redis.host>
-                <redis.port>6379</redis.port>
-                <redis.database>2</redis.database>
+                <spring.cloud.consul.enabled>true</spring.cloud.consul.enabled>
+                <spring.cloud.consul.host>192.168.100.223</spring.cloud.consul.host>
+                <spring.cloud.consul.port>8500</spring.cloud.consul.port>
             </properties>
         </profile>
         <profile>
@@ -80,19 +60,9 @@
             </activation>
             <properties>
                 <env>staging</env>
-                <server.ssl>false</server.ssl>
-                <server.bossGroupThreads>2</server.bossGroupThreads>
-                <server.workerGroupThreads>4</server.workerGroupThreads>
-                <server.processorGroupThreads>2</server.processorGroupThreads>
-                <common.spring.cloud.consul.enabled>true</common.spring.cloud.consul.enabled>
-                <common.spring.cloud.consul.host>192.168.100.223</common.spring.cloud.consul.host>
-                <common.spring.cloud.consul.port>8500</common.spring.cloud.consul.port>
-                <persistence.mongodb.connectionString>mongodb://192.168.100.226:21000
-                </persistence.mongodb.connectionString>
-                <persistence.mongodb.databaseName>aitalk</persistence.mongodb.databaseName>
-                <redis.host>192.168.100.240</redis.host>
-                <redis.port>6379</redis.port>
-                <redis.database>2</redis.database>
+                <spring.cloud.consul.enabled>true</spring.cloud.consul.enabled>
+                <spring.cloud.consul.host>192.168.100.223</spring.cloud.consul.host>
+                <spring.cloud.consul.port>8500</spring.cloud.consul.port>
             </properties>
         </profile>
         <profile>
@@ -105,20 +75,9 @@
             </activation>
             <properties>
                 <env>production</env>
-                <server.ssl>false</server.ssl>
-                <server.bossGroupThreads>2</server.bossGroupThreads>
-                <server.workerGroupThreads>4</server.workerGroupThreads>
-                <server.processorGroupThreads>2</server.processorGroupThreads>
-                <common.spring.cloud.consul.enabled>true</common.spring.cloud.consul.enabled>
-                <common.spring.cloud.consul.host>192.168.100.223</common.spring.cloud.consul.host>
-                <common.spring.cloud.consul.port>8500</common.spring.cloud.consul.port>
-                <persistence.mongodb.connectionString>
-                    mongodb://172.19.26.12:21000,172.19.26.7:21000,172.19.26.11:21000
-                </persistence.mongodb.connectionString>
-                <persistence.mongodb.databaseName>aitalk</persistence.mongodb.databaseName>
-                <redis.host>172.19.26.13</redis.host>
-                <redis.port>6379</redis.port>
-                <redis.database>2</redis.database>
+                <spring.cloud.consul.enabled>true</spring.cloud.consul.enabled>
+                <spring.cloud.consul.host>192.168.100.223</spring.cloud.consul.host>
+                <spring.cloud.consul.port>8500</spring.cloud.consul.port>
             </properties>
         </profile>
     </profiles>

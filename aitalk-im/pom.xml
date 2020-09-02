@@ -11,5 +11,76 @@
 
     <artifactId>aitalk-im</artifactId>
 
-
+    <profiles>
+        <profile>
+            <id>develop</id>
+            <activation>
+                <!-- activate if system properties 'env=develop' -->
+                <property>
+                    <name>env</name>
+                    <value>develop</value>
+                </property>
+                <!-- this profile is active by default -->
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <env>develop</env>
+                <server.ssl>false</server.ssl>
+                <server.bossGroupThreads>2</server.bossGroupThreads>
+                <server.workerGroupThreads>4</server.workerGroupThreads>
+                <server.processorGroupThreads>2</server.processorGroupThreads>
+            </properties>
+        </profile>
+        <profile>
+            <id>review</id>
+            <activation>
+                <!-- activate if system properties 'env=review' -->
+                <property>
+                    <name>env</name>
+                    <value>review</value>
+                </property>
+                <!-- this profile is active by default -->
+                <!--<activeByDefault>true</activeByDefault>-->
+            </activation>
+            <properties>
+                <env>review</env>
+                <server.ssl>false</server.ssl>
+                <server.bossGroupThreads>2</server.bossGroupThreads>
+                <server.workerGroupThreads>4</server.workerGroupThreads>
+                <server.processorGroupThreads>2</server.processorGroupThreads>
+            </properties>
+        </profile>
+        <profile>
+            <id>staging</id>
+            <activation>
+                <property>
+                    <name>env</name>
+                    <value>staging</value>
+                </property>
+            </activation>
+            <properties>
+                <env>staging</env>
+                <server.ssl>false</server.ssl>
+                <server.bossGroupThreads>2</server.bossGroupThreads>
+                <server.workerGroupThreads>4</server.workerGroupThreads>
+                <server.processorGroupThreads>2</server.processorGroupThreads>
+            </properties>
+        </profile>
+        <profile>
+            <id>production</id>
+            <activation>
+                <property>
+                    <name>env</name>
+                    <value>production</value>
+                </property>
+            </activation>
+            <properties>
+                <env>production</env>
+                <server.ssl>false</server.ssl>
+                <server.bossGroupThreads>2</server.bossGroupThreads>
+                <server.workerGroupThreads>4</server.workerGroupThreads>
+                <server.processorGroupThreads>2</server.processorGroupThreads>
+            </properties>
+        </profile>
+    </profiles>
 </project>
