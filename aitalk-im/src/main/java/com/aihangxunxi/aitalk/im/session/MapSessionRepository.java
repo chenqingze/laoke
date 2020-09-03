@@ -18,7 +18,6 @@ import java.util.Set;
  *
  * @author chenqingze107@163.com
  * @version 1.0
- * @since 2020/5/12
  */
 @Component
 public class MapSessionRepository implements SessionRepository<MapSession> {

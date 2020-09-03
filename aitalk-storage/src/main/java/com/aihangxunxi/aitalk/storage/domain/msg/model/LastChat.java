@@ -1,6 +1,6 @@
 package com.aihangxunxi.aitalk.storage.domain.msg.model;
 
-import com.aihangxunxi.aitalk.storage.domain.msg.constant.MsgType;
+import com.aihangxunxi.aitalk.storage.constant.MsgType;
 import org.bson.types.ObjectId;
 
 public class LastChat {

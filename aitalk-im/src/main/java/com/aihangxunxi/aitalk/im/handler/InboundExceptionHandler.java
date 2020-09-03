@@ -8,7 +8,6 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
  *
  * @author chenqingze107@163.com
  * @version 1.0
- * @since 2020/3/25
  */
 public class InboundExceptionHandler extends ChannelInboundHandlerAdapter {
 

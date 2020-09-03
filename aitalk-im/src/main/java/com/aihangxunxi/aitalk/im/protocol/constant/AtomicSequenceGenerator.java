@@ -7,7 +7,6 @@ import java.util.concurrent.atomic.AtomicInteger;
  *
  * @author chenqingze107@163.com
  * @version 1.0
- * @since 2020/4/1
  */
 public class AtomicSequenceGenerator {
 

@@ -1,7 +1,7 @@
 package com.aihangxunxi.aitalk.storage.domain.msg.model;
 
+import com.aihangxunxi.aitalk.storage.constant.*;
 import com.aihangxunxi.aitalk.storage.domain.msg.attachment.MsgAttachment;
-import com.aihangxunxi.aitalk.storage.domain.msg.constant.*;
 import org.bson.types.ObjectId;
 
 import java.io.Serializable;
@@ -9,7 +9,6 @@ import java.io.Serializable;
 /**
  * @author chenqingze107@163.com
  * @version 1.0
- * @since 2020-03-2020/3/22
  */
 public class Msg implements Serializable {
 
@@ -19,7 +18,7 @@ public class Msg implements Serializable {
 
 	private long fromId;// 消息发送方的帐号
 
-	private SessionType sessionType;// 会话类型
+	private ConversationType conversationType;// 会话类型
 
 	private String sessionId;// 会话id
 
@@ -84,12 +83,12 @@ public class Msg implements Serializable {
 		this.fromId = fromId;
 	}
 
-	public SessionType getSessionType() {
-		return sessionType;
+	public ConversationType getSessionType() {
+		return conversationType;
 	}
 
-	public void setSessionType(SessionType sessionType) {
-		this.sessionType = sessionType;
+	public void setSessionType(ConversationType conversationType) {
+		this.conversationType = conversationType;
 	}
 
 	public String getSessionId() {

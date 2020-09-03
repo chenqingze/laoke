@@ -7,7 +7,7 @@ import java.io.Serializable;
  *
  * @author chenqingze107@163.com
  * @version 1.0
- * @since 2020/3/18
+
  */
 public interface MsgAttachment extends Serializable {
 

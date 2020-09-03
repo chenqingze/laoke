@@ -7,7 +7,6 @@ import java.io.Serializable;
 /**
  * @author chenqingze107@163.com
  * @version 1.0
- * @since 2020/3/25
  */
 public class Team implements Serializable {
 

@@ -8,7 +8,7 @@ import com.aihangxunxi.aitalk.storage.domain.msg.model.Msg;
  *
  * @author chenqingze107@163.com
  * @version 1.0
- * @since 2020-03-2020/3/18
+
  */
 public interface IMMessageFilter {
 

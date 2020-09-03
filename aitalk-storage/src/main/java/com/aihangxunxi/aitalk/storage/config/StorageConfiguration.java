@@ -29,7 +29,6 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 /**
  * @author chenqingze107@163.com
  * @version 1.0
- * @since 2020/5/21
  */
 
 @Configuration
@@ -70,7 +69,7 @@ public class StorageConfiguration {
     }
 
     @Bean
-    public MongoDatabase aiTalkDb(MongoClient mongoClient) {
+    public MongoDatabase aitalkDb(MongoClient mongoClient) {
         return mongoClient.getDatabase(databaseName);
     }
 

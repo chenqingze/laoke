@@ -3,7 +3,7 @@ package com.aihangxunxi.aitalk.storage.domain.msg.attachment;
 /**
  * @author chenqingze107@163.com
  * @version 1.0
- * @since 2020/3/19
+
  */
 public class ImageAttachment extends FileAttachment {
 

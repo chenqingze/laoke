@@ -13,7 +13,6 @@ import java.util.concurrent.TimeUnit;
  *
  * @author chenqingze107@163.com
  * @version 1.0
- * @since 2020/5/14
  */
 
 @Configuration

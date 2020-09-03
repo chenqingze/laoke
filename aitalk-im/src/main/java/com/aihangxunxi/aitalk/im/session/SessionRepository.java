@@ -6,7 +6,6 @@ import io.netty.channel.ChannelId;
 /**
  * @author chenqingze107@163.com
  * @version 1.0
- * @since 2020/5/12
  */
 public interface SessionRepository<S extends Session> {
 

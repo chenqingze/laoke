@@ -10,7 +10,6 @@ import java.io.File;
 /**
  * @author chenqingze107@163.com
  * @version 1.0
- * @since 2020/3/19
  */
 public class FileAttachment implements MsgAttachment {
 

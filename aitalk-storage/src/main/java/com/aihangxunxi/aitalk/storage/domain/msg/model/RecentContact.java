@@ -2,9 +2,9 @@ package com.aihangxunxi.aitalk.storage.domain.msg.model;
 
 
 import com.aihangxunxi.aitalk.storage.domain.msg.attachment.MsgAttachment;
-import com.aihangxunxi.aitalk.storage.domain.msg.constant.MsgStatus;
-import com.aihangxunxi.aitalk.storage.domain.msg.constant.MsgType;
-import com.aihangxunxi.aitalk.storage.domain.msg.constant.SessionType;
+import com.aihangxunxi.aitalk.storage.constant.MsgStatus;
+import com.aihangxunxi.aitalk.storage.constant.MsgType;
+import com.aihangxunxi.aitalk.storage.constant.ConversationType;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -14,7 +14,7 @@ import java.util.Map;
  *
  * @author chenqingze107@163.com
  * @version 1.0
- * @since 2020/3/18
+
  */
 public interface RecentContact extends Serializable {
 
@@ -87,7 +87,7 @@ public interface RecentContact extends Serializable {
      *
      * @return 会话类型
      */
-    SessionType getSessionType();
+    ConversationType getSessionType();
 
     /**
      * 获取标签

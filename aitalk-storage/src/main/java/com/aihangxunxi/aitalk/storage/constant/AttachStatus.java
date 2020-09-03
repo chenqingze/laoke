@@ -1,11 +1,10 @@
-package com.aihangxunxi.aitalk.storage.domain.msg.constant;
+package com.aihangxunxi.aitalk.storage.constant;
 
 /**
  * 附件传输状态枚举类
  *
  * @author chenqingze107@163.com
  * @version 1.0
- * @since 2020/3/19
  */
 public enum AttachStatus {
 
