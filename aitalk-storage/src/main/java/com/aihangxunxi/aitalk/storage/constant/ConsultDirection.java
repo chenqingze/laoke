@@ -5,5 +5,7 @@ package com.aihangxunxi.aitalk.storage.constant;
  * @version 1.0
  */
 public enum ConsultDirection {
-    NONE, PIN, POUT, SIN, SOUT
+
+	NONE, PIN, POUT, SIN, SOUT
+
 }

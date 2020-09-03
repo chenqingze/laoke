@@ -36,84 +36,83 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @ComponentScan("com.aihangxunxi.aitalk.storage")
 public class StorageConfiguration {
 
-    private final String connectionString;
+	private final String connectionString;
 
-    private final String databaseName;
+	private final String databaseName;
 
-    private final String redisHost;
+	private final String redisHost;
 
-    private final int redisPort;
+	private final int redisPort;
 
-    private final int redisDB;
+	private final int redisDB;
 
-    public StorageConfiguration(@Value("${storage.mongodb.connectionString}") String connectionString,
-                                @Value("${storage.mongodb.databaseName}") String databaseName, @Value("${storage.redis.host}") String redisHost,
-                                @Value("${storage.redis.port:6379}") int redisPort, @Value("${storage.redis.database}") int redisDB) {
-        this.connectionString = connectionString;
-        this.databaseName = databaseName;
-        this.redisHost = redisHost;
-        this.redisPort = redisPort;
-        this.redisDB = redisDB;
-    }
+	public StorageConfiguration(@Value("${storage.mongodb.connectionString}") String connectionString,
+			@Value("${storage.mongodb.databaseName}") String databaseName,
+			@Value("${storage.redis.host}") String redisHost, @Value("${storage.redis.port:6379}") int redisPort,
+			@Value("${storage.redis.database}") int redisDB) {
+		this.connectionString = connectionString;
+		this.databaseName = databaseName;
+		this.redisHost = redisHost;
+		this.redisPort = redisPort;
+		this.redisDB = redisDB;
+	}
 
-    @Bean
-    public MongoClient mongoClient() {
-        ConnectionString connectionStr = new ConnectionString(connectionString);
-        CodecRegistry pojoCodecRegistry = CodecRegistries
-                .fromProviders(PojoCodecProvider.builder().automatic(true).build());
-        CodecRegistry codecRegistry = CodecRegistries.fromRegistries(MongoClientSettings.getDefaultCodecRegistry(),
-                pojoCodecRegistry);
-        MongoClientSettings clientSettings = MongoClientSettings.builder().applyConnectionString(connectionStr)
-                .codecRegistry(codecRegistry).build();
-        return MongoClients.create(clientSettings);
-    }
+	@Bean
+	public MongoClient mongoClient() {
+		ConnectionString connectionStr = new ConnectionString(connectionString);
+		CodecRegistry pojoCodecRegistry = CodecRegistries
+				.fromProviders(PojoCodecProvider.builder().automatic(true).build());
+		CodecRegistry codecRegistry = CodecRegistries.fromRegistries(MongoClientSettings.getDefaultCodecRegistry(),
+				pojoCodecRegistry);
+		MongoClientSettings clientSettings = MongoClientSettings.builder().applyConnectionString(connectionStr)
+				.codecRegistry(codecRegistry).build();
+		return MongoClients.create(clientSettings);
+	}
 
-    @Bean
-    public MongoDatabase aitalkDb(MongoClient mongoClient) {
-        return mongoClient.getDatabase(databaseName);
-    }
+	@Bean
+	public MongoDatabase aitalkDb(MongoClient mongoClient) {
+		return mongoClient.getDatabase(databaseName);
+	}
 
-    /**
-     * Jedis
-     */
-    @Bean
-    public RedisConnectionFactory jedisConnectionFactory() {
+	/**
+	 * Jedis
+	 */
+	@Bean
+	public RedisConnectionFactory jedisConnectionFactory() {
 
-        RedisStandaloneConfiguration clientConfig = new
-                RedisStandaloneConfiguration(redisHost, redisPort);
-        clientConfig.setDatabase(redisDB);
-        return new JedisConnectionFactory(clientConfig);
-    }
+		RedisStandaloneConfiguration clientConfig = new RedisStandaloneConfiguration(redisHost, redisPort);
+		clientConfig.setDatabase(redisDB);
+		return new JedisConnectionFactory(clientConfig);
+	}
 
-    /**
-     * Lettuce
-     */
-    @Bean
-    public RedisConnectionFactory lettuceConnectionFactory() {
-        RedisStandaloneConfiguration clientConfig = new RedisStandaloneConfiguration(redisHost, redisPort);
-        clientConfig.setDatabase(redisDB);
-        return new LettuceConnectionFactory(clientConfig);
-    }
+	/**
+	 * Lettuce
+	 */
+	@Bean
+	public RedisConnectionFactory lettuceConnectionFactory() {
+		RedisStandaloneConfiguration clientConfig = new RedisStandaloneConfiguration(redisHost, redisPort);
+		clientConfig.setDatabase(redisDB);
+		return new LettuceConnectionFactory(clientConfig);
+	}
 
-    @Bean
-    public RedisTemplate<String, Object> authRedisTemplate() {
-        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
-        StringRedisSerializer stringRedisSerializer = new StringRedisSerializer();
-        // 设置key为string序列化器
-        redisTemplate.setKeySerializer(stringRedisSerializer);
-        // 设置value为json序列化器
-        Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer<>(Object.class);
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
-        objectMapper.activateDefaultTyping(
-                LaissezFaireSubTypeValidator.instance,
-                ObjectMapper.DefaultTyping.NON_FINAL,
-                JsonTypeInfo.As.PROPERTY);
-        jackson2JsonRedisSerializer.setObjectMapper(objectMapper);
-        redisTemplate.setValueSerializer(jackson2JsonRedisSerializer);
-        redisTemplate.setConnectionFactory(lettuceConnectionFactory());
+	@Bean
+	public RedisTemplate<String, Object> authRedisTemplate() {
+		RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
+		StringRedisSerializer stringRedisSerializer = new StringRedisSerializer();
+		// 设置key为string序列化器
+		redisTemplate.setKeySerializer(stringRedisSerializer);
+		// 设置value为json序列化器
+		Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer<>(
+				Object.class);
+		ObjectMapper objectMapper = new ObjectMapper();
+		objectMapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
+		objectMapper.activateDefaultTyping(LaissezFaireSubTypeValidator.instance, ObjectMapper.DefaultTyping.NON_FINAL,
+				JsonTypeInfo.As.PROPERTY);
+		jackson2JsonRedisSerializer.setObjectMapper(objectMapper);
+		redisTemplate.setValueSerializer(jackson2JsonRedisSerializer);
+		redisTemplate.setConnectionFactory(lettuceConnectionFactory());
 
-        return redisTemplate;
-    }
+		return redisTemplate;
+	}
 
 }

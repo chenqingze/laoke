@@ -8,5 +8,4 @@ package com.aihangxunxi.aitalk.storage.model;
  */
 public class MsgHist extends Msg {
 
-
 }

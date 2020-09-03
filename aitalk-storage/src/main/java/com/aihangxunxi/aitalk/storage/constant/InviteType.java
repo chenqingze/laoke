@@ -6,6 +6,7 @@ package com.aihangxunxi.aitalk.storage.constant;
  */
 public enum InviteType {
 
-    INVITE_FRIEND,// 好友邀请
-    INVITE_MEMBER // 成员邀请
+	INVITE_FRIEND, // 好友邀请
+	INVITE_MEMBER // 成员邀请
+
 }

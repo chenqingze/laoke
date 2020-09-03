@@ -1,11 +1,11 @@
-package com.aihangxunxi.aitalk.storage.model;
+package com.aihangxunxi.aitalk.storage.model.tmp;
 
 import java.io.Serializable;
 
 /**
  * @author chenqingze107@163.com
  * @version 1.0
-
+ *
  */
 public interface RecentSession extends Serializable {
 

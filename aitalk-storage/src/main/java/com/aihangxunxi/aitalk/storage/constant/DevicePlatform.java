@@ -5,7 +5,7 @@ package com.aihangxunxi.aitalk.storage.constant;
  * @version 1.0
  */
 public enum DevicePlatform {
-    IOS,
-    ANDROID,
-    UNKNOWN
+
+	IOS, ANDROID, UNKNOWN
+
 }

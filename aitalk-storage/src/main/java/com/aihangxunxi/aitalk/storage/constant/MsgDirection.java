@@ -6,8 +6,8 @@ package com.aihangxunxi.aitalk.storage.constant;
  */
 public enum MsgDirection {
 
-    OUT, // 发出去的消息
+	OUT, // 发出去的消息
 
-    IN // 接收到的消息
+	IN // 接收到的消息
 
 }

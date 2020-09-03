@@ -5,4 +5,5 @@ package com.aihangxunxi.aitalk.storage.model;
  * @version 1.0
  */
 public class Resource {
+
 }

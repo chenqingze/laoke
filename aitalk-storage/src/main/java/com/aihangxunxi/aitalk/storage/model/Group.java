@@ -11,14 +11,23 @@ import java.util.List;
  * @version 1.0
  */
 public class Group {
-    private ObjectId id;
-    private String name;
-    private String notice;
-    private ObjectId owner;
-    private List<Member> members;
 
-    class Member {
-        private ObjectId id;
-        private Long userId;
-    }
+	private ObjectId id;
+
+	private String name;
+
+	private String notice;
+
+	private ObjectId owner;
+
+	private List<Member> members;
+
+	class Member {
+
+		private ObjectId id;
+
+		private Long userId;
+
+	}
+
 }

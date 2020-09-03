@@ -13,35 +13,42 @@ import java.util.List;
  * @version 1.0
  */
 public class User {
-    private ObjectId uid;
 
-    private Long userId;
+	private ObjectId uid;
 
-    private Gender gender;
+	private Long userId;
 
-    private String nickname;
+	private Gender gender;
 
-    private String profile;
+	private String nickname;
 
-    private String phone;
+	private String profile;
 
-    private List<UserGroup> userGroups;
+	private String phone;
 
-    private List<ObjectId> followings;
+	private List<UserGroup> userGroups;
 
-    private String deviceCode;
+	private List<ObjectId> followings;
 
-    private DeviceIdiom deviceIdiom;
-    private DevicePlatform devicePlatform;
+	private String deviceCode;
 
-    public User() {
-    }
+	private DeviceIdiom deviceIdiom;
 
-    private class UserGroup {
-        private ObjectId id;
-        private String alias;
-        private ObjectId lastAckMsgId;
-        private Long lastAckMsgTime;
-    }
+	private DevicePlatform devicePlatform;
+
+	public User() {
+	}
+
+	private class UserGroup {
+
+		private ObjectId id;
+
+		private String alias;
+
+		private ObjectId lastAckMsgId;
+
+		private Long lastAckMsgTime;
+
+	}
 
 }

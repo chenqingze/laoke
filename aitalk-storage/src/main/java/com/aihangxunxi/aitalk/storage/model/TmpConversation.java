@@ -3,27 +3,23 @@ package com.aihangxunxi.aitalk.storage.model;
 import org.bson.types.ObjectId;
 
 /**
- * 好友关系
+ * 临时会话，咨询等等
  *
  * @author chenqingze107@163.com
  * @version 1.0
  */
-public class Friendship {
+public class TmpConversation {
 
 	private ObjectId id;
 
-	private ObjectId userId;
+	private ObjectId requesterId;
 
-	private ObjectId friendId;
-
-	private String alias;
-
-	private Boolean isBlocked;
-
-	private Boolean isMute;
+	private ObjectId addresseeId;
 
 	private Long createdAt;
 
 	private Long updatedAt;
+
+	private Long consultDirection;
 
 }

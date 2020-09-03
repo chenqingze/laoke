@@ -5,8 +5,10 @@ package com.aihangxunxi.aitalk.storage.constant;
  * @version 1.0
  */
 public enum DeviceIdiom {
-    PHONE,// 手机
-    TABLET,// 平板
-    DESKTOP,// 电脑
-    UNKNOWN // 未知
+
+	PHONE, // 手机
+	TABLET, // 平板
+	DESKTOP, // 电脑
+	UNKNOWN // 未知
+
 }

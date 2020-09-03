@@ -5,4 +5,5 @@ package com.aihangxunxi.aitalk.storage.constant;
  * @version 1.0
  */
 public class InviteStatus {
+
 }

@@ -6,6 +6,6 @@ package com.aihangxunxi.aitalk.storage.constant;
  */
 public enum Gender {
 
-    FEMALE, MALE, UNKNOWN
+	FEMALE, MALE, UNKNOWN
 
 }
