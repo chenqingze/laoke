@@ -1,4 +1,4 @@
-package com.aihangxunxi.aitalk.storage.domain.msg.model;
+package com.aihangxunxi.aitalk.storage.model;
 
 /**
  * 全员广播通知

@@ -1,4 +1,4 @@
-package com.aihangxunxi.aitalk.storage.domain.msg.model;
+package com.aihangxunxi.aitalk.storage.model;
 
 import java.io.Serializable;
 import java.util.List;

@@ -8,9 +8,10 @@ import java.security.cert.CertificateException;
  * @version 1.0
  */
 public class TcpServerBootstrap extends AitalkServerBootstrap {
-    @Override
-    void init() throws CertificateException, SSLException {
 
+	@Override
+	void init() throws CertificateException, SSLException {
 
-    }
+	}
+
 }

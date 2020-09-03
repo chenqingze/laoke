@@ -10,8 +10,7 @@ import org.bson.types.ObjectId;
  */
 public class Friendship {
     private ObjectId id;
-    private ObjectId conversationId;
-    private Long userId;
+    private ObjectId userId;
     private ObjectId friendId;
     private String alias;
     private Boolean isBlocked;

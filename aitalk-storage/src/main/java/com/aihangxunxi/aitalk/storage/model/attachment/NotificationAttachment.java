@@ -1,4 +1,4 @@
-package com.aihangxunxi.aitalk.storage.domain.msg.attachment;
+package com.aihangxunxi.aitalk.storage.model.attachment;
 
 /**
  * @author chenqingze107@163.com

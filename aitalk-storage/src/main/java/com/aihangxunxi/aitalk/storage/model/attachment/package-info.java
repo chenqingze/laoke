@@ -5,4 +5,4 @@
  * @version 1.0
 
  */
-package com.aihangxunxi.aitalk.storage.domain.msg.attachment;
+package com.aihangxunxi.aitalk.storage.model.attachment;

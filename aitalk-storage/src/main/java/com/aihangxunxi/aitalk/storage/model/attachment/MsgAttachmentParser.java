@@ -1,4 +1,4 @@
-package com.aihangxunxi.aitalk.storage.domain.msg.attachment;
+package com.aihangxunxi.aitalk.storage.model.attachment;
 
 import java.io.Serializable;
 

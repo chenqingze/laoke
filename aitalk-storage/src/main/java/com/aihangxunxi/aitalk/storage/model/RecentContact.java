@@ -1,7 +1,7 @@
-package com.aihangxunxi.aitalk.storage.domain.msg.model;
+package com.aihangxunxi.aitalk.storage.model;
 
 
-import com.aihangxunxi.aitalk.storage.domain.msg.attachment.MsgAttachment;
+import com.aihangxunxi.aitalk.storage.model.attachment.MsgAttachment;
 import com.aihangxunxi.aitalk.storage.constant.MsgStatus;
 import com.aihangxunxi.aitalk.storage.constant.MsgType;
 import com.aihangxunxi.aitalk.storage.constant.ConversationType;
