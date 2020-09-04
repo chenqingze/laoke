@@ -1,0 +1,67 @@
+syntax = "proto3";
+option java_multiple_files = true;
+package com.aihangxunxi.aitalk.im.protocol.buffers;
+
+//***********************消息相关***********************//
+
+// 消息发送请求
+message MsgRequest {
+  string msg_id = 1; // 消息id、可由发送方生成,用户消息去重,这里由MsgAck 返回给客户端，且返回时携带相同seq
+  string conversation_id = 2; // 消息接受方
+  uint32 conversation_type = 3; // 会话类型
+  uint32 msg_status = 4; // 消息状态
+  uint32 msg_type = 5; // 消息附件
+  string msg_attachStr = 6; // 消息附件json
+  string content = 7; // 消息内容
+  uint32 time = 8; // 发送时间
+  string extend_data = 9; // 扩展字段
+}
+
+// 消息发送请求收到确认
+message MsgAck {
+  string msg_id = 1; // 消息id
+}
+
+
+// 新消息（阅读）通知
+message MsgReadNotify {
+  string msg_id = 1; // 消息id、可由发送方生成,用户消息去重,这里由MsgAck 返回给客户端，且返回时携带相同seq
+  string conversation_id = 2; // 消息接受方
+  uint32 conversation_type = 3; // 会话类型
+  uint32 msg_status = 4; // 消息状态
+  uint32 msg_type = 5; // 消息附件
+  string msg_attachStr = 6; // 消息附件json
+  string content = 7; // 消息内容
+  uint32 time = 8; // 发送时间
+  string extend_data = 9; // 扩展字段
+}
+
+// 消息已读确认
+message MsgReadConfirmRequest{
+  string msg_id = 1; // 消息id、可由发送方生成,用户消息去重,这里由MsgAck 返回给客户端，且返回时携带相同seq
+}
+
+//// 消息已读确认
+//message MsgReadConfirmAck{
+//
+//}
+
+
+// 消息发送通知，用于多端同步
+message MsgRequestNotify {
+  string msg_id = 1; // 消息id、可由发送方生成,用户消息去重,这里由MsgAck 返回给客户端，且返回时携带相同seq
+  string conversation_id = 2; // 消息接受方
+  uint32 conversation_type = 3; // 会话类型
+  uint32 msg_status = 4; // 消息状态
+  uint32 msg_type = 5; // 消息附件
+  string msg_attachStr = 6; // 消息附件json
+  string content = 7; // 消息内容
+  uint32 time = 8; // 发送时间
+  string extend_data = 9; // 扩展字段
+}
+
+// 消息已读通知，用于多端同步。
+message MsgReadConfirmNotify{
+  string msg_id = 1; // 消息id、可由发送方生成,用户消息去重,这里由MsgAck 返回给客户端，且返回时携带相同seq
+}
+

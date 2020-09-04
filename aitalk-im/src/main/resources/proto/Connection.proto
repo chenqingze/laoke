@@ -1,0 +1,34 @@
+syntax = "proto3";
+option java_multiple_files = true;
+package com.aihangxunxi.aitalk.im.protocol.buffers;
+
+//***********************连接相关***********************//
+
+// 认证连接
+message AuthRequest {
+  string token = 1; // 用户token
+  string device_code = 2; //设备号
+  string device_idiom = 3;//设备类型:Desktop、Phone、Tablet、Unknown
+  string device_platform = 4;//客户端平台:Android、iOS、Unknown
+}
+
+// 认证响应
+message AuthAck {
+  bool result = 1; // 认证是否成功
+  uint32 code = 2;
+  string info = 3;// 用户信息及sessionId，一定要包含sessionId，以便连接后面心跳使用
+  string session_id = 4;
+}
+
+// 心跳请求
+message Ping {
+  string session_id = 1;
+}
+
+// 心跳响应
+message Pong {
+}
+
+// 断开连接
+message Disconnect {
+}

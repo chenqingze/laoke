@@ -1,0 +1,29 @@
+syntax = "proto3";
+option java_multiple_files = true;
+package com.aihangxunxi.aitalk.im.protocol.buffers;
+import "Msg.proto";
+import "Connection.proto";
+
+//***********************协议封装***********************//
+
+
+message Message {
+  //头部相关字段编号范围:1～10
+  uint64 magic = 1; //魔数 主要用于保证协议安全性,如果magic不匹配直接断掉连接不予处理
+  uint32 version = 2; // 版本号
+  uint32 op_code = 3; // 消息协议类型，操作码
+  uint64 seq = 4; //序列号,主要用于保证Request和Ack,Notify的seq值必须相同，使得发送端可以进行事务匹配处理
+  // uint64 payload_length = 5; // 负载长度,用于解包时验证包的有效性完整性、目前使用protobuf无需手动解包，此字段可忽略
+
+  oneof payload {
+    // 连接相关11～20
+    AuthRequest auth_request = 11;
+    AuthAck auth_ack = 12;
+    Ping ping = 13;
+    Pong pong = 14;
+    Disconnect disconnect = 15;
+
+    // 消息相关21～50
+    MsgRequest msg_request = 20;
+  }
+}
