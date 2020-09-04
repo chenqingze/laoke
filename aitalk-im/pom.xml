@@ -222,14 +222,11 @@
                         io.grpc:protoc-gen-grpc-java:${grpc.version}:exe:${os.detected.classifier}
                     </pluginArtifact>
                     <!--  protobuf 文件路径 默认项目根目录 ${project.basedir}/src/main/proto-->
-                    <!--
-                        <protoSourceRoot>${project.basedir}/proto</protoSourceRoot>
-                    -->
-
+                    <protoSourceRoot>${project.basedir}/src/main/resources/proto</protoSourceRoot>
                     <!--  pojo 输出默认项目根路径 ${project.build.directory}/generated-sources/protobuf/java-->
-                    <outputDirectory>${project.build.sourceDirectory}</outputDirectory>
+                    <!--<outputDirectory>${project.build.sourceDirectory}</outputDirectory>-->
                     <!--  重要提醒：下面的配置不要动，谢谢合作！！ -->
-                    <clearOutputDirectory>false</clearOutputDirectory>
+                    <clearOutputDirectory>true</clearOutputDirectory>
                 </configuration>
             </plugin>
             <!--  spring-java format-  -->
