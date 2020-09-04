@@ -20,8 +20,6 @@ public class Invitation {
 
 	private String addresseeAlias;
 
-	private String status;
-
 	private Long createdAt;
 
 	private Long updatedAt;
