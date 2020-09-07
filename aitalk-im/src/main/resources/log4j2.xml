@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration>
+    <Properties>
+        <property name="CONSOLE_PATTERN">%highlight{%d %-5level [%t] --- %-40.40c{1.}: %msg%n%throwable}</property>
+        <property name="FILE_PATTERN">%d %-5level [%t] --- %-40.40c{1.}: %msg%n%throwable</property>
+    </Properties>
     <Appenders>
         <Console name="Console" target="SYSTEM_OUT">
             <PatternLayout
