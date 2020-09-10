@@ -15,9 +15,8 @@ message AuthRequest {
 // 认证响应
 message AuthAck {
   bool result = 1; // 认证是否成功
-  uint32 code = 2;
-  string info = 3;// 用户信息及sessionId，一定要包含sessionId，以便连接后面心跳使用
-  string session_id = 4;
+  string session_id = 2;//一定要包含sessionId，以便连接后面心跳使用
+  string info = 3;// 用户信息及sessionId，
 }
 
 // 心跳请求
