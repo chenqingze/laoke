@@ -6,58 +6,7 @@ package com.aihangxunxi.aitalk.im.protocol.constant;
 public enum OpCode {
 
 	// 连接认证相关0～20
-	AUTH(0),
-
-	AUTH_ACK(1),
-
-	PING(2),
-
-	PONG(3),
-
-	DISCONNECT(4),
-
-	// 消息相关字段编号范围:Msg 21~50
-	MSG_DATA(5), // 消息请求
-
-	MSG_DATA_ACK(6), // 消息回执
-
-	// 群组相关字段编号范围:TEAM 51~
-	CREATE_TEAM_REQ(51), GROUP_MSG_DATA_REQ(57), GROUP_MSG_DATA_ACK(58),
-
-	DISMISS_TEAM_REQ(52),
-
-	QUERY_MEMBER_LIST_REQ(53),
-
-	JOIN_TEAM_REQ(54),
-
-	CONVERSATION(1010),
-
-	INVITE(1000),
-
-	FRIEND(1011),
-
-	LOG_OUT(200),
-
-	SYSTEM_INFORMS(115);
-
-	private final int value;
-
-	OpCode(int value) {
-		this.value = value;
-	}
-
-	public int getValue() {
-		return this.value;
-	}
-
-	public static OpCode codeOfValue(int value) {
-
-		for (OpCode t : values()) {
-			if (value == t.value)
-				return t;
-		}
-		throw new RuntimeException("没有找到对应的枚举");
-	}
+	UNKNOWN, AUTH_REQUEST, AUTH_ACK, MSG_REQUEST
 
 }
 //

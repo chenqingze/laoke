@@ -1,9 +1,7 @@
 package com.aihangxunxi.aitalk.im.session;
 
-import com.aihangxunxi.aitalk.im.protocol.constant.OpCode;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.google.common.collect.Sets;
-import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelId;
 import org.slf4j.Logger;

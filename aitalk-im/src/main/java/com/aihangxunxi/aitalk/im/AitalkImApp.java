@@ -6,7 +6,10 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 public class AitalkImApp {
 
 	public static void main(String[] args) {
-		new AnnotationConfigApplicationContext(ImServerConfiguration.class);
+		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
+		// ctx.register(AppConfig.class, OtherConfig.class);
+		ctx.register(ImServerConfiguration.class);
+		ctx.refresh();
 	}
 
 }
