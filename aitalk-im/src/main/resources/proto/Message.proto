@@ -18,7 +18,7 @@ message Message {
   oneof payload {
     // 连接相关11～20
     AuthRequest auth_request = 11;
-    //    AuthAck auth_ack = 12;
+    AuthAck auth_ack = 12;
     //    Ping ping = 13;
     //    Pong pong = 14;
     //    Disconnect disconnect = 15;
