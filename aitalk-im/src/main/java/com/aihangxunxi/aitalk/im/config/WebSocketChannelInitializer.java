@@ -1,6 +1,7 @@
 package com.aihangxunxi.aitalk.im.config;
 
 import com.aihangxunxi.aitalk.im.codec.MessageDecoder;
+import com.aihangxunxi.aitalk.im.codec.MessageEncoder;
 import com.aihangxunxi.aitalk.im.handler.AuthServerHandler;
 import com.aihangxunxi.aitalk.im.handler.ExceptionHandler;
 import com.aihangxunxi.aitalk.im.protocol.buffers.Message;
@@ -13,7 +14,6 @@ import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
 import io.netty.handler.codec.http.websocketx.extensions.compression.WebSocketServerCompressionHandler;
 import io.netty.handler.codec.protobuf.ProtobufDecoder;
-import io.netty.handler.codec.protobuf.ProtobufEncoder;
 import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.stream.ChunkedWriteHandler;
@@ -47,8 +47,8 @@ public class WebSocketChannelInitializer extends ChannelInitializer<NioSocketCha
 	@Resource
 	private MessageDecoder messageDecoder;
 
-	// @Resource
-	// private MessageEncoder messageEncoder;
+	@Resource
+	private MessageEncoder messageEncoder;
 
 	@Resource
 	private ExceptionHandler exceptionHandler;
@@ -84,7 +84,7 @@ public class WebSocketChannelInitializer extends ChannelInitializer<NioSocketCha
 		// 协议包解码
 		pipeline.addLast(messageDecoder);
 		// 协议包编码
-		// pipeline.addLast(messageEncoder);
+		pipeline.addLast(messageEncoder);
 
 		/* google Protobuf 编解码 */
 		// google Protobuf解码器
@@ -93,7 +93,8 @@ public class WebSocketChannelInitializer extends ChannelInitializer<NioSocketCha
 		pipeline.addLast(new ProtobufDecoder(Message.getDefaultInstance()));
 		// google Protobuf 编码器
 		pipeline.addLast(new ProtobufVarint32LengthFieldPrepender());
-		pipeline.addLast(new ProtobufEncoder());
+		// ProtobufEncoder增加此解码器会报错
+		// pipeline.addLast(new ProtobufEncoder());
 
 		/* 业务处理器 */
 		// 认证处理

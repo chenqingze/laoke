@@ -21,19 +21,22 @@ import org.springframework.stereotype.Component;
 @ChannelHandler.Sharable
 public final class AuthServerHandler extends ChannelInboundHandlerAdapter {
 
-    private static final Logger logger = LoggerFactory.getLogger(AuthServerHandler.class);
+	private static final Logger logger = LoggerFactory.getLogger(AuthServerHandler.class);
 
-    @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        logger.debug(msg.toString());
-        if (msg instanceof Message && ((Message) msg).getOpCode() == OpCode.AUTH_REQUEST) {
-            logger.debug(String.valueOf(msg.getClass()));
-            AuthAck authAck = AuthAck.newBuilder().setResult(true).setSessionId("6666666").build();
-            Message message = Message.newBuilder().setSeq(((Message) msg).getSeq()).setOpCode(OpCode.AUTH_ACK).setAuthAck(authAck).build();
-            ctx.writeAndFlush(message);
-        } else {
-            ctx.fireChannelRead(msg);
-        }
-    }
+	@Override
+	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+		logger.debug(msg.toString());
+		if (msg instanceof Message && ((Message) msg).getOpCode() == OpCode.AUTH_REQUEST) {
+			logger.debug(String.valueOf(msg.getClass()));
+			AuthAck authAck = AuthAck.newBuilder().setResult(true).setSessionId("6666666").build();
+			Message message = Message.newBuilder().setSeq(((Message) msg).getSeq()).setOpCode(OpCode.AUTH_ACK)
+					.setAuthAck(authAck).build();
+			ctx.writeAndFlush(message);
+
+		}
+		else {
+			ctx.fireChannelRead(msg);
+		}
+	}
 
 }
