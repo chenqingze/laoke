@@ -4,8 +4,8 @@ package com.aihangxunxi.aitalk.im.protocol.buffers;
 import "Msg.proto";
 import "OpCode.proto";
 import "Connection.proto";
+import "Auth.proto";
 //***********************协议封装***********************//
-
 
 message Message {
   //头部相关字段编号范围:1～10
