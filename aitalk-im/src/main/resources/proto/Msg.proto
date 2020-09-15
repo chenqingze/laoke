@@ -65,3 +65,12 @@ message MsgReadConfirmNotify{
   string msg_id = 1; // 消息id、可由发送方生成,用户消息去重,这里由MsgAck 返回给客户端，且返回时携带相同seq
 }
 
+// 离线消息请求
+message OfflineMsgRequest{
+
+}
+
+// 离线消息响应
+message OfflineMsgAck{
+
+}
