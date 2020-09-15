@@ -10,7 +10,7 @@ import java.util.List;
  * @author chenqingze107@163.com
  * @version 1.0
  */
-public class Group {
+public class Group extends BaseModel {
 
 	private ObjectId id;
 

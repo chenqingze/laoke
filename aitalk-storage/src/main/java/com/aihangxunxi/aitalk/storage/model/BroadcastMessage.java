@@ -7,7 +7,7 @@ package com.aihangxunxi.aitalk.storage.model;
  * @version 1.0
  *
  */
-public class BroadcastMessage {
+public class BroadcastMessage extends BaseModel {
 
 	private long id;// 广播id
 

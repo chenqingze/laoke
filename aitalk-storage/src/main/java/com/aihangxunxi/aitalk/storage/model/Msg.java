@@ -5,15 +5,13 @@ import com.aihangxunxi.aitalk.storage.model.attachment.MsgAttachment;
 import org.bson.codecs.pojo.annotations.BsonId;
 import org.bson.types.ObjectId;
 
-import java.io.Serializable;
-
 /**
  * 消息基类
  *
  * @author chenqingze107@163.com
  * @version 1.0
  */
-public abstract class Msg implements Serializable {
+public abstract class Msg extends BaseModel {
 
 	@BsonId
 	private ObjectId msgId;// 消息id

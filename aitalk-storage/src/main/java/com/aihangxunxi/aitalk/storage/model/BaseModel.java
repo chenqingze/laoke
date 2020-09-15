@@ -1,9 +1,11 @@
 package com.aihangxunxi.aitalk.storage.model;
 
+import java.io.Serializable;
+
 /**
  * @author chenqingze107@163.com
  * @version 1.0
  */
-public class Notification extends BaseModel {
+public class BaseModel implements Serializable {
 
 }

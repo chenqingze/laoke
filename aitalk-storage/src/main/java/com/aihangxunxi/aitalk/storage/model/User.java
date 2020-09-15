@@ -3,7 +3,6 @@ package com.aihangxunxi.aitalk.storage.model;
 import com.aihangxunxi.aitalk.storage.constant.DeviceIdiom;
 import com.aihangxunxi.aitalk.storage.constant.DevicePlatform;
 import com.aihangxunxi.aitalk.storage.constant.Gender;
-import com.sun.corba.se.impl.ior.OldJIDLObjectKeyTemplate;
 import org.bson.types.ObjectId;
 
 import java.util.List;
@@ -12,7 +11,7 @@ import java.util.List;
  * @author chenqingze107@163.com
  * @version 1.0
  */
-public class User {
+public class User extends BaseModel {
 
 	private ObjectId uid;
 
