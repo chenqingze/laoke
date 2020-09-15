@@ -14,22 +14,22 @@ import com.aihangxunxi.aitalk.storage.model.MucHist;
  */
 public class MsgAssembler {
 
+	MsgAck buildMsgAck() {
+		return MsgAck.newBuilder().build();
+	}
 
-    MsgAck buildMsgAck() {
-        return MsgAck.newBuilder().build();
-    }
+	MsgReadNotify buildMsgReadNotify() {
+		return MsgReadNotify.newBuilder().build();
+	}
 
-    MsgReadNotify buildMsgReadNotify() {
-        return MsgReadNotify.newBuilder().build();
-    }
+	MsgHist convertToMsgHist(Message message) {
+		message.getMsgRequest();
+		return null;
+	}
 
-    MsgHist convertToMsgHist(Message message) {
-        message.getMsgRequest();
-        return null;
-    }
+	MucHist convertToMucHist(Message message) {
+		message.getMsgRequest();
+		return null;
+	}
 
-    MucHist convertToMucHist(Message message) {
-        message.getMsgRequest();
-        return null;
-    }
 }

@@ -23,28 +23,30 @@ import javax.annotation.Resource;
 @ChannelHandler.Sharable
 public final class AuthServerHandler extends ChannelInboundHandlerAdapter {
 
-    private static final Logger logger = LoggerFactory.getLogger(AuthServerHandler.class);
+	private static final Logger logger = LoggerFactory.getLogger(AuthServerHandler.class);
 
-    @Resource
-    private AuthAssembler authAssembler;
+	@Resource
+	private AuthAssembler authAssembler;
 
-    @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        logger.debug(msg.toString());
-        boolean result = false;
-        if (msg instanceof Message && ((Message) msg).getOpCode() == OpCode.AUTH_REQUEST) {
-            String token = ((Message) msg).getAuthRequest().getToken();
-            // todo:验证token合法性，如果合法返回AuthAck#{result:true}，不合法AuthAck#{result:false}
-            if (true) {
-                result = true;
-                this.handlerRemoved(ctx);
-            }
-            Message message = authAssembler.authAckBuilder(((Message) msg).getSeq(), ctx.channel().id().asLongText(), result);
-            ctx.writeAndFlush(message);
-        } else {
-            ctx.close();
-//            ctx.fireChannelRead(msg);
-        }
-    }
+	@Override
+	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+		logger.debug(msg.toString());
+		boolean result = false;
+		if (msg instanceof Message && ((Message) msg).getOpCode() == OpCode.AUTH_REQUEST) {
+			String token = ((Message) msg).getAuthRequest().getToken();
+			// todo:验证token合法性，如果合法返回AuthAck#{result:true}，不合法AuthAck#{result:false}
+			if (true) {
+				result = true;
+				this.handlerRemoved(ctx);
+			}
+			Message message = authAssembler.authAckBuilder(((Message) msg).getSeq(), ctx.channel().id().asLongText(),
+					result);
+			ctx.writeAndFlush(message);
+		}
+		else {
+			ctx.close();
+			// ctx.fireChannelRead(msg);
+		}
+	}
 
 }

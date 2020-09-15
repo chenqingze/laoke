@@ -9,9 +9,10 @@ import com.aihangxunxi.aitalk.im.protocol.buffers.OpCode;
  * @version 1.0
  */
 public class AuthAssembler {
-   public Message authAckBuilder(Long seq, String sessionId,boolean result) {
-        return Message.newBuilder().setSeq(seq).setOpCode(OpCode.AUTH_ACK).setAuthAck(
-                AuthAck.newBuilder().setResult(result).setSessionId(sessionId)
-        ).build();
-    }
+
+	public Message authAckBuilder(Long seq, String sessionId, boolean result) {
+		return Message.newBuilder().setSeq(seq).setOpCode(OpCode.AUTH_ACK)
+				.setAuthAck(AuthAck.newBuilder().setResult(result).setSessionId(sessionId)).build();
+	}
+
 }
