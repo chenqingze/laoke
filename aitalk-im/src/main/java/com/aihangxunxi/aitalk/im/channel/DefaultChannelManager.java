@@ -13,7 +13,7 @@ import javax.annotation.Resource;
  * @author chenqingze107@163.com
  * @version 2.0
  */
-@Component
+@Component("channelManager")
 public class DefaultChannelManager implements ChannelManager {
 
 	@Resource
