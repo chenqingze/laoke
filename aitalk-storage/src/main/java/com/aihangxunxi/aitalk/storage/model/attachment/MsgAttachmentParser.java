@@ -6,7 +6,7 @@ import java.io.Serializable;
  * 消息附件解析器接口。
  *
  * @author chenqingze107@163.com
- * @version 1.0
+ * @version 2.0
  *
  */
 public interface MsgAttachmentParser extends Serializable {

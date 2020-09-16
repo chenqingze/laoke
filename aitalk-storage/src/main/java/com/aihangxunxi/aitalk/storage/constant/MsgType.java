@@ -4,7 +4,7 @@ package com.aihangxunxi.aitalk.storage.constant;
  * 消息内容格式类型
  *
  * @author chenqingze107@163.com
- * @version 1.0
+ * @version 2.0
  */
 public enum MsgType {
 

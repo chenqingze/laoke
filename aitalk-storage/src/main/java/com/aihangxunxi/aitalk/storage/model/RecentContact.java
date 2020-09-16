@@ -11,7 +11,7 @@ import java.io.Serializable;
  * 最近联系人
  *
  * @author chenqingze107@163.com
- * @version 1.0
+ * @version 2.0
  * @deprecated 前端数据库处理最近联系人
  */
 public class RecentContact implements Serializable {

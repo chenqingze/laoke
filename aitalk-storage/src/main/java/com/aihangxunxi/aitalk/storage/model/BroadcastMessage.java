@@ -4,7 +4,7 @@ package com.aihangxunxi.aitalk.storage.model;
  * 全员广播通知
  *
  * @author chenqingze107@163.com
- * @version 1.0
+ * @version 2.0
  *
  */
 public class BroadcastMessage extends BaseModel {

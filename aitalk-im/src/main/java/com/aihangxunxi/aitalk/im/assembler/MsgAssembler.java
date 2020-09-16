@@ -10,7 +10,7 @@ import com.aihangxunxi.aitalk.storage.model.MucHist;
  * todo: 完善数据转换
  *
  * @author chenqingze107@163.com
- * @version 1.0
+ * @version 2.0
  */
 public class MsgAssembler {
 

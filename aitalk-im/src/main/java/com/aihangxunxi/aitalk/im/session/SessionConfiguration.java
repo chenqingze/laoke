@@ -9,6 +9,7 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * @deprecated
  * Session 管理配置类
  *
  * @author chenqingze107@163.com
