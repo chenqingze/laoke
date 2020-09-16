@@ -99,46 +99,7 @@ public class WebSocketChannelInitializer extends ChannelInitializer<NioSocketCha
 		/* 业务处理器 */
 		// 认证处理
 		pipeline.addLast("authServerHandler", authServerHandler);
-
-		// // 心跳处理
-		// pipeline.addLast("hearBeatServerHandler", hearBeatServerHandler);
-		// pipeline.addLast(processorGroup, "msgDataServerHandler", msgDataServerHandler);
-		// // pipeline.addLast(processorGroup, "createTeamReqServerHandler",
-		// // createTeamReqServerHandler);
-		// pipeline.addLast(processorGroup, "groupMsgServerHandler",
-		// groupMsgServerHandler);
-		// pipeline.addLast(processorGroup, "initGroupServerHandler",
-		// initGroupServerHandler);
-		// pipeline.addLast(processorGroup, "changeGroupNameHandler",
-		// changeGroupNameHandler);
-		// pipeline.addLast(processorGroup, "changeUserGroupNameHandler",
-		// changeUserGroupNameHandler);
-		// pipeline.addLast(processorGroup, "groupNoticeServerHandler",
-		// groupNoticeServerHandler);
-		// pipeline.addLast(processorGroup, "groupAllQuietHandler", groupAllQuietHandler);
-		// pipeline.addLast(processorGroup, "createGroupHandler", createGroupHandler);
-		// pipeline.addLast(processorGroup, "initialUserInGroupHandler",
-		// initialUserInGroupHandler);
-		// pipeline.addLast(processorGroup, "dismissGroupHandler", dismissGroupHandler);
-		// pipeline.addLast(processorGroup, "detachGroupMemberHandler",
-		// detachGroupMemberHandler);
-		// pipeline.addLast(processorGroup, "quitGroupHandler", quitGroupHandler);
-		// pipeline.addLast(processorGroup, "withdrawGroupMsgHandler",
-		// withdrawGroupMsgHandler);
-		// pipeline.addLast(processorGroup, "joinGroupHandler", joinGroupHandler);
-		// pipeline.addLast(processorGroup, "accessToJoinGroupHandler",
-		// accessToJoinGroupHandler);
-		// pipeline.addLast(processorGroup, "storeConversationHandler",
-		// storeConversationHandler);
-		// pipeline.addLast(processorGroup, "invitationHandler", invitationHandler);
-		// pipeline.addLast(processorGroup, "friendsHandler", friendsHandler);
-		// pipeline.addLast(processorGroup, "privateChatHandler", privateChatHandler);
-		// pipeline.addLast(processorGroup, "systemInformsHandler", systemInformsHandler);
-		// pipeline.addLast(processorGroup, "storeWithdrawMsgHandler",
-		// storeWithdrawMsgHandler);
-		// pipeline.addLast(processorGroup, "disconnectServiceHandler",
-		// disconnectServiceHandler);
-		//
+		// todo：其他业务处理器放到这里
 		pipeline.addLast(processorGroup, "exceptionHandler", exceptionHandler);
 	}
 
