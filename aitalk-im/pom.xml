@@ -9,8 +9,11 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-
+    <version>2.0-SNAPSHOT</version>
     <artifactId>aitalk-im</artifactId>
+    <packaging>jar</packaging>
+    <description>aitalk server im</description>
+
     <profiles>
         <profile>
             <id>develop</id>
