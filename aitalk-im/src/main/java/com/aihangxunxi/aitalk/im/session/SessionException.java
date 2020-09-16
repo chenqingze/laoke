@@ -9,19 +9,19 @@ import com.aihangxunxi.aitalk.im.exception.AitalkException;
  */
 public class SessionException extends AitalkException {
 
-    public SessionException() {
-    }
+	public SessionException() {
+	}
 
-    public SessionException(String message) {
-        super(message);
-    }
+	public SessionException(String message) {
+		super(message);
+	}
 
-    public SessionException(Throwable cause) {
-        super(cause);
-    }
+	public SessionException(Throwable cause) {
+		super(cause);
+	}
 
-    public SessionException(String message, Throwable cause) {
-        super(message, cause);
-    }
+	public SessionException(String message, Throwable cause) {
+		super(message, cause);
+	}
 
 }

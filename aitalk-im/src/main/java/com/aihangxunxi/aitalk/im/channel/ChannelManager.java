@@ -3,8 +3,6 @@ package com.aihangxunxi.aitalk.im.channel;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 
-import java.util.List;
-
 /**
  * 用户channel管理
  *
@@ -13,40 +11,65 @@ import java.util.List;
  */
 public interface ChannelManager {
 
-    /**
-     * 向缓存中增加一个channel
-     *
-     * @param context
-     */
-    void addChannel(ChannelHandlerContext context);
+	/**
+	 * 向缓存中增加一个channel
+	 * @param context {@link ChannelHandlerContext}
+	 */
+	void addChannel(ChannelHandlerContext context);
 
-    /**
-     * 从缓存中移除一个channel
-     *
-     * @param context
-     */
-    void removeChannel(ChannelHandlerContext context);
+	/**
+	 * 向缓存中增加一个channel
+	 * @param channel {@link Channel}
+	 */
+	void addChannel(Channel channel);
 
-    /**
-     * 删除某用户的所有channel
-     *
-     * @param userId
-     */
-    void removeChannelByUserId(String userId);
+	/**
+	 * 从缓存中移除一个channel
+	 * @param context {@link ChannelHandlerContext}
+	 */
+	void removeChannel(ChannelHandlerContext context);
 
+	/**
+	 * 从缓存中移除一个channel
+	 * @param channel {@link Channel}
+	 */
+	void removeChannel(Channel channel);
 
-    /**
-     * 获取用户channel
-     *
-     * @param userId
-     * @return
-     */
-    List<Channel> findChannelByUserId(String userId);
+	/**
+	 * 删除某用户的所有channel
+	 * @param userId 用户id
+	 */
+	void removeChannelByUserId(String userId);
 
-    /**
-     * 剔除用户
-     *
-     * @param userId
-     */
-    void kickUser(String userId);
+	/**
+	 * 获取用户channel
+	 * @param userId 用户id
+	 * @return channel 通道
+	 */
+	Channel findChannelByUserId(String userId);
+
+	/**
+	 * channel 缓存大小
+	 * @return channel 缓存大小
+	 */
+	Long getLocalChannelCacheSize();
+
+	/**
+	 * 剔除用户
+	 * @param context {@link ChannelHandlerContext}
+	 */
+	void kickUser(ChannelHandlerContext context);
+
+	/**
+	 * 剔除用户
+	 * @param channel {@link Channel}
+	 */
+	void kickUser(Channel channel);
+
+	/**
+	 * 剔除用户
+	 * @param userId 用户id
+	 */
+	void kickUser(String userId);
+
 }

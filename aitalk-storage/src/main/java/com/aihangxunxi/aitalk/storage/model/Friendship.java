@@ -26,4 +26,68 @@ public class Friendship extends BaseModel {
 
 	private Long updatedAt;
 
+	public ObjectId getId() {
+		return id;
+	}
+
+	public void setId(ObjectId id) {
+		this.id = id;
+	}
+
+	public ObjectId getUserId() {
+		return userId;
+	}
+
+	public void setUserId(ObjectId userId) {
+		this.userId = userId;
+	}
+
+	public ObjectId getFriendId() {
+		return friendId;
+	}
+
+	public void setFriendId(ObjectId friendId) {
+		this.friendId = friendId;
+	}
+
+	public String getAlias() {
+		return alias;
+	}
+
+	public void setAlias(String alias) {
+		this.alias = alias;
+	}
+
+	public Boolean getBlocked() {
+		return isBlocked;
+	}
+
+	public void setBlocked(Boolean blocked) {
+		isBlocked = blocked;
+	}
+
+	public Boolean getMute() {
+		return isMute;
+	}
+
+	public void setMute(Boolean mute) {
+		isMute = mute;
+	}
+
+	public Long getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Long createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public Long getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(Long updatedAt) {
+		this.updatedAt = updatedAt;
+	}
+
 }

@@ -8,7 +8,7 @@ import org.bson.types.ObjectId;
  * @author chenqingze107@163.com
  * @version 2.0
  */
-public class TmpConversation extends BaseModel {
+public class ConsultantClient extends BaseModel {
 
 	private ObjectId id;
 

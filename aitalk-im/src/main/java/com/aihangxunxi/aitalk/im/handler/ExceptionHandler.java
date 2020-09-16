@@ -1,6 +1,6 @@
 package com.aihangxunxi.aitalk.im.handler;
 
-import com.aihangxunxi.aitalk.im.session.MapSessionRepository;
+import com.aihangxunxi.aitalk.im.channel.ChannelManager;
 import io.netty.channel.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,21 +21,21 @@ public class ExceptionHandler extends ChannelDuplexHandler {
 	private static final Logger logger = LoggerFactory.getLogger(ExceptionHandler.class);
 
 	@Resource
-	private MapSessionRepository mapSessionRepository;
+	private ChannelManager channelManager;
 
 	@Override
 	public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
 		// 清理session
 		if (logger.isDebugEnabled()) {
 			logger.debug("handler removed");
-			logger.debug("session 缓存大小:{}", mapSessionRepository.getLocalSessionCacheSize());
-			logger.debug("用户多客户端session集合缓存 大小:{}", mapSessionRepository.getLocalUserSessionSetCache());
+			logger.debug("channel 缓存大小:{}", channelManager.getLocalChannelCacheSize());
+			logger.debug("用户多客户端session集合缓存 大小:{}", channelManager.getLocalChannelCacheSize());
 		}
-		mapSessionRepository.delete(ctx);
+		channelManager.removeChannel(ctx);
 		if (logger.isDebugEnabled()) {
 			logger.debug("handler removed");
-			logger.debug("session 缓存大小:{}", mapSessionRepository.getLocalSessionCacheSize());
-			logger.debug("用户多客户端session集合缓存 大小:{}", mapSessionRepository.getLocalUserSessionSetCache());
+			logger.debug("channel 缓存大小:{}", channelManager.getLocalChannelCacheSize());
+			logger.debug("用户多客户端session集合缓存 大小:{}", channelManager.getLocalChannelCacheSize());
 		}
 	}
 

@@ -7,19 +7,19 @@ package com.aihangxunxi.aitalk.im.session;
  */
 public class InvalidSessionException extends SessionException {
 
-    public InvalidSessionException() {
-    }
+	public InvalidSessionException() {
+	}
 
-    public InvalidSessionException(String message) {
-        super(message);
-    }
+	public InvalidSessionException(String message) {
+		super(message);
+	}
 
-    public InvalidSessionException(Throwable cause) {
-        super(cause);
-    }
+	public InvalidSessionException(Throwable cause) {
+		super(cause);
+	}
 
-    public InvalidSessionException(String message, Throwable cause) {
-        super(message, cause);
-    }
+	public InvalidSessionException(String message, Throwable cause) {
+		super(message, cause);
+	}
 
 }

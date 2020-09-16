@@ -12,9 +12,7 @@ import java.util.Optional;
 import java.util.Set;
 
 /**
- * @deprecated
- * session本地存储
- *
+ * @deprecated session本地存储
  * @author chenqingze107@163.com
  * @version 1.0
  */
