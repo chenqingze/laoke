@@ -14,7 +14,7 @@
         <module>aitalk-storage</module>
     </modules>
     <properties>
-        <spring-javaformat-maven-plugin.version>0.0.23</spring-javaformat-maven-plugin.version>
+        <spring-javaformat-maven-plugin.version>0.0.25</spring-javaformat-maven-plugin.version>
     </properties>
     <build>
         <plugins>
