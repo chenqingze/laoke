@@ -12,8 +12,9 @@ publishing {
         }
     }
 }
+
 dependencies {
-    implementation 'org.mongodb:mongodb-driver-sync:4.1.0'
+    api 'org.mongodb:mongodb-driver-sync:4.1.0'
     implementation 'org.springframework.data:spring-data-redis:2.3.3.RELEASE'
     implementation 'redis.clients:jedis:3.3.0'
     implementation 'io.lettuce:lettuce-core:5.3.3.RELEASE'

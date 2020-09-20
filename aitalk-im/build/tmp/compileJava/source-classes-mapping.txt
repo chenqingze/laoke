@@ -1,10 +1,202 @@
+com/aihangxunxi/aitalk/im/assembler/GroupAssembler.java
+ com.aihangxunxi.aitalk.im.assembler.GroupAssembler
+com/aihangxunxi/aitalk/im/channel/DefaultChannelManager.java
+ com.aihangxunxi.aitalk.im.channel.DefaultChannelManager
+com/aihangxunxi/aitalk/im/session/Session.java
+ com.aihangxunxi.aitalk.im.session.Session
+com/aihangxunxi/aitalk/im/session/PlatformType.java
+ com.aihangxunxi.aitalk.im.session.PlatformType
+com/aihangxunxi/aitalk/im/protocol/buffers/DismissGroupRequest.java
+ com.aihangxunxi.aitalk.im.protocol.buffers.DismissGroupRequest
+ com.aihangxunxi.aitalk.im.protocol.buffers.DismissGroupRequest$1
+ com.aihangxunxi.aitalk.im.protocol.buffers.DismissGroupRequest$Builder
+com/aihangxunxi/aitalk/im/protocol/buffers/MsgRequestNotify.java
+ com.aihangxunxi.aitalk.im.protocol.buffers.MsgRequestNotify
+ com.aihangxunxi.aitalk.im.protocol.buffers.MsgRequestNotify$1
+ com.aihangxunxi.aitalk.im.protocol.buffers.MsgRequestNotify$Builder
+com/aihangxunxi/aitalk/im/channel/ChannelConstant.java
+ com.aihangxunxi.aitalk.im.channel.ChannelConstant
+com/aihangxunxi/aitalk/im/protocol/package-info.java
+ com.aihangxunxi.aitalk.im.protocol.package-info
+com/aihangxunxi/aitalk/im/protocol/buffers/MsgAckOrBuilder.java
+ com.aihangxunxi.aitalk.im.protocol.buffers.MsgAckOrBuilder
+com/aihangxunxi/aitalk/im/protocol/buffers/MessageOuterClass.java
+ com.aihangxunxi.aitalk.im.protocol.buffers.MessageOuterClass
+com/aihangxunxi/aitalk/im/protocol/buffers/MsgReadConfirmNotify.java
+ com.aihangxunxi.aitalk.im.protocol.buffers.MsgReadConfirmNotify
+ com.aihangxunxi.aitalk.im.protocol.buffers.MsgReadConfirmNotify$1
+ com.aihangxunxi.aitalk.im.protocol.buffers.MsgReadConfirmNotify$Builder
+com/aihangxunxi/aitalk/im/protocol/buffers/AuthAck.java
+ com.aihangxunxi.aitalk.im.protocol.buffers.AuthAck
+ com.aihangxunxi.aitalk.im.protocol.buffers.AuthAck$1
+ com.aihangxunxi.aitalk.im.protocol.buffers.AuthAck$Builder
+com/aihangxunxi/aitalk/im/handler/ExceptionHandler.java
+ com.aihangxunxi.aitalk.im.handler.ExceptionHandler
+com/aihangxunxi/aitalk/im/assembler/ConnectionAssembler.java
+ com.aihangxunxi.aitalk.im.assembler.ConnectionAssembler
+com/aihangxunxi/aitalk/im/codec/MessageDecoder.java
+ com.aihangxunxi.aitalk.im.codec.MessageDecoder
+com/aihangxunxi/aitalk/im/protocol/constant/Constants.java
+ com.aihangxunxi.aitalk.im.protocol.constant.Constants
+com/aihangxunxi/aitalk/im/protocol/buffers/DismissGroupRequestOrBuilder.java
+ com.aihangxunxi.aitalk.im.protocol.buffers.DismissGroupRequestOrBuilder
+com/aihangxunxi/aitalk/im/protocol/buffers/AuthAckOrBuilder.java
+ com.aihangxunxi.aitalk.im.protocol.buffers.AuthAckOrBuilder
+com/aihangxunxi/aitalk/im/protocol/buffers/MsgReadConfirmRequestOrBuilder.java
+ com.aihangxunxi.aitalk.im.protocol.buffers.MsgReadConfirmRequestOrBuilder
+com/aihangxunxi/aitalk/im/protocol/buffers/MsgReadConfirmRequest.java
+ com.aihangxunxi.aitalk.im.protocol.buffers.MsgReadConfirmRequest
+ com.aihangxunxi.aitalk.im.protocol.buffers.MsgReadConfirmRequest$1
+ com.aihangxunxi.aitalk.im.protocol.buffers.MsgReadConfirmRequest$Builder
+com/aihangxunxi/aitalk/im/protocol/buffers/InvitationOrBuilder.java
+ com.aihangxunxi.aitalk.im.protocol.buffers.InvitationOrBuilder
+com/aihangxunxi/aitalk/im/protocol/buffers/InitData.java
+ com.aihangxunxi.aitalk.im.protocol.buffers.InitData
+com/aihangxunxi/aitalk/im/protocol/buffers/PongOrBuilder.java
+ com.aihangxunxi.aitalk.im.protocol.buffers.PongOrBuilder
+com/aihangxunxi/aitalk/im/exception/InvalidFrameException.java
+ com.aihangxunxi.aitalk.im.exception.InvalidFrameException
+com/aihangxunxi/aitalk/im/protocol/buffers/PingOrBuilder.java
+ com.aihangxunxi.aitalk.im.protocol.buffers.PingOrBuilder
+com/aihangxunxi/aitalk/im/session/MapSessionRepository.java
+ com.aihangxunxi.aitalk.im.session.MapSessionRepository
+ com.aihangxunxi.aitalk.im.session.MapSessionRepository$1
+com/aihangxunxi/aitalk/im/protocol/buffers/OpCode.java
+ com.aihangxunxi.aitalk.im.protocol.buffers.OpCode
+ com.aihangxunxi.aitalk.im.protocol.buffers.OpCode$1
+com/aihangxunxi/aitalk/im/protocol/buffers/Pong.java
+ com.aihangxunxi.aitalk.im.protocol.buffers.Pong
+ com.aihangxunxi.aitalk.im.protocol.buffers.Pong$1
+ com.aihangxunxi.aitalk.im.protocol.buffers.Pong$Builder
+com/aihangxunxi/aitalk/im/session/SessionConfiguration.java
+ com.aihangxunxi.aitalk.im.session.SessionConfiguration
+com/aihangxunxi/aitalk/im/protocol/buffers/MsgReadNotify.java
+ com.aihangxunxi.aitalk.im.protocol.buffers.MsgReadNotify
+ com.aihangxunxi.aitalk.im.protocol.buffers.MsgReadNotify$1
+ com.aihangxunxi.aitalk.im.protocol.buffers.MsgReadNotify$Builder
+com/aihangxunxi/aitalk/im/protocol/buffers/Ping.java
+ com.aihangxunxi.aitalk.im.protocol.buffers.Ping
+ com.aihangxunxi.aitalk.im.protocol.buffers.Ping$1
+ com.aihangxunxi.aitalk.im.protocol.buffers.Ping$Builder
+com/aihangxunxi/aitalk/im/session/SessionException.java
+ com.aihangxunxi.aitalk.im.session.SessionException
+com/aihangxunxi/aitalk/im/channel/ChannelManager.java
+ com.aihangxunxi.aitalk.im.channel.ChannelManager
+com/aihangxunxi/aitalk/im/protocol/buffers/AuthRequestOrBuilder.java
+ com.aihangxunxi.aitalk.im.protocol.buffers.AuthRequestOrBuilder
+com/aihangxunxi/aitalk/im/session/MapSession.java
+ com.aihangxunxi.aitalk.im.session.MapSession
+com/aihangxunxi/aitalk/im/protocol/buffers/MsgAck.java
+ com.aihangxunxi.aitalk.im.protocol.buffers.MsgAck
+ com.aihangxunxi.aitalk.im.protocol.buffers.MsgAck$1
+ com.aihangxunxi.aitalk.im.protocol.buffers.MsgAck$Builder
+com/aihangxunxi/aitalk/im/session/InvalidSessionException.java
+ com.aihangxunxi.aitalk.im.session.InvalidSessionException
+com/aihangxunxi/aitalk/im/protocol/buffers/MessageOrBuilder.java
+ com.aihangxunxi.aitalk.im.protocol.buffers.MessageOrBuilder
+com/aihangxunxi/aitalk/im/protocol/buffers/AuthRequest.java
+ com.aihangxunxi.aitalk.im.protocol.buffers.AuthRequest
+ com.aihangxunxi.aitalk.im.protocol.buffers.AuthRequest$1
+ com.aihangxunxi.aitalk.im.protocol.buffers.AuthRequest$Builder
+com/aihangxunxi/aitalk/im/assembler/AuthAssembler.java
+ com.aihangxunxi.aitalk.im.assembler.AuthAssembler
+com/aihangxunxi/aitalk/im/assembler/MsgAssembler.java
+ com.aihangxunxi.aitalk.im.assembler.MsgAssembler
+com/aihangxunxi/aitalk/im/config/WebSocketChannelInitializer.java
+ com.aihangxunxi.aitalk.im.config.WebSocketChannelInitializer
+com/aihangxunxi/aitalk/im/handler/AuthServerHandler.java
+ com.aihangxunxi.aitalk.im.handler.AuthServerHandler
+com/aihangxunxi/aitalk/im/codec/MessageEncoder.java
+ com.aihangxunxi.aitalk.im.codec.MessageEncoder
+com/aihangxunxi/aitalk/im/assembler/InvitationAssembler.java
+ com.aihangxunxi.aitalk.im.assembler.InvitationAssembler
+com/aihangxunxi/aitalk/im/protocol/buffers/Invitation.java
+ com.aihangxunxi.aitalk.im.protocol.buffers.Invitation
+ com.aihangxunxi.aitalk.im.protocol.buffers.Invitation$1
+ com.aihangxunxi.aitalk.im.protocol.buffers.Invitation$Builder
+com/aihangxunxi/aitalk/im/protocol/buffers/OfflineMsgRequestOrBuilder.java
+ com.aihangxunxi.aitalk.im.protocol.buffers.OfflineMsgRequestOrBuilder
+com/aihangxunxi/aitalk/im/protocol/buffers/MsgRequest.java
+ com.aihangxunxi.aitalk.im.protocol.buffers.MsgRequest
+ com.aihangxunxi.aitalk.im.protocol.buffers.MsgRequest$1
+ com.aihangxunxi.aitalk.im.protocol.buffers.MsgRequest$Builder
+com/aihangxunxi/aitalk/im/session/package-info.java
+ com.aihangxunxi.aitalk.im.session.package-info
+com/aihangxunxi/aitalk/im/protocol/constant/ProtocolConstants.java
+ com.aihangxunxi.aitalk.im.protocol.constant.ProtocolConstants
+com/aihangxunxi/aitalk/im/channel/ChannelConfiguration.java
+ com.aihangxunxi.aitalk.im.channel.ChannelConfiguration
 com/aihangxunxi/aitalk/im/assembler/package-info.java
  com.aihangxunxi.aitalk.im.assembler.package-info
 com/aihangxunxi/aitalk/im/codec/package-info.java
  com.aihangxunxi.aitalk.im.codec.package-info
-com/aihangxunxi/aitalk/im/protocol/package-info.java
- com.aihangxunxi.aitalk.im.protocol.package-info
-com/aihangxunxi/aitalk/im/session/package-info.java
- com.aihangxunxi.aitalk.im.session.package-info
+com/aihangxunxi/aitalk/im/protocol/buffers/Message.java
+ com.aihangxunxi.aitalk.im.protocol.buffers.Message
+ com.aihangxunxi.aitalk.im.protocol.buffers.Message$1
+ com.aihangxunxi.aitalk.im.protocol.buffers.Message$2
+ com.aihangxunxi.aitalk.im.protocol.buffers.Message$Builder
+ com.aihangxunxi.aitalk.im.protocol.buffers.Message$PayloadCase
+com/aihangxunxi/aitalk/im/protocol/buffers/Msg.java
+ com.aihangxunxi.aitalk.im.protocol.buffers.Msg
+com/aihangxunxi/aitalk/im/protocol/buffers/CreateGroupRequest.java
+ com.aihangxunxi.aitalk.im.protocol.buffers.CreateGroupRequest
+ com.aihangxunxi.aitalk.im.protocol.buffers.CreateGroupRequest$1
+ com.aihangxunxi.aitalk.im.protocol.buffers.CreateGroupRequest$Builder
+com/aihangxunxi/aitalk/im/protocol/buffers/OpCodeOuterClass.java
+ com.aihangxunxi.aitalk.im.protocol.buffers.OpCodeOuterClass
+com/aihangxunxi/aitalk/im/protocol/buffers/CreateGroupRequestOrBuilder.java
+ com.aihangxunxi.aitalk.im.protocol.buffers.CreateGroupRequestOrBuilder
+com/aihangxunxi/aitalk/im/protocol/buffers/MsgReadConfirmNotifyOrBuilder.java
+ com.aihangxunxi.aitalk.im.protocol.buffers.MsgReadConfirmNotifyOrBuilder
+com/aihangxunxi/aitalk/im/protocol/buffers/MsgRequestNotifyOrBuilder.java
+ com.aihangxunxi.aitalk.im.protocol.buffers.MsgRequestNotifyOrBuilder
 com/aihangxunxi/aitalk/im/channel/package-info.java
  com.aihangxunxi.aitalk.im.channel.package-info
+com/aihangxunxi/aitalk/im/protocol/buffers/Auth.java
+ com.aihangxunxi.aitalk.im.protocol.buffers.Auth
+com/aihangxunxi/aitalk/im/protocol/constant/AtomicSequenceGenerator.java
+ com.aihangxunxi.aitalk.im.protocol.constant.AtomicSequenceGenerator
+com/aihangxunxi/aitalk/im/config/Banner.java
+ com.aihangxunxi.aitalk.im.config.Banner
+com/aihangxunxi/aitalk/im/protocol/buffers/MsgRequestOrBuilder.java
+ com.aihangxunxi.aitalk.im.protocol.buffers.MsgRequestOrBuilder
+com/aihangxunxi/aitalk/im/protocol/buffers/MsgReadNotifyOrBuilder.java
+ com.aihangxunxi.aitalk.im.protocol.buffers.MsgReadNotifyOrBuilder
+com/aihangxunxi/aitalk/im/protocol/buffers/OfflineMsgAck.java
+ com.aihangxunxi.aitalk.im.protocol.buffers.OfflineMsgAck
+ com.aihangxunxi.aitalk.im.protocol.buffers.OfflineMsgAck$1
+ com.aihangxunxi.aitalk.im.protocol.buffers.OfflineMsgAck$Builder
+com/aihangxunxi/aitalk/im/session/SessionRepository.java
+ com.aihangxunxi.aitalk.im.session.SessionRepository
+com/aihangxunxi/aitalk/im/protocol/buffers/Group.java
+ com.aihangxunxi.aitalk.im.protocol.buffers.Group
+com/aihangxunxi/aitalk/im/protocol/buffers/Disconnect.java
+ com.aihangxunxi.aitalk.im.protocol.buffers.Disconnect
+ com.aihangxunxi.aitalk.im.protocol.buffers.Disconnect$1
+ com.aihangxunxi.aitalk.im.protocol.buffers.Disconnect$Builder
+com/aihangxunxi/aitalk/im/protocol/buffers/DisconnectOrBuilder.java
+ com.aihangxunxi.aitalk.im.protocol.buffers.DisconnectOrBuilder
+com/aihangxunxi/aitalk/im/protocol/buffers/OfflineMsgRequest.java
+ com.aihangxunxi.aitalk.im.protocol.buffers.OfflineMsgRequest
+ com.aihangxunxi.aitalk.im.protocol.buffers.OfflineMsgRequest$1
+ com.aihangxunxi.aitalk.im.protocol.buffers.OfflineMsgRequest$Builder
+com/aihangxunxi/aitalk/im/protocol/buffers/InvitationOuterClass.java
+ com.aihangxunxi.aitalk.im.protocol.buffers.InvitationOuterClass
+com/aihangxunxi/aitalk/im/protocol/buffers/OfflineMsgAckOrBuilder.java
+ com.aihangxunxi.aitalk.im.protocol.buffers.OfflineMsgAckOrBuilder
+com/aihangxunxi/aitalk/im/protocol/buffers/Connection.java
+ com.aihangxunxi.aitalk.im.protocol.buffers.Connection
+com/aihangxunxi/aitalk/im/session/SessionConstant.java
+ com.aihangxunxi.aitalk.im.session.SessionConstant
+com/aihangxunxi/aitalk/im/exception/AitalkException.java
+ com.aihangxunxi.aitalk.im.exception.AitalkException
+com/aihangxunxi/aitalk/im/AitalkImApp.java
+ com.aihangxunxi.aitalk.im.AitalkImApp
+com/aihangxunxi/aitalk/im/config/AitalkServerBootstrap.java
+ com.aihangxunxi.aitalk.im.config.AitalkServerBootstrap
+com/aihangxunxi/aitalk/im/config/TcpServerBootstrap.java
+ com.aihangxunxi.aitalk.im.config.TcpServerBootstrap
+com/aihangxunxi/aitalk/im/config/ImServerConfiguration.java
+ com.aihangxunxi.aitalk.im.config.ImServerConfiguration
+com/aihangxunxi/aitalk/im/config/WebSocketServerBootstrap.java
+ com.aihangxunxi.aitalk.im.config.WebSocketServerBootstrap

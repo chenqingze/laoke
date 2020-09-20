@@ -20,7 +20,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Configuration
 @Import(StorageConfiguration.class)
 @ComponentScan(value = { "com.aihangxunxi.aitalk.im" })
-@PropertySource("classpath:im.properties")
+@PropertySource("classpath:config.properties")
 public class ImServerConfiguration {
 
 	private static final Logger logger = LoggerFactory.getLogger(ImServerConfiguration.class);
@@ -40,15 +40,15 @@ public class ImServerConfiguration {
 
 	public ImServerConfiguration(@Value("${server.ssl:false}") boolean ssl, @Value("${server.port:9666}") int port,
 			@Value("${server.bossGroupThreads:1}") int bossGroupThreads,
-			@Value("${server.workerGroupThreads:10}") int workerGroupThreads,
-			@Value("${server.processorGroupThreads:10}") int processorGroupThreads) {
+			@Value("${server.workerGroupThreads:4}") int workerGroupThreads,
+			@Value("${server.processorGroupThreads:2}") int processorGroupThreads) {
 		this.ssl = ssl;
 		this.port = port;
 		this.bossGroupThreads = bossGroupThreads;
 		this.workerGroupThreads = workerGroupThreads;
 		this.processorGroupThreads = processorGroupThreads;
 
-		logger.debug("配置信息{}", this.toString());
+		logger.info("配置信息{}", this.toString());
 	}
 
 	/**

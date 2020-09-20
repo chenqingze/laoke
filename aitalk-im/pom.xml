@@ -17,72 +17,29 @@
     <profiles>
         <profile>
             <id>develop</id>
-            <activation>
-                <!-- activate if system properties 'env=develop' -->
-                <property>
-                    <name>env</name>
-                    <value>develop</value>
-                </property>
-                <!-- this profile is active by default -->
-                <activeByDefault>true</activeByDefault>
-            </activation>
             <properties>
                 <env>develop</env>
-                <server.ssl>false</server.ssl>
-                <server.bossGroupThreads>2</server.bossGroupThreads>
-                <server.workerGroupThreads>4</server.workerGroupThreads>
-                <server.processorGroupThreads>2</server.processorGroupThreads>
             </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
         </profile>
         <profile>
             <id>review</id>
-            <activation>
-                <!-- activate if system properties 'env=review' -->
-                <property>
-                    <name>env</name>
-                    <value>review</value>
-                </property>
-                <!-- this profile is active by default -->
-                <!--<activeByDefault>true</activeByDefault>-->
-            </activation>
             <properties>
                 <env>review</env>
-                <server.ssl>false</server.ssl>
-                <server.bossGroupThreads>2</server.bossGroupThreads>
-                <server.workerGroupThreads>4</server.workerGroupThreads>
-                <server.processorGroupThreads>2</server.processorGroupThreads>
             </properties>
         </profile>
         <profile>
             <id>staging</id>
-            <activation>
-                <property>
-                    <name>env</name>
-                    <value>staging</value>
-                </property>
-            </activation>
             <properties>
                 <env>staging</env>
-                <server.ssl>false</server.ssl>
-                <server.bossGroupThreads>2</server.bossGroupThreads>
-                <server.workerGroupThreads>4</server.workerGroupThreads>
-                <server.processorGroupThreads>2</server.processorGroupThreads>
             </properties>
         </profile>
         <profile>
             <id>production</id>
-            <activation>
-                <property>
-                    <name>env</name>
-                    <value>production</value>
-                </property>
-            </activation>
             <properties>
                 <env>production</env>
-                <server.ssl>false</server.ssl>
-                <server.bossGroupThreads>2</server.bossGroupThreads>
-                <server.workerGroupThreads>4</server.workerGroupThreads>
-                <server.processorGroupThreads>2</server.processorGroupThreads>
             </properties>
         </profile>
     </profiles>
@@ -181,10 +138,10 @@
 
     <build>
         <!-- Loading all ${} -->
-        <!--<filters>
+        <filters>
             <filter>src/main/resources/env/config.${env}.properties</filter>
-        </filters>-->
-        <!-- map ${} variable filter -->
+        </filters>
+        <!-- Map ${} into resources -->
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
@@ -226,28 +183,12 @@
                         io.grpc:protoc-gen-grpc-java:${grpc.version}:exe:${os.detected.classifier}
                     </pluginArtifact>
                     <!--  protobuf 文件路径 默认项目根目录 ${project.basedir}/src/main/proto-->
-                    <protoSourceRoot>${project.basedir}/src/main/resources/proto</protoSourceRoot>
+                    <protoSourceRoot>${project.basedir}/src/main/proto</protoSourceRoot>
                     <!--  pojo 输出默认项目根路径 ${project.build.directory}/generated-sources/protobuf/java-->
                     <!--<outputDirectory>${project.build.sourceDirectory}</outputDirectory>-->
                     <!--  重要提醒：下面的配置不要动，谢谢合作！！ -->
-                    <clearOutputDirectory>true</clearOutputDirectory>
+                    <clearOutputDirectory>false</clearOutputDirectory>
                 </configuration>
-            </plugin>
-            <!--  spring-java format-  -->
-            <plugin>
-                <groupId>io.spring.javaformat</groupId>
-                <artifactId>spring-javaformat-maven-plugin</artifactId>
-                <version>${spring-javaformat-maven-plugin.version}</version>
-                <executions>
-                    <execution>
-                        <phase>validate</phase>
-                        <inherited>true</inherited>
-                        <goals>
-                            <goal>apply</goal>
-                            <goal>validate</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
             <!--
                         <plugin>

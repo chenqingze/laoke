@@ -1,0 +1,15 @@
+syntax = "proto3";
+option java_multiple_files = true;
+package com.aihangxunxi.aitalk.im.protocol.buffers;
+
+//***********************群组相关操作***********************//
+
+// 创建群
+message CreateGroupRequest{
+
+}
+
+//解散群
+message DismissGroupRequest {
+  uint32 time = 1;
+}

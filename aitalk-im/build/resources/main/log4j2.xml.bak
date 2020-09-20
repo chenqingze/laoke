@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+    <Properties>
+        <property name="CONSOLE_PATTERN">%highlight{%d %-5level [%t] --- %-40.40c{1.}: %msg%n%throwable}</property>
+        <property name="FILE_PATTERN">%d %-5level [%t] --- %-40.40c{1.}: %msg%n%throwable</property>
+    </Properties>
+    <Appenders>
+        <Console name="CONSOLE" target="SYSTEM_OUT">
+            <PatternLayout pattern="${CONSOLE_PATTERN}"/>
+        </Console>
+        <!--
+         <File name="FILE" immediateFlush="false" fileName="logs/app.log">
+                    <PatternLayout>
+                        <Pattern>${FILE_PATTERN}</Pattern>
+                    </PatternLayout>
+                </File>
+         <RollingFile name="ROLLING_FILE" immediateFlush="false" fileName="logs/app.log"
+                       filePattern="logs/$${date:yyyy-MM}/app-%d{MM-dd-yyyy}-%i.log.gz">
+              <PatternLayout>
+                  <Pattern>${FILE_PATTERN}</Pattern>
+              </PatternLayout>
+              <Policies>
+                  <TimeBasedTriggeringPolicy/>
+                  <SizeBasedTriggeringPolicy size="10 MB"/>
+              </Policies>
+         </RollingFile>
+         -->
+    </Appenders>
+    <Loggers>
+        <LOGGER name="org.springframework" level="INFO" additivity="false">
+            <AppenderRef ref="CONSOLE"/>
+        </LOGGER>
+        <LOGGER name="io.netty" level="INFO" additivity="false">
+            <AppenderRef ref="CONSOLE"/>
+        </LOGGER>
+        <Logger name="com.aihangxunxi" level="DEBUG" additivity="false">
+            <AppenderRef ref="CONSOLE"/>
+        </Logger>
+        <Root level="INFO">
+            <AppenderRef ref="CONSOLE"/>
+        </Root>
+    </Loggers>
+</Configuration>
