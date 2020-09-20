@@ -6,10 +6,8 @@ com/aihangxunxi/aitalk/im/session/Session.java
  com.aihangxunxi.aitalk.im.session.Session
 com/aihangxunxi/aitalk/im/session/PlatformType.java
  com.aihangxunxi.aitalk.im.session.PlatformType
-com/aihangxunxi/aitalk/im/protocol/buffers/DismissGroupRequest.java
- com.aihangxunxi.aitalk.im.protocol.buffers.DismissGroupRequest
- com.aihangxunxi.aitalk.im.protocol.buffers.DismissGroupRequest$1
- com.aihangxunxi.aitalk.im.protocol.buffers.DismissGroupRequest$Builder
+com/aihangxunxi/aitalk/im/config/AitalkServerBootstrap.java
+ com.aihangxunxi.aitalk.im.config.AitalkServerBootstrap
 com/aihangxunxi/aitalk/im/protocol/buffers/MsgRequestNotify.java
  com.aihangxunxi.aitalk.im.protocol.buffers.MsgRequestNotify
  com.aihangxunxi.aitalk.im.protocol.buffers.MsgRequestNotify$1
@@ -106,8 +104,8 @@ com/aihangxunxi/aitalk/im/config/WebSocketChannelInitializer.java
  com.aihangxunxi.aitalk.im.config.WebSocketChannelInitializer
 com/aihangxunxi/aitalk/im/handler/AuthServerHandler.java
  com.aihangxunxi.aitalk.im.handler.AuthServerHandler
-com/aihangxunxi/aitalk/im/codec/MessageEncoder.java
- com.aihangxunxi.aitalk.im.codec.MessageEncoder
+com/aihangxunxi/aitalk/im/config/ImServerConfiguration.java
+ com.aihangxunxi.aitalk.im.config.ImServerConfiguration
 com/aihangxunxi/aitalk/im/assembler/InvitationAssembler.java
  com.aihangxunxi.aitalk.im.assembler.InvitationAssembler
 com/aihangxunxi/aitalk/im/protocol/buffers/Invitation.java
@@ -124,8 +122,8 @@ com/aihangxunxi/aitalk/im/session/package-info.java
  com.aihangxunxi.aitalk.im.session.package-info
 com/aihangxunxi/aitalk/im/protocol/constant/ProtocolConstants.java
  com.aihangxunxi.aitalk.im.protocol.constant.ProtocolConstants
-com/aihangxunxi/aitalk/im/channel/ChannelConfiguration.java
- com.aihangxunxi.aitalk.im.channel.ChannelConfiguration
+com/aihangxunxi/aitalk/im/AitalkImApp.java
+ com.aihangxunxi.aitalk.im.AitalkImApp
 com/aihangxunxi/aitalk/im/assembler/package-info.java
  com.aihangxunxi.aitalk.im.assembler.package-info
 com/aihangxunxi/aitalk/im/codec/package-info.java
@@ -182,21 +180,23 @@ com/aihangxunxi/aitalk/im/protocol/buffers/OfflineMsgRequest.java
  com.aihangxunxi.aitalk.im.protocol.buffers.OfflineMsgRequest$Builder
 com/aihangxunxi/aitalk/im/protocol/buffers/InvitationOuterClass.java
  com.aihangxunxi.aitalk.im.protocol.buffers.InvitationOuterClass
-com/aihangxunxi/aitalk/im/protocol/buffers/OfflineMsgAckOrBuilder.java
- com.aihangxunxi.aitalk.im.protocol.buffers.OfflineMsgAckOrBuilder
+com/aihangxunxi/aitalk/im/config/TcpServerBootstrap.java
+ com.aihangxunxi.aitalk.im.config.TcpServerBootstrap
 com/aihangxunxi/aitalk/im/protocol/buffers/Connection.java
  com.aihangxunxi.aitalk.im.protocol.buffers.Connection
 com/aihangxunxi/aitalk/im/session/SessionConstant.java
  com.aihangxunxi.aitalk.im.session.SessionConstant
 com/aihangxunxi/aitalk/im/exception/AitalkException.java
  com.aihangxunxi.aitalk.im.exception.AitalkException
-com/aihangxunxi/aitalk/im/AitalkImApp.java
- com.aihangxunxi.aitalk.im.AitalkImApp
-com/aihangxunxi/aitalk/im/config/AitalkServerBootstrap.java
- com.aihangxunxi.aitalk.im.config.AitalkServerBootstrap
-com/aihangxunxi/aitalk/im/config/TcpServerBootstrap.java
- com.aihangxunxi.aitalk.im.config.TcpServerBootstrap
-com/aihangxunxi/aitalk/im/config/ImServerConfiguration.java
- com.aihangxunxi.aitalk.im.config.ImServerConfiguration
+com/aihangxunxi/aitalk/im/protocol/buffers/OfflineMsgAckOrBuilder.java
+ com.aihangxunxi.aitalk.im.protocol.buffers.OfflineMsgAckOrBuilder
+com/aihangxunxi/aitalk/im/codec/MessageEncoder.java
+ com.aihangxunxi.aitalk.im.codec.MessageEncoder
 com/aihangxunxi/aitalk/im/config/WebSocketServerBootstrap.java
  com.aihangxunxi.aitalk.im.config.WebSocketServerBootstrap
+com/aihangxunxi/aitalk/im/protocol/buffers/DismissGroupRequest.java
+ com.aihangxunxi.aitalk.im.protocol.buffers.DismissGroupRequest
+ com.aihangxunxi.aitalk.im.protocol.buffers.DismissGroupRequest$1
+ com.aihangxunxi.aitalk.im.protocol.buffers.DismissGroupRequest$Builder
+com/aihangxunxi/aitalk/im/channel/ChannelConfiguration.java
+ com.aihangxunxi.aitalk.im.channel.ChannelConfiguration

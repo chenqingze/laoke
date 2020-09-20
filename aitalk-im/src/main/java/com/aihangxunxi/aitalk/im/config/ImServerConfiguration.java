@@ -38,10 +38,10 @@ public class ImServerConfiguration {
 
 	public final int processorGroupThreads;
 
-	public ImServerConfiguration(@Value("${server.ssl:false}") boolean ssl, @Value("${server.port:9666}") int port,
-			@Value("${server.bossGroupThreads:1}") int bossGroupThreads,
-			@Value("${server.workerGroupThreads:4}") int workerGroupThreads,
-			@Value("${server.processorGroupThreads:2}") int processorGroupThreads) {
+	public ImServerConfiguration(@Value("${server.ssl}") boolean ssl, @Value("${server.port}") int port,
+			@Value("${server.bossGroupThreads}") int bossGroupThreads,
+			@Value("${server.workerGroupThreads}") int workerGroupThreads,
+			@Value("${server.processorGroupThreads}") int processorGroupThreads) {
 		this.ssl = ssl;
 		this.port = port;
 		this.bossGroupThreads = bossGroupThreads;

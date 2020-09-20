@@ -139,16 +139,13 @@
     <build>
         <!-- Loading all ${} -->
         <filters>
-            <filter>src/main/resources/env/config.${env}.properties</filter>
+            <filter>src/main/resources/env/${env}/config.properties</filter>
         </filters>
         <!-- Map ${} into resources -->
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
-                <!--<includes>
-                    <include>*.properties</include>
-                </includes>-->
             </resource>
         </resources>
         <extensions>

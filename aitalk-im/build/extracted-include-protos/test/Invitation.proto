@@ -1,0 +1,21 @@
+syntax = "proto3";
+option java_multiple_files = true;
+package com.aihangxunxi.aitalk.im.protocol.buffers;
+
+//***********************好友邀请、群邀请***********************//
+
+// 邀请
+message Invitation{
+  string id = 1;
+  uint64 requesterId = 2;
+  string requesterAlias = 3;
+  string requesterNickname = 4;
+  uint64 addresseeId = 5;
+  string addresseeAlias = 6;
+  string addresseeNickname = 7;
+  string content = 8;
+  string invite_status = 9;
+  string invite_type = 10;
+  uint64 createdAt = 11;
+  uint64 updatedAt = 12;
+}
