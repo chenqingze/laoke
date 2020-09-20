@@ -1,2 +1,0 @@
-com/aihangxunxi/aitalk/restapi/AitalkRestapiApp.java
- com.aihangxunxi.aitalk.restapi.AitalkRestapiApp
