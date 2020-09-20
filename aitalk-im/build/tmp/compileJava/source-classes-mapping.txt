@@ -1,0 +1,10 @@
+com/aihangxunxi/aitalk/im/assembler/package-info.java
+ com.aihangxunxi.aitalk.im.assembler.package-info
+com/aihangxunxi/aitalk/im/codec/package-info.java
+ com.aihangxunxi.aitalk.im.codec.package-info
+com/aihangxunxi/aitalk/im/protocol/package-info.java
+ com.aihangxunxi.aitalk.im.protocol.package-info
+com/aihangxunxi/aitalk/im/session/package-info.java
+ com.aihangxunxi.aitalk.im.session.package-info
+com/aihangxunxi/aitalk/im/channel/package-info.java
+ com.aihangxunxi.aitalk.im.channel.package-info

@@ -1,0 +1,82 @@
+com/aihangxunxi/aitalk/storage/model/Resource.java
+ com.aihangxunxi.aitalk.storage.model.Resource
+com/aihangxunxi/aitalk/storage/constant/InviteStatus.java
+ com.aihangxunxi.aitalk.storage.constant.InviteStatus
+com/aihangxunxi/aitalk/storage/constant/Gender.java
+ com.aihangxunxi.aitalk.storage.constant.Gender
+com/aihangxunxi/aitalk/storage/model/attachment/MsgAttachmentParser.java
+ com.aihangxunxi.aitalk.storage.model.attachment.MsgAttachmentParser
+com/aihangxunxi/aitalk/storage/constant/ConsultDirection.java
+ com.aihangxunxi.aitalk.storage.constant.ConsultDirection
+com/aihangxunxi/aitalk/storage/model/attachment/AudioAttachment.java
+ com.aihangxunxi.aitalk.storage.model.attachment.AudioAttachment
+com/aihangxunxi/aitalk/storage/constant/DevicePlatform.java
+ com.aihangxunxi.aitalk.storage.constant.DevicePlatform
+com/aihangxunxi/aitalk/storage/constant/QueryDirection.java
+ com.aihangxunxi.aitalk.storage.constant.QueryDirection
+com/aihangxunxi/aitalk/storage/model/attachment/LocationAttachment.java
+ com.aihangxunxi.aitalk.storage.model.attachment.LocationAttachment
+com/aihangxunxi/aitalk/storage/package-info.java
+ com.aihangxunxi.aitalk.storage.package-info
+com/aihangxunxi/aitalk/storage/model/Group.java
+ com.aihangxunxi.aitalk.storage.model.Group
+ com.aihangxunxi.aitalk.storage.model.Group$Member
+com/aihangxunxi/aitalk/storage/model/Notification.java
+ com.aihangxunxi.aitalk.storage.model.Notification
+com/aihangxunxi/aitalk/storage/model/MucHist.java
+ com.aihangxunxi.aitalk.storage.model.MucHist
+com/aihangxunxi/aitalk/storage/model/attachment/VideoAttachment.java
+ com.aihangxunxi.aitalk.storage.model.attachment.VideoAttachment
+com/aihangxunxi/aitalk/storage/constant/AttachStatus.java
+ com.aihangxunxi.aitalk.storage.constant.AttachStatus
+com/aihangxunxi/aitalk/storage/model/attachment/ImageAttachment.java
+ com.aihangxunxi.aitalk.storage.model.attachment.ImageAttachment
+com/aihangxunxi/aitalk/storage/model/BroadcastMessage.java
+ com.aihangxunxi.aitalk.storage.model.BroadcastMessage
+com/aihangxunxi/aitalk/storage/constant/InviteType.java
+ com.aihangxunxi.aitalk.storage.constant.InviteType
+com/aihangxunxi/aitalk/storage/model/attachment/NotificationAttachment.java
+ com.aihangxunxi.aitalk.storage.model.attachment.NotificationAttachment
+com/aihangxunxi/aitalk/storage/model/attachment/FileAttachment.java
+ com.aihangxunxi.aitalk.storage.model.attachment.FileAttachment
+com/aihangxunxi/aitalk/storage/model/RecentContact.java
+ com.aihangxunxi.aitalk.storage.model.RecentContact
+com/aihangxunxi/aitalk/storage/model/Friendship.java
+ com.aihangxunxi.aitalk.storage.model.Friendship
+com/aihangxunxi/aitalk/storage/constant/MsgStatus.java
+ com.aihangxunxi.aitalk.storage.constant.MsgStatus
+com/aihangxunxi/aitalk/storage/model/BaseModel.java
+ com.aihangxunxi.aitalk.storage.model.BaseModel
+com/aihangxunxi/aitalk/storage/model/ConsultationMsg.java
+ com.aihangxunxi.aitalk.storage.model.ConsultationMsg
+com/aihangxunxi/aitalk/storage/model/Invitation.java
+ com.aihangxunxi.aitalk.storage.model.Invitation
+com/aihangxunxi/aitalk/storage/constant/DeviceIdiom.java
+ com.aihangxunxi.aitalk.storage.constant.DeviceIdiom
+com/aihangxunxi/aitalk/storage/config/StorageConfiguration.java
+ com.aihangxunxi.aitalk.storage.config.StorageConfiguration
+com/aihangxunxi/aitalk/storage/constant/NotificationType.java
+ com.aihangxunxi.aitalk.storage.constant.NotificationType
+com/aihangxunxi/aitalk/storage/model/attachment/MsgAttachment.java
+ com.aihangxunxi.aitalk.storage.model.attachment.MsgAttachment
+com/aihangxunxi/aitalk/storage/model/MsgHist.java
+ com.aihangxunxi.aitalk.storage.model.MsgHist
+com/aihangxunxi/aitalk/storage/constant/MsgDirection.java
+ com.aihangxunxi.aitalk.storage.constant.MsgDirection
+com/aihangxunxi/aitalk/storage/model/OfflineMsg.java
+ com.aihangxunxi.aitalk.storage.model.OfflineMsg
+com/aihangxunxi/aitalk/storage/constant/RevokeType.java
+ com.aihangxunxi.aitalk.storage.constant.RevokeType
+com/aihangxunxi/aitalk/storage/model/Msg.java
+ com.aihangxunxi.aitalk.storage.model.Msg
+com/aihangxunxi/aitalk/storage/model/attachment/package-info.java
+ com.aihangxunxi.aitalk.storage.model.attachment.package-info
+com/aihangxunxi/aitalk/storage/model/ConsultantClient.java
+ com.aihangxunxi.aitalk.storage.model.ConsultantClient
+com/aihangxunxi/aitalk/storage/constant/ConversationType.java
+ com.aihangxunxi.aitalk.storage.constant.ConversationType
+com/aihangxunxi/aitalk/storage/constant/MsgType.java
+ com.aihangxunxi.aitalk.storage.constant.MsgType
+com/aihangxunxi/aitalk/storage/model/User.java
+ com.aihangxunxi.aitalk.storage.model.User
+ com.aihangxunxi.aitalk.storage.model.User$UserGroup
