@@ -34,7 +34,7 @@ public class QueryUserGroupsHandler extends ChannelInboundHandlerAdapter {
 		if (msg instanceof Message && ((Message) msg).getOpCode() == OpCode.QUERY_USER_GROUP_REQUEST) {
 			Long userId = ((Message) msg).getQueryUserGroupRequest().getUserId();
 			Message queryUserGroupsAck = groupAssembler.QueryUserGroupsBuilder(userId,groupRepository.queryUserGroups(userId));
-			ctx.fireChannelRead(queryUserGroupsAck);
+			ctx.channel().write(queryUserGroupsAck);
 			logger.info("竟然走到了");
 		}
 		else {
