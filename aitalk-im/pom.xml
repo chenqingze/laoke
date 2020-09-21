@@ -139,7 +139,7 @@
     <build>
         <!-- Loading all ${} -->
         <filters>
-            <filter>src/main/resources/env/${env}/config.properties</filter>
+            <filter>src/main/resources/env/config.${env}.properties</filter>
         </filters>
         <!-- Map ${} into resources -->
         <resources>
