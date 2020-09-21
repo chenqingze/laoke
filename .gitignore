@@ -274,4 +274,4 @@ $RECYCLE.BIN/
 
 /logs/
 /.idea/
-/aitalk-im/src/main/java/com/aihangxunxi/aitalk/im/protocol/buffers/
+build

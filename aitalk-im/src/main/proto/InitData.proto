@@ -1,0 +1,5 @@
+syntax = "proto3";
+option java_multiple_files = true;
+package com.aihangxunxi.aitalk.im.protocol.buffers;
+
+//***********************初次登录的设备初始化数据***********************//

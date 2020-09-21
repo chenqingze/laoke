@@ -13,88 +13,35 @@
     <artifactId>aitalk-storage</artifactId>
     <packaging>jar</packaging>
     <description>aitalk server storage api</description>
-
     <profiles>
         <profile>
             <id>develop</id>
-            <activation>
-                <!-- activate if system properties 'env=develop' -->
-                <property>
-                    <name>env</name>
-                    <value>develop</value>
-                </property>
-                <!-- this profile is active by default -->
-                <activeByDefault>true</activeByDefault>
-            </activation>
             <properties>
                 <env>develop</env>
-                <storage.mongodb.connectionString>mongodb://192.168.100.226:21000
-                </storage.mongodb.connectionString>
-                <storage.mongodb.databaseName>aitalk</storage.mongodb.databaseName>
-                <storage.redis.host>192.168.100.240</storage.redis.host>
-                <storage.redis.port>6379</storage.redis.port>
-                <storage.redis.database>2</storage.redis.database>
             </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
         </profile>
         <profile>
             <id>review</id>
-            <activation>
-                <!-- activate if system properties 'env=review' -->
-                <property>
-                    <name>env</name>
-                    <value>review</value>
-                </property>
-                <!-- this profile is active by default -->
-                <!--<activeByDefault>true</activeByDefault>-->
-            </activation>
             <properties>
                 <env>review</env>
-                <storage.mongodb.connectionString>mongodb://192.168.100.226:21000</storage.mongodb.connectionString>
-                <storage.mongodb.databaseName>aitalk</storage.mongodb.databaseName>
-                <storage.redis.host>192.168.100.240</storage.redis.host>
-                <storage.redis.port>6379</storage.redis.port>
-                <storage.redis.database>2</storage.redis.database>
             </properties>
         </profile>
         <profile>
             <id>staging</id>
-            <activation>
-                <property>
-                    <name>env</name>
-                    <value>staging</value>
-                </property>
-            </activation>
             <properties>
                 <env>staging</env>
-                <storage.mongodb.connectionString>mongodb://192.168.100.226:21000
-                </storage.mongodb.connectionString>
-                <storage.mongodb.databaseName>aitalk</storage.mongodb.databaseName>
-                <storage.redis.host>192.168.100.240</storage.redis.host>
-                <storage.redis.port>6379</storage.redis.port>
-                <storage.redis.database>2</storage.redis.database>
             </properties>
         </profile>
         <profile>
             <id>production</id>
-            <activation>
-                <property>
-                    <name>env</name>
-                    <value>production</value>
-                </property>
-            </activation>
             <properties>
                 <env>production</env>
-                <storage.mongodb.connectionString>
-                    mongodb://172.19.26.12:21000,172.19.26.7:21000,172.19.26.11:21000
-                </storage.mongodb.connectionString>
-                <storage.mongodb.databaseName>aitalk</storage.mongodb.databaseName>
-                <storage.redis.host>172.19.26.13</storage.redis.host>
-                <storage.redis.port>6379</storage.redis.port>
-                <storage.redis.database>2</storage.redis.database>
             </properties>
         </profile>
     </profiles>
-
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -170,9 +117,9 @@
     </dependencyManagement>
     <build>
         <!-- Loading all ${} -->
-        <!--<filters>
+        <filters>
             <filter>src/main/resources/env/config.${env}.properties</filter>
-        </filters>-->
+        </filters>
         <!-- map ${} variable filter -->
         <resources>
             <resource>

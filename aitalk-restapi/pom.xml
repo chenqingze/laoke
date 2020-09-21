@@ -14,81 +14,41 @@
     <name>aitalk-restapi</name>
     <packaging>jar</packaging>
     <description>aitalk server rest api application</description>
-
     <profiles>
         <profile>
             <id>develop</id>
-            <activation>
-                <!-- activate if system properties 'env=develop' -->
-                <property>
-                    <name>env</name>
-                    <value>develop</value>
-                </property>
-                <!-- this profile is active by default -->
-                <activeByDefault>true</activeByDefault>
-            </activation>
             <properties>
                 <env>develop</env>
-                <spring.cloud.consul.enabled>true</spring.cloud.consul.enabled>
-                <spring.cloud.consul.host>192.168.100.223</spring.cloud.consul.host>
-                <spring.cloud.consul.port>8500</spring.cloud.consul.port>
             </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
         </profile>
         <profile>
             <id>review</id>
-            <activation>
-                <!-- activate if system properties 'env=review' -->
-                <property>
-                    <name>env</name>
-                    <value>review</value>
-                </property>
-                <!-- this profile is active by default -->
-                <!--<activeByDefault>true</activeByDefault>-->
-            </activation>
             <properties>
                 <env>review</env>
-                <spring.cloud.consul.enabled>true</spring.cloud.consul.enabled>
-                <spring.cloud.consul.host>192.168.100.223</spring.cloud.consul.host>
-                <spring.cloud.consul.port>8500</spring.cloud.consul.port>
             </properties>
         </profile>
         <profile>
             <id>staging</id>
-            <activation>
-                <property>
-                    <name>env</name>
-                    <value>staging</value>
-                </property>
-            </activation>
             <properties>
                 <env>staging</env>
-                <spring.cloud.consul.enabled>true</spring.cloud.consul.enabled>
-                <spring.cloud.consul.host>192.168.100.223</spring.cloud.consul.host>
-                <spring.cloud.consul.port>8500</spring.cloud.consul.port>
             </properties>
         </profile>
         <profile>
             <id>production</id>
-            <activation>
-                <property>
-                    <name>env</name>
-                    <value>production</value>
-                </property>
-            </activation>
             <properties>
                 <env>production</env>
-                <spring.cloud.consul.enabled>true</spring.cloud.consul.enabled>
-                <spring.cloud.consul.host>192.168.100.223</spring.cloud.consul.host>
-                <spring.cloud.consul.port>8500</spring.cloud.consul.port>
             </properties>
         </profile>
     </profiles>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
-        <spring-boot.version>2.3.3.RELEASE</spring-boot.version>
+        <spring-boot.version>2.3.4.RELEASE</spring-boot.version>
         <spring-boot-admin.version>2.3.0</spring-boot-admin.version>
-        <spring-cloud.version>Hoxton.SR7</spring-cloud.version>
+        <spring-cloud.version>Hoxton.SR8</spring-cloud.version>
     </properties>
 
     <dependencies>
@@ -187,6 +147,10 @@
     </dependencyManagement>
 
     <build>
+        <!-- Loading all ${} -->
+        <filters>
+            <filter>src/main/resources/env/config.${env}.properties</filter>
+        </filters>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
