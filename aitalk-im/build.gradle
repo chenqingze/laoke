@@ -13,7 +13,7 @@ def env = System.getProperty("env") ?: "develop"
 sourceSets {
     main {
         resources {
-            srcDirs = ["src/main/resources", "src/main/resources/env/config.develop.properties"]
+            srcDirs = ["src/main/resources", "src/main/resources/env/config.${env}.properties"]
 
         }
     }
