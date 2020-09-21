@@ -4,6 +4,7 @@ import com.aihangxunxi.aitalk.im.codec.MessageDecoder;
 import com.aihangxunxi.aitalk.im.codec.MessageEncoder;
 import com.aihangxunxi.aitalk.im.handler.AuthServerHandler;
 import com.aihangxunxi.aitalk.im.handler.ExceptionHandler;
+import com.aihangxunxi.aitalk.im.handler.QueryUserGroupsHandler;
 import com.aihangxunxi.aitalk.im.protocol.buffers.Message;
 import com.aihangxunxi.aitalk.im.protocol.constant.Constants;
 import io.netty.channel.ChannelInitializer;
@@ -56,6 +57,9 @@ public class WebSocketChannelInitializer extends ChannelInitializer<NioSocketCha
 	@Resource
 	private AuthServerHandler authServerHandler;
 
+	@Resource
+	private QueryUserGroupsHandler queryUserGroupsHandler;
+
 	public WebSocketChannelInitializer(@Nullable SslContext sslCtx, EventExecutorGroup processorGroup) {
 		this.sslCtx = sslCtx;
 		this.processorGroup = processorGroup;
@@ -69,7 +73,8 @@ public class WebSocketChannelInitializer extends ChannelInitializer<NioSocketCha
 		}
 
 		/* 通信超时处理 */
-		pipeline.addLast("readTimeoutHandler", new ReadTimeoutHandler(READ_IDEL_TIME_OUT));
+		// pipeline.addLast("readTimeoutHandler", new
+		// ReadTimeoutHandler(READ_IDEL_TIME_OUT));
 
 		/* HTTP协议相关处理 */
 		// http编解码器
@@ -98,8 +103,12 @@ public class WebSocketChannelInitializer extends ChannelInitializer<NioSocketCha
 
 		/* 业务处理器 */
 		// 认证处理
-		pipeline.addLast("authServerHandler", authServerHandler);
+		// pipeline.addLast("authServerHandler", authServerHandler);
+		pipeline.addLast("queryUserGroupsHandler", queryUserGroupsHandler);
+
 		// todo：其他业务处理器放到这里
+		// pipeline.addLast(processorGroup, "queryUserGroupsHandler",
+		// queryUserGroupsHandler);
 		pipeline.addLast(processorGroup, "exceptionHandler", exceptionHandler);
 	}
 
