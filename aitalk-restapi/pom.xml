@@ -148,9 +148,9 @@
 
     <build>
         <!-- Loading all ${} -->
-        <filters>
+        <!--<filters>
             <filter>src/main/resources/env/config.${env}.properties</filter>
-        </filters>
+        </filters>-->
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
