@@ -30,7 +30,7 @@ message Group{
   string notice = 3;
   string qr_code = 4;
   GroupSetting setting = 5;
-  uint64 owner = 6;
+  string owner = 6;
   string group_no = 7;
   repeated GroupMember members = 8;
 }

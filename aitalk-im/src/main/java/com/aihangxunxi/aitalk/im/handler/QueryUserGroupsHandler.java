@@ -1,5 +1,6 @@
 package com.aihangxunxi.aitalk.im.handler;
 
+import com.aihangxunxi.aitalk.im.assembler.GroupAssembler;
 import com.aihangxunxi.aitalk.im.protocol.buffers.Message;
 import com.aihangxunxi.aitalk.im.protocol.buffers.OpCode;
 import com.aihangxunxi.aitalk.im.protocol.buffers.QueryUserGroupsAck;
@@ -25,16 +26,14 @@ public class QueryUserGroupsHandler extends ChannelInboundHandlerAdapter {
 
 	@Resource
 	private GroupRepository groupRepository;
-
+	@Resource
+	private GroupAssembler groupAssembler;
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 
 		if (msg instanceof Message && ((Message) msg).getOpCode() == OpCode.QUERY_USER_GROUP_REQUEST) {
 			Long userId = ((Message) msg).getQueryUserGroupRequest().getUserId();
-			QueryUserGroupsAck queryUserGroupsAck = QueryUserGroupsAck.newBuilder()
-					.setUserId(userId)
-//					.addAllGroups(groupRepository.queryUserGroups(userId))
-					.build();
+			Message queryUserGroupsAck = groupAssembler.QueryUserGroupsBuilder(userId,groupRepository.queryUserGroups(userId));
 			ctx.fireChannelRead(queryUserGroupsAck);
 			logger.info("竟然走到了");
 		}
