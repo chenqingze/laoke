@@ -10,7 +10,6 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <version>2.0-SNAPSHOT</version>
-    <groupId>com.aihangxunxi.aitalk</groupId>
     <artifactId>aitalk-im</artifactId>
     <packaging>jar</packaging>
     <description>aitalk server im</description>
