@@ -26,6 +26,7 @@ public class DefaultChannelManager implements ChannelManager {
 
 	@Override
 	public void addChannel(Channel channel) {
+
 		localChannelCache.put(channel.attr(ChannelConstant.USER_ID_ATTRIBUTE_KEY).get(), channel);
 	}
 

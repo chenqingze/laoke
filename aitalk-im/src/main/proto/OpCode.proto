@@ -7,6 +7,64 @@ enum OpCode{
   AUTH_REQUEST = 1;
   AUTH_ACK = 2;
   MSG_REQUEST = 3;
+
+  // 查询群列表请求
   QUERY_USER_GROUP_REQUEST = 4;
+  // 查询群回执
   QUERY_USER_GROUP_ACK = 5;
+  // 邀请用户加入群聊请求
+  INVITATION_USER_JOIN_GROUP_REQUEST = 7;
+  // 邀请用户加入群聊回执
+  INVITATION_USER_JOIN_GROUP_ACK = 8;
+  // 创建群聊请求
+  CREATE_GROUP_REQUEST = 9;
+  // 创建群聊回执
+  CREATE_GROUP_ACK = 10;
+  // 同意用户加入群聊请求
+  ACCESS_USER_JOIN_GROUP_REQUEST = 11;
+  // 同意用户加入群聊回执
+  ACCESS_USER_JOIN_GROUP_ACK = 12;
+  // 编辑群公告请求
+  EDIT_GROUP_NOTICE_REQUEST = 13;
+  // 编辑群公告回执
+  EDIT_GROUP_NOTICE_ACK = 14;
+  // 编辑群名请求
+  EDIT_GROUP_NAME_REQUEST = 15;
+  // 编辑群名回执
+  EDIT_GROUP_NAME_ACK = 16;
+  // 编辑群头像请求
+  EDIT_GROUP_HEADER_REQUEST = 17;
+  // 编辑群头像回执
+  EDIT_GROUP_HEADER_ACK = 18;
+  // 更新群禁言设置请求
+  UPDATE_GROUP_MUTE_SETTING_REQUEST = 19;
+  // 更新群禁言设置回执
+  UPDATE_GROUP_MUTE_SETTING_ACK = 20;
+  // 更新群邀请确认请求
+  UPDATE_GROUP_CONFIRM_SETTING_REQUEST = 21;
+  // 更新群邀请确认回执
+  UPDATE_GROUP_CONFIRM_SETTING_ACK = 22;
+  // 退出群聊回执
+  EXIT_GROUP_REQUEST = 23;
+  // 退出群聊回执
+  EXIT_GROUP_ACK = 24;
+  // 从群聊中移除用户请求
+  DETACH_USER_FROM_GROUP_REQUEST = 25;
+  // 从群聊中移除用户回执
+  DETACH_USER_FROM_GROUP_ACK = 26;
+
+  // 查询粉丝列表请求
+  QUERY_USER_FANS_LIST_REQUEST = 27;
+  // 查询粉丝列表回执
+  QUERY_USER_FANS_LIST_ACK = 28;
+  // 查询群离线消息请求
+  QUERY_GROUP_OFFLINE_HIS_REQUEST = 29;
+  // 查询群离线消息回执
+  QUERY_GROUP_OFFLINE_HIS_ACK = 30;
+  // 查询咨询离线消息请求
+  QUERY_CONSULTANT_OFFLINE_HIS_REQUEST = 31;
+  // 查询咨询离线消息回执
+  QUERY_CONSULTANT_OFFLINE_HIS_ACK = 32;
+
+  MSG_ACK = 33;
 }

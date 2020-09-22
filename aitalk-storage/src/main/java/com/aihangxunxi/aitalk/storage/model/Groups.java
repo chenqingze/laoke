@@ -12,7 +12,7 @@ import java.util.List;
  * @author chenqingze107@163.com
  * @version 2.0
  */
-public class Group extends BaseModel {
+public class Groups extends BaseModel {
 
 	@JsonSerialize(using = ToStringSerializer.class)
 	private ObjectId id;
@@ -22,32 +22,15 @@ public class Group extends BaseModel {
 	private String notice;
 
 	@JsonSerialize(using = ToStringSerializer.class)
-	private ObjectId owner;
+	private Long owner;
 
 	private String groupNo;
 
 	private GroupSetting groupSetting;
 
-	public class GroupSetting{
-		private boolean isMute;
-		private boolean isConfirmJoin;
+	private String header;
 
-		public boolean isMute() {
-			return isMute;
-		}
-
-		public void setMute(boolean mute) {
-			isMute = mute;
-		}
-
-		public boolean isConfirmJoin() {
-			return isConfirmJoin;
-		}
-
-		public void setConfirmJoin(boolean confirmJoin) {
-			isConfirmJoin = confirmJoin;
-		}
-	}
+	private String pinyin;
 
 	public ObjectId getId() {
 		return id;
@@ -73,11 +56,11 @@ public class Group extends BaseModel {
 		this.notice = notice;
 	}
 
-	public ObjectId getOwner() {
+	public Long getOwner() {
 		return owner;
 	}
 
-	public void setOwner(ObjectId owner) {
+	public void setOwner(Long owner) {
 		this.owner = owner;
 	}
 
@@ -96,4 +79,21 @@ public class Group extends BaseModel {
 	public void setGroupSetting(GroupSetting groupSetting) {
 		this.groupSetting = groupSetting;
 	}
+
+	public String getHeader() {
+		return header;
+	}
+
+	public void setHeader(String header) {
+		this.header = header;
+	}
+
+	public String getPinyin() {
+		return pinyin;
+	}
+
+	public void setPinyin(String pinyin) {
+		this.pinyin = pinyin;
+	}
+
 }
