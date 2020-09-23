@@ -39,12 +39,12 @@ public class PinYinUtil {
 					t4 += Character.toString(t1[i]);
 				}
 			}
-			return t4.substring(0,1);
+			return t4.substring(0, 1);
 		}
 		catch (BadHanyuPinyinOutputFormatCombination e1) {
 			e1.printStackTrace();
 		}
-		return t4.substring(0,1);
+		return t4.substring(0, 1);
 	}
 
 	/**

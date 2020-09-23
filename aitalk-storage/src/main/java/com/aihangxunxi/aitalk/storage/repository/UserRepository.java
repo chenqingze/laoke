@@ -11,15 +11,16 @@ import javax.annotation.Resource;
 
 @Repository
 public class UserRepository {
-    @Resource
-    private MongoDatabase aitalkDb;
 
+	@Resource
+	private MongoDatabase aitalkDb;
 
-    public boolean saveUser(User user){
-        MongoCollection<User> mongoCollection = aitalkDb.getCollection("user",User.class);
-        user.setUid(new ObjectId());
-        user.setGender(Gender.UNKNOWN);
-        mongoCollection.insertOne(user);
-        return true;
-    }
+	public boolean saveUser(User user) {
+		MongoCollection<User> mongoCollection = aitalkDb.getCollection("user", User.class);
+		user.setUid(new ObjectId());
+		user.setGender(Gender.UNKNOWN);
+		mongoCollection.insertOne(user);
+		return true;
+	}
+
 }

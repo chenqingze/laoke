@@ -3,6 +3,7 @@ package com.aihangxunxi.aitalk.im.handler;
 import com.aihangxunxi.aitalk.im.assembler.AuthAssembler;
 import com.aihangxunxi.aitalk.im.channel.ChannelConstant;
 import com.aihangxunxi.aitalk.im.channel.ChannelManager;
+import com.aihangxunxi.aitalk.im.manager.GroupManager;
 import com.aihangxunxi.aitalk.im.protocol.buffers.Message;
 import com.aihangxunxi.aitalk.im.protocol.buffers.OpCode;
 import com.aihangxunxi.aitalk.storage.model.User;
@@ -36,6 +37,9 @@ public final class AuthServerHandler extends ChannelInboundHandlerAdapter {
 	@Resource
 	private AuthAssembler authAssembler;
 
+	@Resource
+	private GroupManager groupManager;
+
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 		logger.debug(msg.toString());
@@ -50,6 +54,10 @@ public final class AuthServerHandler extends ChannelInboundHandlerAdapter {
 				channelManager.addChannel(this.channelProcess(ctx, user));
 				ctx.pipeline().remove(this);
 			}
+			// todo 获取用户所在的群 并将用户的channel加入到groupManager
+			// for(){
+			// groupManager.addChannel(groupId,ctx.channel);
+			// }
 			Message message = authAssembler.authAckBuilder(((Message) msg).getSeq(), ctx.channel().id().asLongText(),
 					result);
 			ctx.writeAndFlush(message);

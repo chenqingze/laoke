@@ -13,59 +13,61 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 public class GroupManager {
-    private final Object lock = new Object();
 
-    private final ConcurrentHashMap<String, ChannelGroup> groupMap = new ConcurrentHashMap<>();
+	private final Object lock = new Object();
 
-    public void addChannel(String groupId, Channel ch) {
+	private final ConcurrentHashMap<String, ChannelGroup> groupMap = new ConcurrentHashMap<>();
 
-        ChannelGroup channelGroup = null;
-        synchronized (lock) {
-            if (!groupMap.containsKey(groupId)) {
-                channelGroup = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
-                groupMap.put(groupId, channelGroup);
-            }
-            else {
-                channelGroup = groupMap.get(groupId);
-            }
-        }
-        channelGroup.add(ch);
-    }
+	public void addChannel(String groupId, Channel ch) {
 
-    /**
-     * 在群组中移除一个用户
-     * @param groupId
-     * @param ch
-     */
-    public void removeChannel(String groupId, Channel ch) {
-        ChannelGroup channelGroup = groupMap.get(groupId);
-        if (channelGroup != null) {
-            channelGroup.remove(ch);
-        }
-    }
+		ChannelGroup channelGroup = null;
+		synchronized (lock) {
+			if (!groupMap.containsKey(groupId)) {
+				channelGroup = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
+				groupMap.put(groupId, channelGroup);
+			}
+			else {
+				channelGroup = groupMap.get(groupId);
+			}
+		}
+		channelGroup.add(ch);
+	}
 
-    /**
-     * 从所有群聊中移除ch
-     * @param ch
-     */
-    public void removeGroupAll(Channel ch) {
-        Iterator<Map.Entry<String, ChannelGroup>> it = groupMap.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry<String, ChannelGroup> entry = it.next();
-            ChannelGroup channelGroup = entry.getValue();
-            channelGroup.remove(ch);
-        }
-    }
+	/**
+	 * 在群组中移除一个用户
+	 * @param groupId
+	 * @param ch
+	 */
+	public void removeChannel(String groupId, Channel ch) {
+		ChannelGroup channelGroup = groupMap.get(groupId);
+		if (channelGroup != null) {
+			channelGroup.remove(ch);
+		}
+	}
 
-    /**
-     * 发送群推送
-     * @param groupId
-     * @param msg
-     */
-    public void sendGroupMsg(String groupId, Message msg) {
-        ChannelGroup channelGroup = groupMap.get(groupId);
-        if (channelGroup != null) {
-            channelGroup.writeAndFlush(msg);
-        }
-    }
+	/**
+	 * 从所有群聊中移除ch
+	 * @param ch
+	 */
+	public void removeGroupAll(Channel ch) {
+		Iterator<Map.Entry<String, ChannelGroup>> it = groupMap.entrySet().iterator();
+		while (it.hasNext()) {
+			Map.Entry<String, ChannelGroup> entry = it.next();
+			ChannelGroup channelGroup = entry.getValue();
+			channelGroup.remove(ch);
+		}
+	}
+
+	/**
+	 * 发送群推送
+	 * @param groupId
+	 * @param msg
+	 */
+	public void sendGroupMsg(String groupId, Message msg) {
+		ChannelGroup channelGroup = groupMap.get(groupId);
+		if (channelGroup != null) {
+			channelGroup.writeAndFlush(msg);
+		}
+	}
+
 }

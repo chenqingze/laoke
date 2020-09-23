@@ -77,13 +77,14 @@ public class StorageConfiguration {
 	/**
 	 * Jedis
 	 */
-	@Bean
-	public RedisConnectionFactory jedisConnectionFactory() {
-
-		RedisStandaloneConfiguration clientConfig = new RedisStandaloneConfiguration(redisHost, redisPort);
-		clientConfig.setDatabase(redisDB);
-		return new JedisConnectionFactory(clientConfig);
-	}
+	/*
+	 * @Bean public RedisConnectionFactory jedisConnectionFactory() {
+	 *
+	 * RedisStandaloneConfiguration clientConfig = new
+	 * RedisStandaloneConfiguration(redisHost, redisPort);
+	 * clientConfig.setDatabase(redisDB); return new JedisConnectionFactory(clientConfig);
+	 * }
+	 */
 
 	/**
 	 * Lettuce
