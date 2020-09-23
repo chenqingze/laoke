@@ -32,7 +32,9 @@ message Group{
   GroupSetting setting = 5;
   string owner = 6;
   string group_no = 7;
-  repeated GroupMember members = 8;
+  string header = 8;
+  repeated GroupMember members = 9;
+  string pinyin = 10;
 }
 message GroupSetting{
   bool isMute = 1;

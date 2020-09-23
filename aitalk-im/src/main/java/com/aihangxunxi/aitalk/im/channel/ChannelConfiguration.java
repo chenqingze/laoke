@@ -17,7 +17,7 @@ public class ChannelConfiguration {
 
 	@Bean
 	public Cache<String, Channel> localChannelCache() {
-		return Caffeine.newBuilder().expireAfterWrite(6000, TimeUnit.SECONDS).build();
+		return Caffeine.newBuilder().expireAfterWrite(600000, TimeUnit.SECONDS).build();
 
 	}
 

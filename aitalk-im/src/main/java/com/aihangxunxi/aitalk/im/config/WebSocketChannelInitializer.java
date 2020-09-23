@@ -103,7 +103,7 @@ public class WebSocketChannelInitializer extends ChannelInitializer<NioSocketCha
 
 		/* 业务处理器 */
 		// 认证处理
-		// pipeline.addLast("authServerHandler", authServerHandler);
+		pipeline.addLast("authServerHandler", authServerHandler);
 		pipeline.addLast("queryUserGroupsHandler", queryUserGroupsHandler);
 
 		// todo：其他业务处理器放到这里

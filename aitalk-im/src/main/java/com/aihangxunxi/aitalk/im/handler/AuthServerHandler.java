@@ -10,6 +10,7 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -43,6 +44,7 @@ public final class AuthServerHandler extends ChannelInboundHandlerAdapter {
 			String token = ((Message) msg).getAuthRequest().getToken();
 			// todo:验证token合法性,并获取用户信息
 			User user = new User();
+			user.setUid(new ObjectId("5f6186c662cd9a2518061e7d"));
 			if (true) {
 				result = true;
 				channelManager.addChannel(this.channelProcess(ctx, user));
