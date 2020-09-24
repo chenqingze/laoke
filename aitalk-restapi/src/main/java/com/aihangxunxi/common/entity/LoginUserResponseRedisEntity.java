@@ -1,4 +1,4 @@
-package com.aihangxunxi.aitalk.restapi.context;
+package com.aihangxunxi.common.entity;
 
 import com.aihangxunxi.aitalk.restapi.constant.enums.ClientTypeEnum;
 import com.aihangxunxi.aitalk.restapi.constant.enums.UserTypeEnum;

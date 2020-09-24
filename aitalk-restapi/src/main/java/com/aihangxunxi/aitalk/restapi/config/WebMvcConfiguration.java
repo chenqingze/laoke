@@ -19,6 +19,7 @@ import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -39,24 +40,27 @@ import java.util.List;
 @ComponentScan(basePackages = "com.aihangxunxi.aitalk.restapi")
 public class WebMvcConfiguration implements WebMvcConfigurer {
 
-	@Resource
-	private RedisTemplate redisTemplate;
 
-	// @Override
-	// public void addCorsMappings(CorsRegistry registry) {
-	// // 设置允许跨域的路径
-	// registry.addMapping("/**")
-	// // 设置允许跨域请求的域名
-	// .allowedOrigins("*")
-	// // 是否允许证书
-	// // .allowCredentials(true)
-	// // 设置允许的方法
-	// .allowedMethods("GET", "POST", "DELETE", "PUT", "OPTIONS")
-	// // 设置允许的header属性
-	// .allowedHeaders("*")
-	// // 跨域允许时间
-	// .maxAge(3600);
-	// }
+	@Resource
+	private AuthenticationInterceptor authenticationInterceptor;
+
+	// todo 注释掉
+	 @Override
+	 public void addCorsMappings(CorsRegistry registry) {
+	 // 设置允许跨域的路径
+	 registry.addMapping("/**")
+	 // 设置允许跨域请求的域名
+	 .allowedOrigins("*")
+	 // 是否允许证书
+	 // .allowCredentials(true)
+	 // 设置允许的方法
+	 .allowedMethods("GET", "POST", "DELETE", "PUT", "OPTIONS")
+	 // 设置允许的header属性
+	 .allowedHeaders("*")
+	 // 跨域允许时间
+	 .maxAge(3600);
+	 }
+
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
@@ -73,7 +77,7 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
 		// defaultExcludePatterns.add("/swagger-resources/**");
 		// defaultExcludePatterns.add("/doc.html");
 		// defaultExcludePatterns.add("/swagger-ui.html/**");
-		registry.addInterceptor(new AuthenticationInterceptor()).addPathPatterns(defaultIncludePatterns)
+		registry.addInterceptor(authenticationInterceptor).addPathPatterns(defaultIncludePatterns)
 				.excludePathPatterns(defaultExcludePatterns);
 	}
 

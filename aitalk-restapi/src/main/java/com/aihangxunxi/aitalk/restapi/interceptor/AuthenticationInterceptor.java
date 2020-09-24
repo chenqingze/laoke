@@ -2,11 +2,12 @@ package com.aihangxunxi.aitalk.restapi.interceptor;
 
 import com.aihangxunxi.aitalk.restapi.constant.RedisKeyConstants;
 import com.aihangxunxi.aitalk.restapi.context.AihangPrincipal;
-import com.aihangxunxi.aitalk.restapi.context.LoginUserResponseRedisEntity;
+import com.aihangxunxi.common.entity.LoginUserResponseRedisEntity;
 import com.aihangxunxi.aitalk.restapi.context.SecurityPrincipalContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.annotation.Resource;
@@ -20,15 +21,17 @@ import java.io.IOException;
  * @author wangchaochao
  * @version 3.0 2020/4/13
  */
+@Component
 public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
 
 	private static final Logger logger = LoggerFactory.getLogger(AuthenticationInterceptor.class);
 
 	@Resource
-	private RedisTemplate<String, Object> authRedisTemplate;
+	private RedisTemplate<String,Object> authRedisTemplate;
 
 	public AuthenticationInterceptor() {
 	}
+
 
 	/**
 	 * 用户信息拦截,token校验。
@@ -45,6 +48,11 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
 			if ("yes".equals(consumerFilter)) {
 				return true;
 			}
+			// todo 注释掉
+			 if ("OPTIONS".equals(request.getMethod().toUpperCase())) {
+			 response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+			 return true;
+			 }
 			// feign跨服调用白名单url不拦截
 			// Set<String> feignExcludePatterns =
 			// feignAuthProperties.getFeignExcludePatterns();
