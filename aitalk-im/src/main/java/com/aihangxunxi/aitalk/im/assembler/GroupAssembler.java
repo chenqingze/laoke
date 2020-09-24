@@ -20,9 +20,9 @@ public class GroupAssembler {
 		for (int i = 0; i < list.size(); i++) {
 			Groups group = list.get(i);
 			groups.add(Group.newBuilder().setGroupNo(group.getGroupNo()).setId(group.getId().toHexString())
-					.setPinyin(group.getPinyin())
-					.setName(group.getName()).setNotice(group.getNotice()).setOwner(group.getOwner().toString())
-					.setHeader(group.getHeader()).setSetting(buildGroupSetting(group.getGroupSetting().isMute(),
+					.setPinyin(group.getPinyin()).setName(group.getName()).setNotice(group.getNotice())
+					.setOwner(group.getOwner().toString()).setHeader(group.getHeader())
+					.setSetting(buildGroupSetting(group.getGroupSetting().isMute(),
 							group.getGroupSetting().isConfirmJoin()))
 					.build());
 		}

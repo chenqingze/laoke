@@ -10,11 +10,12 @@ import javax.annotation.Resource;
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Resource
-    private UserRepository userRepository;
+	@Resource
+	private UserRepository userRepository;
 
-    @Override
-    public boolean saveUser(User user){
-        return userRepository.saveUser(user);
-    }
+	@Override
+	public boolean saveUser(User user) {
+		return userRepository.saveUser(user);
+	}
+
 }

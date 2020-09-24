@@ -44,4 +44,124 @@ public abstract class Msg extends BaseModel {
 
 	private ConsultDirection consultDirection;// 咨询方向
 
+	public ObjectId getMsgId() {
+		return msgId;
+	}
+
+	public void setMsgId(ObjectId msgId) {
+		this.msgId = msgId;
+	}
+
+	public MsgType getMsgType() {
+		return msgType;
+	}
+
+	public void setMsgType(MsgType msgType) {
+		this.msgType = msgType;
+	}
+
+	public MsgDirection getMsgDirection() {
+		return msgDirection;
+	}
+
+	public void setMsgDirection(MsgDirection msgDirection) {
+		this.msgDirection = msgDirection;
+	}
+
+	public AttachStatus getAttachStatus() {
+		return attachStatus;
+	}
+
+	public void setAttachStatus(AttachStatus attachStatus) {
+		this.attachStatus = attachStatus;
+	}
+
+	public MsgAttachment getMsgAttachment() {
+		return msgAttachment;
+	}
+
+	public void setMsgAttachment(MsgAttachment msgAttachment) {
+		this.msgAttachment = msgAttachment;
+	}
+
+	public String getAttachStr() {
+		return attachStr;
+	}
+
+	public void setAttachStr(String attachStr) {
+		this.attachStr = attachStr;
+	}
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+	public MsgStatus getMsgStatus() {
+		return msgStatus;
+	}
+
+	public void setMsgStatus(MsgStatus msgStatus) {
+		this.msgStatus = msgStatus;
+	}
+
+	public ConversationType getConversationType() {
+		return conversationType;
+	}
+
+	public void setConversationType(ConversationType conversationType) {
+		this.conversationType = conversationType;
+	}
+
+	public ObjectId getSenderId() {
+		return senderId;
+	}
+
+	public void setSenderId(ObjectId senderId) {
+		this.senderId = senderId;
+	}
+
+	public ObjectId getReceiverId() {
+		return receiverId;
+	}
+
+	public void setReceiverId(ObjectId receiverId) {
+		this.receiverId = receiverId;
+	}
+
+	public Long getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Long createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public Long getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(Long updatedAt) {
+		this.updatedAt = updatedAt;
+	}
+
+	public Long getRevokeAt() {
+		return revokeAt;
+	}
+
+	public void setRevokeAt(Long revokeAt) {
+		this.revokeAt = revokeAt;
+	}
+
+	public ConsultDirection getConsultDirection() {
+		return consultDirection;
+	}
+
+	public void setConsultDirection(ConsultDirection consultDirection) {
+		this.consultDirection = consultDirection;
+	}
+
 }

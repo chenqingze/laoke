@@ -14,12 +14,14 @@ import org.springframework.stereotype.Component;
 @ChannelHandler.Sharable
 public class InvitationUserJoinGroupHandler extends ChannelInboundHandlerAdapter {
 
-    @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        if (msg instanceof Message && ((Message) msg).getOpCode() == OpCode.MSG_REQUEST) {
+	@Override
+	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+		if (msg instanceof Message && ((Message) msg).getOpCode() == OpCode.MSG_REQUEST) {
 
-        }else{
+		}
+		else {
 
-        }
-    }
+		}
+	}
+
 }

@@ -32,6 +32,8 @@ public class Groups extends BaseModel {
 
 	private String pinyin;
 
+	private int count;
+
 	public ObjectId getId() {
 		return id;
 	}
@@ -94,6 +96,14 @@ public class Groups extends BaseModel {
 
 	public void setPinyin(String pinyin) {
 		this.pinyin = pinyin;
+	}
+
+	public int getCount() {
+		return count;
+	}
+
+	public void setCount(int count) {
+		this.count = count;
 	}
 
 }

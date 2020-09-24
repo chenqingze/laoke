@@ -15,11 +15,14 @@ message MsgRequest {
   string content = 7; // 消息内容
   uint32 time = 8; // 发送时间
   string extend_data = 9; // 扩展字段
+  string sender_id = 10; // 追加 发送方id 用于判断群聊成员是否在群中
+
 }
 
 // 消息发送请求收到确认
 message MsgAck {
   string msg_id = 1; // 消息id
+  string seq = 2;
 }
 
 

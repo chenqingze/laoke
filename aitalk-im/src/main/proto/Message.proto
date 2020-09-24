@@ -30,6 +30,7 @@ message Message {
 
     QueryUserGroupsRequest query_user_group_request = 21;
     QueryUserGroupsAck query_user_group_ack = 22;
+    MsgAck msg_ack = 23;
 
     //------------------------------------------好友及好友邀请---------------------------------------------------
 
