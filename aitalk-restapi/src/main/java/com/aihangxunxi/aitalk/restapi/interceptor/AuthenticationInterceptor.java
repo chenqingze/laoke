@@ -43,10 +43,10 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
 			// if ("yes".equals(consumerFilter)) {
 			// return true;
 			// }
-//			if ("OPTIONS".equals(request.getMethod().toUpperCase())) {
-//				response.setStatus(HttpServletResponse.SC_NO_CONTENT);
-//				return true;
-//			}
+			// if ("OPTIONS".equals(request.getMethod().toUpperCase())) {
+			// response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+			// return true;
+			// }
 			// feign跨服调用白名单url不拦截
 			// AntPathMatcher antPathMatcher = new AntPathMatcher();
 			// Iterator<String> iterator = feignExcludePatterns.iterator();

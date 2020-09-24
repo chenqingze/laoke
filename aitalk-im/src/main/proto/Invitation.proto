@@ -46,7 +46,7 @@ message FriendInvitationRequestRequest{
 //---------------------------------------------发送好友邀请ack-[发送方]-and-[接收方]--------------------------------
 
 // 发送好友邀请 ack
-message FriendInvitationAck{
+message FriendInvitationRequestAck{
   string id = 1;
   uint64 requesterId = 2;
   string requesterAlias = 3;

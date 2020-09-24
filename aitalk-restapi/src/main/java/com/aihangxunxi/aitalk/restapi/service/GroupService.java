@@ -9,6 +9,6 @@ public interface GroupService {
 
 	Groups queryGroupInfo(String groupId);
 
-	boolean queryUserInGroup(String groupId,Long userId);
+	boolean queryUserInGroup(String groupId, Long userId);
 
 }

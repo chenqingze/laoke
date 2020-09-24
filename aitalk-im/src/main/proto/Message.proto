@@ -35,7 +35,7 @@ message Message {
     //------------------------------------------好友及好友邀请---------------------------------------------------
 
     FriendInvitationRequestRequest friend_invitation_request_request = 1001;
-    FriendInvitationAck friend_invitation_request_ack = 1002;
+    FriendInvitationRequestAck friend_invitation_request_ack = 1002;
     FriendInvitationAcceptRequest friend_invitation_accept_request = 1003;
     FriendInvitationAcceptAck friend_invitation_accept_ack = 1004;
     FriendInvitationDeclinedRequest friend_invitation_declined_request = 1005;
