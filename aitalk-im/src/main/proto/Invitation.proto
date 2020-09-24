@@ -19,3 +19,103 @@ message Invitation{
   uint64 createdAt = 11;
   uint64 updatedAt = 12;
 }
+
+// 好友
+message Friend{
+  string id = 1;
+  uint64 userId = 2;
+  uint64 friendId = 3;
+  string alias = 4;
+  uint32 isBlocked = 5;
+  uint32 isMute = 6;
+  uint32 isStickOnTop = 7;
+  uint32 createdAt = 8;
+  uint32 updatedAt = 9;
+}
+
+//-------------------------------------------------发送好友邀请-[发送方]----------------------------------------
+
+// 发送好友邀请
+message FriendInvitationRequestRequest{
+  string id = 1;
+  uint64 addresseeId = 2;
+  string addresseeAlias = 3;
+  string content = 4;
+}
+
+//---------------------------------------------发送好友邀请ack-[发送方]-and-[接收方]--------------------------------
+
+// 发送好友邀请 ack
+message FriendInvitationRequestAck{
+  string id = 1;
+  uint64 requesterId = 2;
+  string requesterAlias = 3;
+  string requesterNickname = 4;
+  uint64 addresseeId = 5;
+  string addresseeAlias = 6;
+  string addresseeNickname = 7;
+  string content = 8;
+  string invite_status = 9;
+  string invite_type = 10;
+  uint64 createdAt = 11;
+  uint64 updatedAt = 12;
+
+  uint32 res = 13; //0-失败，1-成功
+}
+
+//-------------------------------------------------同意好友邀请-[发送方]----------------------------------------
+
+// 同意好友邀请
+message FriendInvitationAcceptRequest{
+  string id = 1;
+}
+
+//---------------------------------------------同意好友邀请ack-[发送方]-and-[接收方]--------------------------------
+
+// 同意好友邀请 ack
+message FriendInvitationAcceptAck{
+
+  Friend friend = 1;
+
+  uint32 res = 10; //0-失败，1-成功
+}
+
+//-------------------------------------------------拒绝好友邀请-[发送方]----------------------------------------
+
+// 拒绝好友邀请
+message FriendInvitationDeclinedRequest{
+  string id = 1;
+}
+
+//---------------------------------------------同意好友邀请ack-[发送方]-and-[接收方]--------------------------------
+
+// 拒绝好友邀请 ack
+message FriendInvitationDeclinedAck{
+  string id = 1;
+
+  uint32 res = 10; //0-失败，1-成功
+}
+
+//---------------------------------------------推送最新好友邀请信息----------------------------------------------
+
+//获取最新好友邀请信息
+message FriendInvitationRequest{
+  uint32 updatedAt = 1;
+}
+
+//获取最新好友邀请信息ack
+message FriendInvitationAck{
+  repeated Invitation invitation = 1;
+}
+
+//---------------------------------------------推送最新好友信息----------------------------------------------
+
+//获取最新好友信息
+message FriendRequest{
+  uint32 updatedAt = 1;
+}
+
+//获取最新好友信息ack
+message FriendAck{
+  repeated Invitation invitation = 1;
+}

@@ -6,6 +6,7 @@ import "OpCode.proto";
 import "Connection.proto";
 import "Auth.proto";
 import "Group.proto";
+import "Invitation.proto";
 //***********************协议封装***********************//
 
 message Message {
@@ -30,6 +31,19 @@ message Message {
     QueryUserGroupsRequest query_user_group_request = 21;
     QueryUserGroupsAck query_user_group_ack = 22;
     MsgAck msg_ack = 23;
+
+    //------------------------------------------好友及好友邀请---------------------------------------------------
+
+    FriendInvitationRequestRequest friend_invitation_request_request = 1001;
+    FriendInvitationRequestAck friend_invitation_request_ack = 1002;
+    FriendInvitationAcceptRequest friend_invitation_accept_request = 1003;
+    FriendInvitationAcceptAck friend_invitation_accept_ack = 1004;
+    FriendInvitationDeclinedRequest friend_invitation_declined_request = 1005;
+    FriendInvitationDeclinedAck friend_invitation_declined_ack = 1006;
+    FriendInvitationRequest friend_invitation_request = 1007;
+    FriendInvitationAck friend_invitation_ack = 1008;
+    FriendRequest friend_request = 1009;
+    FriendAck friend_ack = 1010;
 
   }
 }
