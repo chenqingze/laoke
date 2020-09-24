@@ -38,7 +38,6 @@ public class GroupRepository {
 		return groups;
 	}
 
-
 	// 根据用户id获取用户群
 	public List<Groups> queryUserGroups(Long userId) {
 		MongoCollection<GroupMember> usersGroupMongoCollection = aitalkDb.getCollection("groupMember",

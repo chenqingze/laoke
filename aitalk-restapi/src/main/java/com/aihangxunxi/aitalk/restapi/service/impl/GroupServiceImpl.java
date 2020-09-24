@@ -24,7 +24,8 @@ public class GroupServiceImpl implements GroupService {
 	}
 
 	@Override
-	public boolean queryUserInGroup(String groupId,Long userId){
-		return groupRepository.checkUserInGroup(groupId,userId);
+	public boolean queryUserInGroup(String groupId, Long userId) {
+		return groupRepository.checkUserInGroup(groupId, userId);
 	}
+
 }

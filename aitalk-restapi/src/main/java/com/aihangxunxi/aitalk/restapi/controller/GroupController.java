@@ -18,6 +18,7 @@ public class GroupController {
 
 	@Resource
 	private GroupService groupService;
+
 	// 获取群信息
 	@GetMapping("/{id}")
 	public ResponseEntity<ModelMap> queryGroupInfo(@PathVariable("id") String id) {
@@ -26,11 +27,12 @@ public class GroupController {
 		return ResponseEntity.status(HttpStatus.OK).body(map);
 
 	}
+
 	// 判断用户是否在群里
 	@GetMapping("/in}")
-	public ResponseEntity<ModelMap> queryUserInGroup(@RequestParam("groupId")String groupId){
+	public ResponseEntity<ModelMap> queryUserInGroup(@RequestParam("groupId") String groupId) {
 		ModelMap map = new ModelMap();
-		map.put("in", groupService.queryUserInGroup(groupId,123l));
+		map.put("in", groupService.queryUserInGroup(groupId, 123l));
 		return ResponseEntity.status(HttpStatus.OK).body(map);
 	}
 
