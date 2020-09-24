@@ -10,7 +10,7 @@ public class GroupSetting {
 		return isMute;
 	}
 
-	public void setMute(boolean mute) {
+	public void setIsMute(boolean mute) {
 		isMute = mute;
 	}
 
@@ -18,8 +18,7 @@ public class GroupSetting {
 		return isConfirmJoin;
 	}
 
-	public void setConfirmJoin(boolean confirmJoin) {
+	public void setIsConfirmJoin(boolean confirmJoin) {
 		isConfirmJoin = confirmJoin;
 	}
-
 }
