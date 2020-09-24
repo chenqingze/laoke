@@ -1,10 +1,9 @@
 package com.aihangxunxi.aitalk.restapi.config;
 
+import com.aihangxunxi.aitalk.restapi.context.AihangPrincipal;
+import com.aihangxunxi.aitalk.restapi.context.SecurityPrincipalContext;
+import com.aihangxunxi.aitalk.restapi.interceptor.AuthenticationInterceptor;
 import com.aihangxunxi.aitalk.storage.config.StorageConfiguration;
-import com.aihangxunxi.common.config.FeignAuthProperties;
-import com.aihangxunxi.common.context.SecurityPrincipalContext;
-import com.aihangxunxi.common.entity.AihangPrincipal;
-import com.aihangxunxi.common.interceptor.AuthenticationInterceptor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
@@ -20,11 +19,11 @@ import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,30 +36,27 @@ import java.util.List;
  */
 @Configuration
 @Import(StorageConfiguration.class)
-@ComponentScan(basePackages = { "com.aihangxunxi.aitalk.restapi", "com.aihangxunxi.common" })
+@ComponentScan(basePackages = "com.aihangxunxi.aitalk.restapi")
 public class WebMvcConfiguration implements WebMvcConfigurer {
 
 	@Resource
 	private RedisTemplate redisTemplate;
 
-	@Resource
-	private FeignAuthProperties feignAuthProperties;
-
-	@Override
-	public void addCorsMappings(CorsRegistry registry) {
-		// 设置允许跨域的路径
-		registry.addMapping("/**")
-				// 设置允许跨域请求的域名
-				.allowedOrigins("*")
-				// 是否允许证书
-				// .allowCredentials(true)
-				// 设置允许的方法
-				.allowedMethods("GET", "POST", "DELETE", "PUT", "OPTIONS")
-				// 设置允许的header属性
-				.allowedHeaders("*")
-				// 跨域允许时间
-				.maxAge(3600);
-	}
+	// @Override
+	// public void addCorsMappings(CorsRegistry registry) {
+	// // 设置允许跨域的路径
+	// registry.addMapping("/**")
+	// // 设置允许跨域请求的域名
+	// .allowedOrigins("*")
+	// // 是否允许证书
+	// // .allowCredentials(true)
+	// // 设置允许的方法
+	// .allowedMethods("GET", "POST", "DELETE", "PUT", "OPTIONS")
+	// // 设置允许的header属性
+	// .allowedHeaders("*")
+	// // 跨域允许时间
+	// .maxAge(3600);
+	// }
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
@@ -77,8 +73,8 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
 		// defaultExcludePatterns.add("/swagger-resources/**");
 		// defaultExcludePatterns.add("/doc.html");
 		// defaultExcludePatterns.add("/swagger-ui.html/**");
-		registry.addInterceptor(new AuthenticationInterceptor(redisTemplate, feignAuthProperties))
-				.addPathPatterns(defaultIncludePatterns).excludePathPatterns(defaultExcludePatterns);
+		registry.addInterceptor(new AuthenticationInterceptor()).addPathPatterns(defaultIncludePatterns)
+				.excludePathPatterns(defaultExcludePatterns);
 	}
 
 	/**
@@ -137,6 +133,25 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
 
 			}
 		}
+	}
+
+	/**
+	 * 获取请求client的ip
+	 * @param request
+	 * @return
+	 */
+	private String getClientIp(HttpServletRequest request) {
+
+		String remoteAddr = "";
+
+		if (request != null) {
+			remoteAddr = request.getHeader("X-FORWARDED-FOR");
+			if (remoteAddr == null || "".equals(remoteAddr)) {
+				remoteAddr = request.getRemoteAddr();
+			}
+		}
+
+		return remoteAddr;
 	}
 
 }

@@ -20,7 +20,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
-import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
@@ -77,14 +76,14 @@ public class StorageConfiguration {
 	/**
 	 * Jedis
 	 */
-	/*
-	 * @Bean public RedisConnectionFactory jedisConnectionFactory() {
-	 *
-	 * RedisStandaloneConfiguration clientConfig = new
-	 * RedisStandaloneConfiguration(redisHost, redisPort);
-	 * clientConfig.setDatabase(redisDB); return new JedisConnectionFactory(clientConfig);
-	 * }
-	 */
+	//
+	// @Bean
+	// public RedisConnectionFactory jedisConnectionFactory() {
+	// RedisStandaloneConfiguration clientConfig = new
+	// RedisStandaloneConfiguration(redisHost, redisPort);
+	// clientConfig.setDatabase(redisDB);
+	// return new JedisConnectionFactory(clientConfig);
+	// }
 
 	/**
 	 * Lettuce
