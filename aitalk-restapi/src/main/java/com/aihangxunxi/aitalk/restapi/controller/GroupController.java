@@ -1,5 +1,6 @@
 package com.aihangxunxi.aitalk.restapi.controller;
 
+import com.aihangxunxi.aitalk.restapi.context.AihangPrincipal;
 import com.aihangxunxi.aitalk.restapi.service.GroupService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,9 +31,9 @@ public class GroupController {
 
 	// 判断用户是否在群里
 	@GetMapping("/in}")
-	public ResponseEntity<ModelMap> queryUserInGroup(@RequestParam("groupId") String groupId) {
+	public ResponseEntity<ModelMap> queryUserInGroup(@RequestParam("groupId") String groupId, AihangPrincipal aihangPrincipal) {
 		ModelMap map = new ModelMap();
-		map.put("in", groupService.queryUserInGroup(groupId, 123l));
+		map.put("in", groupService.queryUserInGroup(groupId, aihangPrincipal.getUserId()));
 		return ResponseEntity.status(HttpStatus.OK).body(map);
 	}
 

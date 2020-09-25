@@ -49,6 +49,9 @@
         <spring-boot.version>2.3.4.RELEASE</spring-boot.version>
         <spring-boot-admin.version>2.3.0</spring-boot-admin.version>
         <spring-cloud.version>Hoxton.SR8</spring-cloud.version>
+        <info-common.version>3.0-SNAPSHOT</info-common.version>
+        <springfox.version>3.0.0</springfox.version>
+        <swagger-bootstrap-ui.version>1.9.6</swagger-bootstrap-ui.version>
     </properties>
 
     <dependencies>
