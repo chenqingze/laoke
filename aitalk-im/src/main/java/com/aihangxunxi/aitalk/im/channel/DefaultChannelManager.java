@@ -3,7 +3,6 @@ package com.aihangxunxi.aitalk.im.channel;
 import com.github.benmanes.caffeine.cache.Cache;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 
@@ -13,7 +12,6 @@ import javax.annotation.Resource;
  * @author chenqingze107@163.com
  * @version 2.0
  */
-@Component("channelManager")
 public class DefaultChannelManager implements ChannelManager {
 
 	@Resource
