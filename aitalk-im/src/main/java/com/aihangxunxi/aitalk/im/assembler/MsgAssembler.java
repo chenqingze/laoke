@@ -1,18 +1,17 @@
 package com.aihangxunxi.aitalk.im.assembler;
 
-import com.aihangxunxi.aitalk.im.protocol.buffers.Message;
-import com.aihangxunxi.aitalk.im.protocol.buffers.MsgAck;
-import com.aihangxunxi.aitalk.im.protocol.buffers.MsgReadNotify;
-import com.aihangxunxi.aitalk.im.protocol.buffers.MsgRequest;
+import com.aihangxunxi.aitalk.im.protocol.buffers.*;
 import com.aihangxunxi.aitalk.storage.constant.ConversationType;
 import com.aihangxunxi.aitalk.storage.constant.MsgStatus;
 import com.aihangxunxi.aitalk.storage.constant.MsgType;
 import com.aihangxunxi.aitalk.storage.model.Msg;
 import com.aihangxunxi.aitalk.storage.model.MsgHist;
 import com.aihangxunxi.aitalk.storage.model.MucHist;
+import com.aihangxunxi.aitalk.storage.repository.UserRepository;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.util.Date;
 
 /**
@@ -23,6 +22,9 @@ import java.util.Date;
  */
 @Component
 public class MsgAssembler {
+
+	@Resource
+	private UserRepository userRepository;
 
 	MsgAck buildMsgAck() {
 		return MsgAck.newBuilder().build();
@@ -40,10 +42,10 @@ public class MsgAssembler {
 	public MucHist convertToMucHist(Message message) {
 		MsgRequest msgRequest = message.getMsgRequest();
 		MucHist mucHist = new MucHist();
-
+		mucHist.setMsgId(new ObjectId());
 		mucHist.setMsgType(MsgType.codeOf(msgRequest.getMsgType()));
 		mucHist.setConversationType(ConversationType.codeOf(msgRequest.getConversationType()));
-		mucHist.setSenderId(new ObjectId(msgRequest.getSenderId()));
+		mucHist.setSenderId(new ObjectId(userRepository.queryUserUIdByUserId(msgRequest.getSenderId())));
 		mucHist.setMsgStatus(MsgStatus.SENDING);
 		mucHist.setContent(msgRequest.getContent());
 		mucHist.setCreatedAt(new Date().getTime());
@@ -52,8 +54,8 @@ public class MsgAssembler {
 	}
 
 	public Message convertMucHistToMessage(MucHist mucHist, String seq) {
-		Message message = Message.newBuilder()
-				.setMsgAck(MsgAck.newBuilder().setMsgId(mucHist.getMsgId().toHexString()).setSeq(seq).build()).build();
+		Message message = Message.newBuilder().setOpCode(OpCode.MSG_ACK).setSeq(Long.parseLong(seq))
+				.setMsgAck(MsgAck.newBuilder().setConversationType("1").setMsgId(mucHist.getMsgId().toHexString()).build()).build();
 		return message;
 	}
 

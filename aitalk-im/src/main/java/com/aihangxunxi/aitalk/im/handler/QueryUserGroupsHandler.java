@@ -1,17 +1,14 @@
 package com.aihangxunxi.aitalk.im.handler;
 
 import com.aihangxunxi.aitalk.im.assembler.GroupAssembler;
-import com.aihangxunxi.aitalk.im.protocol.buffers.AuthAck;
 import com.aihangxunxi.aitalk.im.protocol.buffers.Message;
 import com.aihangxunxi.aitalk.im.protocol.buffers.OpCode;
-import com.aihangxunxi.aitalk.im.protocol.buffers.QueryUserGroupsAck;
 import com.aihangxunxi.aitalk.storage.repository.GroupRepository;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;

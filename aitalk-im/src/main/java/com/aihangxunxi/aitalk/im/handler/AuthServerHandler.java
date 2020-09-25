@@ -6,7 +6,9 @@ import com.aihangxunxi.aitalk.im.channel.ChannelManager;
 import com.aihangxunxi.aitalk.im.manager.GroupManager;
 import com.aihangxunxi.aitalk.im.protocol.buffers.Message;
 import com.aihangxunxi.aitalk.im.protocol.buffers.OpCode;
+import com.aihangxunxi.aitalk.storage.model.GroupMember;
 import com.aihangxunxi.aitalk.storage.model.User;
+import com.aihangxunxi.aitalk.storage.repository.GroupMemberRepository;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -17,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * 建立连接登录/认证操作
@@ -40,6 +43,9 @@ public final class AuthServerHandler extends ChannelInboundHandlerAdapter {
 	@Resource
 	private GroupManager groupManager;
 
+	@Resource
+	private GroupMemberRepository groupMemberRepository;
+
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 		logger.debug(msg.toString());
@@ -48,16 +54,17 @@ public final class AuthServerHandler extends ChannelInboundHandlerAdapter {
 			String token = ((Message) msg).getAuthRequest().getToken();
 			// todo:验证token合法性,并获取用户信息
 			User user = new User();
-			user.setUid(new ObjectId("5f6186c662cd9a2518061e7d"));
+			user.setUid(new ObjectId("5f687cece62333c82038e17b"));
 			if (true) {
 				result = true;
 				channelManager.addChannel(this.channelProcess(ctx, user));
 				ctx.pipeline().remove(this);
 			}
 			// todo 获取用户所在的群 并将用户的channel加入到groupManager
-			// for(){
-			// groupManager.addChannel(groupId,ctx.channel);
-			// }
+			List<GroupMember> list = groupMemberRepository.queryUsersGroup(Long.parseLong("123"));
+			list.stream().forEach(groupMember -> {
+				groupManager.addChannel(groupMember.getGroupId().toString(), ctx.channel());
+			});
 			Message message = authAssembler.authAckBuilder(((Message) msg).getSeq(), ctx.channel().id().asLongText(),
 					result);
 			ctx.writeAndFlush(message);
