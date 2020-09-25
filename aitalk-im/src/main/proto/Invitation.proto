@@ -25,22 +25,22 @@ message Friend{
   string id = 1;
   uint64 userId = 2;
   uint64 friendId = 3;
-  string alias = 4;
-  uint32 isBlocked = 5;
-  uint32 isMute = 6;
-  uint32 isStickOnTop = 7;
-  uint32 createdAt = 8;
-  uint32 updatedAt = 9;
+  string friendName = 4;
+  string alias = 5;
+  uint32 isBlocked = 6;
+  uint32 isMute = 7;
+  uint32 isStickOnTop = 8;
+  uint32 createdAt = 9;
+  uint32 updatedAt = 10;
 }
 
 //-------------------------------------------------发送好友邀请-[发送方]----------------------------------------
 
 // 发送好友邀请
 message FriendInvitationRequestRequest{
-  string id = 1;
-  uint64 addresseeId = 2;
-  string addresseeAlias = 3;
-  string content = 4;
+  uint64 addresseeId = 1;
+  string addresseeAlias = 2;
+  string content = 3;
 }
 
 //---------------------------------------------发送好友邀请ack-[发送方]-and-[接收方]--------------------------------
@@ -77,7 +77,7 @@ message FriendInvitationAcceptAck{
 
   Friend friend = 1;
 
-  uint32 res = 10; //0-失败，1-成功
+  uint32 res = 2; //0-失败，1-成功
 }
 
 //-------------------------------------------------拒绝好友邀请-[发送方]----------------------------------------
@@ -93,7 +93,7 @@ message FriendInvitationDeclinedRequest{
 message FriendInvitationDeclinedAck{
   string id = 1;
 
-  uint32 res = 10; //0-失败，1-成功
+  uint32 res = 2; //0-失败，1-成功
 }
 
 //---------------------------------------------推送最新好友邀请信息----------------------------------------------
@@ -106,6 +106,8 @@ message FriendInvitationRequest{
 //获取最新好友邀请信息ack
 message FriendInvitationAck{
   repeated Invitation invitation = 1;
+
+  uint32 res = 2; //0-失败，1-成功
 }
 
 //---------------------------------------------推送最新好友信息----------------------------------------------
@@ -118,4 +120,6 @@ message FriendRequest{
 //获取最新好友信息ack
 message FriendAck{
   repeated Invitation invitation = 1;
+
+  uint32 res = 2; //0-失败，1-成功
 }
