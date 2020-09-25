@@ -46,7 +46,7 @@ public interface ChannelManager {
 	 * @param userId 用户id
 	 * @return channel 通道
 	 */
-	Channel findChannelByUserId(String userId);
+	Channel findChannelByUid(String userId);
 
 	/**
 	 * channel 缓存大小

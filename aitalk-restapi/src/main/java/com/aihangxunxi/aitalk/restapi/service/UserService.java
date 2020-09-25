@@ -8,6 +8,6 @@ public interface UserService {
 
 	boolean saveUser(User user);
 
-
 	Map getUserById(Long userId);
+
 }

@@ -20,7 +20,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public Map getUserById(Long userId){
+	public Map getUserById(Long userId) {
 		return userRepository.queryUserById(userId);
 	}
 

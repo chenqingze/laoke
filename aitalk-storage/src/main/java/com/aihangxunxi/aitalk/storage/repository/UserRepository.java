@@ -2,6 +2,7 @@ package com.aihangxunxi.aitalk.storage.repository;
 
 import com.aihangxunxi.aitalk.storage.constant.Gender;
 import com.aihangxunxi.aitalk.storage.model.User;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.conversions.Bson;
@@ -37,15 +38,21 @@ public class UserRepository {
 	}
 
 	// 根据用户id获取用户
-	public Map queryUserById(Long userId){
+	public Map queryUserById(Long userId) {
 		MongoCollection<User> mongoCollection = aitalkDb.getCollection("user", User.class);
 		Bson bson = eq("userId", userId);
 		User user = mongoCollection.find(bson).first();
 		ModelMap map = new ModelMap();
-		map.put("uId",user.getUid());
-		map.put("header",user.getHeader());
-		map.put("nickname",user.getNickname());
+		map.put("uId", user.getUid());
+		map.put("header", user.getHeader());
+		map.put("nickname", user.getNickname());
 		return map;
+	}
+
+	public User getUserById(Long userId) {
+		MongoCollection<User> mongoCollection = aitalkDb.getCollection("user", User.class);
+		User user = mongoCollection.find(eq("userId", userId), User.class).first();
+		return user;
 	}
 
 }

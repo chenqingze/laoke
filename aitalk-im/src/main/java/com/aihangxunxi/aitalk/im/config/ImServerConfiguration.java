@@ -1,5 +1,10 @@
 package com.aihangxunxi.aitalk.im.config;
 
+import com.aihangxunxi.aitalk.im.channel.ChannelManager;
+import com.aihangxunxi.aitalk.im.channel.DefaultChannelManager;
+import com.aihangxunxi.aitalk.im.cluster.ClusterChannelManager;
+import com.aihangxunxi.aitalk.im.config.condition.ClusterCondition;
+import com.aihangxunxi.aitalk.im.config.condition.StandaloneCondition;
 import com.aihangxunxi.aitalk.storage.config.StorageConfiguration;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -105,6 +110,18 @@ public class ImServerConfiguration {
 		return "ServerConfiguration{" + "ssl=" + ssl + ", port=" + port + ", bossGroupThreads=" + bossGroupThreads
 				+ ", workerGroupThreads=" + workerGroupThreads + ", processorGroupThreads=" + processorGroupThreads
 				+ '}';
+	}
+
+	@Bean("channelManager")
+	@Conditional(StandaloneCondition.class)
+	public ChannelManager defaultChannelManager() {
+		return new DefaultChannelManager();
+	}
+
+	@Bean("channelManager")
+	@Conditional(ClusterCondition.class)
+	public ChannelManager clusterChannelManager() {
+		return new ClusterChannelManager();
 	}
 
 }

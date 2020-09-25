@@ -55,7 +55,9 @@ public class MsgAssembler {
 
 	public Message convertMucHistToMessage(MucHist mucHist, String seq) {
 		Message message = Message.newBuilder().setOpCode(OpCode.MSG_ACK).setSeq(Long.parseLong(seq))
-				.setMsgAck(MsgAck.newBuilder().setConversationType("1").setMsgId(mucHist.getMsgId().toHexString()).build()).build();
+				.setMsgAck(
+						MsgAck.newBuilder().setConversationType("1").setMsgId(mucHist.getMsgId().toHexString()).build())
+				.build();
 		return message;
 	}
 
