@@ -7,8 +7,11 @@ import com.mongodb.client.MongoDatabase;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Repository;
+import org.springframework.ui.ModelMap;
 
 import javax.annotation.Resource;
+
+import java.util.Map;
 
 import static com.mongodb.client.model.Filters.eq;
 
@@ -31,6 +34,18 @@ public class UserRepository {
 		Bson bson = eq("userId", Long.parseLong(userId));
 		User user = mongoCollection.find(bson).first();
 		return user.getUid().toString();
+	}
+
+	// 根据用户id获取用户
+	public Map queryUserById(Long userId){
+		MongoCollection<User> mongoCollection = aitalkDb.getCollection("user", User.class);
+		Bson bson = eq("userId", userId);
+		User user = mongoCollection.find(bson).first();
+		ModelMap map = new ModelMap();
+		map.put("uId",user.getUid());
+		map.put("header",user.getHeader());
+		map.put("nickname",user.getNickname());
+		return map;
 	}
 
 }
