@@ -6,6 +6,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import javax.annotation.Resource;
 
 /**
+ * @deprecated
  * @author chenqingze107@163.com
  * @version 2.0 2020/9/26 2:31 PM
  */

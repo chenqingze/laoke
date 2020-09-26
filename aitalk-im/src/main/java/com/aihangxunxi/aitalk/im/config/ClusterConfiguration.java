@@ -2,8 +2,6 @@ package com.aihangxunxi.aitalk.im.config;
 
 import com.aihangxunxi.aitalk.im.channel.ChannelManager;
 import com.aihangxunxi.aitalk.im.cluster.ClusterChannelManager;
-import com.aihangxunxi.aitalk.im.cluster.MessageSubscriber;
-import com.aihangxunxi.aitalk.im.cluster.RedisMessageSubscriber;
 import com.aihangxunxi.aitalk.im.config.condition.ClusterCondition;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -19,9 +17,6 @@ import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.listener.PatternTopic;
-import org.springframework.data.redis.listener.RedisMessageListenerContainer;
-import org.springframework.data.redis.listener.adapter.MessageListenerAdapter;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
@@ -114,38 +109,6 @@ public class ClusterConfiguration {
 	@Bean
 	public RedisTemplate<String, Object> userNodeRedisTemplate() {
 		return this.createRedisTemplateWithLettuce(redisHost, redisPort, userNodeDb);
-	}
-
-	/**
-	 * for 发送消息
-	 * @return {@link RedisTemplate}
-	 */
-	@Bean
-	public RedisTemplate<String, Object> publishRedisTemplate() {
-		return this.createRedisTemplateWithLettuce(redisHost, redisPort, pubSubDb);
-	}
-
-	/**
-	 * 消息接受对象
-	 * @return {@link MessageSubscriber}
-	 */
-	@Bean
-	public MessageSubscriber messageSubscriber() {
-		return new RedisMessageSubscriber();
-	}
-
-	@Bean
-	MessageListenerAdapter listenerAdapter(MessageSubscriber messageSubscriber) {
-		return new MessageListenerAdapter(messageSubscriber, "messageSubscriber");
-	}
-
-	@Bean
-	RedisMessageListenerContainer container(MessageListenerAdapter messageListenerAdapter) {
-		RedisMessageListenerContainer container = new RedisMessageListenerContainer();
-		container.setConnectionFactory(
-				this.createLettuceConnectionFactory(this.redisHost, this.redisPort, this.pubSubDb));
-		container.addMessageListener(messageListenerAdapter, new PatternTopic("msg"));
-		return container;
 	}
 
 }
