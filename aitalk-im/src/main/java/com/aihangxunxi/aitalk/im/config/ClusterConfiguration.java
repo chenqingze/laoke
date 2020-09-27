@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
 import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -23,8 +24,10 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeoutException;
 
 /**
  * @author chenqingze107@163.com
@@ -125,13 +128,22 @@ public class ClusterConfiguration {
 	}
 
 	@Bean
+	public Connection rabbitConnection(ConnectionFactory connectionFactory) throws IOException, TimeoutException {
+		// Alternatively, URIs may be used:
+		// ConnectionFactory factory = new ConnectionFactory();
+		// factory.setUri("amqp://userName:password@hostName:portNumber/virtualHost");
+		// Connection conn = factory.newConnection();
+		return connectionFactory.newConnection();
+	}
+
+	@Bean
 	public Map<String, Channel> rabbitChannelMap() {
 		return new HashMap<>();
 	}
 
 	@Bean
-	public RabbitMQProducer rabbitMQProducer(ConnectionFactory rabbitConnectionFactory, Map rabbitChannelMap) {
-		return new RabbitMQProducer(rabbitConnectionFactory, rabbitChannelMap);
+	public RabbitMQProducer rabbitMQProducer(Connection rabbitConnection, Map<String, Channel> rabbitChannelMap) {
+		return new RabbitMQProducer(rabbitConnection, rabbitChannelMap);
 	}
 
 }

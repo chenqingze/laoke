@@ -4,7 +4,6 @@ import com.aihangxunxi.aitalk.im.protocol.buffers.Message;
 import com.rabbitmq.client.BuiltinExchangeType;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
-import com.rabbitmq.client.ConnectionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,12 +21,12 @@ public class RabbitMQProducer implements Producer {
 
 	private static final Logger logger = LoggerFactory.getLogger(RabbitMQProducer.class);
 
-	private final ConnectionFactory rabbitConnectionFactory;
+	private final Connection rabbitConnection;
 
 	private final Map<String, Channel> rabbitChannelMap;
 
-	public RabbitMQProducer(ConnectionFactory rabbitConnectionFactory, Map<String, Channel> rabbitChannelMap) {
-		this.rabbitConnectionFactory = rabbitConnectionFactory;
+	public RabbitMQProducer(Connection rabbitConnection, Map<String, Channel> rabbitChannelMap) {
+		this.rabbitConnection = rabbitConnection;
 		this.rabbitChannelMap = rabbitChannelMap;
 	}
 
@@ -41,8 +40,8 @@ public class RabbitMQProducer implements Producer {
 
 	/**
 	 * 获取channel 如果channel不存在，动态创建
-	 * @param routingKey
-	 * @return
+	 * @param routingKey uid 16进制字符串
+	 * @return {@link Channel}
 	 */
 	private Channel openChannel(String routingKey) {
 
@@ -58,8 +57,7 @@ public class RabbitMQProducer implements Producer {
 			}
 		}
 		else {// channel不存在则创建
-			try (Connection connection = this.rabbitConnectionFactory.newConnection();
-					Channel channel = connection.createChannel()) {
+			try (Channel channel = this.rabbitConnection.createChannel()) {
 				channel.exchangeDeclare(ClusterConstant.EXCHANGE_NAME, BuiltinExchangeType.DIRECT, false, true, null);
 				String queueName = channel.queueDeclare().getQueue();
 				// channel.queueDeclare(queueName, true, false, false, null);
