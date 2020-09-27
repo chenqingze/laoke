@@ -16,38 +16,33 @@ public class InvitationAssembler {
 		int res = invitation != null ? 1 : 0;
 
 		return Message.newBuilder().setOpCode(OpCode.FRIEND_INVITATION_REQUEST_ACK).setSeq(seq)
-				.setFriendInvitationRequestAck(FriendInvitationRequestAck.newBuilder()
-						.setInvitationProto(InvitationProto.newBuilder().setId(invitation.getId().toHexString())
-								.setRequesterId(invitation.getRequesterId())
-								.setRequesterAlias(invitation.getRequesterAlias())
-								.setRequesterNickname(invitation.getRequesterNickname())
-								.setRequesterProfile(invitation.getRequesterProfile())
-								.setAddresseeId(Long.parseLong(invitation.getAddresseeId()))
-								.setAddresseeAlias(invitation.getAddresseeAlias())
-								.setAddresseeNickname(invitation.getAddresseeNickname())
-								.setAddresseeProfile(invitation.getAddresseeProfile())
-								.setContent(invitation.getContent())
-								.setInviteStatus(invitation.getInviteStatus().name())
-								.setInviteType(invitation.getInviteType().name())
-								.setCreatedAt(invitation.getCreatedAt()).setUpdatedAt(invitation.getUpdatedAt())
-								.build())
-						.setRes(res).build())
+				.setInvitationRequestAck(InvitationRequestAck.newBuilder().setInvitationProto(InvitationProto
+						.newBuilder().setId(invitation.getId().toHexString())
+						.setRequesterId(invitation.getRequesterId()).setRequesterAlias(invitation.getRequesterAlias())
+						.setRequesterNickname(invitation.getRequesterNickname())
+						.setRequesterProfile(invitation.getRequesterProfile())
+						.setAddresseeId(Long.parseLong(invitation.getAddresseeId()))
+						.setAddresseeAlias(invitation.getAddresseeAlias())
+						.setAddresseeNickname(invitation.getAddresseeNickname())
+						.setAddresseeProfile(invitation.getAddresseeProfile()).setContent(invitation.getContent())
+						.setInviteStatus(invitation.getInviteStatus().name())
+						.setInviteType(invitation.getInviteType().name()).setCreatedAt(invitation.getCreatedAt())
+						.setUpdatedAt(invitation.getUpdatedAt()).build()).setRes(res).build())
 				.build();
 	}
 
 	public Message friendInvitationAcceptAck(String id, Friend friend, long seq) {
 
 		return Message.newBuilder().setOpCode(OpCode.FRIEND_INVITATION_ACCEPT_ACK).setSeq(seq)
-				.setFriendInvitationAcceptAck(FriendInvitationAcceptAck.newBuilder().setId(id)
-						// .setFriend(friend)
+				.setInvitationAcceptAck(InvitationAcceptAck.newBuilder().setId(id)
+						// .set(friend)
 						.setRes(1).build())
 				.build();
 	}
 
 	public Message friendInvitationDeclinedAck(String id, long seq) {
 		return Message.newBuilder().setOpCode(OpCode.FRIEND_INVITATION_DECLINED_ACK).setSeq(seq)
-				.setFriendInvitationDeclinedAck(FriendInvitationDeclinedAck.newBuilder().setId(id).setRes(1).build())
-				.build();
+				.setInvitationDeclinedAck(InvitationDeclinedAck.newBuilder().setId(id).setRes(1).build()).build();
 	}
 
 }

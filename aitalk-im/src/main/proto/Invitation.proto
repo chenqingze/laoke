@@ -1,6 +1,7 @@
 syntax = "proto3";
 option java_multiple_files = true;
 package com.aihangxunxi.aitalk.im.protocol.buffers;
+import "Friend.proto";
 
 //***********************好友邀请、群邀请***********************//
 
@@ -22,24 +23,10 @@ message InvitationProto{
   uint64 updatedAt = 14;
 }
 
-// 好友
-message FriendProto{
-  string id = 1;
-  uint64 userId = 2;
-  uint64 friendId = 3;
-  string friendName = 4;
-  string alias = 5;
-  uint32 isBlocked = 6;
-  uint32 isMute = 7;
-  uint32 isStickOnTop = 8;
-  uint32 createdAt = 9;
-  uint32 updatedAt = 10;
-}
-
 //-------------------------------------------------发送好友邀请-[发送方]----------------------------------------
 
 // 发送好友邀请
-message FriendInvitationRequestRequest{
+message InvitationRequestRequest{
   uint64 addresseeId = 1;
   string addresseeAlias = 2;
   string content = 3;
@@ -48,7 +35,7 @@ message FriendInvitationRequestRequest{
 //---------------------------------------------发送好友邀请ack-[发送方]-and-[接收方]--------------------------------
 
 // 发送好友邀请 ack
-message FriendInvitationRequestAck{
+message InvitationRequestAck{
   InvitationProto invitationProto = 1;
 
   uint32 res = 2; //0-失败，1-成功
@@ -57,14 +44,14 @@ message FriendInvitationRequestAck{
 //-------------------------------------------------同意好友邀请-[发送方]----------------------------------------
 
 // 同意好友邀请
-message FriendInvitationAcceptRequest{
+message InvitationAcceptRequest{
   string id = 1;
 }
 
 //---------------------------------------------同意好友邀请ack-[发送方]-and-[接收方]--------------------------------
 
 // 同意好友邀请 ack
-message FriendInvitationAcceptAck{
+message InvitationAcceptAck{
   string id = 1;
 
   FriendProto friendProto = 2;
@@ -75,14 +62,14 @@ message FriendInvitationAcceptAck{
 //-------------------------------------------------拒绝好友邀请-[发送方]----------------------------------------
 
 // 拒绝好友邀请
-message FriendInvitationDeclinedRequest{
+message InvitationDeclinedRequest{
   string id = 1;
 }
 
 //---------------------------------------------拒绝好友邀请ack-[发送方]-and-[接收方]--------------------------------
 
 // 拒绝好友邀请 ack
-message FriendInvitationDeclinedAck{
+message InvitationDeclinedAck{
   string id = 1;
 
   uint32 res = 2; //0-失败，1-成功
@@ -91,27 +78,13 @@ message FriendInvitationDeclinedAck{
 //---------------------------------------------推送最新好友邀请信息----------------------------------------------
 
 //获取最新好友邀请信息
-message FriendInvitationRequest{
+message InvitationRequest{
   uint32 updatedAt = 1;
 }
 
 //获取最新好友邀请信息ack
-message FriendInvitationAck{
+message InvitationAck{
   repeated InvitationProto invitationProto = 1;
-
-  uint32 res = 2; //0-失败，1-成功
-}
-
-//---------------------------------------------推送最新好友信息----------------------------------------------
-
-//获取最新好友信息
-message FriendRequest{
-  uint32 updatedAt = 1;
-}
-
-//获取最新好友信息ack
-message FriendAck{
-  repeated FriendProto friendProto = 1;
 
   uint32 res = 2; //0-失败，1-成功
 }

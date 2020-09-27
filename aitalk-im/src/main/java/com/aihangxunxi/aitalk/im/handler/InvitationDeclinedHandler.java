@@ -42,7 +42,7 @@ public class InvitationDeclinedHandler extends ChannelInboundHandlerAdapter {
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 		if (msg instanceof Message && ((Message) msg).getOpCode() == OpCode.FRIEND_INVITATION_DECLINED_REQUEST) {
-			FriendInvitationDeclinedRequest fidr = ((Message) msg).getFriendInvitationDeclinedRequest();
+			InvitationDeclinedRequest fidr = ((Message) msg).getInvitationDeclinedRequest();
 
 			String id = fidr.getId();
 			Invitation invitation = invitationRepository.updateInviteStatus(id, InviteStatus.DECLINED.name());

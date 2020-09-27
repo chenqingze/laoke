@@ -7,6 +7,7 @@ import "Connection.proto";
 import "Auth.proto";
 import "Group.proto";
 import "Invitation.proto";
+import "Friend.proto";
 //***********************协议封装***********************//
 
 message Message {
@@ -38,14 +39,14 @@ message Message {
     InvitationJoinGroupAck invitation_join_group_ack = 27;
     //------------------------------------------好友及好友邀请---------------------------------------------------
 
-    FriendInvitationRequestRequest friend_invitation_request_request = 1001;
-    FriendInvitationRequestAck friend_invitation_request_ack = 1002;
-    FriendInvitationAcceptRequest friend_invitation_accept_request = 1003;
-    FriendInvitationAcceptAck friend_invitation_accept_ack = 1004;
-    FriendInvitationDeclinedRequest friend_invitation_declined_request = 1005;
-    FriendInvitationDeclinedAck friend_invitation_declined_ack = 1006;
-    FriendInvitationRequest friend_invitation_request = 1007;
-    FriendInvitationAck friend_invitation_ack = 1008;
+    InvitationRequestRequest invitation_request_request = 1001;
+    InvitationRequestAck invitation_request_ack = 1002;
+    InvitationAcceptRequest invitation_accept_request = 1003;
+    InvitationAcceptAck invitation_accept_ack = 1004;
+    InvitationDeclinedRequest invitation_declined_request = 1005;
+    InvitationDeclinedAck invitation_declined_ack = 1006;
+    InvitationRequest invitation_request = 1007;
+    InvitationAck invitation_ack = 1008;
     FriendRequest friend_request = 1009;
     FriendAck friend_ack = 1010;
 

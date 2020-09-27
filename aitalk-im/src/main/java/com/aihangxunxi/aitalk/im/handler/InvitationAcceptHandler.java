@@ -2,7 +2,7 @@ package com.aihangxunxi.aitalk.im.handler;
 
 import com.aihangxunxi.aitalk.im.assembler.InvitationAssembler;
 import com.aihangxunxi.aitalk.im.channel.ChannelManager;
-import com.aihangxunxi.aitalk.im.protocol.buffers.FriendInvitationAcceptRequest;
+import com.aihangxunxi.aitalk.im.protocol.buffers.InvitationAcceptRequest;
 import com.aihangxunxi.aitalk.im.protocol.buffers.Message;
 import com.aihangxunxi.aitalk.im.protocol.buffers.OpCode;
 import com.aihangxunxi.aitalk.storage.constant.InviteStatus;
@@ -48,7 +48,7 @@ public class InvitationAcceptHandler extends ChannelInboundHandlerAdapter {
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 		if (msg instanceof Message && ((Message) msg).getOpCode() == OpCode.FRIEND_INVITATION_ACCEPT_REQUEST) {
-			FriendInvitationAcceptRequest fiar = ((Message) msg).getFriendInvitationAcceptRequest();
+			InvitationAcceptRequest fiar = ((Message) msg).getInvitationAcceptRequest();
 
 			String id = fiar.getId();
 			Invitation invitation = invitationRepository.updateInviteStatus(id, InviteStatus.ACCEPTED.name());

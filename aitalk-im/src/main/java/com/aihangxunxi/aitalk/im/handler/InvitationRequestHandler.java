@@ -2,7 +2,7 @@ package com.aihangxunxi.aitalk.im.handler;
 
 import com.aihangxunxi.aitalk.im.assembler.InvitationAssembler;
 import com.aihangxunxi.aitalk.im.channel.ChannelManager;
-import com.aihangxunxi.aitalk.im.protocol.buffers.FriendInvitationRequestRequest;
+import com.aihangxunxi.aitalk.im.protocol.buffers.InvitationRequestRequest;
 import com.aihangxunxi.aitalk.im.protocol.buffers.Message;
 import com.aihangxunxi.aitalk.im.protocol.buffers.OpCode;
 import com.aihangxunxi.aitalk.storage.constant.InviteStatus;
@@ -43,7 +43,7 @@ public class InvitationRequestHandler extends ChannelInboundHandlerAdapter {
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 		if (msg instanceof Message && ((Message) msg).getOpCode() == OpCode.FRIEND_INVITATION_REQUEST_REQUEST) {
-			FriendInvitationRequestRequest firr = ((Message) msg).getFriendInvitationRequestRequest();
+			InvitationRequestRequest firr = ((Message) msg).getInvitationRequestRequest();
 
 			// todo:获取当前用户信息
 			Long requesterId = 123l;
