@@ -6,6 +6,7 @@ import com.aihangxunxi.aitalk.storage.repository.GroupRepository;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Service
 public class GroupServiceImpl implements GroupService {
@@ -24,8 +25,18 @@ public class GroupServiceImpl implements GroupService {
 	}
 
 	@Override
+	public Groups queryGroupInfoByGroupNo(String groupNo) {
+		return groupRepository.queryGroupInfoByNo(groupNo);
+	}
+
+	@Override
 	public boolean queryUserInGroup(String groupId, Long userId) {
 		return groupRepository.checkUserInGroup(groupId, userId);
+	}
+
+	@Override
+	public boolean queryUserInGroupByNo(String groupNo, Long userId) {
+		return groupRepository.queryUserInGroupByNo(groupNo, userId);
 	}
 
 }

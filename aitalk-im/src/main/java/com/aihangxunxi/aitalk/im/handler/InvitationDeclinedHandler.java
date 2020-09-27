@@ -43,49 +43,7 @@ public class InvitationDeclinedHandler extends ChannelInboundHandlerAdapter {
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 		if (msg instanceof Message && ((Message) msg).getOpCode() == OpCode.FRIEND_INVITATION_DECLINED_REQUEST) {
-			FriendInvitationRequestRequest firr = ((Message) msg).getFriendInvitationRequestRequest();
 
-			// todo:获取当前用户信息
-			Long requesterId = 123l;
-			String requesterNickname = "希克斯";
-			String requesterProfile = "https://tupian.qqw21.com/article/UploadPic/2020-7/202073022592523433.jpg";
-
-			// todo:获取 addressee 用户信息
-			String addresseeNickname = "jijiDown";
-			String addresseeProfile = "https://tupian.qqw21.com/article/UploadPic/2020-9/202092422443332504.jpg";
-
-			long currentTimeMillis = Instant.now().getEpochSecond();
-
-			Invitation invitation = new Invitation();
-			invitation.setRequesterId(requesterId);
-			invitation.setRequesterAlias("");
-			invitation.setRequesterNickname(requesterNickname);
-			invitation.setRequesterProfile(requesterProfile);
-			invitation.setAddresseeId(firr.getAddresseeId());
-			invitation.setAddresseeAlias(firr.getAddresseeAlias());
-			invitation.setAddresseeNickname(addresseeNickname);
-			invitation.setAddresseeProfile(addresseeProfile);
-			invitation.setContent(firr.getContent());
-			invitation.setInviteStatus(InviteStatus.REQUESTED);
-			invitation.setInviteType(InviteType.INVITE_FRIEND);
-			invitation.setCreatedAt(currentTimeMillis);
-			invitation.setUpdatedAt(currentTimeMillis);
-
-			boolean save = invitationRepository.save(invitation);
-			if (save) {
-				Message message = invitationAssembler.friendInvitationRequestAck(invitation, ((Message) msg).getSeq());
-				ctx.writeAndFlush(message);
-
-				User user = userRepository.getUserById(invitation.getAddresseeId());
-				Channel addresseeChannel = channelManager.findChannelByUid(user.getUid().toHexString());
-				if (addresseeChannel != null) {
-					addresseeChannel.writeAndFlush(message);
-				}
-
-			}
-			else {
-				ctx.fireChannelRead(msg);
-			}
 		}
 		else {
 			ctx.fireChannelRead(msg);

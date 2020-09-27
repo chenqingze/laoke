@@ -66,6 +66,9 @@ public class WebSocketChannelInitializer extends ChannelInitializer<NioSocketCha
 	@Resource
 	private InvitationDeclinedHandler invitationDeclinedHandler;
 
+	@Resource
+	private GroupMessageHandler groupMessageHandler;
+
 	public WebSocketChannelInitializer(@Nullable SslContext sslCtx, EventExecutorGroup processorGroup) {
 		this.sslCtx = sslCtx;
 		this.processorGroup = processorGroup;
@@ -114,6 +117,7 @@ public class WebSocketChannelInitializer extends ChannelInitializer<NioSocketCha
 		pipeline.addLast("invitationRequestHandler", invitationRequestHandler);
 		pipeline.addLast("invitationAcceptHandler", invitationAcceptHandler);
 		pipeline.addLast("invitationDeclinedHandler", invitationDeclinedHandler);
+		pipeline.addLast("groupMessageHandler", groupMessageHandler);
 
 		// todo：其他业务处理器放到这里
 		// pipeline.addLast(processorGroup, "queryUserGroupsHandler",

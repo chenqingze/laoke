@@ -21,7 +21,7 @@ public class InvitationAssembler {
 								.setRequesterAlias(invitation.getRequesterAlias())
 								.setRequesterNickname(invitation.getRequesterNickname())
 								.setRequesterProfile(invitation.getRequesterProfile())
-								.setAddresseeId(invitation.getAddresseeId())
+								.setAddresseeId(Long.parseLong(invitation.getAddresseeId()))
 								.setAddresseeAlias(invitation.getAddresseeAlias())
 								.setAddresseeNickname(invitation.getAddresseeNickname())
 								.setAddresseeProfile(invitation.getAddresseeProfile())
