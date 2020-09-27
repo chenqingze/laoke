@@ -58,7 +58,7 @@ public class InvitationHandler extends ChannelInboundHandlerAdapter {
 			invitation.setRequesterId(requesterId);
 			invitation.setRequesterAlias("");
 			invitation.setRequesterNickname(requesterNickname);
-			invitation.setAddresseeId(firr.getAddresseeId());
+			invitation.setAddresseeId(String.valueOf(firr.getAddresseeId()));
 			invitation.setAddresseeAlias(firr.getAddresseeAlias());
 			invitation.setAddresseeNickname(addresseeNickname);
 			invitation.setContent(firr.getContent());
@@ -72,7 +72,7 @@ public class InvitationHandler extends ChannelInboundHandlerAdapter {
 				Message message = invitationAssembler.friendInvitationRequestAck(invitation);
 				ctx.writeAndFlush(message);
 
-				User user = userRepository.getUserById(invitation.getAddresseeId());
+				User user = userRepository.getUserById(Long.parseLong(invitation.getAddresseeId()));
 				Channel addresseeChannel = channelManager.findChannelByUid(user.getUid().toHexString());
 				if (addresseeChannel != null) {
 					addresseeChannel.writeAndFlush(message);

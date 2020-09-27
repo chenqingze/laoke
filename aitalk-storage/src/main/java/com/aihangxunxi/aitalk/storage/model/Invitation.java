@@ -39,6 +39,7 @@ public class Invitation extends BaseModel {
 	private Long updatedAt;
 
 	private String readStatus;
+
 	public ObjectId getId() {
 		return id;
 	}
@@ -70,8 +71,6 @@ public class Invitation extends BaseModel {
 	public void setRequesterNickname(String requesterNickname) {
 		this.requesterNickname = requesterNickname;
 	}
-
-
 
 	public String getAddresseeAlias() {
 		return addresseeAlias;
@@ -145,7 +144,6 @@ public class Invitation extends BaseModel {
 		this.addresseeProfile = addresseeProfile;
 	}
 
-
 	public String getAddresseeId() {
 		return addresseeId;
 	}
@@ -161,4 +159,5 @@ public class Invitation extends BaseModel {
 	public void setReadStatus(String readStatus) {
 		this.readStatus = readStatus;
 	}
+
 }

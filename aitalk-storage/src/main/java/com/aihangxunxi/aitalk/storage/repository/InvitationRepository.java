@@ -19,10 +19,9 @@ public class InvitationRepository {
 	}
 
 	// 保存群邀请
-	public boolean saveGroupInvitation(Invitation invitation){
+	public boolean saveGroupInvitation(Invitation invitation) {
 		InsertOneResult result = db.getCollection("invitation", Invitation.class).insertOne(invitation);
 		return result.wasAcknowledged();
 	}
-
 
 }
