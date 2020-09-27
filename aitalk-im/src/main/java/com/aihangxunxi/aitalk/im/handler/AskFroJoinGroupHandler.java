@@ -97,7 +97,7 @@ public class AskFroJoinGroupHandler extends ChannelInboundHandlerAdapter {
                     invitation.setRequesterId(Long.parseLong(userid));
                     invitation.setRequesterAlias(map.get("nickname").toString());
                     invitation.setRequesterNickname(map.get("nickname").toString());
-                    invitation.setRequesterNickname();
+                    invitation.setRequesterNickname(map.get("header").toString());
 
                 } else {
                     // 当前群没有开启邀请确认
