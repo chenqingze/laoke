@@ -20,7 +20,7 @@ message QueryUserGroupsRequest{
 }
 
 message QueryUserGroupsAck{
-  repeated Group groups =1;
+  repeated Group groups = 1;
   uint64 user_id = 2;
 }
 
@@ -45,6 +45,21 @@ message GroupMember{
   string member_id = 1;
   uint64 user_id = 2;
   string profile_photo = 3;
-  string nickname =4;
+  string nickname = 4;
   string alias = 5;
+}
+
+
+message AskFroJoinGroupRequest{
+  string group_id = 1;
+  string user_id = 2;
+  string message = 3;
+  string success= 4;
+}
+
+message AskForJoinGroupAck{
+  string group_id = 1;
+  string user_id = 2;
+  string message = 3;
+  string success= 4;
 }
