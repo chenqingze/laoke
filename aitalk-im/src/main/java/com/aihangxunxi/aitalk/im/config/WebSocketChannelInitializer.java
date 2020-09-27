@@ -2,11 +2,7 @@ package com.aihangxunxi.aitalk.im.config;
 
 import com.aihangxunxi.aitalk.im.codec.MessageDecoder;
 import com.aihangxunxi.aitalk.im.codec.MessageEncoder;
-import com.aihangxunxi.aitalk.im.handler.AuthServerHandler;
-import com.aihangxunxi.aitalk.im.handler.ExceptionHandler;
-import com.aihangxunxi.aitalk.im.handler.InvitationHandler;
-import com.aihangxunxi.aitalk.im.handler.QueryUserGroupsHandler;
-import com.aihangxunxi.aitalk.im.protocol.buffers.Invitation;
+import com.aihangxunxi.aitalk.im.handler.*;
 import com.aihangxunxi.aitalk.im.protocol.buffers.Message;
 import com.aihangxunxi.aitalk.im.protocol.constant.Constants;
 import io.netty.channel.ChannelInitializer;
@@ -20,7 +16,6 @@ import io.netty.handler.codec.protobuf.ProtobufDecoder;
 import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.stream.ChunkedWriteHandler;
-import io.netty.handler.timeout.ReadTimeoutHandler;
 import io.netty.util.concurrent.EventExecutorGroup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,7 +58,13 @@ public class WebSocketChannelInitializer extends ChannelInitializer<NioSocketCha
 	private QueryUserGroupsHandler queryUserGroupsHandler;
 
 	@Resource
-	private InvitationHandler invitationHandler;
+	private InvitationRequestHandler invitationRequestHandler;
+
+	@Resource
+	private InvitationAcceptHandler invitationAcceptHandler;
+
+	@Resource
+	private InvitationDeclinedHandler invitationDeclinedHandler;
 
 	public WebSocketChannelInitializer(@Nullable SslContext sslCtx, EventExecutorGroup processorGroup) {
 		this.sslCtx = sslCtx;
@@ -110,7 +111,9 @@ public class WebSocketChannelInitializer extends ChannelInitializer<NioSocketCha
 		// 认证处理
 		pipeline.addLast("authServerHandler", authServerHandler);
 		pipeline.addLast("queryUserGroupsHandler", queryUserGroupsHandler);
-		pipeline.addLast("invitation", invitationHandler);
+		pipeline.addLast("invitationRequestHandler", invitationRequestHandler);
+		pipeline.addLast("invitationAcceptHandler", invitationAcceptHandler);
+		pipeline.addLast("invitationDeclinedHandler", invitationDeclinedHandler);
 
 		// todo：其他业务处理器放到这里
 		// pipeline.addLast(processorGroup, "queryUserGroupsHandler",

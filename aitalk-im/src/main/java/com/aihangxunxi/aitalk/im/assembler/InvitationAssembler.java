@@ -1,9 +1,7 @@
 package com.aihangxunxi.aitalk.im.assembler;
 
-import com.aihangxunxi.aitalk.im.protocol.buffers.FriendInvitationRequestAck;
-import com.aihangxunxi.aitalk.im.protocol.buffers.FriendInvitationRequestRequest;
-import com.aihangxunxi.aitalk.im.protocol.buffers.Message;
-import com.aihangxunxi.aitalk.im.protocol.buffers.OpCode;
+import com.aihangxunxi.aitalk.im.protocol.buffers.*;
+import com.aihangxunxi.aitalk.storage.model.Friend;
 import com.aihangxunxi.aitalk.storage.model.Invitation;
 import org.springframework.stereotype.Component;
 
@@ -18,14 +16,30 @@ public class InvitationAssembler {
 		int res = invitation != null ? 1 : 0;
 		return Message.newBuilder().setOpCode(OpCode.FRIEND_INVITATION_REQUEST_ACK).setSeq(seq)
 				.setFriendInvitationRequestAck(FriendInvitationRequestAck.newBuilder()
-						.setId(invitation.getId().toHexString()).setRequesterId(invitation.getRequesterId())
-						.setRequesterAlias(invitation.getRequesterAlias())
-						.setRequesterNickname(invitation.getRequesterNickname())
-						.setAddresseeId(invitation.getAddresseeId()).setAddresseeAlias(invitation.getAddresseeAlias())
-						.setAddresseeNickname(invitation.getAddresseeNickname()).setContent(invitation.getContent())
-						.setInviteStatus(invitation.getInviteStatus().name())
-						.setInviteType(invitation.getInviteType().name()).setCreatedAt(invitation.getCreatedAt())
-						.setUpdatedAt(invitation.getUpdatedAt()).setRes(res).build())
+						.setInvitationProto(InvitationProto.newBuilder().setId(invitation.getId().toHexString())
+								.setRequesterId(invitation.getRequesterId())
+								.setRequesterAlias(invitation.getRequesterAlias())
+								.setRequesterNickname(invitation.getRequesterNickname())
+								.setRequesterProfile(invitation.getRequesterProfile())
+								.setAddresseeId(invitation.getAddresseeId())
+								.setAddresseeAlias(invitation.getAddresseeAlias())
+								.setAddresseeNickname(invitation.getAddresseeNickname())
+								.setAddresseeProfile(invitation.getAddresseeProfile())
+								.setContent(invitation.getContent())
+								.setInviteStatus(invitation.getInviteStatus().name())
+								.setInviteType(invitation.getInviteType().name())
+								.setCreatedAt(invitation.getCreatedAt()).setUpdatedAt(invitation.getUpdatedAt())
+								.build())
+						.setRes(res).build())
+				.build();
+	}
+
+	public Message friendInvitationAcceptAck(String id, Friend friend, long seq) {
+
+		return Message.newBuilder().setOpCode(OpCode.FRIEND_INVITATION_ACCEPT_ACK).setSeq(seq)
+				.setFriendInvitationAcceptAck(FriendInvitationAcceptAck.newBuilder().setId(id)
+						// .setFriend(friend)
+						.setRes(1).build())
 				.build();
 	}
 

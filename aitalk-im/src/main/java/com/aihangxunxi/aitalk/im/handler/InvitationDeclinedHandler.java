@@ -24,9 +24,9 @@ import java.time.Instant;
 
 @Component
 @ChannelHandler.Sharable
-public class InvitationHandler extends ChannelInboundHandlerAdapter {
+public class InvitationDeclinedHandler extends ChannelInboundHandlerAdapter {
 
-	private static final Logger logger = LoggerFactory.getLogger(InvitationHandler.class);
+	private static final Logger logger = LoggerFactory.getLogger(InvitationDeclinedHandler.class);
 
 	@Resource
 	private ChannelManager channelManager;
@@ -42,15 +42,17 @@ public class InvitationHandler extends ChannelInboundHandlerAdapter {
 
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-		if (msg instanceof Message && ((Message) msg).getOpCode() == OpCode.FRIEND_INVITATION_REQUEST_REQUEST) {
+		if (msg instanceof Message && ((Message) msg).getOpCode() == OpCode.FRIEND_INVITATION_DECLINED_REQUEST) {
 			FriendInvitationRequestRequest firr = ((Message) msg).getFriendInvitationRequestRequest();
 
 			// todo:获取当前用户信息
-			Long requesterId = 90001l;
+			Long requesterId = 123l;
 			String requesterNickname = "希克斯";
+			String requesterProfile = "https://tupian.qqw21.com/article/UploadPic/2020-7/202073022592523433.jpg";
 
 			// todo:获取 addressee 用户信息
 			String addresseeNickname = "jijiDown";
+			String addresseeProfile = "https://tupian.qqw21.com/article/UploadPic/2020-9/202092422443332504.jpg";
 
 			long currentTimeMillis = Instant.now().getEpochSecond();
 
@@ -58,12 +60,14 @@ public class InvitationHandler extends ChannelInboundHandlerAdapter {
 			invitation.setRequesterId(requesterId);
 			invitation.setRequesterAlias("");
 			invitation.setRequesterNickname(requesterNickname);
+			invitation.setRequesterProfile(requesterProfile);
 			invitation.setAddresseeId(firr.getAddresseeId());
 			invitation.setAddresseeAlias(firr.getAddresseeAlias());
 			invitation.setAddresseeNickname(addresseeNickname);
+			invitation.setAddresseeProfile(addresseeProfile);
 			invitation.setContent(firr.getContent());
 			invitation.setInviteStatus(InviteStatus.REQUESTED);
-			invitation.setInviteType(InviteType.INVITE_MEMBER);
+			invitation.setInviteType(InviteType.INVITE_FRIEND);
 			invitation.setCreatedAt(currentTimeMillis);
 			invitation.setUpdatedAt(currentTimeMillis);
 

@@ -18,11 +18,15 @@ public class Invitation extends BaseModel {
 
 	private String requesterNickname;
 
+	private String requesterProfile;
+
 	private Long addresseeId;
 
 	private String addresseeAlias;
 
 	private String addresseeNickname;
+
+	private String addresseeProfile;
 
 	private String content;
 
@@ -128,6 +132,22 @@ public class Invitation extends BaseModel {
 
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
+	}
+
+	public String getRequesterProfile() {
+		return requesterProfile;
+	}
+
+	public void setRequesterProfile(String requesterProfile) {
+		this.requesterProfile = requesterProfile;
+	}
+
+	public String getAddresseeProfile() {
+		return addresseeProfile;
+	}
+
+	public void setAddresseeProfile(String addresseeProfile) {
+		this.addresseeProfile = addresseeProfile;
 	}
 
 }
