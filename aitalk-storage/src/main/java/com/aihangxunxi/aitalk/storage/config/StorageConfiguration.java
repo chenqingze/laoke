@@ -43,17 +43,17 @@ public class StorageConfiguration {
 
 	private final int redisPort;
 
-	private final int redisDB;
+	private final int authDB;
 
 	public StorageConfiguration(@Value("${storage.mongodb.connectionString}") String connectionString,
 			@Value("${storage.mongodb.databaseName}") String databaseName,
 			@Value("${storage.redis.host}") String redisHost, @Value("${storage.redis.port:6379}") int redisPort,
-			@Value("${storage.redis.database}") int redisDB) {
+			@Value("${storage.redis.authDB}") int authDB) {
 		this.connectionString = connectionString;
 		this.databaseName = databaseName;
 		this.redisHost = redisHost;
 		this.redisPort = redisPort;
-		this.redisDB = redisDB;
+		this.authDB = authDB;
 	}
 
 	@Bean
@@ -78,7 +78,7 @@ public class StorageConfiguration {
 	 */
 	//
 	// @Bean
-	// public RedisConnectionFactory jedisConnectionFactory() {
+	// public RedisConnectionFactory authJedisConnectionFactory() {
 	// RedisStandaloneConfiguration clientConfig = new
 	// RedisStandaloneConfiguration(redisHost, redisPort);
 	// clientConfig.setDatabase(redisDB);
@@ -89,9 +89,9 @@ public class StorageConfiguration {
 	 * Lettuce
 	 */
 	@Bean
-	public RedisConnectionFactory lettuceConnectionFactory() {
+	public RedisConnectionFactory authLettuceConnectionFactory() {
 		RedisStandaloneConfiguration clientConfig = new RedisStandaloneConfiguration(redisHost, redisPort);
-		clientConfig.setDatabase(redisDB);
+		clientConfig.setDatabase(authDB);
 		return new LettuceConnectionFactory(clientConfig);
 	}
 
@@ -110,7 +110,7 @@ public class StorageConfiguration {
 				JsonTypeInfo.As.PROPERTY);
 		jackson2JsonRedisSerializer.setObjectMapper(objectMapper);
 		redisTemplate.setValueSerializer(jackson2JsonRedisSerializer);
-		redisTemplate.setConnectionFactory(lettuceConnectionFactory());
+		redisTemplate.setConnectionFactory(authLettuceConnectionFactory());
 
 		return redisTemplate;
 	}
