@@ -4,6 +4,7 @@ import com.aihangxunxi.aitalk.im.channel.ChannelConstant;
 import com.aihangxunxi.aitalk.im.codec.MessageDecoder;
 import com.aihangxunxi.aitalk.im.codec.MessageEncoder;
 import com.aihangxunxi.aitalk.im.handler.*;
+import com.aihangxunxi.aitalk.im.protocol.buffers.AskForJoinGroupAck;
 import com.aihangxunxi.aitalk.im.protocol.buffers.Message;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
@@ -58,10 +59,23 @@ public class WebSocketChannelInitializer extends ChannelInitializer<NioSocketCha
 	private QueryUserGroupsHandler queryUserGroupsHandler;
 
 	@Resource
-	private GroupMessageHandler groupMessageHandler;
+	private InvitationRequestHandler invitationRequestHandler;
 
 	@Resource
-	private InvitationHandler invitationHandler;
+	private InvitationAcceptHandler invitationAcceptHandler;
+
+	@Resource
+
+	private AskFroJoinGroupHandler askFroJoinGroupHandler;
+
+	@Resource
+	private InvitationUserJoinGroupHandler invitationUserJoinGroupHandler;
+
+	@Resource
+	private InvitationDeclinedHandler invitationDeclinedHandler;
+
+	@Resource
+	private GroupMessageHandler groupMessageHandler;
 
 	public WebSocketChannelInitializer(@Nullable SslContext sslCtx, EventExecutorGroup processorGroup) {
 		this.sslCtx = sslCtx;
@@ -110,9 +124,12 @@ public class WebSocketChannelInitializer extends ChannelInitializer<NioSocketCha
 		// 认证处理
 		pipeline.addLast("authServerHandler", authServerHandler);
 		pipeline.addLast("queryUserGroupsHandler", queryUserGroupsHandler);
+		pipeline.addLast("invitationRequestHandler", invitationRequestHandler);
+		pipeline.addLast("invitationAcceptHandler", invitationAcceptHandler);
+		pipeline.addLast("invitationDeclinedHandler", invitationDeclinedHandler);
 		pipeline.addLast("groupMessageHandler", groupMessageHandler);
-
-		pipeline.addLast("invitation", invitationHandler);
+		pipeline.addLast("invitationUserJoinGroupHandler", invitationUserJoinGroupHandler);
+		pipeline.addLast("askFroJoinGroupHandler", askFroJoinGroupHandler);
 
 		// todo：其他业务处理器放到这里
 		// pipeline.addLast(processorGroup, "queryUserGroupsHandler",

@@ -32,6 +32,10 @@ message Message {
     QueryUserGroupsAck query_user_group_ack = 22;
     MsgAck msg_ack = 23;
 
+    AskFroJoinGroupRequest ask_for_join_group_request = 24;
+    AskForJoinGroupAck ask_for_join_group_ack = 25;
+    InvitationJoinGroupRequest invitation_join_group_request = 26;
+    InvitationJoinGroupAck invitation_join_group_ack = 27;
     //------------------------------------------好友及好友邀请---------------------------------------------------
 
     FriendInvitationRequestRequest friend_invitation_request_request = 1001;

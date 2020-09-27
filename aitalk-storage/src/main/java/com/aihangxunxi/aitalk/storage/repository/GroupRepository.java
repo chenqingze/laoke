@@ -11,6 +11,7 @@ import org.bson.types.ObjectId;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
+import java.security.acl.Group;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +23,12 @@ public class GroupRepository {
 
 	@Resource
 	private MongoDatabase aitalkDb;
+
+	public Groups queryGroupInfoByNo(String groupNo) {
+		MongoCollection<Groups> groupMongoCollection = aitalkDb.getCollection("group", Groups.class);
+		return groupMongoCollection.find(eq("groupNo", groupNo)).first();
+
+	}
 
 	// 获取群信息
 	public Groups queryGroupInfo(String groupId) {
@@ -59,10 +66,27 @@ public class GroupRepository {
 
 	// 判断用户是否在群中
 	public boolean checkUserInGroup(String groupId, Long userId) {
-
 		MongoCollection<UsersGroup> usersGroupMongoCollection = aitalkDb.getCollection("groupMember", UsersGroup.class);
 		Bson bson = and(eq("userId", userId), eq("groupId", new ObjectId(groupId)));
 		return usersGroupMongoCollection.find(bson).into(new ArrayList<>()).size() > 0;
+	}
+
+	// 根据群号获取用户是否在群中
+	public boolean queryUserInGroupByNo(String groupNo, Long userId) {
+		MongoCollection<GroupMember> groupMemberMongoCollection = aitalkDb.getCollection("groupMember",
+				GroupMember.class);
+		MongoCollection<Groups> groupsMongoCollection = aitalkDb.getCollection("group", Groups.class);
+		Bson bson = eq("groupNo", groupNo);
+
+		Groups groups = groupsMongoCollection.find(bson).first();
+		if (groups != null) {
+
+			Bson bson1 = and(eq("userId", userId), eq("groupId", groups.getId()));
+			return groupMemberMongoCollection.countDocuments(bson1) > 0;
+		}
+		else {
+			return false;
+		}
 
 	}
 

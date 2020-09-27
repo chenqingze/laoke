@@ -4,6 +4,8 @@ import com.aihangxunxi.aitalk.storage.model.GroupMember;
 import com.aihangxunxi.aitalk.storage.model.User;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import org.bson.conversions.Bson;
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
@@ -27,6 +29,30 @@ public class GroupMemberRepository {
 		MongoCollection<GroupMember> groupMemberMongoCollection = aitalkDb.getCollection("groupMember",
 				GroupMember.class);
 		return groupMemberMongoCollection.find(eq("memberId", user.getUid())).into(new ArrayList<>());
+	}
+
+	// 用户进群
+	public boolean saveUserJoinGroup(String groupId, Long userId, String memberId, String header, String alias) {
+		GroupMember groupMember = new GroupMember();
+		groupMember.setGroupId(new ObjectId(groupId));
+		groupMember.setMemberId(new ObjectId(memberId));
+		groupMember.setUserId(userId);
+		groupMember.setAlias(alias);
+		groupMember.setBlocked(false);
+		groupMember.setMute(false);
+		MongoCollection<GroupMember> groupMemberMongoCollection = aitalkDb.getCollection("groupMember",
+				GroupMember.class);
+		groupMemberMongoCollection.insertOne(groupMember);
+
+		return true;
+	}
+
+	public boolean checkGroupIsFull(String groupId) {
+		MongoCollection<GroupMember> groupMemberCollection = aitalkDb.getCollection("groupMember", GroupMember.class);
+		Bson bson = eq("groupId", new ObjectId(groupId));
+		long memberCount = groupMemberCollection.countDocuments(bson);
+		return memberCount < 500;
+
 	}
 
 }
