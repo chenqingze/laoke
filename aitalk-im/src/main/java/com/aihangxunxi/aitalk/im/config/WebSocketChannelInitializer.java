@@ -3,6 +3,7 @@ package com.aihangxunxi.aitalk.im.config;
 import com.aihangxunxi.aitalk.im.codec.MessageDecoder;
 import com.aihangxunxi.aitalk.im.codec.MessageEncoder;
 import com.aihangxunxi.aitalk.im.handler.*;
+import com.aihangxunxi.aitalk.im.protocol.buffers.AskForJoinGroupAck;
 import com.aihangxunxi.aitalk.im.protocol.buffers.Message;
 import com.aihangxunxi.aitalk.im.protocol.constant.Constants;
 import io.netty.channel.ChannelInitializer;
@@ -61,6 +62,12 @@ public class WebSocketChannelInitializer extends ChannelInitializer<NioSocketCha
 	private GroupMessageHandler groupMessageHandler;
 
 	@Resource
+	private AskFroJoinGroupHandler askFroJoinGroupHandler;
+
+	@Resource
+	private InvitationUserJoinGroupHandler invitationUserJoinGroupHandler;
+
+	@Resource
 	private InvitationHandler invitationHandler;
 
 	public WebSocketChannelInitializer(@Nullable SslContext sslCtx, EventExecutorGroup processorGroup) {
@@ -109,7 +116,8 @@ public class WebSocketChannelInitializer extends ChannelInitializer<NioSocketCha
 		pipeline.addLast("authServerHandler", authServerHandler);
 		pipeline.addLast("queryUserGroupsHandler", queryUserGroupsHandler);
 		pipeline.addLast("groupMessageHandler", groupMessageHandler);
-
+		pipeline.addLast("invitationUserJoinGroupHandler", invitationUserJoinGroupHandler);
+		pipeline.addLast("askFroJoinGroupHandler", askFroJoinGroupHandler);
 		pipeline.addLast("invitation", invitationHandler);
 
 		// todo：其他业务处理器放到这里
