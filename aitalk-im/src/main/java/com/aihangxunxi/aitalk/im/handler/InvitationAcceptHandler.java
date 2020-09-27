@@ -51,20 +51,21 @@ public class InvitationAcceptHandler extends ChannelInboundHandlerAdapter {
 			FriendInvitationAcceptRequest fiar = ((Message) msg).getFriendInvitationAcceptRequest();
 
 			String id = fiar.getId();
-			boolean update = invitationRepository.updateInviteStatus(id);
+			Invitation invitation = invitationRepository.updateInviteStatus(id, InviteStatus.ACCEPTED.name());
 
-			if (update) {
+			if (invitation != null) {
 				Friend friend = new Friend();
+				// todo:渲染friend 并保存(两条记录)
+				// friendRepository.save(friend);
 
 				Message message = invitationAssembler.friendInvitationAcceptAck(id, friend, ((Message) msg).getSeq());
 				ctx.writeAndFlush(message);
 
-				/*
-				 * User user = userRepository.getUserById(invitation.getAddresseeId());
-				 * Channel addresseeChannel =
-				 * channelManager.findChannelByUid(user.getUid().toHexString()); if
-				 * (addresseeChannel != null) { addresseeChannel.writeAndFlush(message); }
-				 */
+				User user = userRepository.getUserById(Long.valueOf(invitation.getRequesterId()));
+				Channel addresseeChannel = channelManager.findChannelByUid(user.getUid().toHexString());
+				if (addresseeChannel != null) {
+					addresseeChannel.writeAndFlush(message);
+				}
 
 			}
 			else {

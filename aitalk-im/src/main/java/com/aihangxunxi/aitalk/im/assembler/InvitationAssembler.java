@@ -44,4 +44,10 @@ public class InvitationAssembler {
 				.build();
 	}
 
+	public Message friendInvitationDeclinedAck(String id, long seq) {
+		return Message.newBuilder().setOpCode(OpCode.FRIEND_INVITATION_DECLINED_ACK).setSeq(seq)
+				.setFriendInvitationDeclinedAck(FriendInvitationDeclinedAck.newBuilder().setId(id).setRes(1).build())
+				.build();
+	}
+
 }
