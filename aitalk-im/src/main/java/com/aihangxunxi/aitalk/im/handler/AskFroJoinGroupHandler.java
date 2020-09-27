@@ -6,10 +6,12 @@ import com.aihangxunxi.aitalk.im.protocol.buffers.AskForJoinGroupAck;
 import com.aihangxunxi.aitalk.im.protocol.buffers.AskFroJoinGroupRequest;
 import com.aihangxunxi.aitalk.im.protocol.buffers.Message;
 import com.aihangxunxi.aitalk.im.protocol.buffers.OpCode;
-import com.aihangxunxi.aitalk.im.session.MapSessionRepository;
+import com.aihangxunxi.aitalk.storage.constant.InviteStatus;
+import com.aihangxunxi.aitalk.storage.constant.InviteType;
 import com.aihangxunxi.aitalk.storage.model.Groups;
 import com.aihangxunxi.aitalk.storage.model.Invitation;
 import com.aihangxunxi.aitalk.storage.repository.GroupRepository;
+import com.aihangxunxi.aitalk.storage.repository.InvitationRepository;
 import com.aihangxunxi.aitalk.storage.repository.UserRepository;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
@@ -18,6 +20,7 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -40,12 +43,18 @@ public class AskFroJoinGroupHandler extends ChannelInboundHandlerAdapter {
     @Resource
     private UserRepository userRepository;
 
+    @Resource
+    private InvitationRepository invitationRepository;
+
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         if (msg instanceof Message && ((Message) msg).getOpCode() == OpCode.ASK_FOR_JOIN_GROUP_REQUEST) {
             String groupId = ((Message) msg).getAskForJoinGroupRequest().getGroupId();
             String userid = ((Message) msg).getAskForJoinGroupRequest().getUserId();
+            String content = ((Message) msg).getAskForJoinGroupRequest().getMessage();
             Map map = userRepository.queryUserById(Long.parseLong(userid));
+            Groups groups = groupRepository.queryGroupInfo(groupId);
+
             // 根据用户id获取用户信息
 
             // 判断用户是否存在群中
@@ -64,7 +73,7 @@ public class AskFroJoinGroupHandler extends ChannelInboundHandlerAdapter {
                 ctx.writeAndFlush(groupAck);
             } else {
                 // 判断群是否开启群邀请确认
-                Groups groups = groupRepository.queryGroupInfo(groupId);
+//                Groups groups = groupRepository.queryGroupInfo(groupId);
                 if (groups.getGroupSetting().isConfirmJoin()) {
                     // 当前群开启了邀请确认且 当前人不在群中
                     Message message = Message.newBuilder()
@@ -98,7 +107,16 @@ public class AskFroJoinGroupHandler extends ChannelInboundHandlerAdapter {
                     invitation.setRequesterAlias(map.get("nickname").toString());
                     invitation.setRequesterNickname(map.get("nickname").toString());
                     invitation.setRequesterNickname(map.get("header").toString());
-
+                    invitation.setAddresseeId(groupId);
+                    invitation.setAddresseeAlias(groups.getName());
+                    invitation.setAddresseeNickname(groups.getName());
+                    invitation.setAddresseeProfile(groups.getHeader());
+                    invitation.setInviteStatus(InviteStatus.REQUESTED);
+                    invitation.setReadStatus("0");
+                    invitation.setCreatedAt(new Date().getTime());
+                    invitation.setContent(content);
+                    invitation.setInviteType(InviteType.INVITE_MEMBER);
+                    invitationRepository.saveGroupInvitation(invitation);
                 } else {
                     // 当前群没有开启邀请确认
 
