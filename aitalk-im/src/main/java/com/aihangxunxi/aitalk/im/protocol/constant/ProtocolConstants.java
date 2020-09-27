@@ -5,6 +5,7 @@ package com.aihangxunxi.aitalk.im.protocol.constant;
  *
  * @author chenqingze107@163.com
  * @version 1.0
+ * @deprecated
  */
 public final class ProtocolConstants {
 

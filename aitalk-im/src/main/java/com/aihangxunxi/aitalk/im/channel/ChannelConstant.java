@@ -13,6 +13,12 @@ public final class ChannelConstant {
 	private ChannelConstant() {
 	}
 
+	// 最大协议包长度
+	public static final int MAX_FRAME_LENGTH = 1024 * 10; // 10k
+
+	// 大文件
+	public static final int MAX_AGGREGATED_CONTENT_LENGTH = 64 * 1024;
+
 	private static final String USER_ID_KEY = "user_id";
 
 	private static final String DEVICE_CODE_KEY = "device_code";
