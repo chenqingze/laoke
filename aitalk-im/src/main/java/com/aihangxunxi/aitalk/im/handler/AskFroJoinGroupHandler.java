@@ -10,6 +10,7 @@ import com.aihangxunxi.aitalk.storage.constant.InviteStatus;
 import com.aihangxunxi.aitalk.storage.constant.InviteType;
 import com.aihangxunxi.aitalk.storage.model.Groups;
 import com.aihangxunxi.aitalk.storage.model.Invitation;
+import com.aihangxunxi.aitalk.storage.repository.GroupMemberRepository;
 import com.aihangxunxi.aitalk.storage.repository.GroupRepository;
 import com.aihangxunxi.aitalk.storage.repository.InvitationRepository;
 import com.aihangxunxi.aitalk.storage.repository.UserRepository;
@@ -45,6 +46,9 @@ public class AskFroJoinGroupHandler extends ChannelInboundHandlerAdapter {
 
     @Resource
     private InvitationRepository invitationRepository;
+
+    @Resource
+    private GroupMemberRepository groupMemberRepository;
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
@@ -119,12 +123,26 @@ public class AskFroJoinGroupHandler extends ChannelInboundHandlerAdapter {
                     invitationRepository.saveGroupInvitation(invitation);
                 } else {
                     // 当前群没有开启邀请确认
+                    Channel channel = channelManager.findChannelByUid(userid);
+                    groupManager.addChannel(groupId, channel);
 
+                    // 保存至数据库
+                    groupMemberRepository.saveUserJoinGroup(groupId, Long.parseLong(userid), map.get("uId").toString(), map.get("header").toString(), map.get("alias").toString());
+                    // 发送群通知
+                    Message groupMsg = Message.newBuilder()
+                            .setOpCode(OpCode.ASK_FOR_JOIN_GROUP_REQUEST)
+                            .setAskForJoinGroupRequest(AskFroJoinGroupRequest.newBuilder()
+                                    .setSuccess("ok")
+                                    .setMessage(map.get("nickname") + "加入了群聊")
+                                    .setUserId(userid)
+                                    .setGroupId(groupId)
+                                    .build())
+                            .build();
 
+                    groupManager.sendGroupMsg(groupId, groupMsg);
                 }
 
             }
-
 
         } else {
             ctx.fireChannelRead(msg);

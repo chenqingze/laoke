@@ -54,12 +54,25 @@ message AskFroJoinGroupRequest{
   string group_id = 1;
   string user_id = 2;
   string message = 3;
-  string success= 4;
+  string success = 4;
 }
 
 message AskForJoinGroupAck{
   string group_id = 1;
   string user_id = 2;
   string message = 3;
-  string success= 4;
+  string success = 4;
+}
+message InvitationJoinGroupRequest{
+  string group_id = 1;
+  repeated string user = 2 ;
+  string current_user = 3;
+  string message = 4;
+  string success = 5;
+}
+
+message InvitationJoinGroupAck{
+  string group_id = 1;
+  string success = 2;
+  string message = 3;
 }
