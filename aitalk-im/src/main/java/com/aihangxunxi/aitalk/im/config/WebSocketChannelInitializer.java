@@ -59,16 +59,23 @@ public class WebSocketChannelInitializer extends ChannelInitializer<NioSocketCha
 	private QueryUserGroupsHandler queryUserGroupsHandler;
 
 	@Resource
-	private GroupMessageHandler groupMessageHandler;
+	private InvitationRequestHandler invitationRequestHandler;
 
 	@Resource
+	private InvitationAcceptHandler invitationAcceptHandler;
+
+	@Resource
+
 	private AskFroJoinGroupHandler askFroJoinGroupHandler;
 
 	@Resource
 	private InvitationUserJoinGroupHandler invitationUserJoinGroupHandler;
 
 	@Resource
-	private InvitationHandler invitationHandler;
+	private InvitationDeclinedHandler invitationDeclinedHandler;
+
+	@Resource
+	private GroupMessageHandler groupMessageHandler;
 
 	public WebSocketChannelInitializer(@Nullable SslContext sslCtx, EventExecutorGroup processorGroup) {
 		this.sslCtx = sslCtx;
@@ -115,10 +122,12 @@ public class WebSocketChannelInitializer extends ChannelInitializer<NioSocketCha
 		// 认证处理
 		pipeline.addLast("authServerHandler", authServerHandler);
 		pipeline.addLast("queryUserGroupsHandler", queryUserGroupsHandler);
+		pipeline.addLast("invitationRequestHandler", invitationRequestHandler);
+		pipeline.addLast("invitationAcceptHandler", invitationAcceptHandler);
+		pipeline.addLast("invitationDeclinedHandler", invitationDeclinedHandler);
 		pipeline.addLast("groupMessageHandler", groupMessageHandler);
 		pipeline.addLast("invitationUserJoinGroupHandler", invitationUserJoinGroupHandler);
 		pipeline.addLast("askFroJoinGroupHandler", askFroJoinGroupHandler);
-		pipeline.addLast("invitation", invitationHandler);
 
 		// todo：其他业务处理器放到这里
 		// pipeline.addLast(processorGroup, "queryUserGroupsHandler",

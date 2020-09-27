@@ -17,43 +17,42 @@ import static com.mongodb.client.model.Filters.eq;
 @Repository
 public class GroupMemberRepository {
 
-    @Resource
-    private MongoDatabase aitalkDb;
+	@Resource
+	private MongoDatabase aitalkDb;
 
-    // 根据用户id获取用户群列表
-    public List<GroupMember> queryUsersGroup(Long userId) {
+	// 根据用户id获取用户群列表
+	public List<GroupMember> queryUsersGroup(Long userId) {
 
-        MongoCollection<User> userMongoCollection = aitalkDb.getCollection("user", User.class);
-        User user = userMongoCollection.find(eq("userId", userId)).first();
+		MongoCollection<User> userMongoCollection = aitalkDb.getCollection("user", User.class);
+		User user = userMongoCollection.find(eq("userId", userId)).first();
 
-        MongoCollection<GroupMember> groupMemberMongoCollection = aitalkDb.getCollection("groupMember",
-                GroupMember.class);
-        return groupMemberMongoCollection.find(eq("memberId", user.getUid())).into(new ArrayList<>());
-    }
+		MongoCollection<GroupMember> groupMemberMongoCollection = aitalkDb.getCollection("groupMember",
+				GroupMember.class);
+		return groupMemberMongoCollection.find(eq("memberId", user.getUid())).into(new ArrayList<>());
+	}
 
-    // 用户进群
-    public boolean saveUserJoinGroup(String groupId, Long userId, String memberId, String header, String alias) {
-        GroupMember groupMember = new GroupMember();
-        groupMember.setGroupId(new ObjectId(groupId));
-        groupMember.setMemberId(new ObjectId(memberId));
-        groupMember.setUserId(userId);
-        groupMember.setAlias(alias);
-        groupMember.setBlocked(false);
-        groupMember.setMute(false);
-        MongoCollection<GroupMember> groupMemberMongoCollection = aitalkDb.getCollection("groupMember",
-                GroupMember.class);
-        groupMemberMongoCollection.insertOne(groupMember);
+	// 用户进群
+	public boolean saveUserJoinGroup(String groupId, Long userId, String memberId, String header, String alias) {
+		GroupMember groupMember = new GroupMember();
+		groupMember.setGroupId(new ObjectId(groupId));
+		groupMember.setMemberId(new ObjectId(memberId));
+		groupMember.setUserId(userId);
+		groupMember.setAlias(alias);
+		groupMember.setBlocked(false);
+		groupMember.setMute(false);
+		MongoCollection<GroupMember> groupMemberMongoCollection = aitalkDb.getCollection("groupMember",
+				GroupMember.class);
+		groupMemberMongoCollection.insertOne(groupMember);
 
-        return true;
-    }
+		return true;
+	}
 
+	public boolean checkGroupIsFull(String groupId) {
+		MongoCollection<GroupMember> groupMemberCollection = aitalkDb.getCollection("groupMember", GroupMember.class);
+		Bson bson = eq("groupId", new ObjectId(groupId));
+		long memberCount = groupMemberCollection.countDocuments(bson);
+		return memberCount < 500;
 
-    public boolean checkGroupIsFull(String groupId) {
-        MongoCollection<GroupMember> groupMemberCollection = aitalkDb.getCollection("groupMember", GroupMember.class);
-        Bson bson = eq("groupId", new ObjectId(groupId));
-        long memberCount = groupMemberCollection.countDocuments(bson);
-        return memberCount < 500;
-
-    }
+	}
 
 }

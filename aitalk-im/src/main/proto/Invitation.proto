@@ -5,23 +5,25 @@ package com.aihangxunxi.aitalk.im.protocol.buffers;
 //***********************好友邀请、群邀请***********************//
 
 // 邀请
-message Invitation{
+message InvitationProto{
   string id = 1;
   uint64 requesterId = 2;
   string requesterAlias = 3;
   string requesterNickname = 4;
-  uint64 addresseeId = 5;
-  string addresseeAlias = 6;
-  string addresseeNickname = 7;
-  string content = 8;
-  string invite_status = 9;
-  string invite_type = 10;
-  uint64 createdAt = 11;
-  uint64 updatedAt = 12;
+  string requesterProfile = 5;
+  uint64 addresseeId = 6;
+  string addresseeAlias = 7;
+  string addresseeNickname = 8;
+  string addresseeProfile = 9;
+  string content = 10;
+  string invite_status = 11;
+  string invite_type = 12;
+  uint64 createdAt = 13;
+  uint64 updatedAt = 14;
 }
 
 // 好友
-message Friend{
+message FriendProto{
   string id = 1;
   uint64 userId = 2;
   uint64 friendId = 3;
@@ -47,20 +49,9 @@ message FriendInvitationRequestRequest{
 
 // 发送好友邀请 ack
 message FriendInvitationRequestAck{
-  string id = 1;
-  uint64 requesterId = 2;
-  string requesterAlias = 3;
-  string requesterNickname = 4;
-  uint64 addresseeId = 5;
-  string addresseeAlias = 6;
-  string addresseeNickname = 7;
-  string content = 8;
-  string invite_status = 9;
-  string invite_type = 10;
-  uint64 createdAt = 11;
-  uint64 updatedAt = 12;
+  InvitationProto invitationProto = 1;
 
-  uint32 res = 13; //0-失败，1-成功
+  uint32 res = 2; //0-失败，1-成功
 }
 
 //-------------------------------------------------同意好友邀请-[发送方]----------------------------------------
@@ -74,10 +65,11 @@ message FriendInvitationAcceptRequest{
 
 // 同意好友邀请 ack
 message FriendInvitationAcceptAck{
+  string id = 1;
 
-  Friend friend = 1;
+  FriendProto friendProto = 2;
 
-  uint32 res = 2; //0-失败，1-成功
+  uint32 res = 3; //0-失败，1-成功
 }
 
 //-------------------------------------------------拒绝好友邀请-[发送方]----------------------------------------
@@ -105,7 +97,7 @@ message FriendInvitationRequest{
 
 //获取最新好友邀请信息ack
 message FriendInvitationAck{
-  repeated Invitation invitation = 1;
+  repeated InvitationProto invitationProto = 1;
 
   uint32 res = 2; //0-失败，1-成功
 }
@@ -119,7 +111,7 @@ message FriendRequest{
 
 //获取最新好友信息ack
 message FriendAck{
-  repeated Invitation invitation = 1;
+  repeated FriendProto friendProto = 1;
 
   uint32 res = 2; //0-失败，1-成功
 }
