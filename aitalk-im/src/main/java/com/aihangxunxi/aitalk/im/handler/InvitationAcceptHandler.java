@@ -47,7 +47,7 @@ public class InvitationAcceptHandler extends ChannelInboundHandlerAdapter {
 
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-		if (msg instanceof Message && ((Message) msg).getOpCode() == OpCode.FRIEND_INVITATION_ACCEPT_REQUEST) {
+		if (msg instanceof Message && ((Message) msg).getOpCode() == OpCode.INVITATION_ACCEPT_REQUEST) {
 			InvitationAcceptRequest fiar = ((Message) msg).getInvitationAcceptRequest();
 
 			String id = fiar.getId();

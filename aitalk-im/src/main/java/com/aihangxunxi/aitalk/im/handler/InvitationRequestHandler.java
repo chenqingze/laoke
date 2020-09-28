@@ -42,7 +42,7 @@ public class InvitationRequestHandler extends ChannelInboundHandlerAdapter {
 
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-		if (msg instanceof Message && ((Message) msg).getOpCode() == OpCode.FRIEND_INVITATION_REQUEST_REQUEST) {
+		if (msg instanceof Message && ((Message) msg).getOpCode() == OpCode.INVITATION_REQUEST_REQUEST) {
 			InvitationRequestRequest firr = ((Message) msg).getInvitationRequestRequest();
 
 			// todo:获取当前用户信息

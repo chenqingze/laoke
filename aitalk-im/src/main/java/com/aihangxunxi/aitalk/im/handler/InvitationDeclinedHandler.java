@@ -41,7 +41,7 @@ public class InvitationDeclinedHandler extends ChannelInboundHandlerAdapter {
 
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-		if (msg instanceof Message && ((Message) msg).getOpCode() == OpCode.FRIEND_INVITATION_DECLINED_REQUEST) {
+		if (msg instanceof Message && ((Message) msg).getOpCode() == OpCode.INVITATION_DECLINED_REQUEST) {
 			InvitationDeclinedRequest fidr = ((Message) msg).getInvitationDeclinedRequest();
 
 			String id = fidr.getId();

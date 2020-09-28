@@ -15,7 +15,7 @@ public class InvitationAssembler {
 	public Message friendInvitationRequestAck(Invitation invitation, long seq) {
 		int res = invitation != null ? 1 : 0;
 
-		return Message.newBuilder().setOpCode(OpCode.FRIEND_INVITATION_REQUEST_ACK).setSeq(seq)
+		return Message.newBuilder().setOpCode(OpCode.INVITATION_REQUEST_ACK).setSeq(seq)
 				.setInvitationRequestAck(InvitationRequestAck.newBuilder().setInvitationProto(InvitationProto
 						.newBuilder().setId(invitation.getId().toHexString())
 						.setRequesterId(invitation.getRequesterId()).setRequesterAlias(invitation.getRequesterAlias())
@@ -33,7 +33,7 @@ public class InvitationAssembler {
 
 	public Message friendInvitationAcceptAck(String id, Friend friend, long seq) {
 
-		return Message.newBuilder().setOpCode(OpCode.FRIEND_INVITATION_ACCEPT_ACK).setSeq(seq)
+		return Message.newBuilder().setOpCode(OpCode.INVITATION_ACCEPT_ACK).setSeq(seq)
 				.setInvitationAcceptAck(InvitationAcceptAck.newBuilder().setId(id)
 						// .set(friend)
 						.setRes(1).build())
@@ -41,7 +41,7 @@ public class InvitationAssembler {
 	}
 
 	public Message friendInvitationDeclinedAck(String id, long seq) {
-		return Message.newBuilder().setOpCode(OpCode.FRIEND_INVITATION_DECLINED_ACK).setSeq(seq)
+		return Message.newBuilder().setOpCode(OpCode.INVITATION_DECLINED_ACK).setSeq(seq)
 				.setInvitationDeclinedAck(InvitationDeclinedAck.newBuilder().setId(id).setRes(1).build()).build();
 	}
 
