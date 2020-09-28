@@ -55,15 +55,44 @@ public class InvitationAcceptHandler extends ChannelInboundHandlerAdapter {
 
 			if (invitation != null) {
 				Friend friend = new Friend();
-				// todo:渲染friend 并保存(两条记录)
-				// friendRepository.save(friend);
+				friend.setUserId(Long.valueOf(invitation.getAddresseeId()));
+				friend.setFriendId(invitation.getRequesterId());
+				friend.setFriendName(invitation.getRequesterNickname());
+				friend.setFriendProfile("https://rxjs-dev.firebaseapp.com/assets/images/logos/Rx_Logo_S.png");
+				friend.setAlias(invitation.getRequesterAlias());
+				friend.setIsBlocked(0);
+				friend.setIsMute(0);
+				friend.setIsStickOnTop(0);
+				friend.setStatus("");
+				long currentTimeMillis = Instant.now().getEpochSecond();
+				friend.setCreatedAt(currentTimeMillis);
+				friend.setUpdatedAt(currentTimeMillis);
+				boolean save = friendRepository.save(friend);
 
-				Message message = invitationAssembler.friendInvitationAcceptAck(id, friend, ((Message) msg).getSeq());
-				ctx.writeAndFlush(message);
+				Message message = null;
+				if (save) {
+					message = invitationAssembler.friendInvitationAcceptAck(id, friend, ((Message) msg).getSeq());
+					ctx.writeAndFlush(message);
+				}
 
 				User user = userRepository.getUserById(Long.valueOf(invitation.getRequesterId()));
 				Channel addresseeChannel = channelManager.findChannelByUid(user.getUid().toHexString());
-				if (addresseeChannel != null) {
+				friend = new Friend();
+				friend.setUserId(invitation.getRequesterId());
+				friend.setFriendId(Long.valueOf(invitation.getAddresseeId()));
+				friend.setFriendName(invitation.getAddresseeNickname());
+				friend.setFriendProfile("https://rxjs-dev.firebaseapp.com/assets/images/logos/Rx_Logo_S.png");
+				friend.setAlias(invitation.getAddresseeAlias());
+				friend.setIsBlocked(0);
+				friend.setIsMute(0);
+				friend.setIsStickOnTop(0);
+				friend.setStatus("");
+				currentTimeMillis = Instant.now().getEpochSecond();
+				friend.setCreatedAt(currentTimeMillis);
+				friend.setUpdatedAt(currentTimeMillis);
+				save = friendRepository.save(friend);
+				if (addresseeChannel != null && save) {
+					message = invitationAssembler.friendInvitationAcceptAck(id, friend, ((Message) msg).getSeq());
 					addresseeChannel.writeAndFlush(message);
 				}
 

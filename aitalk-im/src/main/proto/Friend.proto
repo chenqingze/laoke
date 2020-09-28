@@ -10,12 +10,14 @@ message FriendProto{
     uint64 userId = 2;
     uint64 friendId = 3;
     string friendName = 4;
-    string alias = 5;
-    uint32 isBlocked = 6;
-    uint32 isMute = 7;
-    uint32 isStickOnTop = 8;
-    uint32 createdAt = 9;
-    uint32 updatedAt = 10;
+    string friendProfile = 5;
+    string alias = 6;
+    uint32 isBlocked = 7;
+    uint32 isMute = 8;
+    uint32 isStickOnTop = 9;
+    string status = 10;
+    uint64 createdAt = 11;
+    uint64 updatedAt = 12;
 }
 
 //----------------------------------------------删除好友-[发送方]----------------------------------------

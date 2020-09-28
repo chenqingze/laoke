@@ -1,14 +1,18 @@
 package com.aihangxunxi.aitalk.storage.model;
 
+import org.bson.types.ObjectId;
+
 public class Friend {
 
-	private String id;
+	private ObjectId id;
 
 	private Long userId;
 
 	private Long friendId;
 
 	private String friendName;
+
+	private String friendProfile;
 
 	private String alias;
 
@@ -18,15 +22,17 @@ public class Friend {
 
 	private Integer isStickOnTop;
 
+	private String status;
+
 	private Long createdAt;
 
 	private Long updatedAt;
 
-	public String getId() {
+	public ObjectId getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(ObjectId id) {
 		this.id = id;
 	}
 
@@ -52,6 +58,14 @@ public class Friend {
 
 	public void setFriendName(String friendName) {
 		this.friendName = friendName;
+	}
+
+	public String getFriendProfile() {
+		return friendProfile;
+	}
+
+	public void setFriendProfile(String friendProfile) {
+		this.friendProfile = friendProfile;
 	}
 
 	public String getAlias() {
@@ -84,6 +98,14 @@ public class Friend {
 
 	public void setIsStickOnTop(Integer isStickOnTop) {
 		this.isStickOnTop = isStickOnTop;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 	public Long getCreatedAt() {
