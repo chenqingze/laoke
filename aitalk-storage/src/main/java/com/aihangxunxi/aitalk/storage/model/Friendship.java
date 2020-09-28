@@ -99,4 +99,5 @@ public class Friendship extends BaseModel {
 	public void setHeader(String header) {
 		this.header = header;
 	}
+
 }
