@@ -1,11 +1,11 @@
 package com.aihangxunxi.aitalk.im.config;
 
+import com.aihangxunxi.aitalk.im.channel.ChannelConstant;
 import com.aihangxunxi.aitalk.im.codec.MessageDecoder;
 import com.aihangxunxi.aitalk.im.codec.MessageEncoder;
 import com.aihangxunxi.aitalk.im.handler.*;
 import com.aihangxunxi.aitalk.im.protocol.buffers.AskForJoinGroupAck;
 import com.aihangxunxi.aitalk.im.protocol.buffers.Message;
-import com.aihangxunxi.aitalk.im.protocol.constant.Constants;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.nio.NioSocketChannel;
@@ -96,13 +96,15 @@ public class WebSocketChannelInitializer extends ChannelInitializer<NioSocketCha
 		/* HTTP协议相关处理 */
 		// http编解码器
 		pipeline.addLast(new HttpServerCodec());
-		pipeline.addLast(new HttpObjectAggregator(Constants.MAX_AGGREGATED_CONTENT_LENGTH));// httpMessage进行聚合,
+		pipeline.addLast(new HttpObjectAggregator(ChannelConstant.MAX_AGGREGATED_CONTENT_LENGTH));// httpMessage进行聚合,
 		// 聚合成FullHttpRequest或FullHttpResponse
 		pipeline.addLast(new ChunkedWriteHandler());// 对写大数据流的支持
 
 		/* Websocket协议相关处理 */
 		pipeline.addLast(new WebSocketServerCompressionHandler());// 数据压缩
-		pipeline.addLast(new WebSocketServerProtocolHandler(WEBSOCKET_PATH, null, true, Constants.MAX_FRAME_LENGTH));// handshaking(close,ping,pong)=握手处理，
+		pipeline.addLast(
+				new WebSocketServerProtocolHandler(WEBSOCKET_PATH, null, true, ChannelConstant.MAX_FRAME_LENGTH));
+		// handshaking(close,ping,pong)=握手处理，
 		// 协议包解码
 		pipeline.addLast(messageDecoder);
 		// 协议包编码

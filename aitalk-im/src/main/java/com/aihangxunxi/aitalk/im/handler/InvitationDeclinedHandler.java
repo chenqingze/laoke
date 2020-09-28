@@ -2,11 +2,10 @@ package com.aihangxunxi.aitalk.im.handler;
 
 import com.aihangxunxi.aitalk.im.assembler.InvitationAssembler;
 import com.aihangxunxi.aitalk.im.channel.ChannelManager;
-import com.aihangxunxi.aitalk.im.protocol.buffers.FriendInvitationRequestRequest;
-import com.aihangxunxi.aitalk.im.protocol.buffers.Message;
-import com.aihangxunxi.aitalk.im.protocol.buffers.OpCode;
+import com.aihangxunxi.aitalk.im.protocol.buffers.*;
 import com.aihangxunxi.aitalk.storage.constant.InviteStatus;
 import com.aihangxunxi.aitalk.storage.constant.InviteType;
+import com.aihangxunxi.aitalk.storage.model.Friend;
 import com.aihangxunxi.aitalk.storage.model.Invitation;
 import com.aihangxunxi.aitalk.storage.model.User;
 import com.aihangxunxi.aitalk.storage.repository.InvitationRepository;
@@ -42,8 +41,27 @@ public class InvitationDeclinedHandler extends ChannelInboundHandlerAdapter {
 
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-		if (msg instanceof Message && ((Message) msg).getOpCode() == OpCode.FRIEND_INVITATION_DECLINED_REQUEST) {
+		if (msg instanceof Message && ((Message) msg).getOpCode() == OpCode.INVITATION_DECLINED_REQUEST) {
+			InvitationDeclinedRequest fidr = ((Message) msg).getInvitationDeclinedRequest();
 
+			String id = fidr.getId();
+			Invitation invitation = invitationRepository.updateInviteStatus(id, InviteStatus.DECLINED.name());
+
+			if (invitation != null) {
+
+				Message message = invitationAssembler.friendInvitationDeclinedAck(id, ((Message) msg).getSeq());
+				ctx.writeAndFlush(message);
+
+				User user = userRepository.getUserById(Long.valueOf(invitation.getRequesterId()));
+				Channel addresseeChannel = channelManager.findChannelByUid(user.getUid().toHexString());
+				if (addresseeChannel != null) {
+					addresseeChannel.writeAndFlush(message);
+				}
+
+			}
+			else {
+				ctx.fireChannelRead(msg);
+			}
 		}
 		else {
 			ctx.fireChannelRead(msg);

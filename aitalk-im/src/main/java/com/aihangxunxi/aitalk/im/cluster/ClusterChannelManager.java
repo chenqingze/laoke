@@ -13,8 +13,6 @@ public class ClusterChannelManager extends DefaultChannelManager {
 
 	private RedisTemplate<String, Object> userNodeRedisTemplate;
 
-	private RedisTemplate<String, Object> pubSubRedisTemplate;
-
 	@Override
 
 	public void addChannel(ChannelHandlerContext context) {

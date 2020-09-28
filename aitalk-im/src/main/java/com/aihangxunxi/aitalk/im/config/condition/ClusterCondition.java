@@ -13,7 +13,7 @@ public class ClusterCondition implements Condition {
 	@Override
 	public boolean matches(ConditionContext conditionContext, AnnotatedTypeMetadata annotatedTypeMetadata) {
 		String serverModel = conditionContext.getEnvironment().getProperty("server.model");
-		return serverModel.equalsIgnoreCase("cluster");
+		return "cluster".equalsIgnoreCase(serverModel);
 	}
 
 }

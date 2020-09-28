@@ -4,7 +4,6 @@ import com.aihangxunxi.aitalk.storage.constant.InviteStatus;
 import com.aihangxunxi.aitalk.storage.model.Invitation;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.result.InsertOneResult;
-import com.mongodb.client.result.UpdateResult;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Repository;
 
@@ -24,10 +23,10 @@ public class InvitationRepository {
 		return result.wasAcknowledged();
 	}
 
-	public boolean updateInviteStatus(String id) {
-		UpdateResult updateResult = db.getCollection("invitation", Invitation.class)
-				.updateOne(eq("_id", new ObjectId(id)), set("inviteStatus", InviteStatus.ACCEPTED));
-		return updateResult.wasAcknowledged();
+	public Invitation updateInviteStatus(String id, String inviteStatus) {
+		Invitation invitation = db.getCollection("invitation", Invitation.class)
+				.findOneAndUpdate(eq("_id", new ObjectId(id)), set("inviteStatus", inviteStatus));
+		return invitation;
 	}
 
 	// 保存群邀请

@@ -2,7 +2,7 @@ package com.aihangxunxi.aitalk.im.handler;
 
 import com.aihangxunxi.aitalk.im.assembler.InvitationAssembler;
 import com.aihangxunxi.aitalk.im.channel.ChannelManager;
-import com.aihangxunxi.aitalk.im.protocol.buffers.FriendInvitationAcceptRequest;
+import com.aihangxunxi.aitalk.im.protocol.buffers.InvitationAcceptRequest;
 import com.aihangxunxi.aitalk.im.protocol.buffers.Message;
 import com.aihangxunxi.aitalk.im.protocol.buffers.OpCode;
 import com.aihangxunxi.aitalk.storage.constant.InviteStatus;
@@ -47,24 +47,25 @@ public class InvitationAcceptHandler extends ChannelInboundHandlerAdapter {
 
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-		if (msg instanceof Message && ((Message) msg).getOpCode() == OpCode.FRIEND_INVITATION_ACCEPT_REQUEST) {
-			FriendInvitationAcceptRequest fiar = ((Message) msg).getFriendInvitationAcceptRequest();
+		if (msg instanceof Message && ((Message) msg).getOpCode() == OpCode.INVITATION_ACCEPT_REQUEST) {
+			InvitationAcceptRequest fiar = ((Message) msg).getInvitationAcceptRequest();
 
 			String id = fiar.getId();
-			boolean update = invitationRepository.updateInviteStatus(id);
+			Invitation invitation = invitationRepository.updateInviteStatus(id, InviteStatus.ACCEPTED.name());
 
-			if (update) {
+			if (invitation != null) {
 				Friend friend = new Friend();
+				// todo:渲染friend 并保存(两条记录)
+				// friendRepository.save(friend);
 
 				Message message = invitationAssembler.friendInvitationAcceptAck(id, friend, ((Message) msg).getSeq());
 				ctx.writeAndFlush(message);
 
-				/*
-				 * User user = userRepository.getUserById(invitation.getAddresseeId());
-				 * Channel addresseeChannel =
-				 * channelManager.findChannelByUid(user.getUid().toHexString()); if
-				 * (addresseeChannel != null) { addresseeChannel.writeAndFlush(message); }
-				 */
+				User user = userRepository.getUserById(Long.valueOf(invitation.getRequesterId()));
+				Channel addresseeChannel = channelManager.findChannelByUid(user.getUid().toHexString());
+				if (addresseeChannel != null) {
+					addresseeChannel.writeAndFlush(message);
+				}
 
 			}
 			else {

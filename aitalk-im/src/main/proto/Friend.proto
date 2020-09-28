@@ -1,0 +1,46 @@
+syntax = "proto3";
+option java_multiple_files = true;
+package com.aihangxunxi.aitalk.im.protocol.buffers;
+
+//***********************好友***********************//
+
+// 好友
+message FriendProto{
+    string id = 1;
+    uint64 userId = 2;
+    uint64 friendId = 3;
+    string friendName = 4;
+    string alias = 5;
+    uint32 isBlocked = 6;
+    uint32 isMute = 7;
+    uint32 isStickOnTop = 8;
+    uint32 createdAt = 9;
+    uint32 updatedAt = 10;
+}
+
+//----------------------------------------------删除好友-[发送方]----------------------------------------
+
+message FriendDeleteRequest{
+    string id = 1;
+}
+
+message FriendDeleteAck{
+    string id = 1;
+
+    uint32 res = 2;
+}
+
+
+//---------------------------------------------推送最新好友信息----------------------------------------------
+
+//获取最新好友信息
+message FriendRequest{
+    uint32 updatedAt = 1;
+}
+
+//获取最新好友信息ack
+message FriendAck{
+    repeated FriendProto friendProto = 1;
+
+    uint32 res = 2; //0-失败，1-成功
+}

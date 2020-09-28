@@ -13,7 +13,7 @@ public class StandaloneCondition implements Condition {
 	@Override
 	public boolean matches(ConditionContext conditionContext, AnnotatedTypeMetadata annotatedTypeMetadata) {
 		String serverModel = conditionContext.getEnvironment().getProperty("server.model");
-		return serverModel.equalsIgnoreCase("standalone");
+		return "standalone".equalsIgnoreCase(serverModel);
 	}
 
 }

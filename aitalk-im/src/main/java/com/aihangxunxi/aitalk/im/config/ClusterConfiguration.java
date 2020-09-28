@@ -2,23 +2,32 @@ package com.aihangxunxi.aitalk.im.config;
 
 import com.aihangxunxi.aitalk.im.channel.ChannelManager;
 import com.aihangxunxi.aitalk.im.cluster.ClusterChannelManager;
+import com.aihangxunxi.aitalk.im.cluster.RabbitMQProducer;
 import com.aihangxunxi.aitalk.im.config.condition.ClusterCondition;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
+import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.Connection;
+import com.rabbitmq.client.ConnectionFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
-import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.TimeoutException;
 
 /**
  * @author chenqingze107@163.com
@@ -26,6 +35,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
  */
 @Configuration
 @Conditional(ClusterCondition.class)
+@PropertySource("classpath:config.properties")
 public class ClusterConfiguration {
 
 	private final String redisHost;
@@ -34,15 +44,29 @@ public class ClusterConfiguration {
 
 	private final int userNodeDb;
 
-	private final int pubSubDb;
+	private final String rabbitMqHost;
+
+	private final int rabbitMqPort;
+
+	private final String rabbitMqUserName;
+
+	private final String rabbitMqPassword;
 
 	public ClusterConfiguration(@Value("${server.redis.host}") String redisHost,
 			@Value("${server.redis.port}") int redisPort, @Value("${server.redis.userNodeDb}") int userNodeDb,
-			@Value("${server.redis.pubSubDb}") int pubSubDb) {
+			@Value("${server.rabbitMq.host}") String rabbitMqHost, @Value("${server.rabbitMq.port}") int rabbitMqPort,
+			@Value("${server.rabbitMq.userName}") String rabbitMqUserName,
+			@Value("${server.rabbitMq.password}") String rabbitMqPassword
+
+	) {
 		this.redisHost = redisHost;
 		this.redisPort = redisPort;
 		this.userNodeDb = userNodeDb;
-		this.pubSubDb = pubSubDb;
+
+		this.rabbitMqHost = rabbitMqHost;
+		this.rabbitMqPort = rabbitMqPort;
+		this.rabbitMqUserName = rabbitMqUserName;
+		this.rabbitMqPassword = rabbitMqPassword;
 	}
 
 	@Bean("channelManager")
@@ -51,42 +75,25 @@ public class ClusterConfiguration {
 	}
 
 	/**
-	 * create redisTemplate with Jedis
-	 */
-	private RedisTemplate<String, Object> createTemplateWithJedis(String hostName, int port, int database) {
-		RedisStandaloneConfiguration clientConfig = new RedisStandaloneConfiguration(hostName, port);
-		clientConfig.setDatabase(database);
-		JedisConnectionFactory jedisConnectionFactory = new JedisConnectionFactory(clientConfig);
-		RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
-		// 设置value为json序列化器
-		Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer<>(
-				Object.class);
-		ObjectMapper objectMapper = new ObjectMapper();
-		objectMapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
-		objectMapper.activateDefaultTyping(LaissezFaireSubTypeValidator.instance, ObjectMapper.DefaultTyping.NON_FINAL,
-				JsonTypeInfo.As.PROPERTY);
-		jackson2JsonRedisSerializer.setObjectMapper(objectMapper);
-		redisTemplate.setValueSerializer(jackson2JsonRedisSerializer);
-		// 设置key为string序列化器
-		redisTemplate.setKeySerializer(new StringRedisSerializer());
-		redisTemplate.setConnectionFactory(jedisConnectionFactory);
-		return redisTemplate;
-	}
-
-	/**
 	 * Lettuce
 	 */
-	private RedisConnectionFactory createLettuceConnectionFactory(String hostName, int port, int database) {
-		RedisStandaloneConfiguration clientConfig = new RedisStandaloneConfiguration(hostName, port);
-		clientConfig.setDatabase(database);
+	@Bean
+	public RedisConnectionFactory lettuceConnectionFactory() {
+		RedisStandaloneConfiguration clientConfig = new RedisStandaloneConfiguration(redisHost, redisPort);
+		clientConfig.setDatabase(userNodeDb);
 		return new LettuceConnectionFactory(clientConfig);
 	}
 
 	/**
-	 * create redisTemplate with Lettuce
+	 * 查询或缓存user-node 关系到redis
+	 * @return {@link RedisTemplate}
 	 */
-	private RedisTemplate<String, Object> createRedisTemplateWithLettuce(String hostName, int port, int database) {
+	@Bean
+	public RedisTemplate<String, Object> userNodeRedisTemplate(RedisConnectionFactory lettuceConnectionFactory) {
 		RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
+		StringRedisSerializer stringRedisSerializer = new StringRedisSerializer();
+		// 设置key为string序列化器
+		redisTemplate.setKeySerializer(stringRedisSerializer);
 		// 设置value为json序列化器
 		Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer<>(
 				Object.class);
@@ -96,19 +103,47 @@ public class ClusterConfiguration {
 				JsonTypeInfo.As.PROPERTY);
 		jackson2JsonRedisSerializer.setObjectMapper(objectMapper);
 		redisTemplate.setValueSerializer(jackson2JsonRedisSerializer);
-		// 设置key为string序列化器
-		redisTemplate.setKeySerializer(new StringRedisSerializer());
-		redisTemplate.setConnectionFactory(this.createLettuceConnectionFactory(hostName, port, database));
+		redisTemplate.setConnectionFactory(lettuceConnectionFactory);
+
 		return redisTemplate;
 	}
 
-	/**
-	 * for 缓存user-node 关系到redis
-	 * @return {@link RedisTemplate}
-	 */
 	@Bean
-	public RedisTemplate<String, Object> userNodeRedisTemplate() {
-		return this.createRedisTemplateWithLettuce(redisHost, redisPort, userNodeDb);
+	public ConnectionFactory rabbitConnectionFactory() {
+		ConnectionFactory factory = new ConnectionFactory();
+
+		// factory.setVirtualHost("/");
+		factory.setHost(this.rabbitMqHost);
+		factory.setPort(this.rabbitMqPort);
+		// "guest"/"guest" by default, limited to localhost connections
+		factory.setUsername(this.rabbitMqUserName);
+		factory.setPassword(this.rabbitMqPassword);
+
+		// Alternatively, URIs may be used:
+		// ConnectionFactory factory = new ConnectionFactory();
+		// factory.setUri("amqp://userName:password@hostName:portNumber/virtualHost");
+		// Connection conn = factory.newConnection();
+
+		return factory;
+	}
+
+	@Bean
+	public Connection rabbitConnection(ConnectionFactory connectionFactory) throws IOException, TimeoutException {
+		// Alternatively, URIs may be used:
+		// ConnectionFactory factory = new ConnectionFactory();
+		// factory.setUri("amqp://userName:password@hostName:portNumber/virtualHost");
+		// Connection conn = factory.newConnection();
+		return connectionFactory.newConnection();
+	}
+
+	@Bean
+	public Map<String, Channel> rabbitChannelMap() {
+		return new HashMap<>();
+	}
+
+	@Bean
+	public RabbitMQProducer rabbitMQProducer(Connection rabbitConnection, Map<String, Channel> rabbitChannelMap) {
+		return new RabbitMQProducer(rabbitConnection, rabbitChannelMap);
 	}
 
 }
