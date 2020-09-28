@@ -68,6 +68,7 @@ message AskFroJoinGroupRequest{
   string user_id = 2;
   string message = 3;
   string success = 4;
+  string content = 5;
 }
 
 message AskForJoinGroupAck{
