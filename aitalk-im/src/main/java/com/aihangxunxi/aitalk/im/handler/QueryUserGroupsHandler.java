@@ -7,6 +7,7 @@ import com.aihangxunxi.aitalk.storage.repository.GroupRepository;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.util.ReferenceCountUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -32,15 +33,16 @@ public final class QueryUserGroupsHandler extends ChannelInboundHandlerAdapter {
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 
 		if (msg instanceof Message && ((Message) msg).getOpCode() == OpCode.QUERY_USER_GROUP_REQUEST) {
-			Long userId = ((Message) msg).getQueryUserGroupRequest().getUserId();
-			Message queryUserGroupsAck = groupAssembler.QueryUserGroupsBuilder(userId, ((Message) msg).getSeq(),
-					groupRepository.queryUserGroups(userId));
+			try {
+				Long userId = ((Message) msg).getQueryUserGroupRequest().getUserId();
+				Message queryUserGroupsAck = groupAssembler.QueryUserGroupsBuilder(userId, ((Message) msg).getSeq(),
+						groupRepository.queryUserGroups(userId));
+				ctx.writeAndFlush(queryUserGroupsAck);
+			}
+			finally {
+				ReferenceCountUtil.release(msg);
 
-			// Message ack = Message.newBuilder().setSeq(((Message)
-			// msg).getSeq()).setOpCode(OpCode.QUERY_USER_GROUP_ACK)
-			// queryUserGroupsAck
-			ctx.writeAndFlush(queryUserGroupsAck);
-			logger.info("竟然走到了");
+			}
 		}
 		else {
 			ctx.fireChannelRead(msg);
