@@ -5,13 +5,22 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import org.springframework.data.redis.core.RedisTemplate;
 
+import javax.annotation.Resource;
+
 /**
  * @author chenqingze107@163.com
  * @version 2.0 2020/9/25 2:49 PM
  */
 public class ClusterChannelManager extends DefaultChannelManager {
 
+	@Resource
 	private RedisTemplate<String, Object> userNodeRedisTemplate;
+
+	@Resource
+	private RabbitMqConsumer rabbitMqConsumer;
+
+	@Resource
+	private RabbitMqProducer rabbitMqProducer;
 
 	@Override
 

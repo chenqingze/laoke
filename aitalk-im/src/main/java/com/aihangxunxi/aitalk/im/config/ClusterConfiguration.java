@@ -2,13 +2,16 @@ package com.aihangxunxi.aitalk.im.config;
 
 import com.aihangxunxi.aitalk.im.channel.ChannelManager;
 import com.aihangxunxi.aitalk.im.cluster.ClusterChannelManager;
-import com.aihangxunxi.aitalk.im.cluster.RabbitMQProducer;
+import com.aihangxunxi.aitalk.im.cluster.ClusterConstant;
+import com.aihangxunxi.aitalk.im.cluster.RabbitMqConsumer;
+import com.aihangxunxi.aitalk.im.cluster.RabbitMqProducer;
 import com.aihangxunxi.aitalk.im.config.condition.ClusterCondition;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
+import com.rabbitmq.client.BuiltinExchangeType;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
@@ -16,7 +19,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
@@ -25,8 +27,6 @@ import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.TimeoutException;
 
 /**
@@ -35,7 +35,6 @@ import java.util.concurrent.TimeoutException;
  */
 @Configuration
 @Conditional(ClusterCondition.class)
-@PropertySource("classpath:config.properties")
 public class ClusterConfiguration {
 
 	private final String redisHost;
@@ -109,7 +108,7 @@ public class ClusterConfiguration {
 	}
 
 	@Bean
-	public ConnectionFactory rabbitConnectionFactory() {
+	public Connection rabbitConnection() {
 		ConnectionFactory factory = new ConnectionFactory();
 
 		// factory.setVirtualHost("/");
@@ -124,26 +123,49 @@ public class ClusterConfiguration {
 		// factory.setUri("amqp://userName:password@hostName:portNumber/virtualHost");
 		// Connection conn = factory.newConnection();
 
-		return factory;
+		try {
+			return factory.newConnection();
+		}
+		catch (IOException | TimeoutException e) {
+			e.printStackTrace();
+		}
+		return null;
+
 	}
 
 	@Bean
-	public Connection rabbitConnection(ConnectionFactory connectionFactory) throws IOException, TimeoutException {
-		// Alternatively, URIs may be used:
-		// ConnectionFactory factory = new ConnectionFactory();
-		// factory.setUri("amqp://userName:password@hostName:portNumber/virtualHost");
-		// Connection conn = factory.newConnection();
-		return connectionFactory.newConnection();
+	public Channel producerChannel() {
+		try {
+			return rabbitConnection().createChannel();
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	@Bean
-	public Map<String, Channel> rabbitChannelMap() {
-		return new HashMap<>();
+	public RabbitMqProducer rabbitMqProducer(Channel producerChannel) {
+		return new RabbitMqProducer(producerChannel);
 	}
 
 	@Bean
-	public RabbitMQProducer rabbitMQProducer(Connection rabbitConnection, Map<String, Channel> rabbitChannelMap) {
-		return new RabbitMQProducer(rabbitConnection, rabbitChannelMap);
+	public Channel consumerChannel(@Value("${HOST_NAME}") String hostname) {
+		try (Channel channel = rabbitConnection().createChannel()) {
+			channel.exchangeDeclare(ClusterConstant.EXCHANGE_NAME, BuiltinExchangeType.DIRECT, false, true, null);
+			channel.queueDeclare(hostname, true, true, true, null);
+			channel.queueBind(hostname, ClusterConstant.EXCHANGE_NAME, hostname);
+			return channel;
+		}
+		catch (IOException | TimeoutException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	@Bean
+	public RabbitMqConsumer rabbitMqConsumer(Channel consumerChannel) {
+		return new RabbitMqConsumer(consumerChannel);
 	}
 
 }

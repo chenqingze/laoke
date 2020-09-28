@@ -96,7 +96,7 @@ public class StorageConfiguration {
 	}
 
 	@Bean
-	public RedisTemplate<String, Object> authRedisTemplate() {
+	public RedisTemplate<String, Object> authRedisTemplate(RedisConnectionFactory authLettuceConnectionFactory) {
 		RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
 		StringRedisSerializer stringRedisSerializer = new StringRedisSerializer();
 		// 设置key为string序列化器
@@ -110,7 +110,7 @@ public class StorageConfiguration {
 				JsonTypeInfo.As.PROPERTY);
 		jackson2JsonRedisSerializer.setObjectMapper(objectMapper);
 		redisTemplate.setValueSerializer(jackson2JsonRedisSerializer);
-		redisTemplate.setConnectionFactory(authLettuceConnectionFactory());
+		redisTemplate.setConnectionFactory(authLettuceConnectionFactory);
 
 		return redisTemplate;
 	}
