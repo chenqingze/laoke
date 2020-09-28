@@ -35,7 +35,13 @@ public class InvitationAssembler {
 
 		return Message.newBuilder().setOpCode(OpCode.INVITATION_ACCEPT_ACK).setSeq(seq)
 				.setInvitationAcceptAck(InvitationAcceptAck.newBuilder().setId(id)
-						// .set(friend)
+						.setFriendProto(FriendProto.newBuilder().setId(friend.getId().toHexString())
+								.setUserId(friend.getUserId()).setFriendId(friend.getFriendId())
+								.setFriendName(friend.getFriendName()).setFriendProfile(friend.getFriendProfile())
+								.setAlias(friend.getAlias()).setIsBlocked(friend.getIsBlocked())
+								.setIsMute(friend.getIsMute()).setIsStickOnTop(friend.getIsStickOnTop())
+								.setStatus(friend.getStatus()).setCreatedAt(friend.getCreatedAt())
+								.setUpdatedAt(friend.getUpdatedAt()).build())
 						.setRes(1).build())
 				.build();
 	}

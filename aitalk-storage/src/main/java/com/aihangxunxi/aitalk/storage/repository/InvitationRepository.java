@@ -24,8 +24,9 @@ public class InvitationRepository {
 	}
 
 	public Invitation updateInviteStatus(String id, String inviteStatus) {
-		Invitation invitation = db.getCollection("invitation", Invitation.class)
-				.findOneAndUpdate(eq("_id", new ObjectId(id)), set("inviteStatus", inviteStatus));
+		Invitation invitation = db.getCollection("invitation", Invitation.class).findOneAndUpdate(
+				eq("_id", new ObjectId(id)),
+				combine(set("inviteStatus", inviteStatus), set("updatedAt", System.currentTimeMillis())));
 		return invitation;
 	}
 
