@@ -6,7 +6,20 @@ package com.aihangxunxi.aitalk.im.protocol.buffers;
 
 // 创建群
 message CreateGroupRequest{
+  repeated string user = 1;
+  string owner = 2;
+  string header = 3;
+  string name = 4;
+  string group_id = 5;
+}
 
+message CreateGroupAck{
+  string success = 1;
+  string message = 2;
+  string group_id = 3;
+  string owner = 4;
+  string name = 5;
+  string header = 6;
 }
 
 //解散群
@@ -55,6 +68,7 @@ message AskFroJoinGroupRequest{
   string user_id = 2;
   string message = 3;
   string success = 4;
+  string content = 5;
 }
 
 message AskForJoinGroupAck{

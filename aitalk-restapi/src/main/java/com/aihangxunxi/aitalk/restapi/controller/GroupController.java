@@ -60,4 +60,19 @@ public class GroupController {
 		return ResponseEntity.status(HttpStatus.OK).body(map);
 	}
 
+	// 获取最大成员数量
+	@GetMapping("/max-count")
+	public ResponseEntity<ModelMap> queryGroupMaxMemberCount() {
+		ModelMap map = new ModelMap();
+		map.put("max", groupService.queryGroupMaxMemberCount());
+		return ResponseEntity.status(HttpStatus.OK).body(map);
+	}
+
+	@GetMapping("/friends")
+	public ResponseEntity<ModelMap> queryUsersFriend() {
+		ModelMap map = new ModelMap();
+		map.put("max", groupService.queryGroupMaxMemberCount());
+		return ResponseEntity.status(HttpStatus.OK).body(map);
+	}
+
 }

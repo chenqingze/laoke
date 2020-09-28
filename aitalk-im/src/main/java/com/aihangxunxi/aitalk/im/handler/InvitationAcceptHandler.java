@@ -2,7 +2,7 @@ package com.aihangxunxi.aitalk.im.handler;
 
 import com.aihangxunxi.aitalk.im.assembler.InvitationAssembler;
 import com.aihangxunxi.aitalk.im.channel.ChannelManager;
-import com.aihangxunxi.aitalk.im.protocol.buffers.FriendInvitationAcceptRequest;
+import com.aihangxunxi.aitalk.im.protocol.buffers.InvitationAcceptRequest;
 import com.aihangxunxi.aitalk.im.protocol.buffers.Message;
 import com.aihangxunxi.aitalk.im.protocol.buffers.OpCode;
 import com.aihangxunxi.aitalk.storage.constant.InviteStatus;
@@ -47,24 +47,54 @@ public class InvitationAcceptHandler extends ChannelInboundHandlerAdapter {
 
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-		if (msg instanceof Message && ((Message) msg).getOpCode() == OpCode.FRIEND_INVITATION_ACCEPT_REQUEST) {
-			FriendInvitationAcceptRequest fiar = ((Message) msg).getFriendInvitationAcceptRequest();
+		if (msg instanceof Message && ((Message) msg).getOpCode() == OpCode.INVITATION_ACCEPT_REQUEST) {
+			InvitationAcceptRequest fiar = ((Message) msg).getInvitationAcceptRequest();
 
 			String id = fiar.getId();
-			boolean update = invitationRepository.updateInviteStatus(id);
+			Invitation invitation = invitationRepository.updateInviteStatus(id, InviteStatus.ACCEPTED.name());
 
-			if (update) {
+			if (invitation != null) {
 				Friend friend = new Friend();
+				friend.setUserId(Long.valueOf(invitation.getAddresseeId()));
+				friend.setFriendId(invitation.getRequesterId());
+				friend.setFriendName(invitation.getRequesterNickname());
+				friend.setFriendProfile("https://rxjs-dev.firebaseapp.com/assets/images/logos/Rx_Logo_S.png");
+				friend.setAlias(invitation.getRequesterAlias());
+				friend.setIsBlocked(0);
+				friend.setIsMute(0);
+				friend.setIsStickOnTop(0);
+				friend.setStatus("");
+				long currentTimeMillis = Instant.now().getEpochSecond();
+				friend.setCreatedAt(currentTimeMillis);
+				friend.setUpdatedAt(currentTimeMillis);
+				boolean save = friendRepository.save(friend);
 
-				Message message = invitationAssembler.friendInvitationAcceptAck(id, friend, ((Message) msg).getSeq());
-				ctx.writeAndFlush(message);
+				Message message = null;
+				if (save) {
+					message = invitationAssembler.friendInvitationAcceptAck(id, friend, ((Message) msg).getSeq());
+					ctx.writeAndFlush(message);
+				}
 
-				/*
-				 * User user = userRepository.getUserById(invitation.getAddresseeId());
-				 * Channel addresseeChannel =
-				 * channelManager.findChannelByUid(user.getUid().toHexString()); if
-				 * (addresseeChannel != null) { addresseeChannel.writeAndFlush(message); }
-				 */
+				User user = userRepository.getUserById(Long.valueOf(invitation.getRequesterId()));
+				Channel addresseeChannel = channelManager.findChannelByUid(user.getUid().toHexString());
+				friend = new Friend();
+				friend.setUserId(invitation.getRequesterId());
+				friend.setFriendId(Long.valueOf(invitation.getAddresseeId()));
+				friend.setFriendName(invitation.getAddresseeNickname());
+				friend.setFriendProfile("https://rxjs-dev.firebaseapp.com/assets/images/logos/Rx_Logo_S.png");
+				friend.setAlias(invitation.getAddresseeAlias());
+				friend.setIsBlocked(0);
+				friend.setIsMute(0);
+				friend.setIsStickOnTop(0);
+				friend.setStatus("");
+				currentTimeMillis = Instant.now().getEpochSecond();
+				friend.setCreatedAt(currentTimeMillis);
+				friend.setUpdatedAt(currentTimeMillis);
+				save = friendRepository.save(friend);
+				if (addresseeChannel != null && save) {
+					message = invitationAssembler.friendInvitationAcceptAck(id, friend, ((Message) msg).getSeq());
+					addresseeChannel.writeAndFlush(message);
+				}
 
 			}
 			else {

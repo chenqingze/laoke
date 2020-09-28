@@ -12,9 +12,9 @@ public class Friendship extends BaseModel {
 
 	private ObjectId id;
 
-	private ObjectId userId;
+	private Long userId;
 
-	private ObjectId friendId;
+	private Long friendId;
 
 	private String alias;
 
@@ -26,6 +26,8 @@ public class Friendship extends BaseModel {
 
 	private Long updatedAt;
 
+	private String header;
+
 	public ObjectId getId() {
 		return id;
 	}
@@ -34,19 +36,19 @@ public class Friendship extends BaseModel {
 		this.id = id;
 	}
 
-	public ObjectId getUserId() {
+	public Long getUserId() {
 		return userId;
 	}
 
-	public void setUserId(ObjectId userId) {
+	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
 
-	public ObjectId getFriendId() {
+	public Long getFriendId() {
 		return friendId;
 	}
 
-	public void setFriendId(ObjectId friendId) {
+	public void setFriendId(Long friendId) {
 		this.friendId = friendId;
 	}
 
@@ -88,6 +90,14 @@ public class Friendship extends BaseModel {
 
 	public void setUpdatedAt(Long updatedAt) {
 		this.updatedAt = updatedAt;
+	}
+
+	public String getHeader() {
+		return header;
+	}
+
+	public void setHeader(String header) {
+		this.header = header;
 	}
 
 }
