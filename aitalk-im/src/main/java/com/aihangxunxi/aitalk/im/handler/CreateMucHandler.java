@@ -14,6 +14,7 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.util.ReferenceCountUtil;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -44,48 +45,55 @@ public class CreateMucHandler extends ChannelInboundHandlerAdapter {
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 		if (msg instanceof Message && ((Message) msg).getOpCode() == OpCode.CREATE_GROUP_REQUEST) {
-			// 判断当前已经创建了几个群
-			String owner = ((Message) msg).getCreateGroupRequest().getOwner();
-			if (groupRepository.checkUserOwnGroup(owner)) {
-				String header = ((Message) msg).getCreateGroupRequest().getHeader();
-				String name = ((Message) msg).getCreateGroupRequest().getName();
-				ProtocolStringList users = ((Message) msg).getCreateGroupRequest().getUserList();
-				// 创建群
-				String groupId = groupRepository.createMuc(owner, name, header);
+			try {
+				// 判断当前已经创建了几个群
+				String owner = ((Message) msg).getCreateGroupRequest().getOwner();
+				if (groupRepository.checkUserOwnGroup(owner)) {
+					String header = ((Message) msg).getCreateGroupRequest().getHeader();
+					String name = ((Message) msg).getCreateGroupRequest().getName();
+					ProtocolStringList users = ((Message) msg).getCreateGroupRequest().getUserList();
+					// 创建群
+					String groupId = groupRepository.createMuc(owner, name, header);
 
-				Channel channel = channelManager.findChannelByUid(owner);
-				groupManager.addChannel(groupId, channel);
-				// 保存群用户
-				for (int i = 0; i < users.size(); i++) {
-					Map map = userRepository.queryUserById(Long.parseLong(users.get(i)));
-					// 保存群成员
-					groupMemberRepository.saveUserJoinGroup(groupId, Long.parseLong(users.get(i)),
-							map.get("uId").toString(), map.get("header").toString(), map.get("nickname").toString());
-					Channel userChannel = channelManager.findChannelByUid(users.get(i));
-					groupManager.addChannel(groupId, userChannel);
+					Channel channel = channelManager.findChannelByUid(owner);
+					groupManager.addChannel(groupId, channel);
+					// 保存群用户
+					for (int i = 0; i < users.size(); i++) {
+						Map map = userRepository.queryUserById(Long.parseLong(users.get(i)));
+						// 保存群成员
+						groupMemberRepository.saveUserJoinGroup(groupId, Long.parseLong(users.get(i)),
+								map.get("uId").toString(), map.get("header").toString(),
+								map.get("nickname").toString());
+						Channel userChannel = channelManager.findChannelByUid(users.get(i));
+						groupManager.addChannel(groupId, userChannel);
+					}
+
+					Message msgRequest = Message.newBuilder().setOpCode(OpCode.CREATE_GROUP_REQUEST)
+							.setSeq(((Message) msg).getSeq())
+							.setCreateGroupRequest(CreateGroupRequest.newBuilder().setGroupId(groupId).setHeader(header)
+									.setName(name).setOwner(owner).addAllUser(users).build())
+							.build();
+					groupManager.sendGroupMsg(groupId, msgRequest);
+
+					Message message = Message.newBuilder().setOpCode(OpCode.CREATE_GROUP_ACK)
+							.setSeq(((Message) msg).getSeq())
+							.setCreateGroupAck(CreateGroupAck.newBuilder().setMessage("创建成功").setSuccess("ok")
+									.setHeader(header).setName(name).setGroupId(groupId).setOwner(owner).build())
+							.build();
+					ctx.writeAndFlush(message);
 				}
-
-				Message msgRequest = Message.newBuilder().setOpCode(OpCode.CREATE_GROUP_REQUEST)
-						.setSeq(((Message) msg).getSeq())
-						.setCreateGroupRequest(CreateGroupRequest.newBuilder().setGroupId(groupId).setHeader(header)
-								.setName(name).setOwner(owner).addAllUser(users).build())
-						.build();
-				groupManager.sendGroupMsg(groupId, msgRequest);
-
-				Message message = Message.newBuilder().setOpCode(OpCode.CREATE_GROUP_ACK)
-						.setSeq(((Message) msg).getSeq())
-						.setCreateGroupAck(CreateGroupAck.newBuilder().setMessage("创建成功").setSuccess("ok")
-								.setHeader(header).setName(name).setGroupId(groupId).setOwner(owner).build())
-						.build();
-				ctx.writeAndFlush(message);
+				else {
+					Message message = Message.newBuilder().setOpCode(OpCode.CREATE_GROUP_ACK)
+							.setSeq(((Message) msg).getSeq())
+							.setCreateGroupAck(
+									CreateGroupAck.newBuilder().setSuccess("full").setMessage("您创建的群数量已达上限").build())
+							.build();
+					ctx.writeAndFlush(message);
+				}
 			}
-			else {
-				Message message = Message.newBuilder().setOpCode(OpCode.CREATE_GROUP_ACK)
-						.setSeq(((Message) msg).getSeq())
-						.setCreateGroupAck(
-								CreateGroupAck.newBuilder().setSuccess("full").setMessage("您创建的群数量已达上限").build())
-						.build();
-				ctx.writeAndFlush(message);
+			finally {
+				ReferenceCountUtil.release(msg);
+
 			}
 
 		}
