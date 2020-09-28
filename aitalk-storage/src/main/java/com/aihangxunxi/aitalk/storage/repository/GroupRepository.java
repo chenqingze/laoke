@@ -1,17 +1,18 @@
 package com.aihangxunxi.aitalk.storage.repository;
 
 import com.aihangxunxi.aitalk.storage.model.GroupMember;
+import com.aihangxunxi.aitalk.storage.model.GroupSetting;
 import com.aihangxunxi.aitalk.storage.model.Groups;
 import com.aihangxunxi.aitalk.storage.model.UsersGroup;
 import com.aihangxunxi.aitalk.storage.utils.PinYinUtil;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.result.InsertOneResult;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
-import java.security.acl.Group;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -88,6 +89,45 @@ public class GroupRepository {
 			return false;
 		}
 
+	}
+
+	// 查询用户已经创建了几个群 todo 从redis获取最大创建数
+	public boolean checkUserOwnGroup(String userId) {
+
+		MongoCollection<Groups> groupMongoCollection = aitalkDb.getCollection("group", Groups.class);
+		Bson bson = eq("owner", Long.parseLong(userId));
+
+		return groupMongoCollection.countDocuments(bson) < 10;
+
+	}
+
+	// 创建群聊
+	public String createMuc(String owner, String name, String header) {
+		MongoCollection<Groups> groupsMongoCollection = aitalkDb.getCollection("group", Groups.class);
+		MongoCollection<GroupMember> groupMemberMongoCollection = aitalkDb.getCollection("groupMember",
+				GroupMember.class);
+		Groups group = groupsMongoCollection.find().sort(eq("groupNo", -1)).first();
+		long max;
+		if (group == null) {
+			max = 1000000000;
+		}
+		else {
+			max = Long.parseLong(group.getGroupNo());
+		}
+		// 最大数量
+		max += 1;
+		Groups groups = new Groups();
+		groups.setGroupNo(String.valueOf(max));
+		groups.setHeader(header);
+		groups.setName(name);
+		groups.setOwner(Long.parseLong(owner));
+		groups.setNotice("暂无群公告");
+		GroupSetting groupSetting = new GroupSetting();
+		groupSetting.setIsMute(false);
+		groupSetting.setIsConfirmJoin(false);
+		groups.setGroupSetting(groupSetting);
+		InsertOneResult insertOneResult = groupsMongoCollection.insertOne(groups);
+		return insertOneResult.getInsertedId().asObjectId().getValue().toString();
 	}
 
 }

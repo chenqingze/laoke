@@ -77,6 +77,9 @@ public class WebSocketChannelInitializer extends ChannelInitializer<NioSocketCha
 	@Resource
 	private GroupMessageHandler groupMessageHandler;
 
+	@Resource
+	private CreateMucHandler createMucHandler;
+
 	public WebSocketChannelInitializer(@Nullable SslContext sslCtx, EventExecutorGroup processorGroup) {
 		this.sslCtx = sslCtx;
 		this.processorGroup = processorGroup;
@@ -130,7 +133,7 @@ public class WebSocketChannelInitializer extends ChannelInitializer<NioSocketCha
 		pipeline.addLast("groupMessageHandler", groupMessageHandler);
 		pipeline.addLast("invitationUserJoinGroupHandler", invitationUserJoinGroupHandler);
 		pipeline.addLast("askFroJoinGroupHandler", askFroJoinGroupHandler);
-
+		pipeline.addLast("createMucHandler", createMucHandler);
 		// todo：其他业务处理器放到这里
 		// pipeline.addLast(processorGroup, "queryUserGroupsHandler",
 		// queryUserGroupsHandler);
