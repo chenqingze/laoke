@@ -40,6 +40,13 @@ public class RabbitMqConsumer implements Consumer {
 
 	// 接收数据
 	public void receive(DeliverCallback deliverCallback) throws IOException {
+		// 回调举例：DeliverCallback demo
+		// DeliverCallback deliverCallback = (consumerTag, delivery) -> {
+		// Message message = Message.parseFrom(delivery.getBody());
+		// logger.debug("Received message from {} ,message opCode is :'{}'",
+		// delivery.getEnvelope().getRoutingKey(), message.getOpCode());
+		// // todo:发送到客户端
+		// };
 		String queueName = InetAddress.getLocalHost().getHostName();
 		this.consumerChannel.basicConsume(queueName, true, deliverCallback, consumerTag -> {
 		});

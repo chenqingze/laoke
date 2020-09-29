@@ -1,16 +1,14 @@
-package com.aihangxunxi.aitalk.im.config;
+package com.aihangxunxi.aitalk.im.cluster;
 
+import com.aihangxunxi.aitalk.im.channel.ChannelConfiguration;
 import com.aihangxunxi.aitalk.im.channel.ChannelManager;
-import com.aihangxunxi.aitalk.im.cluster.ClusterChannelManager;
-import com.aihangxunxi.aitalk.im.cluster.ClusterConstant;
-import com.aihangxunxi.aitalk.im.cluster.RabbitMqConsumer;
-import com.aihangxunxi.aitalk.im.cluster.RabbitMqProducer;
 import com.aihangxunxi.aitalk.im.config.condition.ClusterCondition;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
+import com.github.benmanes.caffeine.cache.Cache;
 import com.rabbitmq.client.BuiltinExchangeType;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
@@ -19,6 +17,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
@@ -38,6 +37,7 @@ import java.util.concurrent.TimeoutException;
  * @version 2.0 2020/9/26 11:56 AM
  */
 @Configuration
+@Import(ChannelConfiguration.class)
 @Conditional(ClusterCondition.class)
 public class ClusterConfiguration {
 
@@ -78,8 +78,10 @@ public class ClusterConfiguration {
 	}
 
 	@Bean("channelManager")
-	public ChannelManager clusterChannelManager() {
-		return new ClusterChannelManager();
+	public ChannelManager clusterChannelManager(Cache<String, io.netty.channel.Channel> localChannelCache,
+			RedisTemplate<String, Object> userNodeRedisTemplate, RabbitMqConsumer rabbitMqConsumer,
+			RabbitMqProducer rabbitMqProducer) {
+		return new ClusterChannelManager(localChannelCache, userNodeRedisTemplate, rabbitMqConsumer, rabbitMqProducer);
 	}
 
 	/**
