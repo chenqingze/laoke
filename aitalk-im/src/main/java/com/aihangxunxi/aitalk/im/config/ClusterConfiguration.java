@@ -135,12 +135,11 @@ public class ClusterConfiguration {
 
 	@Bean
 	public Channel producerChannel(Connection rabbitConnection) {
-		try {
-			Channel channel = rabbitConnection.createChannel();
+		try (Channel channel = rabbitConnection.createChannel()) {
 			channel.exchangeDeclare(ClusterConstant.EXCHANGE_NAME, BuiltinExchangeType.DIRECT, false, true, null);
 			return channel;
 		}
-		catch (IOException e) {
+		catch (IOException | TimeoutException e) {
 			e.printStackTrace();
 			return null;
 		}
@@ -152,11 +151,9 @@ public class ClusterConfiguration {
 	}
 
 	@Bean
-	public Channel consumerChannel(Connection rabbitConnection, @Value("${HOST_NAME}") String hostname) {
+	public Channel consumerChannel(Connection rabbitConnection) {
 		try (Channel channel = rabbitConnection.createChannel()) {
 			channel.exchangeDeclare(ClusterConstant.EXCHANGE_NAME, BuiltinExchangeType.DIRECT, false, true, null);
-			channel.queueDeclare(hostname, true, true, true, null);
-			channel.queueBind(hostname, ClusterConstant.EXCHANGE_NAME, hostname);
 			return channel;
 		}
 		catch (IOException | TimeoutException e) {
