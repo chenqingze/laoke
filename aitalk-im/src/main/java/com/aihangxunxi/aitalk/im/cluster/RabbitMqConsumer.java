@@ -1,6 +1,12 @@
 package com.aihangxunxi.aitalk.im.cluster;
 
 import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.DeliverCallback;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.net.InetAddress;
 
 /**
  * AMQP P2P 消费者
@@ -10,15 +16,33 @@ import com.rabbitmq.client.Channel;
  */
 public class RabbitMqConsumer implements Consumer {
 
+	private static final Logger logger = LoggerFactory.getLogger(RabbitMqConsumer.class);
+
 	private final Channel consumerChannel;
 
 	public RabbitMqConsumer(Channel consumerChannel) {
 		this.consumerChannel = consumerChannel;
+
+		// todo:测试完删掉:start
+		DeliverCallback deliverCallback = (consumerTag, delivery) -> {
+			String message = new String(delivery.getBody(), "UTF-8");
+			logger.debug(" [x] Received {}:'{}'", delivery.getEnvelope().getRoutingKey(), message);
+		};
+		try {
+			this.receive(deliverCallback);
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+		// todo:测试完删掉:end
+
 	}
 
 	// 接收数据
-	public void receive() {
-
+	public void receive(DeliverCallback deliverCallback) throws IOException {
+		String queueName = InetAddress.getLocalHost().getHostName();
+		this.consumerChannel.basicConsume(queueName, true, deliverCallback, consumerTag -> {
+		});
 	}
 
 }

@@ -27,6 +27,10 @@ import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.URISyntaxException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.TimeoutException;
 
 /**
@@ -43,29 +47,34 @@ public class ClusterConfiguration {
 
 	private final int userNodeDb;
 
-	private final String rabbitMqHost;
+	private final String rabbitMqUri;
 
-	private final int rabbitMqPort;
+	// private final String rabbitMqHost;
 
-	private final String rabbitMqUserName;
+	// private final int rabbitMqPort;
 
-	private final String rabbitMqPassword;
+	// private final String rabbitMqUserName;
+
+	// private final String rabbitMqPassword;
 
 	public ClusterConfiguration(@Value("${server.redis.host}") String redisHost,
 			@Value("${server.redis.port}") int redisPort, @Value("${server.redis.userNodeDb}") int userNodeDb,
-			@Value("${server.rabbitMq.host}") String rabbitMqHost, @Value("${server.rabbitMq.port}") int rabbitMqPort,
-			@Value("${server.rabbitMq.userName}") String rabbitMqUserName,
-			@Value("${server.rabbitMq.password}") String rabbitMqPassword
+			@Value("${server.rabbitMq.uri}") String rabbitMqUri
+	// @Value("${server.rabbitMq.host}") String rabbitMqHost,
+	// @Value("${server.rabbitMq.port}") int rabbitMqPort,
+	// @Value("${server.rabbitMq.userName}") String rabbitMqUserName,
+	// @Value("${server.rabbitMq.password}") String rabbitMqPassword
 
 	) {
 		this.redisHost = redisHost;
 		this.redisPort = redisPort;
 		this.userNodeDb = userNodeDb;
+		this.rabbitMqUri = rabbitMqUri;
 
-		this.rabbitMqHost = rabbitMqHost;
-		this.rabbitMqPort = rabbitMqPort;
-		this.rabbitMqUserName = rabbitMqUserName;
-		this.rabbitMqPassword = rabbitMqPassword;
+		// this.rabbitMqHost = rabbitMqHost;
+		// this.rabbitMqPort = rabbitMqPort;
+		// this.rabbitMqUserName = rabbitMqUserName;
+		// this.rabbitMqPassword = rabbitMqPassword;
 	}
 
 	@Bean("channelManager")
@@ -107,64 +116,67 @@ public class ClusterConfiguration {
 		return redisTemplate;
 	}
 
-	@Bean
+	/**
+	 * 与rabbitMq建立连接，并指定spring容器销毁时的销毁方法
+	 * @return
+	 */
+	@Bean(destroyMethod = "close")
 	public Connection rabbitConnection() {
 		ConnectionFactory factory = new ConnectionFactory();
-
 		// factory.setVirtualHost("/");
-		factory.setHost(this.rabbitMqHost);
-		factory.setPort(this.rabbitMqPort);
+		// factory.setHost(this.rabbitMqHost);
+		// factory.setPort(this.rabbitMqPort);
 		// "guest"/"guest" by default, limited to localhost connections
-		factory.setUsername(this.rabbitMqUserName);
-		factory.setPassword(this.rabbitMqPassword);
-
-		// Alternatively, URIs may be used:
-		// ConnectionFactory factory = new ConnectionFactory();
-		// factory.setUri("amqp://userName:password@hostName:portNumber/virtualHost");
-		// Connection conn = factory.newConnection();
-
+		// factory.setUsername(this.rabbitMqUserName);
+		// factory.setPassword(this.rabbitMqPassword);
 		try {
+			// Alternatively, URIs may be used:
+			factory.setUri(this.rabbitMqUri);
 			return factory.newConnection();
 		}
-		catch (IOException | TimeoutException e) {
+		catch (IOException | TimeoutException | URISyntaxException | NoSuchAlgorithmException
+				| KeyManagementException e) {
 			e.printStackTrace();
+			return null;// todo:自定义异常封装，直接抛出自定义异常
 		}
-		return null;
 
-	}
-
-	@Bean
-	public Channel producerChannel(Connection rabbitConnection) {
-		try (Channel channel = rabbitConnection.createChannel()) {
-			channel.exchangeDeclare(ClusterConstant.EXCHANGE_NAME, BuiltinExchangeType.DIRECT, false, true, null);
-			return channel;
-		}
-		catch (IOException | TimeoutException e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-
-	@Bean
-	public RabbitMqProducer rabbitMqProducer(Channel producerChannel) {
-		return new RabbitMqProducer(producerChannel);
 	}
 
 	@Bean
 	public Channel consumerChannel(Connection rabbitConnection) {
-		try (Channel channel = rabbitConnection.createChannel()) {
-			channel.exchangeDeclare(ClusterConstant.EXCHANGE_NAME, BuiltinExchangeType.DIRECT, false, true, null);
+		try {
+			Channel channel = rabbitConnection.createChannel(1);
+			String queueName = InetAddress.getLocalHost().getHostName();
+			channel.queueDeclare(queueName, false, false, false, null);
 			return channel;
 		}
-		catch (IOException | TimeoutException e) {
+		catch (IOException e) {
 			e.printStackTrace();
-			return null;
+			return null;// todo:自定义异常封装，直接抛出自定义异常
 		}
 	}
 
 	@Bean
 	public RabbitMqConsumer rabbitMqConsumer(Channel consumerChannel) {
 		return new RabbitMqConsumer(consumerChannel);
+	}
+
+	@Bean
+	public Channel producerChannel(Connection rabbitConnection) {
+		try {
+			Channel channel = rabbitConnection.createChannel(2);
+			channel.exchangeDeclare(ClusterConstant.EXCHANGE_NAME, BuiltinExchangeType.DIRECT, false, false, null);
+			return channel;
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+			return null;// todo:自定义异常封装，直接抛出自定义异常
+		}
+	}
+
+	@Bean
+	public RabbitMqProducer rabbitMqProducer(Channel producerChannel) {
+		return new RabbitMqProducer(producerChannel);
 	}
 
 }
