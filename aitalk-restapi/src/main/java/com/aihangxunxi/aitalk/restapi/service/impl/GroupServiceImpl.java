@@ -1,6 +1,7 @@
 package com.aihangxunxi.aitalk.restapi.service.impl;
 
 import com.aihangxunxi.aitalk.restapi.service.GroupService;
+import com.aihangxunxi.aitalk.storage.model.Friendship;
 import com.aihangxunxi.aitalk.storage.model.Groups;
 import com.aihangxunxi.aitalk.storage.repository.GroupRepository;
 import org.springframework.stereotype.Service;
@@ -37,6 +38,16 @@ public class GroupServiceImpl implements GroupService {
 	@Override
 	public boolean queryUserInGroupByNo(String groupNo, Long userId) {
 		return groupRepository.queryUserInGroupByNo(groupNo, userId);
+	}
+
+	@Override
+	public int queryGroupMaxMemberCount() {
+		return groupRepository.queryGroupMaxMemberCount();
+	}
+
+	@Override
+	public List<Friendship> queryUsersFriend(Long userId) {
+		return groupRepository.queryUsersFriend(userId);
 	}
 
 }

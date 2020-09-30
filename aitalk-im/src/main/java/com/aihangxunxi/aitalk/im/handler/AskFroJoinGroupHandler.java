@@ -57,7 +57,7 @@ public class AskFroJoinGroupHandler extends ChannelInboundHandlerAdapter {
 				String groupId = ((Message) msg).getAskForJoinGroupRequest().getGroupId();
 				String userid = ((Message) msg).getAskForJoinGroupRequest().getUserId();
 				String content = ((Message) msg).getAskForJoinGroupRequest().getMessage();
-				// 获取用户细心
+				// 获取用户信息
 				Map map = userRepository.queryUserById(Long.parseLong(userid));
 				// 获取群信息
 				Groups groups = groupRepository.queryGroupInfo(groupId);
@@ -65,7 +65,7 @@ public class AskFroJoinGroupHandler extends ChannelInboundHandlerAdapter {
 				// 判断群是否满员 todo 从redis获取人数
 				if (!groupMemberRepository.checkGroupIsFull(groupId)) {
 
-					Message ack = Message.newBuilder().setOpCode(OpCode.ASK_FOR_JOIN_GROUP_REQUEST)
+					Message ack = Message.newBuilder().setOpCode(OpCode.ASK_FOR_JOIN_GROUP_ACK)
 							.setSeq(((Message) msg).getSeq())
 							.setAskForJoinGroupAck(AskForJoinGroupAck.newBuilder().setGroupId(groupId).setUserId(userid)
 									.setSuccess("full").setMessage("该群已满员").build())
@@ -103,7 +103,10 @@ public class AskFroJoinGroupHandler extends ChannelInboundHandlerAdapter {
 											.setMessage(map.get("nickname") + "申请加入群聊").setUserId(userid)
 											.setSuccess("wait").build())
 									.build();
-							channel.writeAndFlush(requestMessage);
+							if (channel != null) {
+								channel.writeAndFlush(requestMessage);
+
+							}
 
 							// 保存至数据库
 							Invitation invitation = new Invitation();
@@ -125,12 +128,15 @@ public class AskFroJoinGroupHandler extends ChannelInboundHandlerAdapter {
 						else {
 							// 当前群没有开启邀请确认
 							Channel channel = channelManager.findChannelByUid(userid);
-							groupManager.addChannel(groupId, channel);
+
+							if (channel != null) {
+								groupManager.addChannel(groupId, channel);
+							}
 
 							// 保存至数据库
 							groupMemberRepository.saveUserJoinGroup(groupId, Long.parseLong(userid),
 									map.get("uId").toString(), map.get("header").toString(),
-									map.get("alias").toString());
+									map.get("nickname").toString());
 							// 发送群通知
 							Message groupMsg = Message.newBuilder().setOpCode(OpCode.ASK_FOR_JOIN_GROUP_REQUEST)
 									.setAskForJoinGroupRequest(AskFroJoinGroupRequest.newBuilder().setSuccess("ok")
@@ -139,6 +145,14 @@ public class AskFroJoinGroupHandler extends ChannelInboundHandlerAdapter {
 									.build();
 
 							groupManager.sendGroupMsg(groupId, groupMsg);
+
+							Message message = Message.newBuilder().setSeq(((Message) msg).getSeq())
+									.setOpCode(OpCode.ASK_FOR_JOIN_GROUP_ACK)
+									.setAskForJoinGroupAck(AskForJoinGroupAck.newBuilder().setMessage("加入成功")
+											.setSuccess("ok").setUserId(userid).setGroupId(groupId).build())
+									.build();
+							ctx.writeAndFlush(message);
+
 						}
 
 					}

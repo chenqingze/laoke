@@ -1,9 +1,6 @@
 package com.aihangxunxi.aitalk.storage.repository;
 
-import com.aihangxunxi.aitalk.storage.model.GroupMember;
-import com.aihangxunxi.aitalk.storage.model.GroupSetting;
-import com.aihangxunxi.aitalk.storage.model.Groups;
-import com.aihangxunxi.aitalk.storage.model.UsersGroup;
+import com.aihangxunxi.aitalk.storage.model.*;
 import com.aihangxunxi.aitalk.storage.utils.PinYinUtil;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
@@ -91,6 +88,13 @@ public class GroupRepository {
 
 	}
 
+	// 获取群最大成员数
+	public int queryGroupMaxMemberCount() {
+		// todo
+
+		return 500;
+	}
+
 	// 查询用户已经创建了几个群 todo 从redis获取最大创建数
 	public boolean checkUserOwnGroup(String userId) {
 
@@ -128,6 +132,25 @@ public class GroupRepository {
 		groups.setGroupSetting(groupSetting);
 		InsertOneResult insertOneResult = groupsMongoCollection.insertOne(groups);
 		return insertOneResult.getInsertedId().asObjectId().getValue().toString();
+	}
+
+	// 获取用户的好友列表
+	public List<Friendship> queryUsersFriend(Long userId) {
+
+		MongoCollection<Friend> friendMongoCollection = aitalkDb.getCollection("friend", Friend.class);
+		Bson bson = and(eq("userId", userId), eq("isBlocked", 0), eq("status", "effective"));
+		List<Friend> list = friendMongoCollection.find().into(new ArrayList<>());
+		List<Friendship> friendships = new ArrayList<>();
+		list.stream().forEach(friend -> {
+			Friendship friendship = new Friendship();
+			friendship.setAlias(friend.getAlias().isEmpty() ? friend.getFriendName() : friend.getAlias());
+			friendship.setBlocked(false);
+			friendship.setUserId(userId);
+			friendship.setFriendId(friend.getFriendId());
+
+			friendships.add(friendship);
+		});
+		return friendships;
 	}
 
 }

@@ -71,7 +71,10 @@ public class InvitationUserJoinGroupHandler extends ChannelInboundHandlerAdapter
 								userMap.get("uId").toString(), userMap.get("header").toString(),
 								userMap.get("nickname").toString());
 						Channel channel = channelManager.findChannelByUid(user);
-						groupManager.addChannel(groupId, channel);
+						if (channel != null) {
+							groupManager.addChannel(groupId, channel);
+
+						}
 						content += userMap.get("nickname") + (users.size() - 1 == i ? "" : "、");
 					}
 					content += " 加入群聊";

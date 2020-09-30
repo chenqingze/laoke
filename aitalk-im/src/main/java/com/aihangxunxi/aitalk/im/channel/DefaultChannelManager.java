@@ -4,8 +4,6 @@ import com.github.benmanes.caffeine.cache.Cache;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 
-import javax.annotation.Resource;
-
 /**
  * 用户channel管理
  *
@@ -14,8 +12,11 @@ import javax.annotation.Resource;
  */
 public class DefaultChannelManager implements ChannelManager {
 
-	@Resource
 	private Cache<String, Channel> localChannelCache;
+
+	public DefaultChannelManager(Cache<String, Channel> localChannelCache) {
+		this.localChannelCache = localChannelCache;
+	}
 
 	@Override
 	public void addChannel(ChannelHandlerContext context) {
