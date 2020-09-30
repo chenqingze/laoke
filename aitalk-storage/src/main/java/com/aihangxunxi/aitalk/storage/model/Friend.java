@@ -1,5 +1,7 @@
 package com.aihangxunxi.aitalk.storage.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import org.bson.types.ObjectId;
 
 public class Friend {
@@ -28,6 +30,7 @@ public class Friend {
 
 	private Long updatedAt;
 
+	@JsonSerialize(using = ToStringSerializer.class)
 	public ObjectId getId() {
 		return id;
 	}

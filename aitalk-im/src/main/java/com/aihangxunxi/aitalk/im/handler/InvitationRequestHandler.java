@@ -48,11 +48,11 @@ public class InvitationRequestHandler extends ChannelInboundHandlerAdapter {
 			// todo:获取当前用户信息
 			Long requesterId = 123l;
 			String requesterNickname = "希克斯";
-			String requesterProfile = "https://tupian.qqw21.com/article/UploadPic/2020-7/202073022592523433.jpg";
+			String requesterProfile = "https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y";
 
 			// todo:获取 addressee 用户信息
 			String addresseeNickname = "jijiDown";
-			String addresseeProfile = "https://tupian.qqw21.com/article/UploadPic/2020-9/202092422443332504.jpg";
+			String addresseeProfile = "https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y";
 
 			long currentTimeMillis = Instant.now().getEpochSecond();
 

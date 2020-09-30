@@ -58,7 +58,7 @@ public class InvitationAcceptHandler extends ChannelInboundHandlerAdapter {
 				friend.setUserId(Long.valueOf(invitation.getAddresseeId()));
 				friend.setFriendId(invitation.getRequesterId());
 				friend.setFriendName(invitation.getRequesterNickname());
-				friend.setFriendProfile("https://rxjs-dev.firebaseapp.com/assets/images/logos/Rx_Logo_S.png");
+				friend.setFriendProfile("https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y");
 				friend.setAlias(invitation.getRequesterAlias());
 				friend.setIsBlocked(0);
 				friend.setIsMute(0);
@@ -81,7 +81,7 @@ public class InvitationAcceptHandler extends ChannelInboundHandlerAdapter {
 				friend.setUserId(invitation.getRequesterId());
 				friend.setFriendId(Long.valueOf(invitation.getAddresseeId()));
 				friend.setFriendName(invitation.getAddresseeNickname());
-				friend.setFriendProfile("https://rxjs-dev.firebaseapp.com/assets/images/logos/Rx_Logo_S.png");
+				friend.setFriendProfile("https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y");
 				friend.setAlias(invitation.getAddresseeAlias());
 				friend.setIsBlocked(0);
 				friend.setIsMute(0);
