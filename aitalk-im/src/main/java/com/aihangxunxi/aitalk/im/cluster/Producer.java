@@ -14,9 +14,9 @@ public interface Producer {
 
 	/**
 	 * 发送数据
-	 * @param uidHexStr uid(objectId) 16进制字符串 ，作为routerKey
+	 * @param imNodeHostname imNodeHostname作为routerKey
 	 * @param message 转发消息
 	 */
-	void send(String uidHexStr, Message message) throws IOException;
+	void send(String imNodeHostname, Message message) throws IOException;
 
 }
