@@ -51,12 +51,21 @@ public class CreateMucHandler extends ChannelInboundHandlerAdapter {
 				if (groupRepository.checkUserOwnGroup(owner)) {
 					String header = ((Message) msg).getCreateGroupRequest().getHeader();
 					String name = ((Message) msg).getCreateGroupRequest().getName();
-					ProtocolStringList users = ((Message) msg).getCreateGroupRequest().getUserList();
+					ProtocolStringList users = ((Message) msg).getCreateGroupRequest().getUsersList();
 					// 创建群
 					String groupId = groupRepository.createMuc(owner, name, header);
 
 					Channel channel = channelManager.findChannelByUid(owner);
-					groupManager.addChannel(groupId, channel);
+					// 获取群主相关信息
+					Map ownerMap = userRepository.queryUserById(Long.parseLong(owner));
+					groupMemberRepository.saveUserJoinGroup(groupId, Long.parseLong(owner),
+							ownerMap.get("uId").toString(), ownerMap.get("header").toString(),
+							ownerMap.get("nickname").toString());
+
+					if (channel != null) {
+						groupManager.addChannel(groupId, channel);
+
+					}
 					// 保存群用户
 					for (int i = 0; i < users.size(); i++) {
 						Map map = userRepository.queryUserById(Long.parseLong(users.get(i)));
@@ -65,13 +74,16 @@ public class CreateMucHandler extends ChannelInboundHandlerAdapter {
 								map.get("uId").toString(), map.get("header").toString(),
 								map.get("nickname").toString());
 						Channel userChannel = channelManager.findChannelByUid(users.get(i));
-						groupManager.addChannel(groupId, userChannel);
+						if (userChannel != null) {
+							groupManager.addChannel(groupId, userChannel);
+
+						}
 					}
 
 					Message msgRequest = Message.newBuilder().setOpCode(OpCode.CREATE_GROUP_REQUEST)
 							.setSeq(((Message) msg).getSeq())
 							.setCreateGroupRequest(CreateGroupRequest.newBuilder().setGroupId(groupId).setHeader(header)
-									.setName(name).setOwner(owner).addAllUser(users).build())
+									.setName(name).setOwner(owner).addAllUsers(users).build())
 							.build();
 					groupManager.sendGroupMsg(groupId, msgRequest);
 

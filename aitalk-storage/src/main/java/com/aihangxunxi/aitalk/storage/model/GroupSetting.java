@@ -6,7 +6,7 @@ public class GroupSetting {
 
 	private boolean isConfirmJoin;
 
-	public boolean isMute() {
+	public boolean getIsMute() {
 		return isMute;
 	}
 
@@ -14,7 +14,7 @@ public class GroupSetting {
 		isMute = mute;
 	}
 
-	public boolean isConfirmJoin() {
+	public boolean getIsConfirmJoin() {
 		return isConfirmJoin;
 	}
 
