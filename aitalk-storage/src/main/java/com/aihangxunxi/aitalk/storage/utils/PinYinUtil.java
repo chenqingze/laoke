@@ -9,6 +9,10 @@ import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombi
 
 public class PinYinUtil {
 
+	private static String abc = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+
+	private static String num = "1234567890";
+
 	/**
 	 * 得到 全拼
 	 * @param src
@@ -39,12 +43,32 @@ public class PinYinUtil {
 					t4 += Character.toString(t1[i]);
 				}
 			}
-			return t4.substring(0, 1);
+			t4 = t4.substring(0, 1);
+			if (abc.contains(t4)) {
+				t4 = t4.toUpperCase();
+			}
+			else if (num.contains(t4)) {
+				t4 = "#";
+			}
+			else {
+				t4 = "#";
+			}
+			return t4;
 		}
 		catch (BadHanyuPinyinOutputFormatCombination e1) {
 			e1.printStackTrace();
 		}
-		return t4.substring(0, 1);
+		t4 = t4.substring(0, 1);
+		if (abc.contains(t4)) {
+			t4 = t4.toUpperCase();
+		}
+		else if (num.contains(t4)) {
+			t4 = "#";
+		}
+		else {
+			t4 = "#";
+		}
+		return t4;
 	}
 
 	/**

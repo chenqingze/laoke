@@ -86,7 +86,7 @@ public class AskFroJoinGroupHandler extends ChannelInboundHandlerAdapter {
 					else {
 						// 判断群是否开启群邀请确认
 						// Groups groups = groupRepository.queryGroupInfo(groupId);
-						if (groups.getGroupSetting().isConfirmJoin()) {
+						if (groups.getGroupSetting().getIsConfirmJoin()) {
 							// 当前群开启了邀请确认且 当前人不在群中
 							Message message = Message.newBuilder().setSeq(((Message) msg).getSeq())
 									.setOpCode(OpCode.ASK_FOR_JOIN_GROUP_ACK)

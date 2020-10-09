@@ -9,7 +9,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.Map;
 
 @Controller
 @RequestMapping("user")
@@ -36,9 +35,10 @@ public class UserController {
 
 	// 根据用户查询
 	@GetMapping("/{userId}")
-	public Map getUserById(@PathVariable("userId") Long userId) {
-		Map map = new ModelMap();
-		return map;
+	public ResponseEntity<ModelMap> getUserById(@PathVariable("userId") Long userId) {
+		ModelMap map = new ModelMap();
+		map.put("user", userService.getUserById(userId));
+		return ResponseEntity.status(HttpStatus.OK).body(map);
 	}
 
 }

@@ -6,7 +6,7 @@ package com.aihangxunxi.aitalk.im.protocol.buffers;
 
 // 创建群
 message CreateGroupRequest{
-  repeated string user = 1;
+  repeated string users = 1;
   string owner = 2;
   string header = 3;
   string name = 4;

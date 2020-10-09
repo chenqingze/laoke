@@ -28,6 +28,8 @@ public class Friendship extends BaseModel {
 
 	private String header;
 
+	private String pinyin;
+
 	public ObjectId getId() {
 		return id;
 	}
@@ -98,6 +100,14 @@ public class Friendship extends BaseModel {
 
 	public void setHeader(String header) {
 		this.header = header;
+	}
+
+	public String getPinyin() {
+		return pinyin;
+	}
+
+	public void setPinyin(String pinyin) {
+		this.pinyin = pinyin;
 	}
 
 }

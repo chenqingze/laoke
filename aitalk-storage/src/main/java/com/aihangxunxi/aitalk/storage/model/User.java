@@ -39,6 +39,17 @@ public class User extends BaseModel {
 
 	private String header;
 
+	private String pinyin;
+
+
+	public String getPinyin() {
+		return pinyin;
+	}
+
+	public void setPinyin(String pinyin) {
+		this.pinyin = pinyin;
+	}
+
 	public String getHeader() {
 		return header;
 	}
