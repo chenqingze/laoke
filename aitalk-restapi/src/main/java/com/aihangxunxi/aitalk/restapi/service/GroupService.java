@@ -39,4 +39,10 @@ public interface GroupService {
 	// 获取群成员
 	List<User> queryGroupMembers(String groupId);
 
+	// 获取不在群里的好友
+	List<User> queryFriendNinGroup(String groupId, Long userId);
+
+	// 判断群是否满了
+	boolean checkGroupIsFull(String groupId, int count);
+
 }

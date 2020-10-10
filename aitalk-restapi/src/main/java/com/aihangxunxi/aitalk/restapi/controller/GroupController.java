@@ -107,4 +107,22 @@ public class GroupController {
 		return ResponseEntity.status(HttpStatus.OK).body(map);
 	}
 
+	// 获取不在这个群里的好友
+	@GetMapping("/nin/friend")
+	public ResponseEntity<ModelMap> queryFriendNinGroup(@RequestParam("groupId") String groupId,
+			AihangPrincipal principal) {
+		ModelMap map = new ModelMap();
+		map.put("list", groupService.queryFriendNinGroup(groupId, principal.getUserId()));
+		return ResponseEntity.status(HttpStatus.OK).body(map);
+	}
+
+	// 判断群是否已满
+	@GetMapping("/check/full")
+	public ResponseEntity<ModelMap> checkGroupIsFull(@RequestParam("invitationCount") int count,
+			@RequestParam("groupId") String groupId) {
+		ModelMap map = new ModelMap();
+		map.put("max", groupService.checkGroupIsFull(groupId, count));
+		return ResponseEntity.status(HttpStatus.OK).body(map);
+	}
+
 }

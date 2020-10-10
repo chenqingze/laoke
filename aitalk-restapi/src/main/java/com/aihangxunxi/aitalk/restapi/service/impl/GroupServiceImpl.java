@@ -67,4 +67,16 @@ public class GroupServiceImpl implements GroupService {
 		return groupRepository.queryGroupMember(groupId);
 	}
 
+	@Override
+	public List<User> queryFriendNinGroup(String groupId, Long userId) {
+		return groupRepository.queryFriendNinGroup(groupId, userId);
+
+	}
+
+	@Override
+	public boolean checkGroupIsFull(String groupId, int count) {
+		return groupRepository.checkGroupIsFull(groupId, count);
+
+	}
+
 }

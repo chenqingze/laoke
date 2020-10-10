@@ -40,6 +40,9 @@ message Message {
 
     CreateGroupRequest create_group_request = 28;
     CreateGroupAck create_group_ack = 29;
+
+    RemoveGroupMemberRequest remove_group_member_request = 30;
+    RemoveGroupMemberAck remove_group_member_ack = 31;
     //------------------------------------------好友及好友邀请---------------------------------------------------
 
     InvitationRequestRequest invitation_request_request = 1001;
