@@ -89,4 +89,8 @@ enum OpCode{
   FRIEND_REQUEST = 1011;
   FRIEND_ACK = 1012;
 
+  MSG_READ_NOTIFY = 1101;
+  MSG_READ_ACK = 1102;
+
+
 }

@@ -56,5 +56,10 @@ message Message {
     FriendRequest friend_request = 1009;
     FriendAck friend_ack = 1010;
 
+    //----------------------------------------------------------------------------------------------------------
+
+    MsgReadNotify msg_read_notify = 1101;
+    MsgReadAck msg_read_ack = 1102;
+
   }
 }
