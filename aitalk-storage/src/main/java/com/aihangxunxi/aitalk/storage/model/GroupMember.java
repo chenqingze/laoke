@@ -1,13 +1,17 @@
 package com.aihangxunxi.aitalk.storage.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import org.bson.types.ObjectId;
 
 public class GroupMember extends BaseModel {
-
+	@JsonSerialize(using = ToStringSerializer.class)
 	private ObjectId id;
 
+	@JsonSerialize(using = ToStringSerializer.class)
 	private ObjectId groupId;
 
+	@JsonSerialize(using = ToStringSerializer.class)
 	private ObjectId memberId;
 
 	private Long userId;
@@ -17,6 +21,8 @@ public class GroupMember extends BaseModel {
 	private boolean isBlocked;
 
 	private boolean isMute;
+
+	private boolean isTop;
 
 	private ObjectId lastAckMsgId;
 
@@ -94,4 +100,11 @@ public class GroupMember extends BaseModel {
 		this.lastAckMsgTime = lastAckMsgTime;
 	}
 
+	public boolean isTop() {
+		return isTop;
+	}
+
+	public void setTop(boolean top) {
+		isTop = top;
+	}
 }

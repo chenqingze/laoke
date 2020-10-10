@@ -22,8 +22,8 @@ public class GroupAssembler {
 			groups.add(Group.newBuilder().setGroupNo(group.getGroupNo()).setId(group.getId().toHexString())
 					.setPinyin(group.getPinyin()).setName(group.getName()).setNotice(group.getNotice())
 					.setOwner(group.getOwner().toString()).setHeader(group.getHeader())
-					.setSetting(buildGroupSetting(group.getGroupSetting().isMute(),
-							group.getGroupSetting().isConfirmJoin()))
+					.setSetting(
+							buildGroupSetting(group.getGroupSetting().getIsMute(), group.getGroupSetting().getIsMute()))
 					.build());
 		}
 
