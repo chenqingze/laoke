@@ -13,6 +13,10 @@ import java.util.concurrent.TimeUnit;
  */
 public class ChannelConfiguration {
 
+	/**
+	 * todo：合理配置duration
+	 * @return
+	 */
 	@Bean
 	public Cache<String, Channel> localChannelCache() {
 		return Caffeine.newBuilder().expireAfterWrite(600000, TimeUnit.SECONDS).build();

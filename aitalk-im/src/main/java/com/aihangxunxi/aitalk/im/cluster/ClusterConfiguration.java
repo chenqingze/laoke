@@ -28,8 +28,10 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.URISyntaxException;
+import java.net.UnknownHostException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
 /**
@@ -57,15 +59,16 @@ public class ClusterConfiguration {
 
 	// private final String rabbitMqPassword;
 
+	private final String[] endpoints;
+
 	public ClusterConfiguration(@Value("${server.redis.host}") String redisHost,
 			@Value("${server.redis.port}") int redisPort, @Value("${server.redis.userNodeDb}") int userNodeDb,
-			@Value("${server.rabbitMq.uri}") String rabbitMqUri
-	// @Value("${server.rabbitMq.host}") String rabbitMqHost,
-	// @Value("${server.rabbitMq.port}") int rabbitMqPort,
-	// @Value("${server.rabbitMq.userName}") String rabbitMqUserName,
-	// @Value("${server.rabbitMq.password}") String rabbitMqPassword
-
-	) {
+			@Value("${server.rabbitMq.uri}") String rabbitMqUri,
+			// @Value("${server.rabbitMq.host}") String rabbitMqHost,
+			// @Value("${server.rabbitMq.port}") int rabbitMqPort,
+			// @Value("${server.rabbitMq.userName}") String rabbitMqUserName,
+			// @Value("${server.rabbitMq.password}") String rabbitMqPassword,
+			@Value("${server.etcd.endpoints}") String... endpoints) {
 		this.redisHost = redisHost;
 		this.redisPort = redisPort;
 		this.userNodeDb = userNodeDb;
@@ -75,6 +78,7 @@ public class ClusterConfiguration {
 		// this.rabbitMqPort = rabbitMqPort;
 		// this.rabbitMqUserName = rabbitMqUserName;
 		// this.rabbitMqPassword = rabbitMqPassword;
+		this.endpoints = endpoints;
 	}
 
 	@Bean("channelManager")
@@ -179,6 +183,12 @@ public class ClusterConfiguration {
 	@Bean
 	public RabbitMqProducer rabbitMqProducer(Channel producerChannel) {
 		return new RabbitMqProducer(producerChannel);
+	}
+
+	@Bean
+	public KeepAlive keepAlive(Cache<String, io.netty.channel.Channel> localChannelCache)
+			throws InterruptedException, ExecutionException, UnknownHostException {
+		return new KeepAlive(localChannelCache, endpoints);
 	}
 
 }
