@@ -90,3 +90,15 @@ message InvitationJoinGroupAck{
   string success = 2;
   string message = 3;
 }
+message RemoveGroupMemberRequest{
+  string group_id = 1;
+  repeated string user = 2;
+  string current_user = 3;
+  string message = 4;
+  string success = 5;
+}
+message RemoveGroupMemberAck{
+  string group_id = 1;
+  string message = 2;
+  string success = 3;
+}

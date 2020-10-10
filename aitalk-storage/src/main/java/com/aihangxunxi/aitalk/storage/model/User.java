@@ -41,7 +41,6 @@ public class User extends BaseModel {
 
 	private String pinyin;
 
-
 	public String getPinyin() {
 		return pinyin;
 	}

@@ -8,134 +8,135 @@ import java.util.List;
 
 public class GroupInfo {
 
-    @JsonSerialize(using = ToStringSerializer.class)
-    private ObjectId id;
+	@JsonSerialize(using = ToStringSerializer.class)
+	private ObjectId id;
 
-    private String name;
+	private String name;
 
-    private String header;
+	private String header;
 
-    private Long owner;
+	private Long owner;
 
-    private String groupNo;
+	private String groupNo;
 
-    private String notice;
+	private String notice;
 
-    private boolean isGroupOwner;
+	private boolean isGroupOwner;
 
-    private String userNickname;
+	private String userNickname;
 
-    private boolean top;
+	private boolean top;
 
-    private boolean mute;
+	private boolean mute;
 
-    private List<User> users;
+	private List<User> users;
 
-    private int memberCount;
+	private int memberCount;
 
-    private boolean confirmJoin;
+	private boolean confirmJoin;
 
-    public boolean isConfirmJoin() {
-        return confirmJoin;
-    }
+	public boolean isConfirmJoin() {
+		return confirmJoin;
+	}
 
-    public void setConfirmJoin(boolean confirmJoin) {
-        this.confirmJoin = confirmJoin;
-    }
+	public void setConfirmJoin(boolean confirmJoin) {
+		this.confirmJoin = confirmJoin;
+	}
 
-    public ObjectId getId() {
-        return id;
-    }
+	public ObjectId getId() {
+		return id;
+	}
 
-    public void setId(ObjectId id) {
-        this.id = id;
-    }
+	public void setId(ObjectId id) {
+		this.id = id;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public String getHeader() {
-        return header;
-    }
+	public String getHeader() {
+		return header;
+	}
 
-    public void setHeader(String header) {
-        this.header = header;
-    }
+	public void setHeader(String header) {
+		this.header = header;
+	}
 
-    public Long getOwner() {
-        return owner;
-    }
+	public Long getOwner() {
+		return owner;
+	}
 
-    public void setOwner(Long owner) {
-        this.owner = owner;
-    }
+	public void setOwner(Long owner) {
+		this.owner = owner;
+	}
 
-    public String getGroupNo() {
-        return groupNo;
-    }
+	public String getGroupNo() {
+		return groupNo;
+	}
 
-    public void setGroupNo(String groupNo) {
-        this.groupNo = groupNo;
-    }
+	public void setGroupNo(String groupNo) {
+		this.groupNo = groupNo;
+	}
 
-    public String getNotice() {
-        return notice;
-    }
+	public String getNotice() {
+		return notice;
+	}
 
-    public void setNotice(String notice) {
-        this.notice = notice;
-    }
+	public void setNotice(String notice) {
+		this.notice = notice;
+	}
 
-    public boolean isGroupOwner() {
-        return isGroupOwner;
-    }
+	public boolean isGroupOwner() {
+		return isGroupOwner;
+	}
 
-    public void setGroupOwner(boolean groupOwner) {
-        isGroupOwner = groupOwner;
-    }
+	public void setGroupOwner(boolean groupOwner) {
+		isGroupOwner = groupOwner;
+	}
 
-    public String getUserNickname() {
-        return userNickname;
-    }
+	public String getUserNickname() {
+		return userNickname;
+	}
 
-    public void setUserNickname(String userNickname) {
-        this.userNickname = userNickname;
-    }
+	public void setUserNickname(String userNickname) {
+		this.userNickname = userNickname;
+	}
 
-    public boolean isTop() {
-        return top;
-    }
+	public boolean isTop() {
+		return top;
+	}
 
-    public void setTop(boolean top) {
-        this.top = top;
-    }
+	public void setTop(boolean top) {
+		this.top = top;
+	}
 
-    public boolean isMute() {
-        return mute;
-    }
+	public boolean isMute() {
+		return mute;
+	}
 
-    public void setMute(boolean mute) {
-        this.mute = mute;
-    }
+	public void setMute(boolean mute) {
+		this.mute = mute;
+	}
 
-    public List<User> getUsers() {
-        return users;
-    }
+	public List<User> getUsers() {
+		return users;
+	}
 
-    public void setUsers(List<User> users) {
-        this.users = users;
-    }
+	public void setUsers(List<User> users) {
+		this.users = users;
+	}
 
-    public int getMemberCount() {
-        return memberCount;
-    }
+	public int getMemberCount() {
+		return memberCount;
+	}
 
-    public void setMemberCount(int memberCount) {
-        this.memberCount = memberCount;
-    }
+	public void setMemberCount(int memberCount) {
+		this.memberCount = memberCount;
+	}
+
 }
