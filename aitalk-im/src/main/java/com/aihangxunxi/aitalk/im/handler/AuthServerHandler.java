@@ -62,7 +62,7 @@ public final class AuthServerHandler extends ChannelInboundHandlerAdapter {
 
 			User user = new User();
 
-			user.setUid(new ObjectId(uid));
+			user.setId(new ObjectId(uid));
 			user.setUserId(Long.valueOf(token));
 			if (true) {
 				result = true;
@@ -92,7 +92,7 @@ public final class AuthServerHandler extends ChannelInboundHandlerAdapter {
 	 */
 	private Channel channelProcess(ChannelHandlerContext ctx, User user) {
 		Channel channel = ctx.channel();
-		channel.attr(ChannelConstant.USER_ID_ATTRIBUTE_KEY).set(user.getUid().toHexString());
+		channel.attr(ChannelConstant.USER_ID_ATTRIBUTE_KEY).set(user.getId().toHexString());
 		channel.attr(ChannelConstant.DEVICE_CODE_ATTRIBUTE_KEY).set(user.getDeviceCode());
 		channel.attr(ChannelConstant.DEVICE_IDIOM_ATTRIBUTE_KEY).set(user.getDeviceIdiom());
 		channel.attr(ChannelConstant.DEVICE_PLATFORM_ATTRIBUTE_KEY).set(user.getDevicePlatform());

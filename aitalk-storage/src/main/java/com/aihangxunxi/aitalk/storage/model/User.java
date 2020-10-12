@@ -15,7 +15,7 @@ import java.util.List;
 public class User extends BaseModel {
 
 	@BsonId
-	private ObjectId uid;
+	private ObjectId id;
 
 	private Long userId;
 
@@ -72,12 +72,12 @@ public class User extends BaseModel {
 
 	}
 
-	public ObjectId getUid() {
-		return uid;
+	public ObjectId getId() {
+		return id;
 	}
 
-	public void setUid(ObjectId uid) {
-		this.uid = uid;
+	public void setId(ObjectId id) {
+		this.id = id;
 	}
 
 	public Long getUserId() {

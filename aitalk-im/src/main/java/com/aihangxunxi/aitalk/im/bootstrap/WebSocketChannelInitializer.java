@@ -80,7 +80,7 @@ public class WebSocketChannelInitializer extends ChannelInitializer<NioSocketCha
 	private CreateMucHandler createMucHandler;
 
 	@Resource
-	private P2P2ChatHandler p2P2ChatHandler;
+	private P2PChatHandler p2P2ChatHandler;
 
 	@Resource
 	private RemoveGroupMemberHandler removeGroupMemberHandler;
