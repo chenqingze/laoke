@@ -5,6 +5,7 @@ import com.aihangxunxi.aitalk.im.channel.ChannelManager;
 import com.aihangxunxi.aitalk.im.channel.DefaultChannelManager;
 import com.aihangxunxi.aitalk.im.config.condition.StandaloneCondition;
 import com.github.benmanes.caffeine.cache.Cache;
+import io.netty.channel.Channel;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
@@ -15,12 +16,12 @@ import org.springframework.context.annotation.Import;
  * @version 2.0 2020/9/26 12:00 PM
  */
 @Configuration
-@Conditional(StandaloneCondition.class)
 @Import(ChannelConfiguration.class)
+@Conditional(StandaloneCondition.class)
 public class StandaloneConfiguration {
 
 	@Bean("channelManager")
-	public ChannelManager defaultChannelManager(Cache localChannelCache) {
+	public ChannelManager defaultChannelManager(Cache<String, Channel> localChannelCache) {
 		return new DefaultChannelManager(localChannelCache);
 	}
 

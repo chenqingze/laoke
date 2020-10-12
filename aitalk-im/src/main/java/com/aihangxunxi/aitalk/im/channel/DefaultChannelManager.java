@@ -12,7 +12,7 @@ import io.netty.channel.ChannelHandlerContext;
  */
 public class DefaultChannelManager implements ChannelManager {
 
-	private Cache<String, Channel> localChannelCache;
+	private final Cache<String, Channel> localChannelCache;
 
 	public DefaultChannelManager(Cache<String, Channel> localChannelCache) {
 		this.localChannelCache = localChannelCache;

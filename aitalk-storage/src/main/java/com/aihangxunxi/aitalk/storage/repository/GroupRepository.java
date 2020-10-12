@@ -13,6 +13,7 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.mongodb.client.model.Filters.and;
 import static com.mongodb.client.model.Filters.eq;
@@ -172,7 +173,7 @@ public class GroupRepository {
 		MongoCollection<User> userMongoCollection = aitalkDb.getCollection("user", User.class);
 		Bson bson = eq(new ObjectId(groupId));
 		Groups groups = groupsMongoCollection.find(bson).first();
-
+		// 群资料
 		GroupInfo groupInfo = new GroupInfo();
 		groupInfo.setGroupNo(groups.getGroupNo());
 		groupInfo.setHeader(groups.getHeader());
@@ -293,6 +294,47 @@ public class GroupRepository {
 		}
 		users.sort(Comparator.comparing(User::getPinyin));
 		return users;
+	}
+
+	// 获取不在当前群里的好友
+	public List<User> queryFriendNinGroup(String groupId, Long userId) {
+		MongoCollection<GroupMember> groupsMongoCollection = aitalkDb.getCollection("groupMember", GroupMember.class);
+		MongoCollection<Friend> friendMongoCollection = aitalkDb.getCollection("friend", Friend.class);
+		Bson bson = and(eq("userId", userId), eq("isBlocked", 0), eq("status", "effective"));
+		List<Friend> friends = friendMongoCollection.find(bson).into(new ArrayList<>());
+		Bson bson1 = eq("groupId", new ObjectId(groupId));
+		List<GroupMember> groupMembers = groupsMongoCollection.find(bson1).into(new ArrayList<>());
+		List<Friend> friendList = new ArrayList<>();
+
+		friendList = friends.stream().filter(friend -> {
+			for (GroupMember g : groupMembers) {
+				if (friend.getFriendId().equals(g.getUserId())) {
+					return false;
+				}
+			}
+			return true;
+
+		}).collect(Collectors.toList());
+
+		List<User> users = new ArrayList<>();
+		MongoCollection<User> userMongoCollection = aitalkDb.getCollection("user", User.class);
+
+		for (int i = 0; i < friendList.size(); i++) {
+			Bson bson2 = eq("userId", friendList.get(i).getFriendId());
+			User user = userMongoCollection.find(bson2).first();
+			user.setPinyin(PinYinUtil.getPingYin(user.getNickname()));
+			users.add(user);
+		}
+		users.sort(Comparator.comparing(User::getPinyin));
+		return users;
+	}
+
+	// 判断群是否满了 todo 从redis获取最大数量
+	public boolean checkGroupIsFull(String groupId, int count) {
+		MongoCollection<GroupMember> groupsMongoCollection = aitalkDb.getCollection("groupMember", GroupMember.class);
+		Bson bson1 = eq("groupId", new ObjectId(groupId));
+		long groupCount = groupsMongoCollection.countDocuments(bson1);
+		return (groupCount + count) > 500;
 	}
 
 }

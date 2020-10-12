@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration>
     <Properties>
-        <property name="CONSOLE_PATTERN">%highlight{%d %-5level [%t] --- %-40.40c{1.}: %msg%n%throwable}</property>
+        <property name="STDOUT_PATTERN">%highlight{%d %-5level [%t] --- %-40.40c{1.}: %msg%n%throwable}</property>
         <property name="FILE_PATTERN">%d %-5level [%t] --- %-40.40c{1.}: %msg%n%throwable</property>
     </Properties>
     <Appenders>
-        <Console name="Console" target="SYSTEM_OUT">
+        <Console name="STDOUT" target="SYSTEM_OUT">
             <PatternLayout
                     pattern="%style{%d{ISO8601}}{black} %highlight{%-5level }[%style{%t}{bright,blue}] %style{%C{1.}}{bright,yellow}: %msg%n%throwable"/>
         </Console>
 
-        <RollingFile name="RollingFile"
+        <RollingFile name="ROLLING_FILE"
                      fileName="./logs/aitalk-im.log"
                      filePattern="./logs/$${date:yyyy-MM}/aitalk-im-%d{-dd-MMMM-yyyy}-%i.log.gz">
             <PatternLayout>
@@ -29,13 +29,13 @@
 
     <Loggers>
         <!-- LOG everything at INFO level -->
-        <Root level="debug">
-            <AppenderRef ref="Console"/>
-            <AppenderRef ref="RollingFile"/>
+        <Root level="DEBUG">
+            <AppenderRef ref="STDOUT"/>
+            <AppenderRef ref="ROLLING_FILE"/>
         </Root>
 
-        <Logger name="com.aihangxunxi" level="debug" additivity="false">
-            <AppenderRef ref="Console"/>
+        <Logger name="com.aihangxunxi" level="DEBUG" additivity="false">
+            <AppenderRef ref="STDOUT"/>
         </Logger>
     </Loggers>
 

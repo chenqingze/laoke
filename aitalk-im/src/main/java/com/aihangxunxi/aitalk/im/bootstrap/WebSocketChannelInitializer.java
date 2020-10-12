@@ -1,10 +1,9 @@
-package com.aihangxunxi.aitalk.im.config;
+package com.aihangxunxi.aitalk.im.bootstrap;
 
 import com.aihangxunxi.aitalk.im.channel.ChannelConstant;
 import com.aihangxunxi.aitalk.im.codec.MessageDecoder;
 import com.aihangxunxi.aitalk.im.codec.MessageEncoder;
 import com.aihangxunxi.aitalk.im.handler.*;
-import com.aihangxunxi.aitalk.im.protocol.buffers.AskForJoinGroupAck;
 import com.aihangxunxi.aitalk.im.protocol.buffers.Message;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
@@ -83,6 +82,9 @@ public class WebSocketChannelInitializer extends ChannelInitializer<NioSocketCha
 	@Resource
 	private P2P2ChatHandler p2P2ChatHandler;
 
+	@Resource
+	private RemoveGroupMemberHandler removeGroupMemberHandler;
+
 	public WebSocketChannelInitializer(@Nullable SslContext sslCtx, EventExecutorGroup processorGroup) {
 		this.sslCtx = sslCtx;
 		this.processorGroup = processorGroup;
@@ -138,6 +140,8 @@ public class WebSocketChannelInitializer extends ChannelInitializer<NioSocketCha
 		pipeline.addLast("invitationUserJoinGroupHandler", invitationUserJoinGroupHandler);
 		pipeline.addLast("askFroJoinGroupHandler", askFroJoinGroupHandler);
 		pipeline.addLast("createMucHandler", createMucHandler);
+		pipeline.addLast("removeGroupMemberHandler", removeGroupMemberHandler);
+
 		// todo：其他业务处理器放到这里
 		// pipeline.addLast(processorGroup, "queryUserGroupsHandler",
 		// queryUserGroupsHandler);

@@ -88,6 +88,12 @@ public class InvitationUserJoinGroupHandler extends ChannelInboundHandlerAdapter
 					// 发送群通知 xxx加入了群聊
 					groupManager.sendGroupMsg(groupId, groupMsg);
 
+					Message ack = Message.newBuilder().setSeq(((Message) msg).getSeq())
+							.setOpCode(OpCode.INVITATION_USER_JOIN_GROUP_ACK)
+							.setInvitationJoinGroupAck(InvitationJoinGroupAck.newBuilder().setGroupId(groupId)
+									.setMessage("邀请成功").setSuccess("ok").build())
+							.build();
+					ctx.writeAndFlush(ack);
 				}
 			}
 			finally {

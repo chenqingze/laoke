@@ -1,4 +1,4 @@
-package com.aihangxunxi.aitalk.im.config;
+package com.aihangxunxi.aitalk.im.bootstrap;
 
 import javax.net.ssl.SSLException;
 import java.security.cert.CertificateException;

@@ -12,6 +12,7 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.mongodb.client.model.Filters.and;
 import static com.mongodb.client.model.Filters.eq;
 
 @Repository
@@ -53,6 +54,12 @@ public class GroupMemberRepository {
 		long memberCount = groupMemberCollection.countDocuments(bson);
 		return memberCount < 500;
 
+	}
+
+	public boolean removeGroupMember(String groupId, Long userId) {
+		MongoCollection<GroupMember> groupMemberCollection = aitalkDb.getCollection("groupMember", GroupMember.class);
+		Bson bson = and(eq("groupId", new ObjectId(groupId)), eq("userId", userId));
+		return groupMemberCollection.deleteOne(bson).getDeletedCount() > 0;
 	}
 
 }
