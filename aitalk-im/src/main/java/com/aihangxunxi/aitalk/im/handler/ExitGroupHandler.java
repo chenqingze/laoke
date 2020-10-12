@@ -19,37 +19,32 @@ import javax.annotation.Resource;
 @ChannelHandler.Sharable
 public class ExitGroupHandler extends ChannelInboundHandlerAdapter {
 
-    @Resource
-    private GroupRepository groupRepository;
+	@Resource
+	private GroupRepository groupRepository;
 
-    @Resource
-    private GroupManager groupManager;
+	@Resource
+	private GroupManager groupManager;
 
-    @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        if (msg instanceof Message && ((Message) msg).getOpCode() == OpCode.EXIT_GROUP_REQUEST) {
-            String groupId = ((Message) msg).getExitGroupRequest().getGroupId();
-            String userId = ((Message) msg).getExitGroupRequest().getUserId();
+	@Override
+	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+		if (msg instanceof Message && ((Message) msg).getOpCode() == OpCode.EXIT_GROUP_REQUEST) {
+			String groupId = ((Message) msg).getExitGroupRequest().getGroupId();
+			String userId = ((Message) msg).getExitGroupRequest().getUserId();
 
-            this.groupRepository.exitGroup(groupId, Long.parseLong(userId));
+			this.groupRepository.exitGroup(groupId, Long.parseLong(userId));
 
-            groupManager.sendGroupMsg(groupId, (Message) msg);
+			groupManager.sendGroupMsg(groupId, (Message) msg);
 
-            Message ack = Message.newBuilder()
-                    .setOpCode(OpCode.EXIT_GROUP_ACK)
-                    .setSeq(((Message) msg).getSeq())
-                    .setExitGroupAck(ExitGroupAck.newBuilder()
-                            .setGroupId(groupId)
-                            .setMessage("退出成功")
-                            .setSuccess("ok")
-                            .setUserId(userId)
-                            .build())
-                    .build();
+			Message ack = Message.newBuilder().setOpCode(OpCode.EXIT_GROUP_ACK).setSeq(((Message) msg).getSeq())
+					.setExitGroupAck(ExitGroupAck.newBuilder().setGroupId(groupId).setMessage("退出成功").setSuccess("ok")
+							.setUserId(userId).build())
+					.build();
 
-            ctx.writeAndFlush(ack);
-        } else {
-            ctx.fireChannelRead(msg);
-        }
-    }
+			ctx.writeAndFlush(ack);
+		}
+		else {
+			ctx.fireChannelRead(msg);
+		}
+	}
 
 }
