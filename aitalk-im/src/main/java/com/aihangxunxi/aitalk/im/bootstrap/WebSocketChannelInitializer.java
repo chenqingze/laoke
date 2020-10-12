@@ -80,6 +80,9 @@ public class WebSocketChannelInitializer extends ChannelInitializer<NioSocketCha
 	private CreateMucHandler createMucHandler;
 
 	@Resource
+	private P2P2ChatHandler p2P2ChatHandler;
+
+	@Resource
 	private RemoveGroupMemberHandler removeGroupMemberHandler;
 
 	public WebSocketChannelInitializer(@Nullable SslContext sslCtx, EventExecutorGroup processorGroup) {
@@ -132,6 +135,7 @@ public class WebSocketChannelInitializer extends ChannelInitializer<NioSocketCha
 		pipeline.addLast("invitationRequestHandler", invitationRequestHandler);
 		pipeline.addLast("invitationAcceptHandler", invitationAcceptHandler);
 		pipeline.addLast("invitationDeclinedHandler", invitationDeclinedHandler);
+		pipeline.addLast("p2pChatHandler", p2P2ChatHandler);
 		pipeline.addLast("groupMessageHandler", groupMessageHandler);
 		pipeline.addLast("invitationUserJoinGroupHandler", invitationUserJoinGroupHandler);
 		pipeline.addLast("askFroJoinGroupHandler", askFroJoinGroupHandler);
