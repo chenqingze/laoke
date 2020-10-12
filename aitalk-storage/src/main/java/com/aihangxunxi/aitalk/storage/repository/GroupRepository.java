@@ -17,6 +17,8 @@ import java.util.stream.Collectors;
 
 import static com.mongodb.client.model.Filters.and;
 import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Sorts.ascending;
+import static com.mongodb.client.model.Sorts.descending;
 import static com.mongodb.client.model.Updates.set;
 
 @Repository
@@ -238,7 +240,7 @@ public class GroupRepository {
 	public boolean updateGroupConfirmJoin(String groupId, boolean isConfirm) {
 		MongoCollection<Groups> groupsMongoCollection = aitalkDb.getCollection("group", Groups.class);
 		Bson bson = eq(new ObjectId(groupId));
-		Bson bson1 = set("groupSetting.$.isConfirmJoin", isConfirm);
+		Bson bson1 = set("groupSetting.isConfirmJoin", isConfirm);
 		groupsMongoCollection.updateOne(bson, bson1);
 		return true;
 	}
@@ -247,15 +249,16 @@ public class GroupRepository {
 	public boolean updateGroupMute(String groupId, boolean mute) {
 		MongoCollection<Groups> groupsMongoCollection = aitalkDb.getCollection("group", Groups.class);
 		Bson bson = eq(new ObjectId(groupId));
-		Bson bson1 = set("groupSetting.$.isMute", mute);
+		Bson bson1 = set("groupSetting.isMute", mute);
 		groupsMongoCollection.updateOne(bson, bson1);
 		return true;
 	}
 
 	// 设置用户群昵称
-	public boolean updateUserGroupNickname(String groupId, String nickname) {
+	public boolean updateUserGroupNickname(String groupId, Long userId, String nickname) {
 		MongoCollection<GroupMember> groupsMongoCollection = aitalkDb.getCollection("groupMember", GroupMember.class);
-		Bson bson = eq(new ObjectId(groupId));
+
+		Bson bson = and(eq("userId", userId), eq("groupId", new ObjectId(groupId)));
 		Bson bson1 = set("alias", nickname);
 		groupsMongoCollection.updateOne(bson, bson1);
 		return true;
@@ -335,6 +338,56 @@ public class GroupRepository {
 		Bson bson1 = eq("groupId", new ObjectId(groupId));
 		long groupCount = groupsMongoCollection.countDocuments(bson1);
 		return (groupCount + count) > 500;
+	}
+
+	// 获取我在群中的昵称
+	public String queryGroupMemberName(String groupId, Long userId) {
+		MongoCollection<GroupMember> groupsMongoCollection = aitalkDb.getCollection("groupMember", GroupMember.class);
+		Bson bson = and(eq("groupId", new ObjectId(groupId)), eq("userId", userId));
+		return groupsMongoCollection.find(bson).first().getAlias();
+	}
+
+	// 更新群置顶
+	public boolean updateGroupMemberTop(String groupId, Long userId, boolean top) {
+		MongoCollection<GroupMember> groupsMongoCollection = aitalkDb.getCollection("groupMember", GroupMember.class);
+		Bson bson = and(eq("groupId", new ObjectId(groupId)), eq("userId", userId));
+		Bson bson1 = set("top", top);
+		return groupsMongoCollection.updateOne(bson, bson1).getModifiedCount() > 0;
+	}
+
+	// 获取群是否置顶
+	public boolean queryGroupMemberTop(String groupId, Long userId) {
+		MongoCollection<GroupMember> groupsMongoCollection = aitalkDb.getCollection("groupMember", GroupMember.class);
+		Bson bson = and(eq("groupId", new ObjectId(groupId)), eq("userId", userId));
+		return groupsMongoCollection.find(bson).first().isTop();
+	}
+
+	// 退出群
+	public boolean exitGroup(String groupId, Long userId) {
+		MongoCollection<Groups> groupsMongoCollection = aitalkDb.getCollection("group", Groups.class);
+		MongoCollection<GroupMember> groupMemberMongoCollection = aitalkDb.getCollection("groupMember",
+				GroupMember.class);
+
+		Bson bson = eq(new ObjectId(groupId));
+		Groups groups = groupsMongoCollection.find(bson).first();
+		if (userId.equals(groups.getOwner())) {
+			// 当前人为群主 退出群 并选取新的群主
+			Bson bson1 = and(eq("groupId", new ObjectId(groupId)), eq("userId", userId));
+			groupMemberMongoCollection.deleteOne(bson1);
+
+			Bson bson2 = eq("groupId", new ObjectId(groupId));
+			GroupMember groupMember = groupMemberMongoCollection.find(bson2).sort(ascending("joinGroupTime")).first();
+			if (groupMember != null) {
+				// 更新群管理
+				Bson bson3 = set("owner", groupMember.getUserId());
+				groupsMongoCollection.updateOne(bson, bson3);
+			}
+		}
+		else {
+			Bson bson1 = and(eq("groupId", new ObjectId(groupId)), eq("userId", userId));
+			groupMemberMongoCollection.deleteOne(bson1);
+		}
+		return true;
 	}
 
 }

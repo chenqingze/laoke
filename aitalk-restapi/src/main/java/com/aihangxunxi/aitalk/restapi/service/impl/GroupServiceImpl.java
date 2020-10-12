@@ -79,4 +79,25 @@ public class GroupServiceImpl implements GroupService {
 
 	}
 
+	@Override
+	public boolean updateGroupMemberName(String name, Long userId, String groupId) {
+		return groupRepository.updateUserGroupNickname(groupId, userId, name);
+	}
+
+	@Override
+	public String queryGroupMemberName(String groupId, Long userId) {
+		return groupRepository.queryGroupMemberName(groupId, userId);
+	}
+
+	@Override
+	public boolean updateGroupMemberTop(String groupId, Long userId, boolean top) {
+		return groupRepository.updateGroupMemberTop(groupId, userId, top);
+
+	}
+
+	@Override
+	public boolean queryGroupMemberTop(String groupId, Long userId) {
+		return groupRepository.queryGroupMemberTop(groupId, userId);
+	}
+
 }

@@ -49,7 +49,6 @@ public class RemoveGroupMemberHandler extends ChannelInboundHandlerAdapter {
 				for (int i = 0; i < users.size(); i++) {
 					Map userMap = userRepository.queryUserById(Long.parseLong(users.get(i)));
 					content += userMap.get("nickname") + (users.size() - 1 == i ? "" : "、");
-
 					// 从数据库中移除
 					groupMemberRepository.removeGroupMember(groupId, Long.parseLong(users.get(i)));
 				}
@@ -76,7 +75,6 @@ public class RemoveGroupMemberHandler extends ChannelInboundHandlerAdapter {
 			}
 			finally {
 				ReferenceCountUtil.release(msg);
-
 			}
 		}
 		else {
