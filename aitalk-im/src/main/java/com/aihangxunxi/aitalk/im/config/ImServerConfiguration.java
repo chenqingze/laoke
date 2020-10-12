@@ -1,6 +1,5 @@
 package com.aihangxunxi.aitalk.im.config;
 
-import com.aihangxunxi.aitalk.im.cluster.ClusterConfiguration;
 import com.aihangxunxi.aitalk.storage.config.StorageConfiguration;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;

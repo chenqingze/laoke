@@ -1,4 +1,4 @@
-package com.aihangxunxi.aitalk.im.channel;
+package com.aihangxunxi.aitalk.im.config;
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;

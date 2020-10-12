@@ -14,8 +14,6 @@ import io.netty.channel.Channel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
@@ -23,14 +21,14 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * 注册节点到etcd集群,节点可用状态更新
+ * 注册节点到etcd集群,节点可用状态更新,集群节点状态管理
  *
  * @author chenqingze107@163.com
  * @version 2.0 2020/10/10 3:19 PM
  */
-public class KeepAlive {
+public class ClusterNodeStatusManager {
 
-	private static final Logger logger = LoggerFactory.getLogger(KeepAlive.class);
+	private static final Logger logger = LoggerFactory.getLogger(ClusterNodeStatusManager.class);
 
 	private final Client client;
 
@@ -46,7 +44,7 @@ public class KeepAlive {
 
 	private final long ttl = 5;
 
-	public KeepAlive(Cache<String, Channel> localChannelCache, String... endpoints)
+	public ClusterNodeStatusManager(Cache<String, Channel> localChannelCache, String... endpoints)
 			throws ExecutionException, InterruptedException, UnknownHostException {
 		this.client = Client.builder().endpoints(endpoints).build();
 		this.kvClient = client.getKVClient();
@@ -65,7 +63,6 @@ public class KeepAlive {
 	 * @throws ExecutionException
 	 * @throws InterruptedException
 	 */
-	@PostConstruct
 	public void registerNode() throws ExecutionException, InterruptedException {
 		ByteSequence value = ByteSequence.from(String.valueOf(localChannelCache.estimatedSize()),
 				StandardCharsets.UTF_8);
@@ -83,7 +80,6 @@ public class KeepAlive {
 
 	}
 
-	@PreDestroy
 	public void UnregisterNode() throws ExecutionException, InterruptedException {
 		leaseClient.revoke(leaseID).get();
 		if (logger.isDebugEnabled()) {
@@ -92,6 +88,11 @@ public class KeepAlive {
 		if (client != null) {
 			client.close();
 		}
+	}
+
+	// todo:获取节点状态，是否存活
+	public boolean isNodeAlive() {
+		return true;
 	}
 
 }

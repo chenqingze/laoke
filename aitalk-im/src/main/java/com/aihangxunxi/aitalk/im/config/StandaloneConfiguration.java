@@ -1,6 +1,5 @@
 package com.aihangxunxi.aitalk.im.config;
 
-import com.aihangxunxi.aitalk.im.channel.ChannelConfiguration;
 import com.aihangxunxi.aitalk.im.channel.ChannelManager;
 import com.aihangxunxi.aitalk.im.channel.DefaultChannelManager;
 import com.aihangxunxi.aitalk.im.config.condition.StandaloneCondition;

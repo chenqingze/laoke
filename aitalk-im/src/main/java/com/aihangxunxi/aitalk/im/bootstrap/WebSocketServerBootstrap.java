@@ -81,7 +81,7 @@ public class WebSocketServerBootstrap extends AitalkServerBootstrap {
 	 */
 	@PostConstruct
 	private void startup() {
-		super.run();
+		super.start();
 	}
 
 	/**
