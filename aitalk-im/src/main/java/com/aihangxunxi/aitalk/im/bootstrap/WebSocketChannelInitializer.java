@@ -1,10 +1,9 @@
-package com.aihangxunxi.aitalk.im.config;
+package com.aihangxunxi.aitalk.im.bootstrap;
 
 import com.aihangxunxi.aitalk.im.channel.ChannelConstant;
 import com.aihangxunxi.aitalk.im.codec.MessageDecoder;
 import com.aihangxunxi.aitalk.im.codec.MessageEncoder;
 import com.aihangxunxi.aitalk.im.handler.*;
-import com.aihangxunxi.aitalk.im.protocol.buffers.AskForJoinGroupAck;
 import com.aihangxunxi.aitalk.im.protocol.buffers.Message;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;

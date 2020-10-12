@@ -1,5 +1,6 @@
 package com.aihangxunxi.aitalk.im.cluster;
 
+import com.aihangxunxi.aitalk.im.channel.ChannelConfiguration;
 import com.aihangxunxi.aitalk.im.channel.ChannelManager;
 import com.aihangxunxi.aitalk.im.config.condition.ClusterCondition;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
@@ -37,6 +39,7 @@ import java.util.concurrent.TimeoutException;
  * @version 2.0 2020/9/26 11:56 AM
  */
 @Configuration
+@Import(ChannelConfiguration.class)
 @Conditional(ClusterCondition.class)
 public class ClusterConfiguration {
 

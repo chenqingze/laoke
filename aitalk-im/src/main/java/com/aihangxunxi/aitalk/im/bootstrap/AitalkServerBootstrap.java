@@ -1,5 +1,6 @@
-package com.aihangxunxi.aitalk.im.config;
+package com.aihangxunxi.aitalk.im.bootstrap;
 
+import com.aihangxunxi.aitalk.im.config.ImServerConfiguration;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
