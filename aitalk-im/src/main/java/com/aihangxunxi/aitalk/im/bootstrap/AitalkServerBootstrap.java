@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 import javax.net.ssl.SSLException;
 import java.security.cert.CertificateException;
 
-public abstract class AitalkServerBootstrap {
+public abstract class AitalkServerBootstrap extends Thread {
 
 	private static final Logger logger = LoggerFactory.getLogger(AitalkServerBootstrap.class);
 
@@ -37,7 +37,7 @@ public abstract class AitalkServerBootstrap {
 	 */
 	abstract void init() throws CertificateException, SSLException;
 
-	private void start() throws InterruptedException {
+	private void startServer() throws InterruptedException {
 		logger.info(">>> server 开始启动.");
 		ChannelFuture channelFuture = serverBootstrap.bind().sync();
 		logger.info(">>> server:[{}] 已经启动", channelFuture.channel().localAddress());
@@ -61,12 +61,13 @@ public abstract class AitalkServerBootstrap {
 	/**
 	 * netty server 线程
 	 */
+	@Override
 	public void run() {
 		try {
 			// 初始化netty参数
 			this.init();
 			// 启动netty消息服务
-			this.start();
+			this.startServer();
 		}
 		catch (Exception e) {
 			e.printStackTrace();

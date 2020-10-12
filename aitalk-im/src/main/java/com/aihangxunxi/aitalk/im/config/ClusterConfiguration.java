@@ -1,7 +1,7 @@
-package com.aihangxunxi.aitalk.im.cluster;
+package com.aihangxunxi.aitalk.im.config;
 
-import com.aihangxunxi.aitalk.im.channel.ChannelConfiguration;
 import com.aihangxunxi.aitalk.im.channel.ChannelManager;
+import com.aihangxunxi.aitalk.im.cluster.*;
 import com.aihangxunxi.aitalk.im.config.condition.ClusterCondition;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -81,13 +81,6 @@ public class ClusterConfiguration {
 		this.endpoints = endpoints;
 	}
 
-	@Bean("channelManager")
-	public ChannelManager clusterChannelManager(Cache<String, io.netty.channel.Channel> localChannelCache,
-			RedisTemplate<String, Object> userNodeRedisTemplate, RabbitMqConsumer rabbitMqConsumer,
-			RabbitMqProducer rabbitMqProducer) {
-		return new ClusterChannelManager(localChannelCache, userNodeRedisTemplate, rabbitMqConsumer, rabbitMqProducer);
-	}
-
 	/**
 	 * Lettuce
 	 */
@@ -123,6 +116,33 @@ public class ClusterConfiguration {
 	}
 
 	/**
+	 * 节点状态保活
+	 * @param localChannelCache
+	 * @return
+	 * @throws InterruptedException
+	 * @throws ExecutionException
+	 * @throws UnknownHostException
+	 */
+	@Bean(initMethod = "registerNode", destroyMethod = "UnregisterNode")
+	public ClusterNodeStatusManager keepAlive(Cache<String, io.netty.channel.Channel> localChannelCache)
+			throws InterruptedException, ExecutionException, UnknownHostException {
+		return new ClusterNodeStatusManager(localChannelCache, endpoints);
+	}
+
+	/**
+	 * 集群channel状态管理
+	 * @param localChannelCache
+	 * @param userNodeRedisTemplate
+	 * @param clusterNodeStatusManager
+	 * @return
+	 */
+	@Bean("channelManager")
+	public ChannelManager clusterChannelManager(Cache<String, io.netty.channel.Channel> localChannelCache,
+			RedisTemplate<String, Object> userNodeRedisTemplate, ClusterNodeStatusManager clusterNodeStatusManager) {
+		return new ClusterChannelManager(localChannelCache, userNodeRedisTemplate, clusterNodeStatusManager);
+	}
+
+	/**
 	 * 与rabbitMq建立连接，并指定spring容器销毁时的销毁方法
 	 * @return
 	 */
@@ -148,6 +168,11 @@ public class ClusterConfiguration {
 
 	}
 
+	/**
+	 * 集群消息接受channel
+	 * @param rabbitConnection
+	 * @return
+	 */
 	@Bean
 	public Channel consumerChannel(Connection rabbitConnection) {
 		try {
@@ -162,11 +187,21 @@ public class ClusterConfiguration {
 		}
 	}
 
+	/**
+	 * 集群消息接受消费者
+	 * @param consumerChannel
+	 * @return
+	 */
 	@Bean
 	public RabbitMqConsumer rabbitMqConsumer(Channel consumerChannel) {
 		return new RabbitMqConsumer(consumerChannel);
 	}
 
+	/**
+	 * 集群消息转发生产者channel
+	 * @param rabbitConnection
+	 * @return
+	 */
 	@Bean
 	public Channel producerChannel(Connection rabbitConnection) {
 		try {
@@ -180,15 +215,26 @@ public class ClusterConfiguration {
 		}
 	}
 
+	/**
+	 * 集群消息转发生产者
+	 * @param producerChannel
+	 * @return
+	 */
 	@Bean
 	public RabbitMqProducer rabbitMqProducer(Channel producerChannel) {
 		return new RabbitMqProducer(producerChannel);
 	}
 
-	@Bean
-	public KeepAlive keepAlive(Cache<String, io.netty.channel.Channel> localChannelCache)
-			throws InterruptedException, ExecutionException, UnknownHostException {
-		return new KeepAlive(localChannelCache, endpoints);
+	/**
+	 * 集群消息接受及转发处理器
+	 * @param rabbitMqProducer
+	 * @param rabbitMqConsumer
+	 * @return
+	 */
+	@Bean(initMethod = "receive")
+	public ClusterMessageRouter clusterMessageProcessor(RabbitMqProducer rabbitMqProducer,
+			RabbitMqConsumer rabbitMqConsumer) {
+		return new ClusterMessageRouter(rabbitMqProducer, rabbitMqConsumer);
 	}
 
 }

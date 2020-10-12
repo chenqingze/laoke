@@ -40,6 +40,7 @@ public class RabbitMqConsumer implements Consumer {
 	}
 
 	// 接收数据
+	@Override
 	public void receive(DeliverCallback deliverCallback) throws IOException {
 		// 回调举例：DeliverCallback demo
 		// DeliverCallback deliverCallback = (consumerTag, delivery) -> {
