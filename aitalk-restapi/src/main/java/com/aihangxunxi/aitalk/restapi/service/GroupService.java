@@ -45,4 +45,16 @@ public interface GroupService {
 	// 判断群是否满了
 	boolean checkGroupIsFull(String groupId, int count);
 
+	// 更新我在群中的昵称
+	boolean updateGroupMemberName(String name, Long userId, String groupId);
+
+	// 获取我在群中的昵称
+	String queryGroupMemberName(String groupId, Long userId);
+
+	// 更新置顶
+	boolean updateGroupMemberTop(String groupId, Long userId, boolean top);
+
+	// 获取群成员是否置顶
+	boolean queryGroupMemberTop(String groupId, Long userId);
+
 }

@@ -6,107 +6,117 @@ import org.bson.types.ObjectId;
 
 public class GroupMember extends BaseModel {
 
-	@JsonSerialize(using = ToStringSerializer.class)
-	private ObjectId id;
+    @JsonSerialize(using = ToStringSerializer.class)
+    private ObjectId id;
 
-	@JsonSerialize(using = ToStringSerializer.class)
-	private ObjectId groupId;
+    @JsonSerialize(using = ToStringSerializer.class)
+    private ObjectId groupId;
 
-	@JsonSerialize(using = ToStringSerializer.class)
-	private ObjectId memberId;
+    @JsonSerialize(using = ToStringSerializer.class)
+    private ObjectId memberId;
 
-	private Long userId;
+    private Long userId;
 
-	private String alias;
+    private Long joinGroupTime;
 
-	private boolean isBlocked;
+    private String alias;
 
-	private boolean isMute;
+    private boolean isBlocked;
 
-	private boolean isTop;
+    private boolean isMute;
 
-	private ObjectId lastAckMsgId;
+    private boolean isTop;
 
-	private Long lastAckMsgTime;
+    private ObjectId lastAckMsgId;
 
-	public ObjectId getId() {
-		return id;
-	}
+    private Long lastAckMsgTime;
 
-	public void setId(ObjectId id) {
-		this.id = id;
-	}
+    public ObjectId getId() {
+        return id;
+    }
 
-	public ObjectId getGroupId() {
-		return groupId;
-	}
+    public void setId(ObjectId id) {
+        this.id = id;
+    }
 
-	public void setGroupId(ObjectId groupId) {
-		this.groupId = groupId;
-	}
+    public ObjectId getGroupId() {
+        return groupId;
+    }
 
-	public ObjectId getMemberId() {
-		return memberId;
-	}
+    public void setGroupId(ObjectId groupId) {
+        this.groupId = groupId;
+    }
 
-	public void setMemberId(ObjectId memberId) {
-		this.memberId = memberId;
-	}
+    public ObjectId getMemberId() {
+        return memberId;
+    }
 
-	public Long getUserId() {
-		return userId;
-	}
+    public void setMemberId(ObjectId memberId) {
+        this.memberId = memberId;
+    }
 
-	public void setUserId(Long userId) {
-		this.userId = userId;
-	}
+    public Long getUserId() {
+        return userId;
+    }
 
-	public String getAlias() {
-		return alias;
-	}
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
 
-	public void setAlias(String alias) {
-		this.alias = alias;
-	}
+    public String getAlias() {
+        return alias;
+    }
 
-	public boolean isBlocked() {
-		return isBlocked;
-	}
+    public void setAlias(String alias) {
+        this.alias = alias;
+    }
 
-	public void setBlocked(boolean blocked) {
-		isBlocked = blocked;
-	}
+    public boolean isBlocked() {
+        return isBlocked;
+    }
 
-	public boolean isMute() {
-		return isMute;
-	}
+    public void setBlocked(boolean blocked) {
+        isBlocked = blocked;
+    }
 
-	public void setMute(boolean mute) {
-		isMute = mute;
-	}
+    public boolean isMute() {
+        return isMute;
+    }
 
-	public ObjectId getLastAckMsgId() {
-		return lastAckMsgId;
-	}
+    public void setMute(boolean mute) {
+        isMute = mute;
+    }
 
-	public void setLastAckMsgId(ObjectId lastAckMsgId) {
-		this.lastAckMsgId = lastAckMsgId;
-	}
+    public ObjectId getLastAckMsgId() {
+        return lastAckMsgId;
+    }
 
-	public Long getLastAckMsgTime() {
-		return lastAckMsgTime;
-	}
+    public void setLastAckMsgId(ObjectId lastAckMsgId) {
+        this.lastAckMsgId = lastAckMsgId;
+    }
 
-	public void setLastAckMsgTime(Long lastAckMsgTime) {
-		this.lastAckMsgTime = lastAckMsgTime;
-	}
+    public Long getLastAckMsgTime() {
+        return lastAckMsgTime;
+    }
 
-	public boolean isTop() {
-		return isTop;
-	}
+    public void setLastAckMsgTime(Long lastAckMsgTime) {
+        this.lastAckMsgTime = lastAckMsgTime;
+    }
 
-	public void setTop(boolean top) {
-		isTop = top;
-	}
+    public boolean isTop() {
+        return isTop;
+    }
 
+    public void setTop(boolean top) {
+        isTop = top;
+    }
+
+
+    public Long getJoinGroupTime() {
+        return joinGroupTime;
+    }
+
+    public void setJoinGroupTime(Long joinGroupTime) {
+        this.joinGroupTime = joinGroupTime;
+    }
 }

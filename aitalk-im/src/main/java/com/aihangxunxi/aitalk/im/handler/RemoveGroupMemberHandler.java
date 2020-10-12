@@ -25,72 +25,62 @@ import java.util.Map;
 @Component
 @ChannelHandler.Sharable
 public class RemoveGroupMemberHandler extends ChannelInboundHandlerAdapter {
-    @Resource
-    private GroupMemberRepository groupMemberRepository;
 
-    @Resource
-    private UserRepository userRepository;
+	@Resource
+	private GroupMemberRepository groupMemberRepository;
 
-    @Resource
-    private GroupManager groupManager;
+	@Resource
+	private UserRepository userRepository;
 
-    @Resource
-    private ChannelManager channelManager;
+	@Resource
+	private GroupManager groupManager;
 
-    @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        if (msg instanceof Message && ((Message) msg).getOpCode() == OpCode.DETACH_USER_FROM_GROUP_REQUEST) {
-            try {
-                String groupId = ((Message) msg).getRemoveGroupMemberRequest().getGroupId();
-                ProtocolStringList users = ((Message) msg).getRemoveGroupMemberRequest().getUserList();
-                String currentUser = ((Message) msg).getInvitationJoinGroupRequest().getCurrentUser();
-                String content = "";
-                for (int i = 0; i < users.size(); i++) {
-                    Map userMap = userRepository.queryUserById(Long.parseLong(users.get(i)));
-                    content += userMap.get("nickname") + (users.size() - 1 == i ? "" : "、");
+	@Resource
+	private ChannelManager channelManager;
 
+	@Override
+	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+		if (msg instanceof Message && ((Message) msg).getOpCode() == OpCode.DETACH_USER_FROM_GROUP_REQUEST) {
+			try {
+				String groupId = ((Message) msg).getRemoveGroupMemberRequest().getGroupId();
+				ProtocolStringList users = ((Message) msg).getRemoveGroupMemberRequest().getUserList();
+				String currentUser = ((Message) msg).getInvitationJoinGroupRequest().getCurrentUser();
+				String content = "";
+				for (int i = 0; i < users.size(); i++) {
+					Map userMap = userRepository.queryUserById(Long.parseLong(users.get(i)));
+					content += userMap.get("nickname") + (users.size() - 1 == i ? "" : "、");
+					// 从数据库中移除
+					groupMemberRepository.removeGroupMember(groupId, Long.parseLong(users.get(i)));
+				}
+				content += " 已被移除群聊";
+				Message groupMsg = Message.newBuilder().setOpCode(OpCode.DETACH_USER_FROM_GROUP_REQUEST)
+						.setSeq(((Message) msg).getSeq())
+						.setRemoveGroupMemberRequest(RemoveGroupMemberRequest.newBuilder().setCurrentUser(currentUser)
+								.setGroupId(groupId).addAllUser(users).setMessage(content).setSuccess("ok").build())
+						.build();
+				groupManager.sendGroupMsg(groupId, groupMsg);
 
-                    // 从数据库中移除
-                    groupMemberRepository.removeGroupMember(groupId, Long.parseLong(users.get(i)));
-                }
-                content += " 已被移除群聊";
-                Message groupMsg = Message.newBuilder()
-                        .setOpCode(OpCode.DETACH_USER_FROM_GROUP_REQUEST)
-                        .setSeq(((Message) msg).getSeq())
-                        .setRemoveGroupMemberRequest(RemoveGroupMemberRequest.newBuilder()
-                                .setCurrentUser(currentUser)
-                                .setGroupId(groupId)
-                                .addAllUser(users)
-                                .setMessage(content)
-                                .setSuccess("ok")
-                                .build())
-                        .build();
-                groupManager.sendGroupMsg(groupId, groupMsg);
+				for (int i = 0; i < users.size(); i++) {
+					Channel channel = channelManager.findChannelByUid(users.get(i));
+					if (channel != null) {
+						groupManager.removeChannel(groupId, channel);
+					}
+				}
 
-                for (int i = 0; i < users.size(); i++) {
-                    Channel channel = channelManager.findChannelByUid(users.get(i));
-                    if (channel != null) {
-                        groupManager.removeChannel(groupId, channel);
-                    }
-                }
+				Message ack = Message.newBuilder().setSeq(((Message) msg).getSeq())
+						.setOpCode(OpCode.DETACH_USER_FROM_GROUP_ACK).setRemoveGroupMemberAck(RemoveGroupMemberAck
+								.newBuilder().setGroupId(groupId).setMessage("移除成功").setSuccess("ok").build())
+						.build();
+				ctx.writeAndFlush(ack);
+			}
+			finally {
+				ReferenceCountUtil.release(msg);
 
-                Message ack = Message.newBuilder()
-                        .setSeq(((Message) msg).getSeq())
-                        .setOpCode(OpCode.DETACH_USER_FROM_GROUP_ACK)
-                        .setRemoveGroupMemberAck(RemoveGroupMemberAck.newBuilder()
-                                .setGroupId(groupId)
-                                .setMessage("移除成功")
-                                .setSuccess("ok")
-                                .build())
-                        .build();
-                ctx.writeAndFlush(ack);
-            } finally {
-                ReferenceCountUtil.release(msg);
-
-            }
-        } else {
-            ctx.fireChannelRead(msg);
-        }
-    }
+			}
+		}
+		else {
+			ctx.fireChannelRead(msg);
+		}
+	}
 
 }

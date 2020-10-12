@@ -102,3 +102,66 @@ message RemoveGroupMemberAck{
   string message = 2;
   string success = 3;
 }
+message ChangeGroupNameRequest{
+  string group_id = 1;
+  string group_name = 2;
+  string success = 3;
+  string message = 4;
+}
+message ChangeGroupNameAck{
+  string group_id = 1;
+  string group_name = 2;
+  string success = 3;
+  string message = 4;
+}
+message ChangeGroupNoticeRequest{
+  string group_id = 1;
+  string notice = 2;
+  string success = 3;
+  string message = 4;
+}
+message ChangeGroupNoticeAck{
+  string group_id = 1;
+  string notice = 2;
+  string success = 3;
+  string message = 4;
+}
+
+message ChangeMucMuteRequest{
+  string group_id = 1;
+  bool mute = 2;
+  string success = 3;
+  string message = 4;
+}
+
+message ChangeMucMuteAck{
+  string group_id = 1;
+  bool mute = 2;
+  string success = 3;
+  string message = 4;
+}
+message ChangeMucConfirmJoinRequest{
+  string group_id = 1;
+  bool confirm = 2;
+  string success = 3;
+  string message = 4;
+}
+message ChangeMucConfirmJoinAck{
+  string group_id = 1;
+  bool confirm = 2;
+  string success = 3;
+  string message = 4;
+}
+message ExitGroupRequest{
+  string group_id = 1;
+  string user_id = 2;
+  string success = 3;
+  string message = 4;
+}
+
+message ExitGroupAck{
+  string group_id = 1;
+  string user_id = 2;
+  string success = 3;
+  string message = 4;
+}
