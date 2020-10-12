@@ -1,5 +1,6 @@
-package com.aihangxunxi.aitalk.im.config;
+package com.aihangxunxi.aitalk.im.bootstrap;
 
+import com.aihangxunxi.aitalk.im.config.ImServerConfiguration;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
@@ -80,7 +81,7 @@ public class WebSocketServerBootstrap extends AitalkServerBootstrap {
 	 */
 	@PostConstruct
 	private void startup() {
-		super.run();
+		super.start();
 	}
 
 	/**

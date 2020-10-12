@@ -17,13 +17,18 @@ message MsgRequest {
   string extend_data = 9; // 扩展字段
   string sender_id = 10; // 追加 发送方id 用于判断群聊成员是否在群中
 
+  string receiver_id = 11;
+
 }
 
 // 消息发送请求收到确认
 message MsgAck {
   string msg_id = 1; // 消息id
   string seq = 2; // 回执编号
-  string conversation_type =3;// 多人还是单人
+  uint32 conversation_type =3;// 多人还是单人
+
+  uint64 created_at = 4;
+  uint64 updated_at = 5;
 }
 
 
@@ -38,6 +43,12 @@ message MsgReadNotify {
   string content = 7; // 消息内容
   uint32 time = 8; // 发送时间
   string extend_data = 9; // 扩展字段
+
+  string sender_id = 10; // 追加 发送方id 用于判断群聊成员是否在群中
+  string receiver_id = 11;
+  uint64 created_at = 12;
+  uint64 updated_at = 13;
+
 }
 
 // 消息已读确认

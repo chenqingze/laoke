@@ -24,21 +24,23 @@ public class RabbitMqConsumer implements Consumer {
 		this.consumerChannel = consumerChannel;
 
 		// todo:测试完删掉:start
-		DeliverCallback deliverCallback = (consumerTag, delivery) -> {
-			String message = new String(delivery.getBody(), "UTF-8");
-			logger.debug(" [x] Received {}:'{}'", delivery.getEnvelope().getRoutingKey(), message);
-		};
-		try {
-			this.receive(deliverCallback);
-		}
-		catch (IOException e) {
-			e.printStackTrace();
-		}
+		// DeliverCallback deliverCallback = (consumerTag, delivery) -> {
+		// String message = new String(delivery.getBody(), "UTF-8");
+		// logger.debug(" [x] Received {}:'{}'", delivery.getEnvelope().getRoutingKey(),
+		// message);
+		// };
+		// try {
+		// this.receive(deliverCallback);
+		// }
+		// catch (IOException e) {
+		// e.printStackTrace();
+		// }
 		// todo:测试完删掉:end
 
 	}
 
 	// 接收数据
+	@Override
 	public void receive(DeliverCallback deliverCallback) throws IOException {
 		// 回调举例：DeliverCallback demo
 		// DeliverCallback deliverCallback = (consumerTag, delivery) -> {

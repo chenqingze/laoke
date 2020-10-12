@@ -7,27 +7,23 @@ import io.netty.channel.ChannelHandlerContext;
 import org.springframework.data.redis.core.RedisTemplate;
 
 /**
- * todo:完善集群相关状态如下： 1、服务间信息转发处理， 2、维护rabbitMq队列状态， 3、维护用户-主机关系到redis，及时缓存和清理 4、etcd同步im
- * node节点服务状态，并负载均衡 5、合理设置redis 用户数据超时时间并通过心跳机制剔除不在线的用户 6、群消息发送考虑废弃channelManager
+ * 集群channel状态管理 todo:完善集群相关状态如下： 3、维护用户-主机关系到redis，及时缓存和清理 4、etcd同步im node节点服务状态，并负载均衡
+ * 5、合理设置redis 用户数据超时时间并通过心跳机制剔除不在线的用户 6、群消息发送考虑废弃channelManager
  *
  * @author chenqingze107@163.com
  * @version 2.0 2020/9/25 2:49 PM
  */
 public class ClusterChannelManager extends DefaultChannelManager {
 
-	private RedisTemplate<String, Object> userNodeRedisTemplate;
+	private final RedisTemplate<String, Object> userNodeRedisTemplate;
 
-	private RabbitMqConsumer rabbitMqConsumer;
-
-	private RabbitMqProducer rabbitMqProducer;
+	private final ClusterNodeStatusManager clusterNodeStatusManager;
 
 	public ClusterChannelManager(Cache<String, Channel> localChannelCache,
-			RedisTemplate<String, Object> userNodeRedisTemplate, RabbitMqConsumer rabbitMqConsumer,
-			RabbitMqProducer rabbitMqProducer) {
+			RedisTemplate<String, Object> userNodeRedisTemplate, ClusterNodeStatusManager clusterNodeStatusManager) {
 		super(localChannelCache);
 		this.userNodeRedisTemplate = userNodeRedisTemplate;
-		this.rabbitMqConsumer = rabbitMqConsumer;
-		this.rabbitMqProducer = rabbitMqProducer;
+		this.clusterNodeStatusManager = clusterNodeStatusManager;
 	}
 
 	@Override

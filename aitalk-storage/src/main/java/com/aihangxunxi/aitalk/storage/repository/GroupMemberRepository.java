@@ -42,6 +42,7 @@ public class GroupMemberRepository {
 		groupMember.setAlias(alias);
 		groupMember.setBlocked(false);
 		groupMember.setJoinGroupTime(new Date().getTime());
+
 		groupMember.setMute(false);
 		MongoCollection<GroupMember> groupMemberMongoCollection = aitalkDb.getCollection("groupMember",
 				GroupMember.class);

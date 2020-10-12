@@ -6,7 +6,6 @@ import com.aihangxunxi.aitalk.im.protocol.buffers.InvitationAcceptRequest;
 import com.aihangxunxi.aitalk.im.protocol.buffers.Message;
 import com.aihangxunxi.aitalk.im.protocol.buffers.OpCode;
 import com.aihangxunxi.aitalk.storage.constant.InviteStatus;
-import com.aihangxunxi.aitalk.storage.constant.InviteType;
 import com.aihangxunxi.aitalk.storage.model.Friend;
 import com.aihangxunxi.aitalk.storage.model.Invitation;
 import com.aihangxunxi.aitalk.storage.model.User;
@@ -71,7 +70,7 @@ public class InvitationAcceptHandler extends ChannelInboundHandlerAdapter {
 
 				Message message = null;
 				if (save) {
-					message = invitationAssembler.friendInvitationAcceptAck(id, friend, ((Message) msg).getSeq());
+					message = invitationAssembler.buildInvitationAcceptAck(id, friend, ((Message) msg).getSeq());
 					ctx.writeAndFlush(message);
 				}
 
@@ -92,7 +91,7 @@ public class InvitationAcceptHandler extends ChannelInboundHandlerAdapter {
 				friend.setUpdatedAt(currentTimeMillis);
 				save = friendRepository.save(friend);
 				if (addresseeChannel != null && save) {
-					message = invitationAssembler.friendInvitationAcceptAck(id, friend, ((Message) msg).getSeq());
+					message = invitationAssembler.buildInvitationAcceptAck(id, friend, ((Message) msg).getSeq());
 					addresseeChannel.writeAndFlush(message);
 				}
 

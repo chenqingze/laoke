@@ -18,7 +18,7 @@ import java.security.cert.CertificateException;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Configuration
-@Import(StorageConfiguration.class)
+@Import({ StorageConfiguration.class, StandaloneConfiguration.class, ClusterConfiguration.class })
 @ComponentScan(value = { "com.aihangxunxi.aitalk.im" })
 @PropertySource("classpath:config.properties")
 public class ImServerConfiguration {

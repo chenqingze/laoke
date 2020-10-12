@@ -75,7 +75,6 @@ public class RemoveGroupMemberHandler extends ChannelInboundHandlerAdapter {
 			}
 			finally {
 				ReferenceCountUtil.release(msg);
-
 			}
 		}
 		else {

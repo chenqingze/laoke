@@ -1,7 +1,7 @@
-package com.aihangxunxi.aitalk.im.cluster;
+package com.aihangxunxi.aitalk.im.config;
 
-import com.aihangxunxi.aitalk.im.channel.ChannelConfiguration;
 import com.aihangxunxi.aitalk.im.channel.ChannelManager;
+import com.aihangxunxi.aitalk.im.cluster.*;
 import com.aihangxunxi.aitalk.im.config.condition.ClusterCondition;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -28,8 +28,10 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.URISyntaxException;
+import java.net.UnknownHostException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
 /**
@@ -57,15 +59,16 @@ public class ClusterConfiguration {
 
 	// private final String rabbitMqPassword;
 
+	private final String[] endpoints;
+
 	public ClusterConfiguration(@Value("${server.redis.host}") String redisHost,
 			@Value("${server.redis.port}") int redisPort, @Value("${server.redis.userNodeDb}") int userNodeDb,
-			@Value("${server.rabbitMq.uri}") String rabbitMqUri
-	// @Value("${server.rabbitMq.host}") String rabbitMqHost,
-	// @Value("${server.rabbitMq.port}") int rabbitMqPort,
-	// @Value("${server.rabbitMq.userName}") String rabbitMqUserName,
-	// @Value("${server.rabbitMq.password}") String rabbitMqPassword
-
-	) {
+			@Value("${server.rabbitMq.uri}") String rabbitMqUri,
+			// @Value("${server.rabbitMq.host}") String rabbitMqHost,
+			// @Value("${server.rabbitMq.port}") int rabbitMqPort,
+			// @Value("${server.rabbitMq.userName}") String rabbitMqUserName,
+			// @Value("${server.rabbitMq.password}") String rabbitMqPassword,
+			@Value("${server.etcd.endpoints}") String... endpoints) {
 		this.redisHost = redisHost;
 		this.redisPort = redisPort;
 		this.userNodeDb = userNodeDb;
@@ -75,13 +78,7 @@ public class ClusterConfiguration {
 		// this.rabbitMqPort = rabbitMqPort;
 		// this.rabbitMqUserName = rabbitMqUserName;
 		// this.rabbitMqPassword = rabbitMqPassword;
-	}
-
-	@Bean("channelManager")
-	public ChannelManager clusterChannelManager(Cache<String, io.netty.channel.Channel> localChannelCache,
-			RedisTemplate<String, Object> userNodeRedisTemplate, RabbitMqConsumer rabbitMqConsumer,
-			RabbitMqProducer rabbitMqProducer) {
-		return new ClusterChannelManager(localChannelCache, userNodeRedisTemplate, rabbitMqConsumer, rabbitMqProducer);
+		this.endpoints = endpoints;
 	}
 
 	/**
@@ -119,6 +116,33 @@ public class ClusterConfiguration {
 	}
 
 	/**
+	 * 节点状态保活
+	 * @param localChannelCache
+	 * @return
+	 * @throws InterruptedException
+	 * @throws ExecutionException
+	 * @throws UnknownHostException
+	 */
+	@Bean(initMethod = "registerNode", destroyMethod = "UnregisterNode")
+	public ClusterNodeStatusManager keepAlive(Cache<String, io.netty.channel.Channel> localChannelCache)
+			throws InterruptedException, ExecutionException, UnknownHostException {
+		return new ClusterNodeStatusManager(localChannelCache, endpoints);
+	}
+
+	/**
+	 * 集群channel状态管理
+	 * @param localChannelCache
+	 * @param userNodeRedisTemplate
+	 * @param clusterNodeStatusManager
+	 * @return
+	 */
+	@Bean("channelManager")
+	public ChannelManager clusterChannelManager(Cache<String, io.netty.channel.Channel> localChannelCache,
+			RedisTemplate<String, Object> userNodeRedisTemplate, ClusterNodeStatusManager clusterNodeStatusManager) {
+		return new ClusterChannelManager(localChannelCache, userNodeRedisTemplate, clusterNodeStatusManager);
+	}
+
+	/**
 	 * 与rabbitMq建立连接，并指定spring容器销毁时的销毁方法
 	 * @return
 	 */
@@ -144,6 +168,11 @@ public class ClusterConfiguration {
 
 	}
 
+	/**
+	 * 集群消息接受channel
+	 * @param rabbitConnection
+	 * @return
+	 */
 	@Bean
 	public Channel consumerChannel(Connection rabbitConnection) {
 		try {
@@ -158,11 +187,21 @@ public class ClusterConfiguration {
 		}
 	}
 
+	/**
+	 * 集群消息接受消费者
+	 * @param consumerChannel
+	 * @return
+	 */
 	@Bean
 	public RabbitMqConsumer rabbitMqConsumer(Channel consumerChannel) {
 		return new RabbitMqConsumer(consumerChannel);
 	}
 
+	/**
+	 * 集群消息转发生产者channel
+	 * @param rabbitConnection
+	 * @return
+	 */
 	@Bean
 	public Channel producerChannel(Connection rabbitConnection) {
 		try {
@@ -176,9 +215,26 @@ public class ClusterConfiguration {
 		}
 	}
 
+	/**
+	 * 集群消息转发生产者
+	 * @param producerChannel
+	 * @return
+	 */
 	@Bean
 	public RabbitMqProducer rabbitMqProducer(Channel producerChannel) {
 		return new RabbitMqProducer(producerChannel);
+	}
+
+	/**
+	 * 集群消息接受及转发处理器
+	 * @param rabbitMqProducer
+	 * @param rabbitMqConsumer
+	 * @return
+	 */
+	@Bean(initMethod = "receive")
+	public ClusterMessageRouter clusterMessageProcessor(RabbitMqProducer rabbitMqProducer,
+			RabbitMqConsumer rabbitMqConsumer) {
+		return new ClusterMessageRouter(rabbitMqProducer, rabbitMqConsumer);
 	}
 
 }

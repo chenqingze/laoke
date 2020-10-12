@@ -1,4 +1,4 @@
-package com.aihangxunxi.aitalk.im.config;
+package com.aihangxunxi.aitalk.im.bootstrap;
 
 import com.aihangxunxi.aitalk.im.channel.ChannelConstant;
 import com.aihangxunxi.aitalk.im.codec.MessageDecoder;
@@ -82,6 +82,9 @@ public class WebSocketChannelInitializer extends ChannelInitializer<NioSocketCha
     @Resource
     private RemoveGroupMemberHandler removeGroupMemberHandler;
 
+	@Resource
+	private P2P2ChatHandler p2P2ChatHandler;
+
     @Resource
     private EditGroupNameHandler editGroupNameHandler;
 
@@ -158,11 +161,13 @@ public class WebSocketChannelInitializer extends ChannelInitializer<NioSocketCha
         pipeline.addLast("changeMucJoinConfirmHandler", changeMucJoinConfirmHandler);
         pipeline.addLast("exitGroupHandler", exitGroupHandler);
 
+        pipeline.addLast("p2pChatHandler", p2P2ChatHandler);
 
         // todo：其他业务处理器放到这里
         // pipeline.addLast(processorGroup, "queryUserGroupsHandler",
         // queryUserGroupsHandler);
         pipeline.addLast(processorGroup, "exceptionHandler", exceptionHandler);
     }
+
 
 }

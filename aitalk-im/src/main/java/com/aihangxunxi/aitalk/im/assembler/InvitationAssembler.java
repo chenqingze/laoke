@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class InvitationAssembler {
 
-	public Message friendInvitationRequestAck(Invitation invitation, long seq) {
+	public Message buildInvitationRequestAck(Invitation invitation, long seq) {
 		int res = invitation != null ? 1 : 0;
 
 		return Message.newBuilder().setOpCode(OpCode.INVITATION_REQUEST_ACK).setSeq(seq)
@@ -31,7 +31,7 @@ public class InvitationAssembler {
 				.build();
 	}
 
-	public Message friendInvitationAcceptAck(String id, Friend friend, long seq) {
+	public Message buildInvitationAcceptAck(String id, Friend friend, long seq) {
 
 		return Message.newBuilder().setOpCode(OpCode.INVITATION_ACCEPT_ACK).setSeq(seq)
 				.setInvitationAcceptAck(InvitationAcceptAck.newBuilder().setId(id)
@@ -46,7 +46,7 @@ public class InvitationAssembler {
 				.build();
 	}
 
-	public Message friendInvitationDeclinedAck(String id, long seq) {
+	public Message buildInvitationDeclinedAck(String id, long seq) {
 		return Message.newBuilder().setOpCode(OpCode.INVITATION_DECLINED_ACK).setSeq(seq)
 				.setInvitationDeclinedAck(InvitationDeclinedAck.newBuilder().setId(id).setRes(1).build()).build();
 	}

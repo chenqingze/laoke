@@ -26,17 +26,36 @@ public class MsgAssembler {
 	@Resource
 	private UserRepository userRepository;
 
-	MsgAck buildMsgAck() {
+	public MsgAck buildMsgAck() {
 		return MsgAck.newBuilder().build();
 	}
 
-	MsgReadNotify buildMsgReadNotify() {
-		return MsgReadNotify.newBuilder().build();
+	public MsgReadNotify buildMsgReadNotify(MsgHist msgHist) {
+		MsgReadNotify msgReadNotify = MsgReadNotify.newBuilder().setMsgId(msgHist.getMsgId().toHexString())
+				.setSenderId(msgHist.getSenderId().toHexString()).setReceiverId(msgHist.getReceiverId().toHexString())
+				.setConversationType(msgHist.getConversationType().ordinal())
+				.setMsgStatus(msgHist.getMsgStatus().ordinal()).setMsgType(msgHist.getMsgType().ordinal())
+				.setMsgAttachStr(msgHist.getAttachStr()).setContent(msgHist.getContent())
+				.setCreatedAt(msgHist.getCreatedAt()).setUpdatedAt(msgHist.getUpdatedAt()).build();
+		return msgReadNotify;
 	}
 
-	MsgHist convertToMsgHist(Message message) {
-		message.getMsgRequest();
-		return null;
+	public MsgHist convertMsgRequestToMsgHist(Message message) {
+		MsgRequest msgRequest = message.getMsgRequest();
+		MsgHist msgHist = new MsgHist();
+		msgHist.setReceiverId(new ObjectId(msgRequest.getReceiverId()));
+		msgHist.setContent(msgRequest.getContent());
+		msgHist.setMsgType(MsgType.TEXT);
+		return msgHist;
+	}
+
+	public Message convertMgsHistToMessage(MsgHist msgHist, long seq) {
+		Message msgAck = Message.newBuilder().setSeq(seq)
+				.setMsgAck(MsgAck.newBuilder().setMsgId(msgHist.getMsgId().toHexString())
+						.setConversationType(msgHist.getConversationType().ordinal())
+						.setCreatedAt(msgHist.getCreatedAt()).build())
+				.build();
+		return msgAck;
 	}
 
 	public MucHist convertToMucHist(Message message) {
@@ -55,10 +74,17 @@ public class MsgAssembler {
 
 	public Message convertMucHistToMessage(MucHist mucHist, String seq) {
 		Message message = Message.newBuilder().setOpCode(OpCode.MSG_ACK).setSeq(Long.parseLong(seq))
-				.setMsgAck(
-						MsgAck.newBuilder().setConversationType("1").setMsgId(mucHist.getMsgId().toHexString()).build())
+				.setMsgAck(MsgAck.newBuilder().setConversationType(mucHist.getConversationType().ordinal())
+						.setMsgId(mucHist.getMsgId().toHexString()).build())
 				.build();
 		return message;
+	}
+
+	public MsgHist convertMsgReadAckToMsgHist(Message msg) {
+		MsgReadAck msgReadAck = msg.getMsgReadAck();
+		MsgHist msgHist = new MsgHist();
+		msgHist.setMsgId(new ObjectId(msgReadAck.getMsgId()));
+		return msgHist;
 	}
 
 }

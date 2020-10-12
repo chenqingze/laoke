@@ -6,8 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.net.InetAddress;
-import java.nio.charset.StandardCharsets;
 
 /**
  * AMQP P2P 生产者
@@ -24,19 +22,19 @@ public class RabbitMqProducer implements Producer {
 	public RabbitMqProducer(Channel producerChannel) {
 		this.producerChannel = producerChannel;
 		// todo:测试完删掉:start
-		try {
-			String hostName = InetAddress.getLocalHost().getHostName();
-			producerChannel.queueDeclare(hostName, false, false, false, null);
-			producerChannel.queueBind(hostName, ClusterConstant.EXCHANGE_NAME, hostName);
-			while (true) {
-				Thread.sleep(6000);
-				producerChannel.basicPublish(ClusterConstant.EXCHANGE_NAME, hostName, null,
-						"i wanna go home !".getBytes(StandardCharsets.UTF_8));
-			}
-		}
-		catch (IOException | InterruptedException e) {
-			e.printStackTrace();
-		}
+		// try {
+		// String hostName = InetAddress.getLocalHost().getHostName();
+		// producerChannel.queueDeclare(hostName, false, false, false, null);
+		// producerChannel.queueBind(hostName, ClusterConstant.EXCHANGE_NAME, hostName);
+		// while (true) {
+		// Thread.sleep(6000);
+		// producerChannel.basicPublish(ClusterConstant.EXCHANGE_NAME, hostName, null,
+		// "i wanna go home !".getBytes(StandardCharsets.UTF_8));
+		// }
+		// }
+		// catch (IOException | InterruptedException e) {
+		// e.printStackTrace();
+		// }
 		// todo:测试完删掉:end
 	}
 
