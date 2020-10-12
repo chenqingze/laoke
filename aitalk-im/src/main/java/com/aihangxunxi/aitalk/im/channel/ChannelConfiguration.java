@@ -4,6 +4,7 @@ import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import io.netty.channel.Channel;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 import java.util.concurrent.TimeUnit;
 
@@ -11,6 +12,7 @@ import java.util.concurrent.TimeUnit;
  * @author chenqingze107@163.com
  * @version 2.0
  */
+@Configuration
 public class ChannelConfiguration {
 
 	/**
