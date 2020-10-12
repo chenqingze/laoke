@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import org.bson.types.ObjectId;
 
 public class GroupMember extends BaseModel {
+
 	@JsonSerialize(using = ToStringSerializer.class)
 	private ObjectId id;
 
@@ -107,4 +108,5 @@ public class GroupMember extends BaseModel {
 	public void setTop(boolean top) {
 		isTop = top;
 	}
+
 }

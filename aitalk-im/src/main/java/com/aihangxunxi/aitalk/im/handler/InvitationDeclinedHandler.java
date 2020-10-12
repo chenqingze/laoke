@@ -4,8 +4,6 @@ import com.aihangxunxi.aitalk.im.assembler.InvitationAssembler;
 import com.aihangxunxi.aitalk.im.channel.ChannelManager;
 import com.aihangxunxi.aitalk.im.protocol.buffers.*;
 import com.aihangxunxi.aitalk.storage.constant.InviteStatus;
-import com.aihangxunxi.aitalk.storage.constant.InviteType;
-import com.aihangxunxi.aitalk.storage.model.Friend;
 import com.aihangxunxi.aitalk.storage.model.Invitation;
 import com.aihangxunxi.aitalk.storage.model.User;
 import com.aihangxunxi.aitalk.storage.repository.InvitationRepository;
@@ -19,7 +17,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.time.Instant;
 
 @Component
 @ChannelHandler.Sharable
@@ -49,7 +46,7 @@ public class InvitationDeclinedHandler extends ChannelInboundHandlerAdapter {
 
 			if (invitation != null) {
 
-				Message message = invitationAssembler.friendInvitationDeclinedAck(id, ((Message) msg).getSeq());
+				Message message = invitationAssembler.buildInvitationDeclinedAck(id, ((Message) msg).getSeq());
 				ctx.writeAndFlush(message);
 
 				User user = userRepository.getUserById(Long.valueOf(invitation.getRequesterId()));
