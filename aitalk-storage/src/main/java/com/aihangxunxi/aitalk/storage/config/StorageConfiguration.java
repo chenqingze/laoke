@@ -57,12 +57,17 @@ public class StorageConfiguration {
 	}
 
 	@Bean
+	public EnumCodecRegistry enumCodecRegistry() {
+		return new EnumCodecRegistry();
+	}
+
+	@Bean
 	public MongoClient mongoClient() {
 		ConnectionString connectionStr = new ConnectionString(connectionString);
 		CodecRegistry pojoCodecRegistry = CodecRegistries
 				.fromProviders(PojoCodecProvider.builder().automatic(true).build());
 		CodecRegistry codecRegistry = CodecRegistries.fromRegistries(MongoClientSettings.getDefaultCodecRegistry(),
-				pojoCodecRegistry);
+				pojoCodecRegistry, enumCodecRegistry());
 		MongoClientSettings clientSettings = MongoClientSettings.builder().applyConnectionString(connectionStr)
 				.codecRegistry(codecRegistry).build();
 		return MongoClients.create(clientSettings);
