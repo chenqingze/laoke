@@ -63,6 +63,7 @@ public class StorageConfiguration {
 				.fromProviders(PojoCodecProvider.builder().automatic(true).build());
 		CodecRegistry codecRegistry = CodecRegistries.fromRegistries(MongoClientSettings.getDefaultCodecRegistry(),
 				pojoCodecRegistry);
+
 		MongoClientSettings clientSettings = MongoClientSettings.builder().applyConnectionString(connectionStr)
 				.codecRegistry(codecRegistry).build();
 		return MongoClients.create(clientSettings);
