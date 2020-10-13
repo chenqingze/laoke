@@ -4,7 +4,6 @@ import com.aihangxunxi.aitalk.im.protocol.buffers.*;
 import com.aihangxunxi.aitalk.storage.constant.ConversationType;
 import com.aihangxunxi.aitalk.storage.constant.MsgStatus;
 import com.aihangxunxi.aitalk.storage.constant.MsgType;
-import com.aihangxunxi.aitalk.storage.model.Msg;
 import com.aihangxunxi.aitalk.storage.model.MsgHist;
 import com.aihangxunxi.aitalk.storage.model.MucHist;
 import com.aihangxunxi.aitalk.storage.repository.UserRepository;
@@ -35,8 +34,8 @@ public class MsgAssembler {
 				.setSenderId(msgHist.getSenderId().toHexString()).setReceiverId(msgHist.getReceiverId().toHexString())
 				.setConversationType(msgHist.getConversationType().ordinal())
 				.setMsgStatus(msgHist.getMsgStatus().ordinal()).setMsgType(msgHist.getMsgType().ordinal())
-				.setMsgAttachStr(msgHist.getAttachStr()).setContent(msgHist.getContent())
-				.setCreatedAt(msgHist.getCreatedAt()).setUpdatedAt(msgHist.getUpdatedAt()).build();
+				.setContent(msgHist.getContent()).setCreatedAt(msgHist.getCreatedAt())
+				.setUpdatedAt(msgHist.getUpdatedAt()).build();
 		return msgReadNotify;
 	}
 
@@ -50,7 +49,7 @@ public class MsgAssembler {
 	}
 
 	public Message convertMgsHistToMessage(MsgHist msgHist, long seq) {
-		Message msgAck = Message.newBuilder().setSeq(seq)
+		Message msgAck = Message.newBuilder().setOpCode(OpCode.MSG_ACK).setSeq(seq)
 				.setMsgAck(MsgAck.newBuilder().setMsgId(msgHist.getMsgId().toHexString())
 						.setConversationType(msgHist.getConversationType().ordinal())
 						.setCreatedAt(msgHist.getCreatedAt()).build())

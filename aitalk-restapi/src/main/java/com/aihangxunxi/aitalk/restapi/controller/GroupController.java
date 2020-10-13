@@ -125,4 +125,40 @@ public class GroupController {
 		return ResponseEntity.status(HttpStatus.OK).body(map);
 	}
 
+	// 更新我在群中的昵称
+	@PutMapping("/member/name")
+	public ResponseEntity<ModelMap> updateGroupMemberName(@RequestParam("groupId") String groupId,
+			AihangPrincipal principal, @RequestParam("name") String name) {
+		ModelMap map = new ModelMap();
+		map.put("ok", groupService.updateGroupMemberName(name, principal.getUserId(), groupId));
+		return ResponseEntity.status(HttpStatus.OK).body(map);
+	}
+
+	// 获取我在群中的昵称
+	@GetMapping("/member/name")
+	public ResponseEntity<ModelMap> queryGroupMemberName(AihangPrincipal aihangPrincipal,
+			@RequestParam("groupId") String groupId) {
+		ModelMap map = new ModelMap();
+		map.put("alias", groupService.queryGroupMemberName(groupId, aihangPrincipal.getUserId()));
+		return ResponseEntity.status(HttpStatus.OK).body(map);
+	}
+
+	// 更新置顶
+	@PutMapping("/member/top")
+	public ResponseEntity<ModelMap> updateGroupChatTop(@RequestParam("groupId") String groupId,
+			@RequestParam("top") boolean top, AihangPrincipal aihangPrincipal) {
+		ModelMap map = new ModelMap();
+		map.put("success", groupService.updateGroupMemberTop(groupId, aihangPrincipal.getUserId(), top));
+		return ResponseEntity.status(HttpStatus.OK).body(map);
+	}
+
+	// 获取群组置顶设置
+	@GetMapping("/member/top")
+	public ResponseEntity<ModelMap> queryGroupChatTop(@RequestParam("groupId") String groupId,
+			AihangPrincipal aihangPrincipal) {
+		ModelMap map = new ModelMap();
+		map.put("top", groupService.queryGroupMemberTop(groupId, aihangPrincipal.getUserId()));
+		return ResponseEntity.status(HttpStatus.OK).body(map);
+	}
+
 }

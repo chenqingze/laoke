@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static com.mongodb.client.model.Filters.and;
@@ -29,7 +30,7 @@ public class GroupMemberRepository {
 
 		MongoCollection<GroupMember> groupMemberMongoCollection = aitalkDb.getCollection("groupMember",
 				GroupMember.class);
-		return groupMemberMongoCollection.find(eq("memberId", user.getUid())).into(new ArrayList<>());
+		return groupMemberMongoCollection.find(eq("memberId", user.getId())).into(new ArrayList<>());
 	}
 
 	// 用户进群
@@ -40,6 +41,8 @@ public class GroupMemberRepository {
 		groupMember.setUserId(userId);
 		groupMember.setAlias(alias);
 		groupMember.setBlocked(false);
+		groupMember.setJoinGroupTime(new Date().getTime());
+
 		groupMember.setMute(false);
 		MongoCollection<GroupMember> groupMemberMongoCollection = aitalkDb.getCollection("groupMember",
 				GroupMember.class);

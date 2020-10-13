@@ -50,7 +50,7 @@ public class InvitationDeclinedHandler extends ChannelInboundHandlerAdapter {
 				ctx.writeAndFlush(message);
 
 				User user = userRepository.getUserById(Long.valueOf(invitation.getRequesterId()));
-				Channel addresseeChannel = channelManager.findChannelByUid(user.getUid().toHexString());
+				Channel addresseeChannel = channelManager.findChannelByUid(user.getId().toHexString());
 				if (addresseeChannel != null) {
 					addresseeChannel.writeAndFlush(message);
 				}

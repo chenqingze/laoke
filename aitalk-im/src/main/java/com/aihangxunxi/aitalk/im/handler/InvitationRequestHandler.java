@@ -78,7 +78,7 @@ public class InvitationRequestHandler extends ChannelInboundHandlerAdapter {
 
 				User user = userRepository.getUserById(Long.parseLong(invitation.getAddresseeId()));
 
-				Channel addresseeChannel = channelManager.findChannelByUid(user.getUid().toHexString());
+				Channel addresseeChannel = channelManager.findChannelByUid(user.getId().toHexString());
 				if (addresseeChannel != null) {
 					addresseeChannel.writeAndFlush(message);
 				}

@@ -43,6 +43,21 @@ message Message {
 
     RemoveGroupMemberRequest remove_group_member_request = 30;
     RemoveGroupMemberAck remove_group_member_ack = 31;
+
+    ChangeGroupNameRequest change_group_name_request = 32;
+    ChangeGroupNameAck change_group_name_ack = 33;
+
+    ChangeGroupNoticeRequest change_group_notice_request = 34;
+    ChangeGroupNoticeAck change_group_notice_ack = 35;
+
+    ChangeMucMuteRequest change_muc_mute_request = 36;
+    ChangeMucMuteAck change_muc_mute_ack = 37;
+
+    ChangeMucConfirmJoinRequest change_muc_confirm_join_request = 38;
+    ChangeMucConfirmJoinAck change_muc_confirm_join_ack = 39;
+
+    ExitGroupRequest exit_group_request = 40;
+    ExitGroupAck exit_group_ack = 41;
     //------------------------------------------好友及好友邀请---------------------------------------------------
 
     InvitationRequestRequest invitation_request_request = 1001;

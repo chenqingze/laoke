@@ -17,6 +17,8 @@ public class GroupMember extends BaseModel {
 
 	private Long userId;
 
+	private Long joinGroupTime;
+
 	private String alias;
 
 	private boolean isBlocked;
@@ -107,6 +109,14 @@ public class GroupMember extends BaseModel {
 
 	public void setTop(boolean top) {
 		isTop = top;
+	}
+
+	public Long getJoinGroupTime() {
+		return joinGroupTime;
+	}
+
+	public void setJoinGroupTime(Long joinGroupTime) {
+		this.joinGroupTime = joinGroupTime;
 	}
 
 }

@@ -80,10 +80,25 @@ public class WebSocketChannelInitializer extends ChannelInitializer<NioSocketCha
 	private CreateMucHandler createMucHandler;
 
 	@Resource
-	private P2P2ChatHandler p2P2ChatHandler;
+	private P2PChatHandler p2P2ChatHandler;
 
 	@Resource
 	private RemoveGroupMemberHandler removeGroupMemberHandler;
+
+	@Resource
+	private EditGroupNameHandler editGroupNameHandler;
+
+	@Resource
+	private EditGroupNoticeHandler editGroupNoticeHandler;
+
+	@Resource
+	private ChangeMucMuteHandler changeMucMuteHandler;
+
+	@Resource
+	private ChangeMucJoinConfirmHandler changeMucJoinConfirmHandler;
+
+	@Resource
+	private ExitGroupHandler exitGroupHandler;
 
 	public WebSocketChannelInitializer(@Nullable SslContext sslCtx, EventExecutorGroup processorGroup) {
 		this.sslCtx = sslCtx;
@@ -135,12 +150,18 @@ public class WebSocketChannelInitializer extends ChannelInitializer<NioSocketCha
 		pipeline.addLast("invitationRequestHandler", invitationRequestHandler);
 		pipeline.addLast("invitationAcceptHandler", invitationAcceptHandler);
 		pipeline.addLast("invitationDeclinedHandler", invitationDeclinedHandler);
-		pipeline.addLast("p2pChatHandler", p2P2ChatHandler);
 		pipeline.addLast("groupMessageHandler", groupMessageHandler);
 		pipeline.addLast("invitationUserJoinGroupHandler", invitationUserJoinGroupHandler);
 		pipeline.addLast("askFroJoinGroupHandler", askFroJoinGroupHandler);
 		pipeline.addLast("createMucHandler", createMucHandler);
 		pipeline.addLast("removeGroupMemberHandler", removeGroupMemberHandler);
+		pipeline.addLast("editGroupNameHandler", editGroupNameHandler);
+		pipeline.addLast("editGroupNoticeHandler", editGroupNoticeHandler);
+		pipeline.addLast("changeMucMuteHandler", changeMucMuteHandler);
+		pipeline.addLast("changeMucJoinConfirmHandler", changeMucJoinConfirmHandler);
+		pipeline.addLast("exitGroupHandler", exitGroupHandler);
+
+		pipeline.addLast("p2pChatHandler", p2P2ChatHandler);
 
 		// todo：其他业务处理器放到这里
 		// pipeline.addLast(processorGroup, "queryUserGroupsHandler",

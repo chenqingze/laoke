@@ -24,7 +24,7 @@ public class UserRepository {
 
 	public boolean saveUser(User user) {
 		MongoCollection<User> mongoCollection = aitalkDb.getCollection("user", User.class);
-		user.setUid(new ObjectId());
+		user.setId(new ObjectId());
 		user.setGender(Gender.UNKNOWN);
 		mongoCollection.insertOne(user);
 		return true;
@@ -34,7 +34,7 @@ public class UserRepository {
 		MongoCollection<User> mongoCollection = aitalkDb.getCollection("user", User.class);
 		Bson bson = eq("userId", Long.parseLong(userId));
 		User user = mongoCollection.find(bson).first();
-		return user.getUid().toString();
+		return user.getId().toString();
 	}
 
 	// 根据用户id获取用户
@@ -43,7 +43,7 @@ public class UserRepository {
 		Bson bson = eq("userId", userId);
 		User user = mongoCollection.find(bson).first();
 		ModelMap map = new ModelMap();
-		map.put("uId", user.getUid());
+		map.put("uId", user.getId());
 		map.put("header", user.getHeader());
 		map.put("nickname", user.getNickname());
 		return map;
