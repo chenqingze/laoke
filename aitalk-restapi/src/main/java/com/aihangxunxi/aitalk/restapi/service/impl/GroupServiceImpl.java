@@ -99,7 +99,16 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public List<Invitation> queryManageGroupInvitation(Long userId) {
-		return groupRepository.queryManageGroupInvitation(userId);
+        return groupRepository.queryManageGroupInvitation(userId);
     }
 
+    @Override
+    public int getUnreadGroupInvitationCount(Long userId) {
+        return groupRepository.getUnreadGroupInvitationCount(userId);
+    }
+
+    @Override
+    public boolean updateUnreadGroupInvitation(Long userId){
+        return groupRepository.updateUnreadGroupInvitation(userId);
+    }
 }

@@ -3,7 +3,6 @@ package com.aihangxunxi.aitalk.restapi.service.impl;
 import com.aihangxunxi.aitalk.restapi.service.FriendService;
 import com.aihangxunxi.aitalk.storage.model.Friend;
 import com.aihangxunxi.aitalk.storage.repository.FriendRepository;
-import com.aihangxunxi.aitalk.storage.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

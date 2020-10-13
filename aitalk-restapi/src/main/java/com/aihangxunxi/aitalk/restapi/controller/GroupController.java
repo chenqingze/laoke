@@ -170,4 +170,21 @@ public class GroupController {
 
     }
 
+    // 获取申请记录的条数
+    @GetMapping("/invitation/count")
+    public ResponseEntity<ModelMap> getUnreadGroupInvitationCount(AihangPrincipal aihangPrincipal) {
+        ModelMap map = new ModelMap();
+        map.put("size", groupService.getUnreadGroupInvitationCount(aihangPrincipal.getUserId()));
+        return ResponseEntity.status(HttpStatus.OK).body(map);
+    }
+
+    // 更新群邀请记录
+    @PutMapping("/invitation/count")
+    public ResponseEntity<ModelMap> updateUnreadGroupInvitation(AihangPrincipal aihangPrincipal) {
+        ModelMap map = new ModelMap();
+        map.put("success", groupService.updateUnreadGroupInvitation(aihangPrincipal.getUserId()));
+        return ResponseEntity.status(HttpStatus.OK).body(map);
+    }
+
+
 }

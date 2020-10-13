@@ -57,4 +57,9 @@ public interface GroupService {
     // 获取我管理群的申请记录
     List<Invitation> queryManageGroupInvitation(Long userId);
 
+    // 获取未读申请记录条数
+    int getUnreadGroupInvitationCount(Long userId);
+
+    // 更新未读群记录为已读
+    boolean updateUnreadGroupInvitation(Long userId);
 }

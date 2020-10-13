@@ -50,6 +50,12 @@ public class GroupRepository {
         return groups;
     }
 
+    public boolean queryGroupIsOk(String groupId) {
+        MongoCollection<Groups> groupMongoCollection = aitalkDb.getCollection("group", Groups.class);
+        Bson bson = eq(new ObjectId(groupId));
+        return groupMongoCollection.countDocuments(bson) > 0;
+    }
+
     // 根据用户id获取用户群
     public List<Groups> queryUserGroups(Long userId) {
         MongoCollection<GroupMember> usersGroupMongoCollection = aitalkDb.getCollection("groupMember",
@@ -412,4 +418,49 @@ public class GroupRepository {
 
         return invitations;
     }
+
+    // 获取未读的邀请记录
+    public int getUnreadGroupInvitationCount(Long userId) {
+        MongoCollection<Invitation> invitationMongoCollection = aitalkDb.getCollection("invitation", Invitation.class);
+        Bson bson = eq("inviteType", InviteType.INVITE_MEMBER);
+
+        MongoCollection<Groups> groupsMongoCollection = aitalkDb.getCollection("group", Groups.class);
+        Bson bson1 = eq("owner", userId);
+        List<Groups> list = groupsMongoCollection.find(bson1).into(new ArrayList<>());
+        List<Invitation> invitations = new ArrayList<>();
+
+        for (int i = 0; i < list.size(); i++) {
+            Bson bson2 = and(eq("addresseeId", list.get(i).getId().toHexString()), bson, eq("readStatus", "0"));
+            invitations.addAll(invitationMongoCollection.find(bson2).into(new ArrayList<>()));
+        }
+
+        Bson bson2 = and(eq("requesterId", userId), bson, eq("readStatus", "0"));
+        List<Invitation> myInvitation = invitationMongoCollection.find(bson2).into(new ArrayList<>());
+        invitations.addAll(myInvitation);
+
+        invitations.sort(Comparator.comparing(Invitation::getCreatedAt).reversed());
+
+        return invitations.size();
+    }
+
+    // 更新未读群邀请为已读
+    public boolean updateUnreadGroupInvitation(Long userId) {
+        MongoCollection<Invitation> invitationMongoCollection = aitalkDb.getCollection("invitation", Invitation.class);
+        Bson bson = eq("inviteType", InviteType.INVITE_MEMBER);
+
+        MongoCollection<Groups> groupsMongoCollection = aitalkDb.getCollection("group", Groups.class);
+        Bson bson1 = eq("owner", userId);
+        List<Groups> list = groupsMongoCollection.find(bson1).into(new ArrayList<>());
+
+        for (int i = 0; i < list.size(); i++) {
+            Bson bson2 = and(eq("addresseeId", list.get(i).getId().toHexString()), bson);
+            Bson bson3 = set("readStatus", "1");
+            invitationMongoCollection.updateOne(bson2, bson3);
+        }
+
+        Bson bson2 = and(eq("requesterId", userId), bson);
+        invitationMongoCollection.updateOne(bson2, set("readStatus", "1"));
+        return true;
+    }
+
 }

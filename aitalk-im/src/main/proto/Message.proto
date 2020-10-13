@@ -58,6 +58,12 @@ message Message {
 
     ExitGroupRequest exit_group_request = 40;
     ExitGroupAck exit_group_ack = 41;
+
+    AccessUserJoinMucRequest access_user_join_muc_request = 42;
+    AccessUserJoinMucAck access_user_join_muc_ack = 43;
+
+    RefuseUserJoinMucRequest refuse_user_join_muc_request = 44;
+    RefuseUserJoinMucAck refuse_user_join_muc_ack = 45;
     //------------------------------------------好友及好友邀请---------------------------------------------------
 
     InvitationRequestRequest invitation_request_request = 1001;

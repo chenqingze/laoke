@@ -68,11 +68,14 @@ enum OpCode{
 
   MSG_ACK = 33;
 
-  // 申请加入群聊回执
+  // 申请加入群聊
   ASK_FOR_JOIN_GROUP_REQUEST = 34;
   // 申请加入群聊回执
   ASK_FOR_JOIN_GROUP_ACK = 35;
-
+  // 拒绝某人进入群请求
+  REFUSE_USER_JOIN_MUC_REQUEST = 36;
+  // 拒绝某人进入群回执
+  REFUSE_USER_JOIN_MUC_ACK = 37;
 
 
   INVITATION_REQUEST_REQUEST = 1001;

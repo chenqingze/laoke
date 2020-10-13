@@ -165,3 +165,28 @@ message ExitGroupAck{
   string success = 3;
   string message = 4;
 }
+message AccessUserJoinMucRequest{
+  string group_id = 1;
+  string user_id = 2;
+  string success = 3;
+  string message = 4;
+}
+message AccessUserJoinMucAck{
+  string group_id = 1;
+  string user_id = 2;
+  string success = 3;
+  string message = 4;
+}
+message RefuseUserJoinMucRequest{
+  string group_id = 1;
+  string user_id = 2;
+  string success = 3;
+  string message = 4;
+
+}
+message RefuseUserJoinMucAck{
+  string group_id = 1;
+  string user_id = 2;
+  string success = 3;
+  string message = 4;
+}
