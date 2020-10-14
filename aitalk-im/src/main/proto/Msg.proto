@@ -8,9 +8,9 @@ package com.aihangxunxi.aitalk.im.protocol.buffers;
 message MsgRequest {
   string msg_id = 1; // 消息id、可由发送方生成,用户消息去重,这里由MsgAck 返回给客户端，且返回时携带相同seq
   string conversation_id = 2; // 消息接受方
-  uint32 conversation_type = 3; // 会话类型
-  uint32 msg_status = 4; // 消息状态
-  uint32 msg_type = 5; // 消息附件
+  ConversationType conversation_type = 3; // 会话类型
+  MsgStatus msg_status = 4; // 消息状态
+  MsgType msg_type = 5; // 消息附件
   string msg_attachStr = 6; // 消息附件json
   string content = 7; // 消息内容
   uint64 time = 8; // 发送时间
@@ -21,11 +21,79 @@ message MsgRequest {
 
 }
 
+enum ConversationType{
+  P2P = 0 ;MUC = 1; NOTIFICATION = 2; CHATROOM = 3; TEAM = 4;
+}
+
+enum MsgStatus{
+  DRAFT = 0; // 草稿
+  SENDING = 1; // 正在发送中
+  SUCCESS = 2; // 发送成功
+  FAIL = 3; // 发送失败
+  READ = 4; // 消息已读 发送消息时表示对方已看过该消息 接收消息时表示自己已读过，一般仅用于音频消息
+  UNREAD = 5;// 未读状态
+}
+
+
+enum MsgType{
+  TEXT = 0; // 文本0
+
+  AUDIO = 1; // 语音1
+
+  VIDEO = 2; // 视频2
+
+  LOCATION = 3; // 位置3
+
+  CARD = 4; // 名片4
+
+  IMAGE = 5; // 图片5
+
+  INFO = 6; // 讯息6
+
+  PURCHASE = 7; // 团购7
+
+  NOTIFICATIONS = 8; // 通知消息8,
+
+  GOODS = 9; // 商品9
+
+  BARTER = 10; // 易货10
+
+  STORE = 11; // 商铺11
+
+  ROB = 12; // 抢单12
+
+  GROUP_INVITATION = 13; // 群聊邀请13
+
+  GROUP_NOTIFICATION = 14; // 群通知14
+
+  FILE = 15; // 文件",15
+
+  REPLY = 16; // 回复16
+
+  AT = 17; // @某人17
+
+  PREORDER = 18; // 预购单18
+
+  DELIVERY = 19; // 配送19
+
+  DYNAMIC = 20; // 动态 20
+
+  AVCHAT = 21; // 音视频通话
+
+  TIP = 22; // 提醒消息
+
+  ROBOT = 23; // 机器人消息
+
+  CUSTOM = 24; // 自定义消息
+
+  UNDEF = 25; // UNKNOWN
+}
+
 // 消息发送请求收到确认
 message MsgAck {
   string msg_id = 1; // 消息id
   string seq = 2; // 回执编号
-  uint32 conversation_type =3;// 多人还是单人
+  ConversationType conversation_type = 3;// 多人还是单人
 
   uint64 created_at = 4;
   uint64 updated_at = 5;
