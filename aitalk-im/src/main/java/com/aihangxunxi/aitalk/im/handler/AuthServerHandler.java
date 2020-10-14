@@ -6,9 +6,11 @@ import com.aihangxunxi.aitalk.im.channel.ChannelManager;
 import com.aihangxunxi.aitalk.im.manager.GroupManager;
 import com.aihangxunxi.aitalk.im.protocol.buffers.Message;
 import com.aihangxunxi.aitalk.im.protocol.buffers.OpCode;
+import com.aihangxunxi.aitalk.restapi.constant.RedisKeyConstants;
 import com.aihangxunxi.aitalk.storage.model.GroupMember;
 import com.aihangxunxi.aitalk.storage.model.User;
 import com.aihangxunxi.aitalk.storage.repository.GroupMemberRepository;
+import com.aihangxunxi.common.entity.LoginUserResponseRedisEntity;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -16,6 +18,7 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -46,6 +49,9 @@ public final class AuthServerHandler extends ChannelInboundHandlerAdapter {
 	@Resource
 	private GroupMemberRepository groupMemberRepository;
 
+	@Resource
+	private RedisTemplate redisTemplate;
+
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 		logger.debug(msg.toString());
@@ -54,6 +60,19 @@ public final class AuthServerHandler extends ChannelInboundHandlerAdapter {
 			String token = ((Message) msg).getAuthRequest().getToken();
 			// todo:验证token合法性,并获取用户信息
 
+
+			LoginUserResponseRedisEntity redisEntity = (LoginUserResponseRedisEntity) redisTemplate.opsForValue()
+					.get(RedisKeyConstants.ACCESS_TOKEN + token);
+			if (logger.isDebugEnabled()) {
+				logger.debug(">>>> Redis 获取数据成功！{}", redisEntity);
+			}
+			if (redisEntity == null) {
+				redisEntity = (LoginUserResponseRedisEntity) redisTemplate.opsForValue()
+						.get(RedisKeyConstants.MIN_PROGRAM_ACCESS_TOKEN + token);
+			}
+			if (logger.isDebugEnabled()) {
+				logger.debug(">>>> Redis 获取数据成功！{}", redisEntity);
+			}
 			String uid = "5f6d3f65e62333c82048ec8c";
 			if ("456".equals(token.trim()))
 				uid = "5f6d8a42e62333c8204a07b5";
