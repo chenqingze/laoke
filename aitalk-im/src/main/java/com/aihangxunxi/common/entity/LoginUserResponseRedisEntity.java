@@ -1,7 +1,7 @@
 package com.aihangxunxi.common.entity;
 
-import com.aihangxunxi.aitalk.restapi.constant.enums.ClientTypeEnum;
-import com.aihangxunxi.aitalk.restapi.constant.enums.UserTypeEnum;
+import com.aihangxunxi.aitalk.im.constant.enums.ClientTypeEnum;
+import com.aihangxunxi.aitalk.im.constant.enums.UserTypeEnum;
 
 import java.io.Serializable;
 

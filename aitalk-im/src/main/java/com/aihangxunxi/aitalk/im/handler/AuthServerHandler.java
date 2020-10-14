@@ -3,19 +3,19 @@ package com.aihangxunxi.aitalk.im.handler;
 import com.aihangxunxi.aitalk.im.assembler.AuthAssembler;
 import com.aihangxunxi.aitalk.im.channel.ChannelConstant;
 import com.aihangxunxi.aitalk.im.channel.ChannelManager;
+import com.aihangxunxi.aitalk.im.constant.RedisKeyConstants;
 import com.aihangxunxi.aitalk.im.manager.GroupManager;
 import com.aihangxunxi.aitalk.im.protocol.buffers.Message;
 import com.aihangxunxi.aitalk.im.protocol.buffers.OpCode;
-import com.aihangxunxi.aitalk.restapi.constant.RedisKeyConstants;
 import com.aihangxunxi.aitalk.storage.model.GroupMember;
 import com.aihangxunxi.aitalk.storage.model.User;
 import com.aihangxunxi.aitalk.storage.repository.GroupMemberRepository;
+import com.aihangxunxi.aitalk.storage.repository.UserRepository;
 import com.aihangxunxi.common.entity.LoginUserResponseRedisEntity;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -52,6 +52,9 @@ public final class AuthServerHandler extends ChannelInboundHandlerAdapter {
 	@Resource
 	private RedisTemplate redisTemplate;
 
+	@Resource
+	private UserRepository userRepository;
+
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 		logger.debug(msg.toString());
@@ -59,7 +62,6 @@ public final class AuthServerHandler extends ChannelInboundHandlerAdapter {
 		if (msg instanceof Message && ((Message) msg).getOpCode() == OpCode.AUTH_REQUEST) {
 			String token = ((Message) msg).getAuthRequest().getToken();
 			// todo:验证token合法性,并获取用户信息
-
 
 			LoginUserResponseRedisEntity redisEntity = (LoginUserResponseRedisEntity) redisTemplate.opsForValue()
 					.get(RedisKeyConstants.ACCESS_TOKEN + token);
@@ -73,23 +75,15 @@ public final class AuthServerHandler extends ChannelInboundHandlerAdapter {
 			if (logger.isDebugEnabled()) {
 				logger.debug(">>>> Redis 获取数据成功！{}", redisEntity);
 			}
-			String uid = "5f6d3f65e62333c82048ec8c";
-			if ("456".equals(token.trim()))
-				uid = "5f6d8a42e62333c8204a07b5";
-			if ("789".equals(token.trim()))
-				uid = "5f6d8a54e62333c8204a07ef";
+			User user = userRepository.getUserById(Long.parseLong(redisEntity.getUserId()));
 
-			User user = new User();
-
-			user.setId(new ObjectId(uid));
-			user.setUserId(Long.valueOf(token));
 			if (true) {
 				result = true;
 				channelManager.addChannel(this.channelProcess(ctx, user));
 				ctx.pipeline().remove(this);
 			}
 			// todo 获取用户所在的群 并将用户的channel加入到groupManager
-			List<GroupMember> list = groupMemberRepository.queryUsersGroup(Long.parseLong("123"));
+			List<GroupMember> list = groupMemberRepository.queryUsersGroup(Long.parseLong(redisEntity.getUserId()));
 			list.stream().forEach(groupMember -> {
 				groupManager.addChannel(groupMember.getGroupId().toString(), ctx.channel());
 			});
