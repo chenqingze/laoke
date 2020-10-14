@@ -75,7 +75,7 @@ public final class AuthServerHandler extends ChannelInboundHandlerAdapter {
 			if (logger.isDebugEnabled()) {
 				logger.debug(">>>> Redis 获取数据成功！{}", redisEntity);
 			}
-			User user = userRepository.getUserById(Long.parseLong(redisEntity.getUserId()));
+			User user = userRepository.getUserByUserId(Long.parseLong(redisEntity.getUserId()));
 
 			if (true) {
 				result = true;

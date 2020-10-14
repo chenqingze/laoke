@@ -23,8 +23,6 @@ public class User extends BaseModel {
 
 	private String nickname;
 
-	private String profile;
-
 	private String phone;
 
 	private List<UserGroup> userGroups;
@@ -102,14 +100,6 @@ public class User extends BaseModel {
 
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
-	}
-
-	public String getProfile() {
-		return profile;
-	}
-
-	public void setProfile(String profile) {
-		this.profile = profile;
 	}
 
 	public String getPhone() {

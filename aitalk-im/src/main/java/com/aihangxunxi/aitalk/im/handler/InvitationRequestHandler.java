@@ -1,6 +1,7 @@
 package com.aihangxunxi.aitalk.im.handler;
 
 import com.aihangxunxi.aitalk.im.assembler.InvitationAssembler;
+import com.aihangxunxi.aitalk.im.channel.ChannelConstant;
 import com.aihangxunxi.aitalk.im.channel.ChannelManager;
 import com.aihangxunxi.aitalk.im.protocol.buffers.InvitationRequestRequest;
 import com.aihangxunxi.aitalk.im.protocol.buffers.Message;
@@ -15,6 +16,7 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -45,26 +47,23 @@ public class InvitationRequestHandler extends ChannelInboundHandlerAdapter {
 		if (msg instanceof Message && ((Message) msg).getOpCode() == OpCode.INVITATION_REQUEST_REQUEST) {
 			InvitationRequestRequest firr = ((Message) msg).getInvitationRequestRequest();
 
-			// todo:获取当前用户信息
-			Long requesterId = 123l;
-			String requesterNickname = "希克斯";
-			String requesterProfile = "https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y";
+			String userObjectId = ctx.channel().attr(ChannelConstant.USER_ID_ATTRIBUTE_KEY).get();
 
-			// todo:获取 addressee 用户信息
-			String addresseeNickname = "jijiDown";
-			String addresseeProfile = "https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y";
+			User user = userRepository.getUserById(new ObjectId(userObjectId));
+
+			User addressee = userRepository.getUserByUserId(firr.getAddresseeId());
 
 			long currentTimeMillis = Instant.now().getEpochSecond();
 
 			Invitation invitation = new Invitation();
-			invitation.setRequesterId(requesterId);
+			invitation.setRequesterId(user.getUserId());
 			invitation.setRequesterAlias("");
-			invitation.setRequesterNickname(requesterNickname);
-			invitation.setRequesterProfile(requesterProfile);
+			invitation.setRequesterNickname(user.getNickname());
+			invitation.setRequesterProfile(user.getHeader());
 			invitation.setAddresseeId(String.valueOf(firr.getAddresseeId()));
 			invitation.setAddresseeAlias(firr.getAddresseeAlias());
-			invitation.setAddresseeNickname(addresseeNickname);
-			invitation.setAddresseeProfile(addresseeProfile);
+			invitation.setAddresseeNickname(addressee.getNickname());
+			invitation.setAddresseeProfile(addressee.getHeader());
 			invitation.setContent(firr.getContent());
 			invitation.setInviteStatus(InviteStatus.REQUESTED);
 			invitation.setInviteType(InviteType.INVITE_FRIEND);
@@ -76,9 +75,7 @@ public class InvitationRequestHandler extends ChannelInboundHandlerAdapter {
 				Message message = invitationAssembler.buildInvitationRequestAck(invitation, ((Message) msg).getSeq());
 				ctx.writeAndFlush(message);
 
-				User user = userRepository.getUserById(Long.parseLong(invitation.getAddresseeId()));
-
-				Channel addresseeChannel = channelManager.findChannelByUid(user.getId().toHexString());
+				Channel addresseeChannel = channelManager.findChannelByUid(addressee.getId().toHexString());
 				if (addresseeChannel != null) {
 					addresseeChannel.writeAndFlush(message);
 				}

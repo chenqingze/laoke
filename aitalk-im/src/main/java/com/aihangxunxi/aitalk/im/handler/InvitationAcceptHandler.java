@@ -74,7 +74,7 @@ public class InvitationAcceptHandler extends ChannelInboundHandlerAdapter {
 					ctx.writeAndFlush(message);
 				}
 
-				User user = userRepository.getUserById(Long.valueOf(invitation.getRequesterId()));
+				User user = userRepository.getUserByUserId(Long.valueOf(invitation.getRequesterId()));
 				Channel addresseeChannel = channelManager.findChannelByUid(user.getId().toHexString());
 				friend = new Friend();
 				friend.setUserId(invitation.getRequesterId());
