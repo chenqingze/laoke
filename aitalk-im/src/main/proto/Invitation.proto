@@ -25,7 +25,7 @@ message InvitationProto{
 
 enum InviteStatus{
   REQUESTED = 0;
-  READ = 1;
+  RECEIVED = 1;
   ACCEPTED = 2;
   DECLINED = 3;
   IGNORED = 4;
