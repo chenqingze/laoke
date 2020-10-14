@@ -4,7 +4,7 @@ import com.aihangxunxi.aitalk.im.config.ImServerConfiguration;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 /**
- * 用户channel管理
+ * 项目入口
  *
  * @author chenqingze107@163.com
  * @version 2.0
