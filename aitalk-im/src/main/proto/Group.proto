@@ -29,12 +29,12 @@ message DismissGroupRequest {
 
 // 查询群列表
 message QueryUserGroupsRequest{
-  uint64 user_id = 1;
+  string user_id = 1;
 }
 
 message QueryUserGroupsAck{
   repeated Group groups = 1;
-  uint64 user_id = 2;
+  string user_id = 2;
 }
 
 message Group{

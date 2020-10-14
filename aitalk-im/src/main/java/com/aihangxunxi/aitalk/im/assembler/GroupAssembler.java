@@ -14,7 +14,7 @@ import java.util.List;
 @Component
 public class GroupAssembler {
 
-	public Message QueryUserGroupsBuilder(Long userId, long sessionId, List<Groups> list) {
+	public Message QueryUserGroupsBuilder(String userId, long sessionId, List<Groups> list) {
 		List<Group> groups = new ArrayList<>();
 
 		for (int i = 0; i < list.size(); i++) {
