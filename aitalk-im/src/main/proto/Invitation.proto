@@ -8,27 +8,27 @@ import "Friend.proto";
 // 邀请
 message InvitationProto{
   string id = 1;
-  uint64 requesterId = 2;
-  string requesterAlias = 3;
-  string requesterNickname = 4;
-  string requesterProfile = 5;
-  uint64 addresseeId = 6;
-  string addresseeAlias = 7;
-  string addresseeNickname = 8;
-  string addresseeProfile = 9;
+  uint64 requester_id = 2;
+  string requester_alias = 3;
+  string requester_nickname = 4;
+  string requester_profile = 5;
+  uint64 addressee_id = 6;
+  string addressee_alias = 7;
+  string addressee_nickname = 8;
+  string addressee_profile = 9;
   string content = 10;
   string invite_status = 11;
   string invite_type = 12;
-  uint64 createdAt = 13;
-  uint64 updatedAt = 14;
+  uint64 created_at = 13;
+  uint64 updated_at = 14;
 }
 
 //-------------------------------------------------发送好友邀请-[发送方]----------------------------------------
 
 // 发送好友邀请
 message InvitationRequestRequest{
-  uint64 addresseeId = 1;
-  string addresseeAlias = 2;
+  uint64 addressee_id = 1;
+  string addressee_alias = 2;
   string content = 3;
 }
 
@@ -79,7 +79,7 @@ message InvitationDeclinedAck{
 
 //获取最新好友邀请信息
 message InvitationRequest{
-  uint32 updatedAt = 1;
+  uint32 updated_at = 1;
 }
 
 //获取最新好友邀请信息ack
