@@ -25,7 +25,7 @@ public class UserRepository {
 	public boolean saveUser(User user) {
 		MongoCollection<User> mongoCollection = aitalkDb.getCollection("user", User.class);
 		user.setId(new ObjectId());
-		user.setGender(Gender.UNKNOWN);
+		user.setGender(Gender.MALE);
 		mongoCollection.insertOne(user);
 		return true;
 	}

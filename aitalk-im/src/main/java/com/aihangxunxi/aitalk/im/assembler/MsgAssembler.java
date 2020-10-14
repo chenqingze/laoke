@@ -51,7 +51,8 @@ public class MsgAssembler {
 	public Message convertMgsHistToMessage(MsgHist msgHist, long seq) {
 		Message msgAck = Message.newBuilder().setOpCode(OpCode.MSG_ACK).setSeq(seq)
 				.setMsgAck(MsgAck.newBuilder().setMsgId(msgHist.getMsgId().toHexString())
-						.setConversationType(msgHist.getConversationType().ordinal())
+						.setConversationType(com.aihangxunxi.aitalk.im.protocol.buffers.ConversationType
+								.forNumber(msgHist.getConversationType().ordinal()))
 						.setCreatedAt(msgHist.getCreatedAt()).build())
 				.build();
 		return msgAck;
@@ -61,8 +62,8 @@ public class MsgAssembler {
 		MsgRequest msgRequest = message.getMsgRequest();
 		MucHist mucHist = new MucHist();
 		mucHist.setMsgId(new ObjectId());
-		mucHist.setMsgType(MsgType.codeOf(msgRequest.getMsgType()));
-		mucHist.setConversationType(ConversationType.codeOf(msgRequest.getConversationType()));
+		mucHist.setMsgType(MsgType.codeOf(msgRequest.getMsgType().getNumber()));
+		mucHist.setConversationType(ConversationType.codeOf(msgRequest.getConversationType().getNumber()));
 		mucHist.setSenderId(new ObjectId(userRepository.queryUserUIdByUserId(msgRequest.getSenderId())));
 		mucHist.setMsgStatus(MsgStatus.SENDING);
 		mucHist.setContent(msgRequest.getContent());
@@ -73,7 +74,9 @@ public class MsgAssembler {
 
 	public Message convertMucHistToMessage(MucHist mucHist, String seq) {
 		Message message = Message.newBuilder().setOpCode(OpCode.MSG_ACK).setSeq(Long.parseLong(seq))
-				.setMsgAck(MsgAck.newBuilder().setConversationType(mucHist.getConversationType().ordinal())
+				.setMsgAck(MsgAck.newBuilder()
+						.setConversationType(com.aihangxunxi.aitalk.im.protocol.buffers.ConversationType
+								.forNumber(mucHist.getConversationType().ordinal()))
 						.setMsgId(mucHist.getMsgId().toHexString()).build())
 				.build();
 		return message;

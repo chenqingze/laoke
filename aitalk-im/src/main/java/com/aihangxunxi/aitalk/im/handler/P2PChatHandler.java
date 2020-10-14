@@ -36,7 +36,7 @@ public class P2PChatHandler extends ChannelInboundHandlerAdapter {
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 		if (msg instanceof Message && ((Message) msg).getOpCode() == OpCode.MSG_REQUEST) {
-			if (ConversationType.P2P.ordinal() == ((Message) msg).getMsgRequest().getConversationType()) {
+			if (ConversationType.P2P.ordinal() == ((Message) msg).getMsgRequest().getConversationType().getNumber()) {
 
 				MsgHist msgHist = msgAssembler.convertMsgRequestToMsgHist((Message) msg);
 				msgHist.setSenderId(new ObjectId("5f6d3f65e62333c82048ec8c"));

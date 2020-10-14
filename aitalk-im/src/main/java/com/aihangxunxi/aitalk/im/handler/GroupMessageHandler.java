@@ -42,7 +42,7 @@ public final class GroupMessageHandler extends ChannelInboundHandlerAdapter {
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 		if (msg instanceof Message && ((Message) msg).getOpCode() == OpCode.MSG_REQUEST) {
-			if (ConversationType.MUC.ordinal() == ((Message) msg).getMsgRequest().getConversationType()) {
+			if (ConversationType.MUC.ordinal() == ((Message) msg).getMsgRequest().getConversationType().getNumber()) {
 				try {
 					logger.info("群消息");
 					String conversationId = ((Message) msg).getMsgRequest().getConversationId();
