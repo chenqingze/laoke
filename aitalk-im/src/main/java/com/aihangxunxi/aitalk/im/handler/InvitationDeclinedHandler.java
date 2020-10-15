@@ -49,7 +49,7 @@ public class InvitationDeclinedHandler extends ChannelInboundHandlerAdapter {
 				Message message = invitationAssembler.buildInvitationDeclinedAck(id, ((Message) msg).getSeq());
 				ctx.writeAndFlush(message);
 
-				User user = userRepository.getUserById(Long.valueOf(invitation.getRequesterId()));
+				User user = userRepository.getUserByUserId(Long.valueOf(invitation.getRequesterId()));
 				Channel addresseeChannel = channelManager.findChannelByUid(user.getId().toHexString());
 				if (addresseeChannel != null) {
 					addresseeChannel.writeAndFlush(message);

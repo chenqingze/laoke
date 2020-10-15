@@ -25,7 +25,7 @@ public class InvitationAssembler {
 						.setAddresseeAlias(invitation.getAddresseeAlias())
 						.setAddresseeNickname(invitation.getAddresseeNickname())
 						.setAddresseeProfile(invitation.getAddresseeProfile()).setContent(invitation.getContent())
-						.setInviteStatus(invitation.getInviteStatus().name())
+						.setInviteStatus(InviteStatus.forNumber(invitation.getInviteStatus().ordinal()))
 						.setInviteType(invitation.getInviteType().name()).setCreatedAt(invitation.getCreatedAt())
 						.setUpdatedAt(invitation.getUpdatedAt()).build()).setRes(res).build())
 				.build();

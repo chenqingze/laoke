@@ -8,6 +8,8 @@ public class ClusterConstant {
 
 	public static final String EXCHANGE_NAME = "msg_router";
 
+	public static final String REDIS_USER_ID_PREFIX = "USER_ID@";
+
 	private ClusterConstant() {
 	}
 

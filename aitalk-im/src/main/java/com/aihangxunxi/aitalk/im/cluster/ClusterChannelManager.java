@@ -1,5 +1,6 @@
 package com.aihangxunxi.aitalk.im.cluster;
 
+import com.aihangxunxi.aitalk.im.channel.ChannelConstant;
 import com.aihangxunxi.aitalk.im.channel.DefaultChannelManager;
 import com.github.benmanes.caffeine.cache.Cache;
 import io.netty.channel.Channel;
@@ -15,41 +16,45 @@ import org.springframework.data.redis.core.RedisTemplate;
  */
 public class ClusterChannelManager extends DefaultChannelManager {
 
-	private final RedisTemplate<String, Object> userNodeRedisTemplate;
-
-	private final ClusterNodeStatusManager clusterNodeStatusManager;
+	private final RedisTemplate<String, Object> userStatusRedisTemplate;
 
 	public ClusterChannelManager(Cache<String, Channel> localChannelCache,
-			RedisTemplate<String, Object> userNodeRedisTemplate, ClusterNodeStatusManager clusterNodeStatusManager) {
+			RedisTemplate<String, Object> userStatusRedisTemplate) {
 		super(localChannelCache);
-		this.userNodeRedisTemplate = userNodeRedisTemplate;
-		this.clusterNodeStatusManager = clusterNodeStatusManager;
+		this.userStatusRedisTemplate = userStatusRedisTemplate;
 	}
 
 	@Override
 	public void addChannel(ChannelHandlerContext context) {
-		this.addChannel(context.channel());
+		addChannel(context.channel());
 	}
 
 	@Override
 	public void addChannel(Channel channel) {
+		// 保存用户状态到redis 共享存储
 		super.addChannel(channel);
-
+		// 保存用户状态到redis 共享存储
+		// todo: 按需保存更多信息到redis
+		userStatusRedisTemplate.opsForValue().set(
+				ClusterConstant.REDIS_USER_ID_PREFIX + channel.attr(ChannelConstant.USER_ID_ATTRIBUTE_KEY).get(),
+				"本机节点，与etcd规则相同");
 	}
 
 	@Override
 	public void removeChannel(ChannelHandlerContext context) {
-
+		removeChannel(context.channel());
 	}
 
 	@Override
 	public void removeChannel(Channel channel) {
-
+		removeChannelByUserId(channel.attr(ChannelConstant.USER_ID_ATTRIBUTE_KEY).get());
 	}
 
 	@Override
 	public void removeChannelByUserId(String userId) {
-
+		super.removeChannelByUserId(userId);
+		// 从redis 共享存储删除用户状态
+		userStatusRedisTemplate.delete(ClusterConstant.REDIS_USER_ID_PREFIX + userId);
 	}
 
 	@Override
