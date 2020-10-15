@@ -96,7 +96,7 @@ public class ClusterConfiguration {
 	 * @return {@link RedisTemplate}
 	 */
 	@Bean
-	public RedisTemplate<String, Object> userNodeRedisTemplate(RedisConnectionFactory lettuceConnectionFactory) {
+	public RedisTemplate<String, Object> userStatusRedisTemplate(RedisConnectionFactory lettuceConnectionFactory) {
 		RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
 		StringRedisSerializer stringRedisSerializer = new StringRedisSerializer();
 		// 设置key为string序列化器
@@ -132,14 +132,13 @@ public class ClusterConfiguration {
 	/**
 	 * 集群channel状态管理
 	 * @param localChannelCache
-	 * @param userNodeRedisTemplate
-	 * @param clusterNodeStatusManager
+	 * @param userStatusRedisTemplate
 	 * @return
 	 */
 	@Bean("channelManager")
 	public ChannelManager clusterChannelManager(Cache<String, io.netty.channel.Channel> localChannelCache,
-			RedisTemplate<String, Object> userNodeRedisTemplate, ClusterNodeStatusManager clusterNodeStatusManager) {
-		return new ClusterChannelManager(localChannelCache, userNodeRedisTemplate, clusterNodeStatusManager);
+			RedisTemplate<String, Object> userStatusRedisTemplate) {
+		return new ClusterChannelManager(localChannelCache, userStatusRedisTemplate);
 	}
 
 	/**

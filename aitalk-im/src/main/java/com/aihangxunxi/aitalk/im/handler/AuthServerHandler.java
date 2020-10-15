@@ -50,7 +50,7 @@ public final class AuthServerHandler extends ChannelInboundHandlerAdapter {
 	private GroupMemberRepository groupMemberRepository;
 
 	@Resource
-	private RedisTemplate redisTemplate;
+	private RedisTemplate<String, Object> authRedisTemplate;
 
 	@Resource
 	private UserRepository userRepository;
@@ -63,13 +63,13 @@ public final class AuthServerHandler extends ChannelInboundHandlerAdapter {
 			String token = ((Message) msg).getAuthRequest().getToken();
 			// todo:验证token合法性,并获取用户信息
 
-			LoginUserResponseRedisEntity redisEntity = (LoginUserResponseRedisEntity) redisTemplate.opsForValue()
+			LoginUserResponseRedisEntity redisEntity = (LoginUserResponseRedisEntity) authRedisTemplate.opsForValue()
 					.get(RedisKeyConstants.ACCESS_TOKEN + token);
 			if (logger.isDebugEnabled()) {
 				logger.debug(">>>> Redis 获取数据成功！{}", redisEntity);
 			}
 			if (redisEntity == null) {
-				redisEntity = (LoginUserResponseRedisEntity) redisTemplate.opsForValue()
+				redisEntity = (LoginUserResponseRedisEntity) authRedisTemplate.opsForValue()
 						.get(RedisKeyConstants.MIN_PROGRAM_ACCESS_TOKEN + token);
 			}
 			if (logger.isDebugEnabled()) {

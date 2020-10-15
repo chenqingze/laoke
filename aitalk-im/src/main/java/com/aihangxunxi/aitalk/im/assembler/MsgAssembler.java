@@ -31,7 +31,7 @@ public class MsgAssembler {
 
 	public MsgReadNotify buildMsgReadNotify(MsgHist msgHist) {
 		MsgReadNotify msgReadNotify = MsgReadNotify.newBuilder().setMsgId(msgHist.getMsgId().toHexString())
-				.setSenderId(msgHist.getSenderId().toHexString())
+				.setSenderId(String.valueOf(msgHist.getSenderId()))
 				.setConversationId(msgHist.getReceiverId().toHexString())
 				.setConversationType(msgHist.getConversationType().ordinal())
 				.setMsgStatus(msgHist.getMsgStatus().ordinal()).setMsgType(msgHist.getMsgType().ordinal())
@@ -65,7 +65,7 @@ public class MsgAssembler {
 		mucHist.setMsgId(new ObjectId());
 		mucHist.setMsgType(MsgType.codeOf(msgRequest.getMsgType().getNumber()));
 		mucHist.setConversationType(ConversationType.codeOf(msgRequest.getConversationType().getNumber()));
-		mucHist.setSenderId(new ObjectId(userRepository.queryUserUIdByUserId(msgRequest.getSenderId())));
+		mucHist.setSenderId(Long.parseLong(msgRequest.getSenderId()));
 		mucHist.setMsgStatus(MsgStatus.SENDING);
 		mucHist.setContent(msgRequest.getContent());
 		mucHist.setCreatedAt(new Date().getTime());
