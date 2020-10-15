@@ -6,6 +6,6 @@ package com.aihangxunxi.aitalk.storage.constant;
  */
 public enum InviteStatus {
 
-	REQUESTED, READ, ACCEPTED, DECLINED, IGNORED
+	REQUESTED, RECEIVED, ACCEPTED, DECLINED, IGNORED
 
 }

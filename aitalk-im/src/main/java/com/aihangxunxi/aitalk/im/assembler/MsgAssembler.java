@@ -31,7 +31,8 @@ public class MsgAssembler {
 
 	public MsgReadNotify buildMsgReadNotify(MsgHist msgHist) {
 		MsgReadNotify msgReadNotify = MsgReadNotify.newBuilder().setMsgId(msgHist.getMsgId().toHexString())
-				.setSenderId(msgHist.getSenderId().toHexString()).setReceiverId(msgHist.getReceiverId().toHexString())
+				.setSenderId(msgHist.getSenderId().toHexString())
+				.setConversationId(msgHist.getReceiverId().toHexString())
 				.setConversationType(msgHist.getConversationType().ordinal())
 				.setMsgStatus(msgHist.getMsgStatus().ordinal()).setMsgType(msgHist.getMsgType().ordinal())
 				.setContent(msgHist.getContent()).setCreatedAt(msgHist.getCreatedAt())
@@ -42,7 +43,7 @@ public class MsgAssembler {
 	public MsgHist convertMsgRequestToMsgHist(Message message) {
 		MsgRequest msgRequest = message.getMsgRequest();
 		MsgHist msgHist = new MsgHist();
-		msgHist.setReceiverId(new ObjectId(msgRequest.getReceiverId()));
+		msgHist.setReceiverId(new ObjectId(msgRequest.getConversationId()));
 		msgHist.setContent(msgRequest.getContent());
 		msgHist.setMsgType(MsgType.TEXT);
 		return msgHist;
