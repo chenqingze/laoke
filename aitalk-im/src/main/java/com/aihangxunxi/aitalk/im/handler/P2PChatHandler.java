@@ -39,7 +39,7 @@ public class P2PChatHandler extends ChannelInboundHandlerAdapter {
 			if (ConversationType.P2P.ordinal() == ((Message) msg).getMsgRequest().getConversationType().getNumber()) {
 
 				MsgHist msgHist = msgAssembler.convertMsgRequestToMsgHist((Message) msg);
-				msgHist.setSenderId(new ObjectId("5f6d3f65e62333c82048ec8c"));
+				// msgHist.setSenderId(new ObjectId("5f6d3f65e62333c82048ec8c"));
 				msgHist.setMsgStatus(MsgStatus.SUCCESS);
 				msgHist.setConversationType(ConversationType.P2P);
 				long currentTimeMillis = System.currentTimeMillis();
