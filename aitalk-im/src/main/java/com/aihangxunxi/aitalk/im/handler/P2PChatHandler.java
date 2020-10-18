@@ -1,6 +1,7 @@
 package com.aihangxunxi.aitalk.im.handler;
 
 import com.aihangxunxi.aitalk.im.assembler.MsgAssembler;
+import com.aihangxunxi.aitalk.im.channel.ChannelConstant;
 import com.aihangxunxi.aitalk.im.channel.ChannelManager;
 import com.aihangxunxi.aitalk.im.protocol.buffers.*;
 import com.aihangxunxi.aitalk.storage.constant.ConversationType;
@@ -31,6 +32,9 @@ public class P2PChatHandler extends ChannelInboundHandlerAdapter {
 	private MsgHistRepository msgHistRepository;
 
 	@Resource
+	private UserRepository userRepository;
+
+	@Resource
 	private MsgAssembler msgAssembler;
 
 	@Override
@@ -38,8 +42,12 @@ public class P2PChatHandler extends ChannelInboundHandlerAdapter {
 		if (msg instanceof Message && ((Message) msg).getOpCode() == OpCode.MSG_REQUEST) {
 			if (ConversationType.P2P.ordinal() == ((Message) msg).getMsgRequest().getConversationType().getNumber()) {
 
+				String userObjectId = ctx.channel().attr(ChannelConstant.USER_ID_ATTRIBUTE_KEY).get();
+
+				User user = userRepository.getUserById(new ObjectId(userObjectId));
+
 				MsgHist msgHist = msgAssembler.convertMsgRequestToMsgHist((Message) msg);
-				// msgHist.setSenderId(new ObjectId("5f6d3f65e62333c82048ec8c"));
+				msgHist.setSenderId(user.getUserId());
 				msgHist.setMsgStatus(MsgStatus.SUCCESS);
 				msgHist.setConversationType(ConversationType.P2P);
 				long currentTimeMillis = System.currentTimeMillis();

@@ -16,9 +16,6 @@ message MsgRequest {
   uint64 time = 8; // 发送时间
   string extend_data = 9; // 扩展字段
   string sender_id = 10; // 追加 发送方id 用于判断群聊成员是否在群中
-
-  string receiver_id = 11;
-
 }
 
 enum ConversationType{
@@ -113,9 +110,8 @@ message MsgReadNotify {
   string extend_data = 9; // 扩展字段
 
   string sender_id = 10; // 追加 发送方id 用于判断群聊成员是否在群中
-  string receiver_id = 11;
-  uint64 created_at = 12;
-  uint64 updated_at = 13;
+  uint64 created_at = 11;
+  uint64 updated_at = 12;
 
 }
 

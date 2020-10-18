@@ -53,6 +53,11 @@ public class InvitationRequestHandler extends ChannelInboundHandlerAdapter {
 
 			User addressee = userRepository.getUserByUserId(firr.getAddresseeId());
 
+			// Invitation addresseeInvitation =
+			// invitationRepository.getInvitation(user.getUserId(),addressee.getUserId());
+
+			// invitationRepository.deleteInvitation(user.getUserId(),addressee.getUserId());
+
 			long currentTimeMillis = Instant.now().getEpochSecond();
 
 			Invitation invitation = new Invitation();

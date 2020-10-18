@@ -1,8 +1,6 @@
 package com.aihangxunxi.aitalk.storage.repository;
 
 import com.aihangxunxi.aitalk.storage.constant.InviteStatus;
-import com.aihangxunxi.aitalk.storage.constant.InviteType;
-import com.aihangxunxi.aitalk.storage.model.Groups;
 import com.aihangxunxi.aitalk.storage.model.Invitation;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
@@ -12,10 +10,6 @@ import org.bson.types.ObjectId;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
-
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
 
 import static com.mongodb.client.model.Filters.and;
 import static com.mongodb.client.model.Filters.eq;
@@ -39,6 +33,18 @@ public class InvitationRepository {
 				combine(set("inviteStatus", inviteStatus), set("updatedAt", System.currentTimeMillis())));
 		return invitation;
 	}
+
+	public Invitation getInvitation(Long userId, Long addresseeId) {
+		Invitation invitation = db.getCollection("invitation", Invitation.class)
+				.find(and(eq("requesterId", addresseeId), eq("addresseeId", userId))).first();
+		return invitation;
+	}
+
+	public void deleteInvitation(Long userId, Long addresseeId) {
+
+	}
+
+	// -----------------------------------------------------group---------------------------------------------
 
 	// 保存群邀请
 	public boolean saveGroupInvitation(Invitation invitation) {
