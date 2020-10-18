@@ -72,9 +72,9 @@ public class MsgAssembler {
 		return mucHist;
 	}
 
-	public Message convertMucHistToMessage(MucHist mucHist, String seq) {
-		Message message = Message.newBuilder().setOpCode(OpCode.MSG_ACK).setSeq(Long.parseLong(seq))
-				.setMsgAck(MsgAck.newBuilder()
+	public Message convertMucHistToMessage(MucHist mucHist, Long seq) {
+		Message message = Message.newBuilder().setOpCode(OpCode.MSG_ACK).setSeq(seq)
+				.setMsgAck(MsgAck.newBuilder().setSeq(String.valueOf(seq))
 						.setConversationType(com.aihangxunxi.aitalk.im.protocol.buffers.ConversationType
 								.forNumber(mucHist.getConversationType().ordinal()))
 						.setMsgId(mucHist.getMsgId().toHexString()).build())

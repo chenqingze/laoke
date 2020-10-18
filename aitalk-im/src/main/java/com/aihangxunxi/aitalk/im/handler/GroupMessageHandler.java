@@ -47,7 +47,7 @@ public final class GroupMessageHandler extends ChannelInboundHandlerAdapter {
 					logger.info("群消息");
 					String conversationId = ((Message) msg).getMsgRequest().getConversationId();
 					String senderId = ((Message) msg).getMsgRequest().getSenderId();
-					String seq = String.valueOf(((Message) msg).getSeq());
+					Long seq = ((Message) msg).getSeq();
 					if (groupRepository.checkUserInGroup(conversationId, Long.parseLong(senderId))) {
 						// 1. 保存至数据库
 						MucHist mucHist = msgAssembler.convertToMucHist((Message) msg);

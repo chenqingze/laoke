@@ -8,6 +8,7 @@ import "Auth.proto";
 import "Group.proto";
 import "Invitation.proto";
 import "Friend.proto";
+import "Fans.proto";
 //***********************协议封装***********************//
 
 message Message {
@@ -64,6 +65,11 @@ message Message {
 
     RefuseUserJoinMucRequest refuse_user_join_muc_request = 44;
     RefuseUserJoinMucAck refuse_user_join_muc_ack = 45;
+
+
+    QueryFansRequest query_fans_request = 46;
+    QueryFansAck query_fans_ack = 47;
+
     //------------------------------------------好友及好友邀请---------------------------------------------------
 
     InvitationRequestRequest invitation_request_request = 1001;
