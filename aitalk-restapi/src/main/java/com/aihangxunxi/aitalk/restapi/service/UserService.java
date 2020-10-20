@@ -6,8 +6,10 @@ import java.util.Map;
 
 public interface UserService {
 
-	boolean saveUser(User user);
+    boolean saveUser(User user);
 
-	Map getUserById(Long userId);
+    Map getUserById(Long userId);
+
+    boolean updateDeviceInfo(Long userId, String deviceCode, String deviceType);
 
 }

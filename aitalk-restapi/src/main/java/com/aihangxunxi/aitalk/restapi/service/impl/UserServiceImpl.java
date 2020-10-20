@@ -11,17 +11,21 @@ import java.util.Map;
 @Service
 public class UserServiceImpl implements UserService {
 
-	@Resource
-	private UserRepository userRepository;
+    @Resource
+    private UserRepository userRepository;
 
-	@Override
-	public boolean saveUser(User user) {
-		return userRepository.saveUser(user);
-	}
+    @Override
+    public boolean saveUser(User user) {
+        return userRepository.saveUser(user);
+    }
 
-	@Override
-	public Map getUserById(Long userId) {
-		return userRepository.queryUserById(userId);
-	}
+    @Override
+    public Map getUserById(Long userId) {
+        return userRepository.queryUserById(userId);
+    }
 
+    @Override
+    public boolean updateDeviceInfo(Long userId, String deviceCode, String deviceType) {
+        return userRepository.updateDeviceInfo(userId, deviceCode, deviceType);
+    }
 }

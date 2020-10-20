@@ -22,72 +22,89 @@ import java.util.Date;
 @Component
 public class MsgAssembler {
 
-	@Resource
-	private UserRepository userRepository;
+    @Resource
+    private UserRepository userRepository;
 
-	public MsgAck buildMsgAck() {
-		return MsgAck.newBuilder().build();
-	}
+    public MsgAck buildMsgAck() {
+        return MsgAck.newBuilder().build();
+    }
 
-	public MsgReadNotify buildMsgReadNotify(MsgHist msgHist) {
-		MsgReadNotify msgReadNotify = MsgReadNotify.newBuilder().setMsgId(msgHist.getMsgId().toHexString())
-				.setSenderId(String.valueOf(msgHist.getSenderId()))
-				.setConversationId(msgHist.getReceiverId().toHexString())
-				.setConversationType(msgHist.getConversationType().ordinal())
-				.setMsgStatus(msgHist.getMsgStatus().ordinal()).setMsgType(msgHist.getMsgType().ordinal())
-				.setContent(msgHist.getContent()).setCreatedAt(msgHist.getCreatedAt())
-				.setUpdatedAt(msgHist.getUpdatedAt()).build();
-		return msgReadNotify;
-	}
+    public MsgReadNotify buildMsgReadNotify(MsgHist msgHist) {
+        MsgReadNotify msgReadNotify = MsgReadNotify.newBuilder().setMsgId(msgHist.getMsgId().toHexString())
+                .setSenderId(String.valueOf(msgHist.getSenderId()))
+                .setConversationId(msgHist.getReceiverId().toHexString())
+                .setConversationType(msgHist.getConversationType().ordinal())
+                .setMsgStatus(msgHist.getMsgStatus().ordinal()).setMsgType(msgHist.getMsgType().ordinal())
+                .setContent(msgHist.getContent()).setCreatedAt(msgHist.getCreatedAt())
+                .setUpdatedAt(msgHist.getUpdatedAt()).build();
+        return msgReadNotify;
+    }
 
-	public MsgHist convertMsgRequestToMsgHist(Message message) {
-		MsgRequest msgRequest = message.getMsgRequest();
-		MsgHist msgHist = new MsgHist();
-		msgHist.setReceiverId(new ObjectId(msgRequest.getConversationId()));
-		msgHist.setContent(msgRequest.getContent());
-		msgHist.setMsgType(MsgType.TEXT);
-		return msgHist;
-	}
+    public MsgHist convertMsgRequestToMsgHist(Message message) {
+        MsgRequest msgRequest = message.getMsgRequest();
+        MsgHist msgHist = new MsgHist();
+        msgHist.setReceiverId(new ObjectId(msgRequest.getConversationId()));
+        msgHist.setContent(msgRequest.getContent());
+        msgHist.setMsgType(MsgType.TEXT);
+        return msgHist;
+    }
 
-	public Message convertMgsHistToMessage(MsgHist msgHist, long seq) {
-		Message msgAck = Message.newBuilder().setOpCode(OpCode.MSG_ACK).setSeq(seq)
-				.setMsgAck(MsgAck.newBuilder().setMsgId(msgHist.getMsgId().toHexString())
-						.setConversationType(com.aihangxunxi.aitalk.im.protocol.buffers.ConversationType
-								.forNumber(msgHist.getConversationType().ordinal()))
-						.setCreatedAt(msgHist.getCreatedAt()).build())
-				.build();
-		return msgAck;
-	}
+    public Message convertMgsHistToMessage(MsgHist msgHist, long seq) {
+        Message msgAck = Message.newBuilder().setOpCode(OpCode.MSG_ACK).setSeq(seq)
+                .setMsgAck(MsgAck.newBuilder().setMsgId(msgHist.getMsgId().toHexString())
+                        .setConversationType(com.aihangxunxi.aitalk.im.protocol.buffers.ConversationType
+                                .forNumber(msgHist.getConversationType().ordinal()))
+                        .setCreatedAt(msgHist.getCreatedAt()).build())
+                .build();
+        return msgAck;
+    }
 
-	public MucHist convertToMucHist(Message message) {
-		MsgRequest msgRequest = message.getMsgRequest();
-		MucHist mucHist = new MucHist();
-		mucHist.setMsgId(new ObjectId());
-		mucHist.setMsgType(MsgType.codeOf(msgRequest.getMsgType().getNumber()));
-		mucHist.setConversationType(ConversationType.codeOf(msgRequest.getConversationType().getNumber()));
-		mucHist.setSenderId(Long.parseLong(msgRequest.getSenderId()));
-		mucHist.setMsgStatus(MsgStatus.SENDING);
-		mucHist.setContent(msgRequest.getContent());
-		mucHist.setCreatedAt(new Date().getTime());
-		mucHist.setReceiverId(new ObjectId(msgRequest.getConversationId()));
-		return mucHist;
-	}
+    public MucHist convertToMucHist(Message message) {
+        MsgRequest msgRequest = message.getMsgRequest();
+        MucHist mucHist = new MucHist();
+        mucHist.setMsgId(new ObjectId());
+        mucHist.setMsgType(MsgType.codeOf(msgRequest.getMsgType().getNumber()));
+        mucHist.setConversationType(ConversationType.codeOf(msgRequest.getConversationType().getNumber()));
+        mucHist.setSenderId(Long.parseLong(msgRequest.getSenderId()));
+        mucHist.setMsgStatus(MsgStatus.SUCCESS);
+        mucHist.setContent(msgRequest.getContent());
+        mucHist.setCreatedAt(new Date().getTime());
+        mucHist.setReceiverId(new ObjectId(msgRequest.getConversationId()));
+        return mucHist;
+    }
 
-	public Message convertMucHistToMessage(MucHist mucHist, Long seq) {
-		Message message = Message.newBuilder().setOpCode(OpCode.MSG_ACK).setSeq(seq)
-				.setMsgAck(MsgAck.newBuilder().setSeq(String.valueOf(seq))
-						.setConversationType(com.aihangxunxi.aitalk.im.protocol.buffers.ConversationType
-								.forNumber(mucHist.getConversationType().ordinal()))
-						.setMsgId(mucHist.getMsgId().toHexString()).build())
-				.build();
-		return message;
-	}
+    public Message convertToMucRequest(MucHist mucHist, Long seq) {
+        return Message.newBuilder()
+                .setSeq(seq)
+                .setOpCode(OpCode.MSG_REQUEST)
+                .setMsgRequest(MsgRequest.newBuilder()
+                        .setContent(mucHist.getContent())
+                        .setConversationId(mucHist.getReceiverId().toHexString())
+                        .setConversationType(com.aihangxunxi.aitalk.im.protocol.buffers.ConversationType.MUC)
+                        .setMsgId(mucHist.getMsgId().toHexString())
+                        .setSenderId(mucHist.getSenderId().toString())
+                        .setMsgType(com.aihangxunxi.aitalk.im.protocol.buffers.MsgType.forNumber(mucHist.getMsgType().ordinal()))
+                        .setMsgStatus(com.aihangxunxi.aitalk.im.protocol.buffers.MsgStatus.SUCCESS)
+                        .build())
+                .build();
 
-	public MsgHist convertMsgReadAckToMsgHist(Message msg) {
-		MsgReadAck msgReadAck = msg.getMsgReadAck();
-		MsgHist msgHist = new MsgHist();
-		msgHist.setMsgId(new ObjectId(msgReadAck.getMsgId()));
-		return msgHist;
-	}
+    }
+
+    public Message convertMucHistToMessage(MucHist mucHist, Long seq) {
+        Message message = Message.newBuilder().setOpCode(OpCode.MSG_ACK).setSeq(seq)
+                .setMsgAck(MsgAck.newBuilder().setSeq(String.valueOf(seq))
+                        .setConversationType(com.aihangxunxi.aitalk.im.protocol.buffers.ConversationType
+                                .forNumber(mucHist.getConversationType().ordinal()))
+                        .setMsgId(mucHist.getMsgId().toHexString()).build())
+                .build();
+        return message;
+    }
+
+    public MsgHist convertMsgReadAckToMsgHist(Message msg) {
+        MsgReadAck msgReadAck = msg.getMsgReadAck();
+        MsgHist msgHist = new MsgHist();
+        msgHist.setMsgId(new ObjectId(msgReadAck.getMsgId()));
+        return msgHist;
+    }
 
 }
