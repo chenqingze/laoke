@@ -1,6 +1,7 @@
 package com.aihangxunxi.aitalk.im.handler;
 
 import com.aihangxunxi.aitalk.im.assembler.MsgAssembler;
+import com.aihangxunxi.aitalk.im.channel.ChannelConstant;
 import com.aihangxunxi.aitalk.im.manager.GroupManager;
 import com.aihangxunxi.aitalk.im.protocol.buffers.Message;
 import com.aihangxunxi.aitalk.im.protocol.buffers.OpCode;
@@ -44,6 +45,9 @@ public final class GroupMessageHandler extends ChannelInboundHandlerAdapter {
 		if (msg instanceof Message && ((Message) msg).getOpCode() == OpCode.MSG_REQUEST) {
 			if (ConversationType.MUC.ordinal() == ((Message) msg).getMsgRequest().getConversationType().getNumber()) {
 				try {
+
+					String userObjectId = ctx.channel().attr(ChannelConstant.USER_ID_ATTRIBUTE_KEY).get();
+
 					logger.info("群消息");
 					String conversationId = ((Message) msg).getMsgRequest().getConversationId();
 					String senderId = ((Message) msg).getMsgRequest().getSenderId();

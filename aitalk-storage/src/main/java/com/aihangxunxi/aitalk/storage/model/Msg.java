@@ -32,10 +32,6 @@ public abstract class Msg extends BaseModel {
 
 	private ConversationType conversationType; // 会话类型
 
-	private Long senderId;// 消息发送方
-
-	private ObjectId receiverId;// 消息接收方
-
 	private Long createdAt;// 消息发送时间
 
 	private Long updatedAt;// 消息送达时间
@@ -114,22 +110,6 @@ public abstract class Msg extends BaseModel {
 
 	public void setConversationType(ConversationType conversationType) {
 		this.conversationType = conversationType;
-	}
-
-	public Long getSenderId() {
-		return senderId;
-	}
-
-	public void setSenderId(Long senderId) {
-		this.senderId = senderId;
-	}
-
-	public ObjectId getReceiverId() {
-		return receiverId;
-	}
-
-	public void setReceiverId(ObjectId receiverId) {
-		this.receiverId = receiverId;
 	}
 
 	public Long getCreatedAt() {
