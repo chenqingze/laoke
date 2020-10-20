@@ -5,21 +5,20 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+
 @Component
 public class FansAssembler {
 
-    public List<Fans> convertToMessage(List<com.aihangxunxi.aitalk.storage.model.Fans> fansList) {
+	public List<Fans> convertToMessage(List<com.aihangxunxi.aitalk.storage.model.Fans> fansList) {
 
-        List<Fans> list = new ArrayList<>();
-        fansList.stream().forEach(fans -> {
-            Fans a = Fans.newBuilder()
-                    .setFansId(fans.getUserId().toString())
-                    .setNickname(fans.getNickname())
-                    .setProfilePhoto(fans.getProfile_photo())
-                    .build();
-            list.add(a);
+		List<Fans> list = new ArrayList<>();
+		fansList.stream().forEach(fans -> {
+			Fans a = Fans.newBuilder().setFansId(fans.getUserId().toString()).setNickname(fans.getNickname())
+					.setProfilePhoto(fans.getProfile_photo()).build();
+			list.add(a);
 
-        });
-        return list;
-    }
+		});
+		return list;
+	}
+
 }
