@@ -21,55 +21,55 @@ import static com.mongodb.client.model.Updates.set;
 @Repository
 public class UserRepository {
 
-    @Resource
-    private MongoDatabase aitalkDb;
+	@Resource
+	private MongoDatabase aitalkDb;
 
-    public boolean saveUser(User user) {
-        MongoCollection<User> mongoCollection = aitalkDb.getCollection("user", User.class);
-        user.setId(new ObjectId());
-        user.setGender(Gender.MALE);
-        mongoCollection.insertOne(user);
-        return true;
-    }
+	public boolean saveUser(User user) {
+		MongoCollection<User> mongoCollection = aitalkDb.getCollection("user", User.class);
+		user.setId(new ObjectId());
+		user.setGender(Gender.MALE);
+		mongoCollection.insertOne(user);
+		return true;
+	}
 
-    public String queryUserUIdByUserId(String userId) {
-        MongoCollection<User> mongoCollection = aitalkDb.getCollection("user", User.class);
-        Bson bson = eq("userId", Long.parseLong(userId));
-        User user = mongoCollection.find(bson).first();
-        return user.getId().toString();
-    }
+	public String queryUserUIdByUserId(String userId) {
+		MongoCollection<User> mongoCollection = aitalkDb.getCollection("user", User.class);
+		Bson bson = eq("userId", Long.parseLong(userId));
+		User user = mongoCollection.find(bson).first();
+		return user.getId().toString();
+	}
 
-    // 根据用户id获取用户
-    public Map queryUserById(Long userId) {
-        MongoCollection<User> mongoCollection = aitalkDb.getCollection("user", User.class);
-        Bson bson = eq("userId", userId);
-        User user = mongoCollection.find(bson).first();
-        ModelMap map = new ModelMap();
-        map.put("uId", user.getId());
-        map.put("header", user.getHeader());
-        map.put("nickname", user.getNickname());
-        return map;
-    }
+	// 根据用户id获取用户
+	public Map queryUserById(Long userId) {
+		MongoCollection<User> mongoCollection = aitalkDb.getCollection("user", User.class);
+		Bson bson = eq("userId", userId);
+		User user = mongoCollection.find(bson).first();
+		ModelMap map = new ModelMap();
+		map.put("uId", user.getId());
+		map.put("header", user.getHeader());
+		map.put("nickname", user.getNickname());
+		return map;
+	}
 
-    public User getUserById(ObjectId id) {
-        MongoCollection<User> mongoCollection = aitalkDb.getCollection("user", User.class);
-        User user = mongoCollection.find(eq("_id", id), User.class).first();
-        return user;
-    }
+	public User getUserById(ObjectId id) {
+		MongoCollection<User> mongoCollection = aitalkDb.getCollection("user", User.class);
+		User user = mongoCollection.find(eq("_id", id), User.class).first();
+		return user;
+	}
 
-    public User getUserByUserId(Long userId) {
-        MongoCollection<User> mongoCollection = aitalkDb.getCollection("user", User.class);
-        User user = mongoCollection.find(eq("userId", userId), User.class).first();
-        return user;
-    }
+	public User getUserByUserId(Long userId) {
+		MongoCollection<User> mongoCollection = aitalkDb.getCollection("user", User.class);
+		User user = mongoCollection.find(eq("userId", userId), User.class).first();
+		return user;
+	}
 
-    // 更新用户设备信息
-    public boolean updateDeviceInfo(Long userId, String deviceCode, String deviceType) {
-        MongoCollection<User> mongoCollection = aitalkDb.getCollection("user", User.class);
-        Bson bson = eq("userId", userId);
-        Bson bson1 = and(set("deviceCode", deviceCode), set("deviceplatform", deviceType));
-        mongoCollection.updateOne(bson, bson1);
-        return false;
-    }
+	// 更新用户设备信息
+	public boolean updateDeviceInfo(Long userId, String deviceCode, String deviceType) {
+		MongoCollection<User> mongoCollection = aitalkDb.getCollection("user", User.class);
+		Bson bson = eq("userId", userId);
+		Bson bson1 = and(set("deviceCode", deviceCode), set("deviceplatform", deviceType));
+		mongoCollection.updateOne(bson, bson1);
+		return false;
+	}
 
 }

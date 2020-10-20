@@ -1,6 +1,7 @@
 package com.aihangxunxi.aitalk.im.handler;
 
 import com.aihangxunxi.aitalk.im.assembler.MsgAssembler;
+import com.aihangxunxi.aitalk.im.channel.ChannelConstant;
 import com.aihangxunxi.aitalk.im.manager.GroupManager;
 import com.aihangxunxi.aitalk.im.protocol.buffers.Message;
 import com.aihangxunxi.aitalk.im.protocol.buffers.OpCode;
@@ -25,56 +26,63 @@ import javax.annotation.Resource;
 @ChannelHandler.Sharable
 public final class GroupMessageHandler extends ChannelInboundHandlerAdapter {
 
-    private static final Logger logger = LoggerFactory.getLogger(GroupMessageHandler.class);
+	private static final Logger logger = LoggerFactory.getLogger(GroupMessageHandler.class);
 
-    @Resource
-    private GroupManager groupManager;
+	@Resource
+	private GroupManager groupManager;
 
-    @Resource
-    private GroupRepository groupRepository;
+	@Resource
+	private GroupRepository groupRepository;
 
-    @Resource
-    private MucHistRepository mucHistRepository;
+	@Resource
+	private MucHistRepository mucHistRepository;
 
-    @Resource
-    private MsgAssembler msgAssembler;
+	@Resource
+	private MsgAssembler msgAssembler;
 
-    @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        if (msg instanceof Message && ((Message) msg).getOpCode() == OpCode.MSG_REQUEST) {
-            if (ConversationType.MUC.ordinal() == ((Message) msg).getMsgRequest().getConversationType().getNumber()) {
-                try {
-                    logger.info("群消息");
-                    String conversationId = ((Message) msg).getMsgRequest().getConversationId();
-                    String senderId = ((Message) msg).getMsgRequest().getSenderId();
-                    Long seq = ((Message) msg).getSeq();
-                    if (groupRepository.checkUserInGroup(conversationId, Long.parseLong(senderId))) {
-                        // 1. 保存至数据库
-                        MucHist mucHist = msgAssembler.convertToMucHist((Message) msg);
-                        mucHistRepository.saveMucHist(mucHist);
+	@Override
+	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+		if (msg instanceof Message && ((Message) msg).getOpCode() == OpCode.MSG_REQUEST) {
+			if (ConversationType.MUC.ordinal() == ((Message) msg).getMsgRequest().getConversationType().getNumber()) {
+				try {
+					String userObjectId = ctx.channel().attr(ChannelConstant.USER_ID_ATTRIBUTE_KEY).get();
 
-                        // 2. 转发给群内其他用户
-                        groupManager.sendGroupMsg(conversationId, msgAssembler.convertToMucRequest(mucHist, ((Message) msg).getSeq()));
+					logger.info("群消息");
+					String conversationId = ((Message) msg).getMsgRequest().getConversationId();
+					String senderId = ((Message) msg).getMsgRequest().getSenderId();
+					Long seq = ((Message) msg).getSeq();
+					if (groupRepository.checkUserInGroup(conversationId, Long.parseLong(senderId))) {
+						// 1. 保存至数据库
+						MucHist mucHist = msgAssembler.convertToMucHist((Message) msg);
+						mucHistRepository.saveMucHist(mucHist);
 
-                        // 3. 发送回执 服务器已收到
-                        Message msgAck = msgAssembler.convertMucHistToMessage(mucHist, seq);
-                        ctx.writeAndFlush(msgAck);
-                    } else {
-                        MucHist mucHist = new MucHist();
-                        mucHist.setMsgId(null);
-                        Message msgAck = msgAssembler.convertMucHistToMessage(mucHist, seq);
-                        ctx.writeAndFlush(msgAck);
-                    }
-                } finally {
-                    ReferenceCountUtil.release(msg);
+						// 2. 转发给群内其他用户
+						groupManager.sendGroupMsg(conversationId,
+								msgAssembler.convertToMucRequest(mucHist, ((Message) msg).getSeq()));
 
-                }
-            } else {
-                ctx.fireChannelRead(msg);
-            }
-        } else {
-            ctx.fireChannelRead(msg);
-        }
-    }
+						// 3. 发送回执 服务器已收到
+						Message msgAck = msgAssembler.convertMucHistToMessage(mucHist, seq);
+						ctx.writeAndFlush(msgAck);
+					}
+					else {
+						MucHist mucHist = new MucHist();
+						mucHist.setMsgId(null);
+						Message msgAck = msgAssembler.convertMucHistToMessage(mucHist, seq);
+						ctx.writeAndFlush(msgAck);
+					}
+				}
+				finally {
+					ReferenceCountUtil.release(msg);
+
+				}
+			}
+			else {
+				ctx.fireChannelRead(msg);
+			}
+		}
+		else {
+			ctx.fireChannelRead(msg);
+		}
+	}
 
 }
