@@ -1,0 +1,17 @@
+syntax = "proto3";
+option java_multiple_files = true;
+package com.aihangxunxi.aitalk.im.protocol.buffers;
+
+
+message QueryFansRequest{
+  string user_id = 1;
+}
+
+message QueryFansAck{
+  repeated Fans fans = 1;
+}
+message Fans{
+  string fans_id = 1;
+  string nickname = 2;
+  string profile_photo = 3;
+}
