@@ -52,6 +52,7 @@ public class MsgAssembler {
 	public Message convertMgsHistToMessage(MsgHist msgHist, long seq) {
 		Message msgAck = Message.newBuilder().setOpCode(OpCode.MSG_ACK).setSeq(seq)
 				.setMsgAck(MsgAck.newBuilder().setMsgId(msgHist.getMsgId().toHexString())
+						.setSenderId(msgHist.getSenderId().toHexString())
 						.setConversationType(com.aihangxunxi.aitalk.im.protocol.buffers.ConversationType
 								.forNumber(msgHist.getConversationType().ordinal()))
 						.setCreatedAt(msgHist.getCreatedAt()).build())

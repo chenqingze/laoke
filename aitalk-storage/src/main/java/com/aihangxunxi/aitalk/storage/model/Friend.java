@@ -10,6 +10,8 @@ public class Friend {
 
 	private Long userId;
 
+	private ObjectId friendObjectId;
+
 	private Long friendId;
 
 	private String friendName;
@@ -45,6 +47,14 @@ public class Friend {
 
 	public void setUserId(Long userId) {
 		this.userId = userId;
+	}
+
+	public ObjectId getFriendObjectId() {
+		return friendObjectId;
+	}
+
+	public void setFriendObjectId(ObjectId friendObjectId) {
+		this.friendObjectId = friendObjectId;
 	}
 
 	public Long getFriendId() {
