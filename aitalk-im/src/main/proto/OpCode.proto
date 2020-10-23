@@ -76,6 +76,25 @@ enum OpCode{
   REFUSE_USER_JOIN_MUC_REQUEST = 36;
   // 拒绝某人进入群回执
   REFUSE_USER_JOIN_MUC_ACK = 37;
+  // 撤回群消息请求
+  WITHDRAW_MUC_REQUEST = 38;
+  // 撤回群消息回执
+  WITHDRAW_MUC_ACK = 39;
+  // 拉取数据
+  PULL_MUC_HIST_REQUEST = 40;
+  // 拉取数据回执
+  PULL_MUC_HIST_ACK = 41;
+  // 已读消息回执
+  MUC_READ_NOTIFY_REQUEST = 42;
+  // 拉取群成员
+  PULL_MUC_MEMBER_REQUEST = 43;
+  // 拉取群成员回执
+  PULL_MUC_MEMBER_ACK = 44;
+  // 更新人员信息
+  UPDATE_MEMBER_PROFILE_REQUEST = 45;
+  // 更新人员信息回执
+  UPDATE_MEMBER_PROFILE_ACK = 46;
+
 
 
   INVITATION_REQUEST_REQUEST = 1001;

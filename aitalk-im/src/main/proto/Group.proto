@@ -190,3 +190,22 @@ message RefuseUserJoinMucAck{
   string success = 3;
   string message = 4;
 }
+message PullMucMemberRequest{
+  string user_id = 1;
+}
+
+message PullMucMemberAck{
+  string user_id = 1;
+  string success = 2;
+  string message = 3;
+  repeated MucMember member = 4;
+}
+
+message MucMember{
+  string user_id = 1;
+  string nickname = 2;
+  string alias = 3;
+  bool follow = 4;
+  string profile = 5;
+  string group_id = 6;
+}

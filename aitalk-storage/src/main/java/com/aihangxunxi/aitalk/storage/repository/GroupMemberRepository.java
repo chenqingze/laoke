@@ -15,6 +15,7 @@ import java.util.List;
 
 import static com.mongodb.client.model.Filters.and;
 import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Updates.set;
 
 @Repository
 public class GroupMemberRepository {
@@ -63,6 +64,28 @@ public class GroupMemberRepository {
 		MongoCollection<GroupMember> groupMemberCollection = aitalkDb.getCollection("groupMember", GroupMember.class);
 		Bson bson = and(eq("groupId", new ObjectId(groupId)), eq("userId", userId));
 		return groupMemberCollection.deleteOne(bson).getDeletedCount() > 0;
+	}
+
+	// 更新最后的阅读时间
+	public boolean updateLastChat(String groupId, String userId, String msgId) {
+		MongoCollection<GroupMember> groupMemberCollection = aitalkDb.getCollection("groupMember", GroupMember.class);
+		Bson bson = and(eq("groupId", new ObjectId(groupId)), eq("memberId", new ObjectId(userId)));
+		Bson bson1 = set("lastAckMsgId", new ObjectId(msgId));
+		Bson bson2 = set("lastAckMsgTime", new Date().getTime());
+		List<Bson> list = new ArrayList<>();
+		list.add(bson1);
+		list.add(bson2);
+		groupMemberCollection.updateOne(bson, list);
+		return true;
+	}
+
+	// 获取最后的聊天id
+	public List<GroupMember> queryLastChatId(Long userId) {
+		MongoCollection<GroupMember> groupMemberCollection = aitalkDb.getCollection("groupMember", GroupMember.class);
+		Bson bson = eq("userId", userId);
+
+		List<GroupMember> groupMembers = groupMemberCollection.find(bson).into(new ArrayList<>());
+		return groupMembers;
 	}
 
 }

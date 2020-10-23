@@ -109,6 +109,15 @@ public class WebSocketChannelInitializer extends ChannelInitializer<NioSocketCha
 	@Resource
 	private QueryFansHandler queryFansHandler;
 
+	@Resource
+	private WithdrawGroupMsgHandler withdrawGroupMsgHandler;
+
+	@Resource
+	private InitMucHistHandler initMucHistHandler;
+
+	@Resource
+	private MucReadNotifyHandler mucReadNotifyHandler;
+
 	public WebSocketChannelInitializer(@Nullable SslContext sslCtx, EventExecutorGroup processorGroup) {
 		this.sslCtx = sslCtx;
 		this.processorGroup = processorGroup;
@@ -173,6 +182,9 @@ public class WebSocketChannelInitializer extends ChannelInitializer<NioSocketCha
 		pipeline.addLast("refuseUserJoinMucHandler", refuseUserJoinMucHandler);
 		pipeline.addLast("queryFansHandler", queryFansHandler);
 		pipeline.addLast("p2pChatHandler", p2P2ChatHandler);
+		pipeline.addLast("initMucHistHandler", initMucHistHandler);
+		pipeline.addLast("mucReadNotifyHandler", mucReadNotifyHandler);
+		pipeline.addLast("withdrawGroupMsgHandler", withdrawGroupMsgHandler);
 
 		// todo：其他业务处理器放到这里
 		// pipeline.addLast(processorGroup, "queryUserGroupsHandler",

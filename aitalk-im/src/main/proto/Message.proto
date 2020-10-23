@@ -70,6 +70,17 @@ message Message {
     QueryFansRequest query_fans_request = 46;
     QueryFansAck query_fans_ack = 47;
 
+    WithdrawMucRequest withdraw_muc_request = 48;
+    WithdrawMucAck withdraw_muc_ack = 49;
+
+    PullMucHistRequest pull_muc_hist_request = 50;
+    PullMucHistAck pull_muc_hist_ack = 51;
+
+    MucReadNotifyRequest muc_read_notify_request = 52;
+
+    PullMucMemberRequest pull_muc_member_request = 53;
+    PullMucMemberAck pull_muc_member_ack = 54;
+
     //------------------------------------------好友及好友邀请---------------------------------------------------
 
     InvitationRequestRequest invitation_request_request = 1001;

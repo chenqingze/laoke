@@ -27,6 +27,7 @@ public class GroupMember extends BaseModel {
 
 	private boolean isTop;
 
+	@JsonSerialize(using = ToStringSerializer.class)
 	private ObjectId lastAckMsgId;
 
 	private Long lastAckMsgTime;

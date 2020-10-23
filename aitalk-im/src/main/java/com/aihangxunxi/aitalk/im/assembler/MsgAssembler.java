@@ -11,7 +11,9 @@ import org.bson.types.ObjectId;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * todo: 完善数据转换
@@ -77,7 +79,8 @@ public class MsgAssembler {
 		return Message.newBuilder().setSeq(seq).setOpCode(OpCode.MSG_REQUEST).setMsgRequest(MsgRequest.newBuilder()
 				.setContent(mucHist.getContent()).setConversationId(mucHist.getReceiverId().toHexString())
 				.setConversationType(com.aihangxunxi.aitalk.im.protocol.buffers.ConversationType.MUC)
-				.setMsgId(mucHist.getMsgId().toHexString()).setSenderId(mucHist.getSenderId().toString())
+				.setMsgDirection("OUT").setMsgId(mucHist.getMsgId().toHexString())
+				.setSenderId(mucHist.getSenderId().toString())
 				.setMsgType(
 						com.aihangxunxi.aitalk.im.protocol.buffers.MsgType.forNumber(mucHist.getMsgType().ordinal()))
 				.setMsgStatus(com.aihangxunxi.aitalk.im.protocol.buffers.MsgStatus.SUCCESS).build()).build();
@@ -99,6 +102,27 @@ public class MsgAssembler {
 		MsgHist msgHist = new MsgHist();
 		msgHist.setMsgId(new ObjectId(msgReadAck.getMsgId()));
 		return msgHist;
+	}
+
+	public Message buildInitMucHist(List<MucHist> list, Long seq) {
+		List<MucBody> mucBodies = new ArrayList<>();
+
+		for (MucHist mucHist : list) {
+			MucBody mucBody = MucBody.newBuilder().setContent(mucHist.getContent())
+					.setConversationId(mucHist.getReceiverId().toHexString())
+					.setSenderId(mucHist.getSenderId().toString())
+					.setConversationType(com.aihangxunxi.aitalk.im.protocol.buffers.ConversationType.MUC)
+					.setMsgStatus(com.aihangxunxi.aitalk.im.protocol.buffers.MsgStatus.SUCCESS)
+					.setMsgId(mucHist.getMsgId().toHexString())
+					.setMsgType(com.aihangxunxi.aitalk.im.protocol.buffers.MsgType
+							.forNumber(mucHist.getMsgType().ordinal()))
+					.setTime(mucHist.getCreatedAt()).build();
+			mucBodies.add(mucBody);
+		}
+
+		return Message.newBuilder().setOpCode(OpCode.PULL_MUC_HIST_ACK).setSeq(seq).setPullMucHistAck(
+				PullMucHistAck.newBuilder().setMessage("群组聊天记录初始化成功").setSuccess("ok").addAllMuc(mucBodies).build())
+				.build();
 	}
 
 }
