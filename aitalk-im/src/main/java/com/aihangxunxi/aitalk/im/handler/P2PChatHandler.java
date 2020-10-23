@@ -47,7 +47,7 @@ public class P2PChatHandler extends ChannelInboundHandlerAdapter {
 				User user = userRepository.getUserById(new ObjectId(userObjectId));
 
 				MsgHist msgHist = msgAssembler.convertMsgRequestToMsgHist((Message) msg);
-				msgHist.setSenderId(user.getUserId());
+				msgHist.setSenderId(user.getId());
 				msgHist.setMsgStatus(MsgStatus.SUCCESS);
 				msgHist.setConversationType(ConversationType.P2P);
 				long currentTimeMillis = System.currentTimeMillis();

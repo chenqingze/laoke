@@ -91,11 +91,12 @@ enum MsgType{
 // 消息发送请求收到确认
 message MsgAck {
   string msg_id = 1; // 消息id
-  string seq = 2; // 回执编号
-  ConversationType conversation_type = 3;// 多人还是单人
+  string sender_id = 2;
+  string seq = 3; // 回执编号
+  ConversationType conversation_type = 4;// 多人还是单人
 
-  uint64 created_at = 4;
-  uint64 updated_at = 5;
+  uint64 created_at = 5;
+  uint64 updated_at = 6;
 }
 
 

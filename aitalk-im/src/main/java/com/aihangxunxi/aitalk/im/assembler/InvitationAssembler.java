@@ -34,15 +34,14 @@ public class InvitationAssembler {
 	public Message buildInvitationAcceptAck(String id, Friend friend, long seq) {
 
 		return Message.newBuilder().setOpCode(OpCode.INVITATION_ACCEPT_ACK).setSeq(seq)
-				.setInvitationAcceptAck(InvitationAcceptAck.newBuilder().setId(id)
-						.setFriendProto(FriendProto.newBuilder().setId(friend.getId().toHexString())
-								.setUserId(friend.getUserId()).setFriendId(friend.getFriendId())
-								.setFriendName(friend.getFriendName()).setFriendProfile(friend.getFriendProfile())
-								.setAlias(friend.getAlias()).setIsBlocked(friend.getIsBlocked())
-								.setIsMute(friend.getIsMute()).setIsStickOnTop(friend.getIsStickOnTop())
-								.setStatus(friend.getStatus()).setCreatedAt(friend.getCreatedAt())
-								.setUpdatedAt(friend.getUpdatedAt()).build())
-						.setRes(1).build())
+				.setInvitationAcceptAck(InvitationAcceptAck.newBuilder().setId(id).setFriendProto(FriendProto
+						.newBuilder().setId(friend.getId().toHexString()).setUserId(friend.getUserId())
+						.setFriendObjectId(friend.getFriendObjectId().toHexString()).setFriendId(friend.getFriendId())
+						.setFriendName(friend.getFriendName()).setFriendProfile(friend.getFriendProfile())
+						.setAlias(friend.getAlias()).setIsBlocked(friend.getIsBlocked()).setIsMute(friend.getIsMute())
+						.setIsStickOnTop(friend.getIsStickOnTop()).setStatus(friend.getStatus())
+						.setCreatedAt(friend.getCreatedAt()).setUpdatedAt(friend.getUpdatedAt()).build()).setRes(1)
+						.build())
 				.build();
 	}
 

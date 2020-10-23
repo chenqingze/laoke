@@ -45,6 +45,7 @@ public final class GroupMessageHandler extends ChannelInboundHandlerAdapter {
 		if (msg instanceof Message && ((Message) msg).getOpCode() == OpCode.MSG_REQUEST) {
 			if (ConversationType.MUC.ordinal() == ((Message) msg).getMsgRequest().getConversationType().getNumber()) {
 				try {
+
 					String userObjectId = ctx.channel().attr(ChannelConstant.USER_ID_ATTRIBUTE_KEY).get();
 
 					logger.info("群消息");

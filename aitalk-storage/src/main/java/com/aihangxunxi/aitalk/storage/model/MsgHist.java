@@ -10,15 +10,15 @@ import org.bson.types.ObjectId;
  */
 public class MsgHist extends Msg {
 
-	private Long senderId;// 消息发送方
+	private ObjectId senderId;// 消息发送方
 
 	private ObjectId receiverId;// 消息接收方
 
-	public Long getSenderId() {
+	public ObjectId getSenderId() {
 		return senderId;
 	}
 
-	public void setSenderId(Long senderId) {
+	public void setSenderId(ObjectId senderId) {
 		this.senderId = senderId;
 	}
 
