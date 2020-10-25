@@ -69,7 +69,7 @@ public class InvitationHandler extends ChannelInboundHandlerAdapter {
 
 			boolean save = invitationRepository.save(invitation);
 			if (save) {
-				Message message = invitationAssembler.friendInvitationRequestAck(invitation);
+				Message message = invitationAssembler.friendInvitationRequestAck(invitation, ((Message) msg).getSeq());
 				ctx.writeAndFlush(message);
 
 				User user = userRepository.getUserById(invitation.getAddresseeId());

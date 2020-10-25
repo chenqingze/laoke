@@ -48,11 +48,11 @@ public final class AuthServerHandler extends ChannelInboundHandlerAdapter {
 			String token = ((Message) msg).getAuthRequest().getToken();
 			// todo:验证token合法性,并获取用户信息
 
-			String uid = "5f687cece62333c82038e17b";
+			String uid = "5f6d3f65e62333c82048ec8c";
 			if ("456".equals(token.trim()))
-				uid = "5f687cece62333c82038e17c";
+				uid = "5f6d8a42e62333c8204a07b5";
 			if ("789".equals(token.trim()))
-				uid = "5f687cece62333c82038e17d";
+				uid = "5f6d8a54e62333c8204a07ef";
 
 			User user = new User();
 			user.setUid(new ObjectId(uid));
