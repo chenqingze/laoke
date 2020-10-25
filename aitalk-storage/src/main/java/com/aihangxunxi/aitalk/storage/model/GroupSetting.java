@@ -21,4 +21,5 @@ public class GroupSetting {
 	public void setIsConfirmJoin(boolean confirmJoin) {
 		isConfirmJoin = confirmJoin;
 	}
+
 }

@@ -31,7 +31,8 @@ public class GroupController {
 
 	// 判断用户是否在群里
 	@GetMapping("/in}")
-	public ResponseEntity<ModelMap> queryUserInGroup(@RequestParam("groupId") String groupId, AihangPrincipal aihangPrincipal) {
+	public ResponseEntity<ModelMap> queryUserInGroup(@RequestParam("groupId") String groupId,
+			AihangPrincipal aihangPrincipal) {
 		ModelMap map = new ModelMap();
 		map.put("in", groupService.queryUserInGroup(groupId, aihangPrincipal.getUserId()));
 		return ResponseEntity.status(HttpStatus.OK).body(map);
