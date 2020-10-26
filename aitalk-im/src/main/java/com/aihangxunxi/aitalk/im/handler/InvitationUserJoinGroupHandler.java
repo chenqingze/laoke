@@ -70,7 +70,7 @@ public class InvitationUserJoinGroupHandler extends ChannelInboundHandlerAdapter
 						groupMemberRepository.saveUserJoinGroup(groupId, Long.parseLong(user),
 								userMap.get("uId").toString(), userMap.get("header").toString(),
 								userMap.get("nickname").toString());
-						Channel channel = channelManager.findChannelByUid(user);
+						Channel channel = channelManager.findChannelByUserId(user);
 						if (channel != null) {
 							groupManager.addChannel(groupId, channel);
 

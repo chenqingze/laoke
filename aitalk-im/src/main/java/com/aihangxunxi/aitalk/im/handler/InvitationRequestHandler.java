@@ -80,7 +80,7 @@ public class InvitationRequestHandler extends ChannelInboundHandlerAdapter {
 				Message message = invitationAssembler.buildInvitationRequestAck(invitation, ((Message) msg).getSeq());
 				ctx.writeAndFlush(message);
 
-				Channel addresseeChannel = channelManager.findChannelByUid(addressee.getId().toHexString());
+				Channel addresseeChannel = channelManager.findChannelByUserId(addressee.getId().toHexString());
 				if (addresseeChannel != null) {
 					addresseeChannel.writeAndFlush(message);
 				}

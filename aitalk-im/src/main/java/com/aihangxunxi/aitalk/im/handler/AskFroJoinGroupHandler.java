@@ -97,7 +97,7 @@ public class AskFroJoinGroupHandler extends ChannelInboundHandlerAdapter {
 
 							Long owner = groups.getOwner();
 							// 获取群管理频道
-							Channel channel = channelManager.findChannelByUid(String.valueOf(owner));
+							Channel channel = channelManager.findChannelByUserId(String.valueOf(owner));
 							Message requestMessage = Message.newBuilder()
 									.setAskForJoinGroupRequest(AskFroJoinGroupRequest.newBuilder().setGroupId(groupId)
 											.setMessage(map.get("nickname") + "申请加入群聊").setUserId(userid)
@@ -127,7 +127,7 @@ public class AskFroJoinGroupHandler extends ChannelInboundHandlerAdapter {
 						}
 						else {
 							// 当前群没有开启邀请确认
-							Channel channel = channelManager.findChannelByUid(userid);
+							Channel channel = channelManager.findChannelByUserId(userid);
 
 							if (channel != null) {
 								groupManager.addChannel(groupId, channel);

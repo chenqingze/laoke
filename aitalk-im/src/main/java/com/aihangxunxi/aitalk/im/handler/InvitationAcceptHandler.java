@@ -79,7 +79,7 @@ public class InvitationAcceptHandler extends ChannelInboundHandlerAdapter {
 					ctx.writeAndFlush(message);
 				}
 
-				Channel addresseeChannel = channelManager.findChannelByUid(user.getId().toHexString());
+				Channel addresseeChannel = channelManager.findChannelByUserId(user.getId().toHexString());
 				friend = new Friend();
 				friend.setUserId(invitation.getRequesterId());
 

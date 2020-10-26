@@ -65,7 +65,7 @@ public class AccessUserJoinMucHandler extends ChannelInboundHandlerAdapter {
 			else {
 				// 判断群和人是否有效
 				if (groupRepository.queryGroupIsOk(groupId)) {
-					Channel channel = channelManager.findChannelByUid(userId);
+					Channel channel = channelManager.findChannelByUserId(userId);
 					if (channel != null) {
 						groupManager.addChannel(groupId, channel);
 					}

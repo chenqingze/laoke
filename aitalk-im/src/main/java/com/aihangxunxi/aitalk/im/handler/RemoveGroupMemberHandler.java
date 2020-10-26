@@ -61,7 +61,7 @@ public class RemoveGroupMemberHandler extends ChannelInboundHandlerAdapter {
 				groupManager.sendGroupMsg(groupId, groupMsg);
 
 				for (int i = 0; i < users.size(); i++) {
-					Channel channel = channelManager.findChannelByUid(users.get(i));
+					Channel channel = channelManager.findChannelByUserId(users.get(i));
 					if (channel != null) {
 						groupManager.removeChannel(groupId, channel);
 					}

@@ -79,7 +79,7 @@ public class FriendDeleteHandler extends ChannelInboundHandlerAdapter {
 			 * userRepository.getUserById(Long.parseLong(invitation.getAddresseeId()));
 			 *
 			 * Channel addresseeChannel =
-			 * channelManager.findChannelByUid(user.getUid().toHexString()); if
+			 * channelManager.findChannelByUserId(user.getUid().toHexString()); if
 			 * (addresseeChannel != null) { addresseeChannel.writeAndFlush(message); }
 			 *
 			 * } else { ctx.fireChannelRead(msg); }

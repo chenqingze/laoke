@@ -58,7 +58,7 @@ public class P2PChatHandler extends ChannelInboundHandlerAdapter {
 				Message msgAck = msgAssembler.convertMgsHistToMessage(msgHist, ((Message) msg).getSeq());
 				ctx.writeAndFlush(msgAck);
 
-				Channel addresseeChannel = channelManager.findChannelByUid(msgHist.getReceiverId().toHexString());
+				Channel addresseeChannel = channelManager.findChannelByUserId(msgHist.getReceiverId().toHexString());
 				if (addresseeChannel != null) {
 					MsgReadNotify msgReadNotify = msgAssembler.buildMsgReadNotify(msgHist);
 					Message message = Message.newBuilder().setOpCode(OpCode.MSG_READ_NOTIFY)
