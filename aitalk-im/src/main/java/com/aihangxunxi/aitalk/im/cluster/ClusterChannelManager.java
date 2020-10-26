@@ -69,12 +69,12 @@ public class ClusterChannelManager extends DefaultChannelManager {
 
 	@Override
 	public void kickUser(ChannelHandlerContext context) {
-
+		kickUser(context.channel());
 	}
 
 	@Override
 	public void kickUser(Channel channel) {
-
+		kickUser(channel.attr(ChannelConstant.USER_ID_ATTRIBUTE_KEY).get());
 	}
 
 	@Override
