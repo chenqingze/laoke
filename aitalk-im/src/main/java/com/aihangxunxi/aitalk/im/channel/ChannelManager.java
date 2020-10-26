@@ -72,4 +72,11 @@ public interface ChannelManager {
 	 */
 	void kickUser(String userId);
 
+	/**
+	 * 获取用户节点信息
+	 * @param userId
+	 * @return
+	 */
+	String findNodeByUserId(String userId);
+
 }

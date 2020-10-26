@@ -1,6 +1,7 @@
 package com.aihangxunxi.aitalk.im.cluster;
 
 import com.aihangxunxi.aitalk.im.channel.AitalkChannel;
+import com.aihangxunxi.aitalk.im.channel.ChannelManager;
 import com.aihangxunxi.aitalk.im.protocol.buffers.Message;
 import io.netty.channel.Channel;
 
@@ -8,23 +9,23 @@ import java.io.IOException;
 
 public class ClusterAitalkChannel implements AitalkChannel {
 
-	private final ClusterChannelManager clusterChannelManager;
+	private final ChannelManager channelManager;
 
 	private final Producer producer;
 
-	public ClusterAitalkChannel(ClusterChannelManager clusterChannelManager, Producer producer) {
-		this.clusterChannelManager = clusterChannelManager;
+	public ClusterAitalkChannel(ChannelManager channelManager, Producer producer) {
+		this.channelManager = channelManager;
 		this.producer = producer;
 	}
 
 	@Override
 	public void sendMsg(String uid, Message message) {
-		Channel channel = this.clusterChannelManager.findChannelByUserId(uid);
+		Channel channel = this.channelManager.findChannelByUserId(uid);
 		if (channel.isWritable()) {
 			channel.writeAndFlush(message);
 		}
 		else {
-			String redisImNode = this.clusterChannelManager.findNodeByUserId(uid);
+			String redisImNode = this.channelManager.findNodeByUserId(uid);
 			if (redisImNode != null && !redisImNode.isEmpty()) {
 				try {
 					producer.send(redisImNode, message);

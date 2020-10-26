@@ -12,9 +12,9 @@ public class DefaultAitalkChannel implements AitalkChannel {
 
 	private final GroupManager groupManager;
 
-	public DefaultAitalkChannel(ChannelManager channelManager, GroupManager groupManager, GroupManager groupManager1) {
+	public DefaultAitalkChannel(ChannelManager channelManager, GroupManager groupManager) {
 		this.channelManager = channelManager;
-		this.groupManager = groupManager1;
+		this.groupManager = groupManager;
 	}
 
 	@Override

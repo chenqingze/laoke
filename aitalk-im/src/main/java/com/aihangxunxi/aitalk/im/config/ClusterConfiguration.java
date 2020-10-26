@@ -1,5 +1,6 @@
 package com.aihangxunxi.aitalk.im.config;
 
+import com.aihangxunxi.aitalk.im.channel.AitalkChannel;
 import com.aihangxunxi.aitalk.im.channel.ChannelManager;
 import com.aihangxunxi.aitalk.im.cluster.*;
 import com.aihangxunxi.aitalk.im.config.condition.ClusterCondition;
@@ -234,6 +235,11 @@ public class ClusterConfiguration {
 	public ClusterMessageRouter clusterMessageProcessor(RabbitMqProducer rabbitMqProducer,
 			RabbitMqConsumer rabbitMqConsumer) {
 		return new ClusterMessageRouter(rabbitMqProducer, rabbitMqConsumer);
+	}
+
+	@Bean("aitalkChannel")
+	public AitalkChannel clusterAitalkChannel(ChannelManager channelManager, Producer producer) {
+		return new ClusterAitalkChannel(channelManager, producer);
 	}
 
 }

@@ -73,4 +73,9 @@ public class DefaultChannelManager implements ChannelManager {
 		channel.close();
 	}
 
+	@Override
+	public String findNodeByUserId(String userId) {
+		return "";
+	}
+
 }
