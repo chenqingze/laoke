@@ -9,8 +9,9 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 
-import static com.mongodb.client.model.Filters.*;
-import static com.mongodb.client.model.Updates.*;
+import static com.mongodb.client.model.Filters.and;
+import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Updates.set;
 
 @Component
 public class FriendRepository {
@@ -47,6 +48,11 @@ public class FriendRepository {
 				set("isBlocked", friend.getIsBlocked()),
 				new FindOneAndUpdateOptions().returnDocument(ReturnDocument.AFTER));
 		return updatedFriend;
+	}
+
+	public Friend queryFriend(Long userId, Long friendId) {
+		return db.getCollection("friend", Friend.class).find(and(eq("userId", userId), eq("friendId", friendId)))
+				.first();
 	}
 
 }

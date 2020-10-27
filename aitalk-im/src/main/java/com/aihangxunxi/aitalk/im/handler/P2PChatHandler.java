@@ -75,14 +75,16 @@ public class P2PChatHandler extends ChannelInboundHandlerAdapter {
 			ctx.fireChannelRead(msg);
 		}
 
-		if (msg instanceof Message && ((Message) msg).getOpCode() == OpCode.MSG_READ_ACK) {
-			MsgHist msgHist = msgAssembler.convertMsgReadAckToMsgHist((Message) msg);
-			msgHist.setMsgStatus(MsgStatus.READ);
-			msgHistRepository.updateMsgStatusByMsgId(msgHist.getMsgId(), msgHist.getMsgStatus());
-		}
-		else {
-			ctx.fireChannelRead(msg);
-		}
+		// if (msg instanceof Message && ((Message) msg).getOpCode() ==
+		// OpCode.MSG_READ_ACK) {
+		// MsgHist msgHist = msgAssembler.convertMsgReadAckToMsgHist((Message) msg);
+		// msgHist.setMsgStatus(MsgStatus.READ);
+		// msgHistRepository.updateMsgStatusByMsgId(msgHist.getMsgId(),
+		// msgHist.getMsgStatus());
+		// }
+		// else {
+		// ctx.fireChannelRead(msg);
+		// }
 	}
 
 }

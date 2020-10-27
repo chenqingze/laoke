@@ -1,7 +1,6 @@
 package com.aihangxunxi.aitalk.im.handler;
 
 import com.aihangxunxi.aitalk.im.assembler.MsgAssembler;
-import com.aihangxunxi.aitalk.im.channel.ChannelConstant;
 import com.aihangxunxi.aitalk.im.protocol.buffers.Message;
 import com.aihangxunxi.aitalk.im.protocol.buffers.OpCode;
 import com.aihangxunxi.aitalk.storage.model.GroupMember;
@@ -38,20 +37,15 @@ public class InitMucHistHandler extends ChannelInboundHandlerAdapter {
 		if (msg instanceof Message && ((Message) msg).getOpCode() == OpCode.PULL_MUC_HIST_REQUEST) {
 
 			String userId = ((Message) msg).getPullMucHistRequest().getUserId();
-			String userObjectId = ctx.channel().attr(ChannelConstant.USER_ID_ATTRIBUTE_KEY).get();
-
 			// 根据用户id获取最后一条已读的消息id
 			List<GroupMember> list = groupMemberRepository.queryLastChatId(Long.parseLong(userId));
 			List<MucHist> mucHists = new ArrayList<>();
 			list.stream().forEach(groupMember -> {
 				mucHists.addAll(
 						mucHistRepository.queryMucHist(groupMember.getLastAckMsgTime(), groupMember.getGroupId()));
-				// groupMemberRepository.updateLastChat(groupMember.getGroupId().toHexString(),
-				// userObjectId, groupMember.getLastAckMsgId().toHexString());
-
 			});
 
-			Message ack = msgAssembler.buildInitMucHist(mucHists, ((Message) msg).getSeq());
+			Message ack = msgAssembler.buildInitMucHist(mucHists, ((Message) msg).getSeq(), userId);
 			ctx.writeAndFlush(ack);
 
 		}

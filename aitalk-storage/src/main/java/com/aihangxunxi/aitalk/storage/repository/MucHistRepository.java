@@ -32,7 +32,7 @@ public class MucHistRepository {
 
 	// 撤回消息
 	public boolean withdrawMucMsg(String msgId) {
-		MongoCollection<MucHist> mongoCollection = aitalkDb.getCollection("muchist", MucHist.class);
+		MongoCollection<MucHist> mongoCollection = aitalkDb.getCollection("mucHist", MucHist.class);
 
 		Bson bson = eq(new ObjectId(msgId));
 		Bson bson1 = set("msgStatus", MsgStatus.WITHDRAW);
@@ -42,7 +42,7 @@ public class MucHistRepository {
 	}
 
 	public List<MucHist> queryMucHist(Long lastChatTime, ObjectId groupId) {
-		MongoCollection<MucHist> mongoCollection = aitalkDb.getCollection("muchist", MucHist.class);
+		MongoCollection<MucHist> mongoCollection = aitalkDb.getCollection("mucHist", MucHist.class);
 		Bson bson = and(gt("createdAt", lastChatTime), eq("receiverId", groupId));
 
 		return mongoCollection.find(bson).into(new ArrayList<>());

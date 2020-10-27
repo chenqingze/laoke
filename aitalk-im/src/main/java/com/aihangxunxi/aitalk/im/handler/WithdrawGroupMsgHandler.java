@@ -41,7 +41,7 @@ public class WithdrawGroupMsgHandler extends ChannelInboundHandlerAdapter {
 			ctx.writeAndFlush(ack);
 		}
 		else {
-
+			ctx.fireChannelRead(msg);
 		}
 	}
 
