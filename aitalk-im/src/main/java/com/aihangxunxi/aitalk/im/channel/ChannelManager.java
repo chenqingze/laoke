@@ -46,7 +46,7 @@ public interface ChannelManager {
 	 * @param userId 用户id
 	 * @return channel 通道
 	 */
-	Channel findChannelByUid(String userId);
+	Channel findChannelByUserId(String userId);
 
 	/**
 	 * channel 缓存大小
@@ -71,5 +71,12 @@ public interface ChannelManager {
 	 * @param userId 用户id
 	 */
 	void kickUser(String userId);
+
+	/**
+	 * 获取用户节点信息
+	 * @param userId
+	 * @return
+	 */
+	String findNodeByUserId(String userId);
 
 }

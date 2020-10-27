@@ -7,6 +7,8 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import org.springframework.data.redis.core.RedisTemplate;
 
+import java.util.Objects;
+
 /**
  * 集群channel状态管理 todo:完善集群相关状态如下： 3、维护用户-主机关系到redis，及时缓存和清理 4、etcd同步im node节点服务状态，并负载均衡
  * 5、合理设置redis 用户数据超时时间并通过心跳机制剔除不在线的用户 6、群消息发送考虑废弃channelManager
@@ -37,7 +39,7 @@ public class ClusterChannelManager extends DefaultChannelManager {
 		// todo: 按需保存更多信息到redis
 		userStatusRedisTemplate.opsForValue().set(
 				ClusterConstant.REDIS_USER_ID_PREFIX + channel.attr(ChannelConstant.USER_ID_ATTRIBUTE_KEY).get(),
-				"本机节点，与etcd规则相同");
+				Objects.requireNonNull(ClusterConstant.redisImNode()));
 	}
 
 	@Override
@@ -58,23 +60,27 @@ public class ClusterChannelManager extends DefaultChannelManager {
 	}
 
 	@Override
-	public Channel findChannelByUid(String userId) {
-		return null;
+	public Channel findChannelByUserId(String userId) {
+		return super.findChannelByUserId(userId);
 	}
 
-	@Override
-	public Long getLocalChannelCacheSize() {
-		return null;
+	/**
+	 * 查询user channel所在服务器节点
+	 * @param userId 用户id
+	 * @return
+	 */
+	public String findNodeByUserId(String userId) {
+		return (String) this.userStatusRedisTemplate.opsForValue().get(ClusterConstant.REDIS_USER_ID_PREFIX + userId);
 	}
 
 	@Override
 	public void kickUser(ChannelHandlerContext context) {
-
+		kickUser(context.channel());
 	}
 
 	@Override
 	public void kickUser(Channel channel) {
-
+		kickUser(channel.attr(ChannelConstant.USER_ID_ATTRIBUTE_KEY).get());
 	}
 
 	@Override

@@ -45,7 +45,7 @@ public class DefaultChannelManager implements ChannelManager {
 	}
 
 	@Override
-	public Channel findChannelByUid(String userId) {
+	public Channel findChannelByUserId(String userId) {
 		return localChannelCache.getIfPresent(userId);
 	}
 
@@ -68,9 +68,14 @@ public class DefaultChannelManager implements ChannelManager {
 
 	@Override
 	public void kickUser(String userId) {
-		Channel channel = this.findChannelByUid(userId);
+		Channel channel = this.findChannelByUserId(userId);
 		this.removeChannel(channel);
 		channel.close();
+	}
+
+	@Override
+	public String findNodeByUserId(String userId) {
+		return "";
 	}
 
 }

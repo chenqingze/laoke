@@ -55,7 +55,7 @@ public class CreateMucHandler extends ChannelInboundHandlerAdapter {
 					// 创建群
 					String groupId = groupRepository.createMuc(owner, name, header);
 
-					Channel channel = channelManager.findChannelByUid(owner);
+					Channel channel = channelManager.findChannelByUserId(owner);
 					// 获取群主相关信息
 					Map ownerMap = userRepository.queryUserById(Long.parseLong(owner));
 					groupMemberRepository.saveUserJoinGroup(groupId, Long.parseLong(owner),
@@ -73,7 +73,7 @@ public class CreateMucHandler extends ChannelInboundHandlerAdapter {
 						groupMemberRepository.saveUserJoinGroup(groupId, Long.parseLong(users.get(i)),
 								map.get("uId").toString(), map.get("header").toString(),
 								map.get("nickname").toString());
-						Channel userChannel = channelManager.findChannelByUid(users.get(i));
+						Channel userChannel = channelManager.findChannelByUserId(users.get(i));
 						if (userChannel != null) {
 							groupManager.addChannel(groupId, userChannel);
 

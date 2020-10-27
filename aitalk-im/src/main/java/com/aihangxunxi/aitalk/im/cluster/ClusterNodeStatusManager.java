@@ -14,8 +14,6 @@ import io.netty.channel.Channel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicReference;
@@ -45,17 +43,14 @@ public class ClusterNodeStatusManager {
 	private final long ttl = 5;
 
 	public ClusterNodeStatusManager(Cache<String, Channel> localChannelCache, String... endpoints)
-			throws ExecutionException, InterruptedException, UnknownHostException {
+			throws ExecutionException, InterruptedException {
 		this.client = Client.builder().endpoints(endpoints).build();
 		this.kvClient = client.getKVClient();
 		this.leaseClient = client.getLeaseClient();
 		this.localChannelCache = localChannelCache;
 		this.leaseID = leaseClient.grant(ttl).get().getID();
-		InetAddress inetAddress = InetAddress.getLocalHost();
-		String keyStr = String.join("-", inetAddress.getHostName(), inetAddress.getHostAddress(),
-				String.valueOf(leaseID));
+		String keyStr = String.join("-", ClusterConstant.redisImNode(), String.valueOf(leaseID));
 		this.key = ByteSequence.from(keyStr, StandardCharsets.UTF_8);
-
 	}
 
 	/**
