@@ -17,6 +17,7 @@ message MsgRequest {
   string extend_data = 9; // 扩展字段
   string sender_id = 10; // 追加 发送方id 用于判断群聊成员是否在群中
   string msg_direction = 11; // 方向
+  string sender_name = 12;// 发送者名
 }
 
 enum ConversationType{

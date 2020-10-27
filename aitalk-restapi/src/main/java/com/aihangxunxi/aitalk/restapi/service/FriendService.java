@@ -2,6 +2,8 @@ package com.aihangxunxi.aitalk.restapi.service;
 
 import com.aihangxunxi.aitalk.storage.model.Friend;
 
+import java.util.List;
+
 public interface FriendService {
 
 	Friend updAlias(Friend friend);
@@ -12,4 +14,5 @@ public interface FriendService {
 
 	Friend updBlocked(Friend friend);
 
+	List<Friend> getFrientList();
 }

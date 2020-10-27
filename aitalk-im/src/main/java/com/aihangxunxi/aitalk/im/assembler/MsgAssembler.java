@@ -47,7 +47,7 @@ public class MsgAssembler {
 		MsgHist msgHist = new MsgHist();
 		msgHist.setReceiverId(new ObjectId(msgRequest.getConversationId()));
 		msgHist.setContent(msgRequest.getContent());
-		msgHist.setMsgType(MsgType.TEXT);
+		msgHist.setMsgType(MsgType.codeOf(msgRequest.getMsgType().getNumber()));
 		return msgHist;
 	}
 
@@ -81,6 +81,7 @@ public class MsgAssembler {
 				.setContent(mucHist.getContent()).setConversationId(mucHist.getReceiverId().toHexString())
 				.setConversationType(com.aihangxunxi.aitalk.im.protocol.buffers.ConversationType.MUC)
 				.setMsgDirection("OUT").setMsgId(mucHist.getMsgId().toHexString())
+				.setSenderName(userRepository.getUserByUserId(mucHist.getSenderId()).getNickname())
 				.setSenderId(mucHist.getSenderId().toString())
 				.setMsgType(
 						com.aihangxunxi.aitalk.im.protocol.buffers.MsgType.forNumber(mucHist.getMsgType().ordinal()))
@@ -105,7 +106,7 @@ public class MsgAssembler {
 		return msgHist;
 	}
 
-	public Message buildInitMucHist(List<MucHist> list, Long seq) {
+	public Message buildInitMucHist(List<MucHist> list, Long seq, String userId) {
 		List<MucBody> mucBodies = new ArrayList<>();
 
 		for (MucHist mucHist : list) {
@@ -121,8 +122,8 @@ public class MsgAssembler {
 			mucBodies.add(mucBody);
 		}
 
-		return Message.newBuilder().setOpCode(OpCode.PULL_MUC_HIST_ACK).setSeq(seq).setPullMucHistAck(
-				PullMucHistAck.newBuilder().setMessage("群组聊天记录初始化成功").setSuccess("ok").addAllMuc(mucBodies).build())
+		return Message.newBuilder().setOpCode(OpCode.PULL_MUC_HIST_ACK).setSeq(seq).setPullMucHistAck(PullMucHistAck
+				.newBuilder().setMessage("群组聊天记录初始化成功").setUserId(userId).setSuccess("ok").addAllMuc(mucBodies).build())
 				.build();
 	}
 

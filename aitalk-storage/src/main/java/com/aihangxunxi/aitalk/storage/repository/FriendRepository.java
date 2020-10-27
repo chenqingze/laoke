@@ -1,16 +1,24 @@
 package com.aihangxunxi.aitalk.storage.repository;
 
 import com.aihangxunxi.aitalk.storage.model.Friend;
+import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.FindOneAndUpdateOptions;
 import com.mongodb.client.model.ReturnDocument;
 import com.mongodb.client.result.InsertOneResult;
+import org.bson.conversions.Bson;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.mongodb.client.model.Filters.*;
 import static com.mongodb.client.model.Updates.*;
+import static com.mongodb.client.model.Filters.and;
+import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Updates.set;
 
 @Component
 public class FriendRepository {
@@ -47,6 +55,17 @@ public class FriendRepository {
 				set("isBlocked", friend.getIsBlocked()),
 				new FindOneAndUpdateOptions().returnDocument(ReturnDocument.AFTER));
 		return updatedFriend;
+	}
+
+	public List<Friend> getFrientList(Long userId) {
+		MongoCollection<Friend> friendMongoCollection = db.getCollection("friend", Friend.class);
+		Bson bson = and(eq("userId", userId), eq("isBlocked", 0), eq("status", "effective"));
+		return friendMongoCollection.find(bson).into(new ArrayList<>());
+	}
+
+	public Friend queryFriend(Long userId, Long friendId) {
+		return db.getCollection("friend", Friend.class).find(and(eq("userId", userId), eq("friendId", friendId)))
+				.first();
 	}
 
 }
