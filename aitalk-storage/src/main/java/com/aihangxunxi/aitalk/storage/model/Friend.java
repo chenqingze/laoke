@@ -49,6 +49,7 @@ public class Friend {
 		this.userId = userId;
 	}
 
+	@JsonSerialize(using = ToStringSerializer.class)
 	public ObjectId getFriendObjectId() {
 		return friendObjectId;
 	}
