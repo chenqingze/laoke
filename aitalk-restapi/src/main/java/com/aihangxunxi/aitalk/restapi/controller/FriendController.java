@@ -1,5 +1,6 @@
 package com.aihangxunxi.aitalk.restapi.controller;
 
+import com.aihangxunxi.aitalk.restapi.context.AihangPrincipal;
 import com.aihangxunxi.aitalk.restapi.service.FriendService;
 import com.aihangxunxi.aitalk.restapi.service.UserService;
 import com.aihangxunxi.aitalk.storage.model.Friend;
@@ -39,6 +40,23 @@ public class FriendController {
 		return ResponseEntity.status(HttpStatus.OK).body(map);
 	}
 
+	/**
+	 * 获取黑名单
+	 * @param aihangPrincipal
+	 * @return
+	 */
+	@GetMapping("/blocked")
+	public ResponseEntity<ModelMap> getBlocked(AihangPrincipal aihangPrincipal) {
+		ModelMap map = new ModelMap();
+		map.put("blocks", friendService.getBlocked(aihangPrincipal.getUserId()));
+		return ResponseEntity.status(HttpStatus.OK).body(map);
+	}
+
+	/**
+	 * 添加/删除 黑名单
+	 * @param friend
+	 * @return
+	 */
 	@PutMapping("/blocked")
 	public ResponseEntity<ModelMap> updBlocked(@RequestBody Friend friend) {
 		ModelMap map = new ModelMap();

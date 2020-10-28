@@ -3,15 +3,20 @@ package com.aihangxunxi.aitalk.restapi.service.impl;
 import com.aihangxunxi.aitalk.restapi.service.FriendService;
 import com.aihangxunxi.aitalk.storage.model.Friend;
 import com.aihangxunxi.aitalk.storage.repository.FriendRepository;
+import com.aihangxunxi.aitalk.storage.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Service
 public class FriendServiceImpl implements FriendService {
 
 	@Resource
 	private FriendRepository friendRepository;
+
+	@Resource
+	private UserRepository userRepository;
 
 	@Override
 	public Friend updAlias(Friend friend) {
@@ -29,6 +34,12 @@ public class FriendServiceImpl implements FriendService {
 	public Friend updStickOnTop(Friend friend) {
 		Friend updatedFriend = friendRepository.updStickOnTop(friend);
 		return updatedFriend;
+	}
+
+	@Override
+	public List<Friend> getBlocked(Long userId) {
+		List<Friend> blocks = friendRepository.getBlocked(userId);
+		return blocks;
 	}
 
 	@Override
