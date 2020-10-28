@@ -203,9 +203,10 @@ message PullMucMemberAck{
 
 message MucMember{
   string user_id = 1;
-  string nickname = 2;
-  string alias = 3;
-  bool follow = 4;
-  string profile = 5;
-  string group_id = 6;
+  string member_id = 2;
+  string nickname = 3;
+  string alias = 4;
+  bool follow = 5;
+  string profile = 6;
+  string group_id = 7;
 }

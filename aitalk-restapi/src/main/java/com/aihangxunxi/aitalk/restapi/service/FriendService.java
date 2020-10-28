@@ -16,4 +16,6 @@ public interface FriendService {
 
 	List<Friend> getBlocked(Long userId);
 
+	List<Friend> getFrientList();
+
 }

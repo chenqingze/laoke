@@ -1,5 +1,7 @@
 package com.aihangxunxi.aitalk.restapi.service.impl;
 
+import com.aihangxunxi.aitalk.restapi.context.AihangPrincipal;
+import com.aihangxunxi.aitalk.restapi.context.SecurityPrincipalContext;
 import com.aihangxunxi.aitalk.restapi.service.FriendService;
 import com.aihangxunxi.aitalk.storage.model.Friend;
 import com.aihangxunxi.aitalk.storage.repository.FriendRepository;
@@ -46,6 +48,13 @@ public class FriendServiceImpl implements FriendService {
 	public Friend updBlocked(Friend friend) {
 		Friend updatedFriend = friendRepository.updBlocked(friend);
 		return updatedFriend;
+	}
+
+	@Override
+	public List<Friend> getFrientList() {
+		AihangPrincipal aihangPrincipal = SecurityPrincipalContext.currentUser();
+		Long userId = aihangPrincipal.getUserId();
+		return friendRepository.getFrientList(userId);
 	}
 
 }

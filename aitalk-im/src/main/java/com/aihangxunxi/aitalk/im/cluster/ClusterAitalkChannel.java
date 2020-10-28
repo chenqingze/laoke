@@ -18,14 +18,19 @@ public class ClusterAitalkChannel implements AitalkChannel {
 		this.producer = producer;
 	}
 
+	/**
+	 * 转发消息给目标用户，若目标用户不在线则直接存入数据库
+	 * @param userId
+	 * @param message
+	 */
 	@Override
-	public void sendMsg(String uid, Message message) {
-		Channel channel = this.channelManager.findChannelByUserId(uid);
-		if (channel.isWritable()) {
+	public void sendMsg(String userId, Message message) {
+		Channel channel = this.channelManager.findChannelByUserId(userId);
+		if (channel != null && channel.isWritable()) {
 			channel.writeAndFlush(message);
 		}
 		else {
-			String redisImNode = this.channelManager.findNodeByUserId(uid);
+			String redisImNode = this.channelManager.findNodeByUserId(userId);
 			if (redisImNode != null && !redisImNode.isEmpty()) {
 				try {
 					producer.send(redisImNode, message);
@@ -34,14 +39,16 @@ public class ClusterAitalkChannel implements AitalkChannel {
 					e.printStackTrace();
 				}
 			}
-
 		}
+		// todo:存入数据库
+
 	}
 
 	@Override
 	public void sendMucMsg(String mucId, Message message) {
-		// todo:获取在线群成员的方式需要优化
-		// todo：批量获取在线 group member 然后发送
+		// todo:将群消息存入数据库群消息表
+
+		// todo:获取群成员,然后检查群成员在线状 然后发送，最后更新在线成员群消息last_msg_id
 	}
 
 }

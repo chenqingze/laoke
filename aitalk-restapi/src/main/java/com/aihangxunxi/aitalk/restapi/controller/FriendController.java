@@ -11,6 +11,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @RestController
 @RequestMapping("/friend")
@@ -18,6 +19,13 @@ public class FriendController {
 
 	@Resource
 	private FriendService friendService;
+
+	@GetMapping("/friends")
+	public ResponseEntity<ModelMap> getFrientList() {
+		ModelMap map = new ModelMap();
+		map.put("friendList", friendService.getFrientList());
+		return ResponseEntity.status(HttpStatus.OK).body(map);
+	}
 
 	@PutMapping("/alias")
 	public ResponseEntity<ModelMap> updAlias(@RequestBody Friend friend) {

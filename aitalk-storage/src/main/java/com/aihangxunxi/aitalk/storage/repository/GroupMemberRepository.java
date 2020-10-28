@@ -1,6 +1,7 @@
 package com.aihangxunxi.aitalk.storage.repository;
 
 import com.aihangxunxi.aitalk.storage.model.GroupMember;
+import com.aihangxunxi.aitalk.storage.model.Groups;
 import com.aihangxunxi.aitalk.storage.model.User;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
@@ -86,6 +87,23 @@ public class GroupMemberRepository {
 
 		List<GroupMember> groupMembers = groupMemberCollection.find(bson).into(new ArrayList<>());
 		return groupMembers;
+	}
+
+	// 获取群成员列表
+	public List<GroupMember> queryGroupMembersList(Long userId) {
+		MongoCollection<Groups> groupsMongoCollection = aitalkDb.getCollection("group", Groups.class);
+		MongoCollection<GroupMember> groupMemberMongoCollection = aitalkDb.getCollection("groupMember",
+				GroupMember.class);
+		Bson bson = eq("userId", userId);
+		List<GroupMember> list = groupMemberMongoCollection.find(bson).into(new ArrayList<>());
+
+		List<GroupMember> returnList = new ArrayList<>();
+		list.stream().forEach(groupMember -> {
+			ObjectId groupId = groupMember.getGroupId();
+			returnList.addAll(groupMemberMongoCollection.find(eq("groupId", groupId)).into(new ArrayList<>()));
+		});
+
+		return returnList;
 	}
 
 }
