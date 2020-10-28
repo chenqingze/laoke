@@ -26,7 +26,7 @@ public enum MsgType {
 
 	NOTIFICATION, // 通知消息8,
 
-	GOODS, // 商品9
+	STOREGOODS, // 商品(商铺)9
 
 	BARTER, // 易货10
 
@@ -42,13 +42,19 @@ public enum MsgType {
 
 	REPLY, // 回复16
 
-	AT, // @某人17
+	INFROM, // 回复17
 
-	PREORDER, // 预购单18
+	AT, // @某人18
 
-	DELIVERY, // 配送19
+	PREORDER, // 预购单19
 
-	DYNAMIC, // 动态 20
+	DELIVERY, // 配送20
+
+	DYNAMIC, // 动态 21
+
+	DISCOUNTGOODS, // 折扣商品(自营) 22
+
+	SECKILLGOODS, // 秒杀商品(自营) 23
 
 	AVCHAT, // 音视频通话
 
