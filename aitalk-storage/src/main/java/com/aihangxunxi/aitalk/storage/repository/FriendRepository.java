@@ -5,8 +5,10 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.FindOneAndUpdateOptions;
 import com.mongodb.client.model.ReturnDocument;
+import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.InsertOneResult;
 import org.bson.conversions.Bson;
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -14,7 +16,6 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.mongodb.client.model.Filters.*;
 import static com.mongodb.client.model.Updates.*;
 import static com.mongodb.client.model.Filters.and;
 import static com.mongodb.client.model.Filters.eq;
@@ -72,6 +73,11 @@ public class FriendRepository {
 	public Friend queryFriend(Long userId, Long friendId) {
 		return db.getCollection("friend", Friend.class).find(and(eq("userId", userId), eq("friendId", friendId)))
 				.first();
+	}
+
+	public boolean delFriend(String id) {
+		DeleteResult deleteResult = db.getCollection("friend", Friend.class).deleteOne(eq("_id", new ObjectId(id)));
+		return deleteResult.getDeletedCount() > 0;
 	}
 
 }

@@ -57,4 +57,10 @@ public class FriendServiceImpl implements FriendService {
 		return friendRepository.getFrientList(userId);
 	}
 
+	@Override
+	public boolean delFriend(String id) {
+		boolean b = friendRepository.delFriend(id);
+		return b;
+	}
+
 }

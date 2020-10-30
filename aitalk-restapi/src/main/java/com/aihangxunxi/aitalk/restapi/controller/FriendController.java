@@ -72,4 +72,16 @@ public class FriendController {
 		return ResponseEntity.status(HttpStatus.OK).body(map);
 	}
 
+	/**
+	 * 删除好友
+	 * @param id
+	 * @return
+	 */
+	@DeleteMapping("/{id}")
+	public ResponseEntity<ModelMap> delFriend(@PathVariable String id) {
+		ModelMap map = new ModelMap();
+		map.put("res", friendService.delFriend(id));
+		return ResponseEntity.status(HttpStatus.OK).body(map);
+	}
+
 }

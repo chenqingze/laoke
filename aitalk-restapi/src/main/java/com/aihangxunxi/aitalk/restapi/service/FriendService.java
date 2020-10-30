@@ -18,4 +18,6 @@ public interface FriendService {
 
 	List<Friend> getFrientList();
 
+	boolean delFriend(String id);
+
 }
