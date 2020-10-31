@@ -3,6 +3,7 @@ package com.aihangxunxi.aitalk.im.channel;
 import com.aihangxunxi.aitalk.storage.constant.DeviceIdiom;
 import com.aihangxunxi.aitalk.storage.constant.DevicePlatform;
 import io.netty.util.AttributeKey;
+import org.w3c.dom.Attr;
 
 /**
  * @author chenqingze107@163.com
@@ -27,9 +28,18 @@ public final class ChannelConstant {
 
 	private static final String DEVICE_PLATFORM_KEY = "device_platform";
 
+	private static final String USER_PROFILE_PHOTO_KEY = "profile_photo";
+
+	private static final String USER_NICKNAME_KEY = "user_nickname";
+
 	public static final AttributeKey<String> USER_ID_ATTRIBUTE_KEY = AttributeKey.newInstance(USER_ID_KEY);
 
 	public static final AttributeKey<String> DEVICE_CODE_ATTRIBUTE_KEY = AttributeKey.newInstance(DEVICE_CODE_KEY);
+
+	public static final AttributeKey<String> USER_PROFILE_PHOTO_ATTRIBUTE_KEY = AttributeKey
+			.newInstance(USER_PROFILE_PHOTO_KEY);
+
+	public static final AttributeKey<String> USER_NICKNAME_ATTRIBUTE_KEY = AttributeKey.newInstance(USER_NICKNAME_KEY);
 
 	public static final AttributeKey<DeviceIdiom> DEVICE_IDIOM_ATTRIBUTE_KEY = AttributeKey
 			.newInstance(DEVICE_IDIOM_KEY);

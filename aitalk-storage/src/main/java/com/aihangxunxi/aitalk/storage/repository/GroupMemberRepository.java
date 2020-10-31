@@ -1,5 +1,6 @@
 package com.aihangxunxi.aitalk.storage.repository;
 
+import com.aihangxunxi.aitalk.storage.model.Friend;
 import com.aihangxunxi.aitalk.storage.model.GroupMember;
 import com.aihangxunxi.aitalk.storage.model.Groups;
 import com.aihangxunxi.aitalk.storage.model.User;
@@ -104,6 +105,33 @@ public class GroupMemberRepository {
 		});
 
 		return returnList;
+	}
+
+	// 判断群成员是否开启群免打扰
+	public boolean checkMucMemberIsMute(Long userId, String groupId) {
+
+		MongoCollection<GroupMember> groupMemberMongoCollection = aitalkDb.getCollection("groupMember",
+				GroupMember.class);
+		Bson bson = and(eq("userId", userId), eq("groupId", new ObjectId(groupId)));
+		return groupMemberMongoCollection.find(bson).first().isMute();
+	}
+
+	// 获取群成员昵称或好友备注
+	public String queryGroupMemberDisplayName(Long receiverId, Long senderId, String groupId) {
+		MongoCollection<Friend> friendMongoCollection = aitalkDb.getCollection("friend", Friend.class);
+		Bson bson = and(eq("userId", receiverId), eq("friendId", senderId));
+		Friend friend = friendMongoCollection.find(bson).first();
+		if (friend != null) {
+			return friend.getFriendName();
+		}
+		else {
+			MongoCollection<GroupMember> groupMemberMongoCollection = aitalkDb.getCollection("groupMember",
+					GroupMember.class);
+			Bson bson1 = and(eq("userId", senderId), eq("groupId", new ObjectId(groupId)));
+			GroupMember groupMember = groupMemberMongoCollection.find(bson1).first();
+			return groupMember.getAlias();
+		}
+
 	}
 
 }

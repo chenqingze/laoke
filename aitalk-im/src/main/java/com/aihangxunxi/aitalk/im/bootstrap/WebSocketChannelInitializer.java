@@ -121,6 +121,9 @@ public class WebSocketChannelInitializer extends ChannelInitializer<NioSocketCha
 	@Resource
 	private PullMucMemberHandler pullMucMemberHandler;
 
+	@Resource
+	private UpdateUserHeaderHandler updateUserHeaderHandler;
+
 	public WebSocketChannelInitializer(@Nullable SslContext sslCtx, EventExecutorGroup processorGroup) {
 		this.sslCtx = sslCtx;
 		this.processorGroup = processorGroup;
@@ -189,6 +192,7 @@ public class WebSocketChannelInitializer extends ChannelInitializer<NioSocketCha
 		pipeline.addLast("initMucHistHandler", initMucHistHandler);
 		pipeline.addLast("mucReadNotifyHandler", mucReadNotifyHandler);
 		pipeline.addLast("withdrawGroupMsgHandler", withdrawGroupMsgHandler);
+		pipeline.addLast("updateUserHeaderHandler", updateUserHeaderHandler);
 
 		pipeline.addLast("p2pChatHandler", p2P2ChatHandler);
 

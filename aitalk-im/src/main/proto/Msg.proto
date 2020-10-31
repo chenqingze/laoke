@@ -201,3 +201,14 @@ message MucReadNotifyRequest{
   string msg_id = 1;
   string group_id = 2;
 }
+
+message UpdateUserProfileRequest{
+  string user_id = 1;
+  string profile_header = 2;
+  string nickname = 3;
+}
+message UpdateUserProfileAck{
+  string user_id = 1;
+  string message = 2;
+  string success = 3;
+}
