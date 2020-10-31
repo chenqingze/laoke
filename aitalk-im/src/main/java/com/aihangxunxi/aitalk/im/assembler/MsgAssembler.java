@@ -47,7 +47,7 @@ public class MsgAssembler {
 		MsgHist msgHist = new MsgHist();
 		msgHist.setReceiverId(new ObjectId(msgRequest.getConversationId()));
 		msgHist.setContent(msgRequest.getContent());
-		msgHist.setMsgType(MsgType.TEXT);
+		msgHist.setMsgType(MsgType.codeOf(msgRequest.getMsgType().getNumber()));
 		return msgHist;
 	}
 
