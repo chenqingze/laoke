@@ -216,7 +216,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.aihangxunxi.aitalk.AiTalkServer</mainClass>
+                            <mainClass>com.aihangxunxi.aitalk.im.AitalkImApp</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
