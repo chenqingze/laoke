@@ -66,7 +66,7 @@ public class ConsultChatHandler extends ChannelInboundHandlerAdapter {
                 msgHist.setUpdatedAt(currentTimeMillis);
                 msgHistRepository.saveMsgHist(msgHist);
 
-                Message msgAck = msgAssembler.convertConsultMgsHistToMessage(msgHist, ((Message) msg).getSeq());
+                Message msgAck = msgAssembler.convertMgsHistToMessage(msgHist, ((Message) msg).getSeq());
                 ctx.writeAndFlush(msgAck);
 
                 // 发送给被咨询者 咨询方向进行反转
@@ -74,7 +74,7 @@ public class ConsultChatHandler extends ChannelInboundHandlerAdapter {
                 Channel addresseeChannel = channelManager.findChannelByUserId(msgHist.getReceiverId().toHexString());
                 if (addresseeChannel != null) {
                     MsgReadNotify msgReadNotify = msgAssembler.buildMsgReadNotify(msgHist);
-                    Message message = Message.newBuilder().setOpCode(OpCode.CONSULT_MSG_READ_NOTIFY)
+                    Message message = Message.newBuilder().setOpCode(OpCode.MSG_READ_NOTIFY)
                             .setMsgReadNotify(msgReadNotify).build();
                     addresseeChannel.writeAndFlush(message);
                 } else {
