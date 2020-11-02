@@ -31,4 +31,5 @@ public class GroupSetting {
 	public void setIsTop(boolean top) {
 		isTop = top;
 	}
+
 }

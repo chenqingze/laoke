@@ -127,7 +127,6 @@ public class WebSocketChannelInitializer extends ChannelInitializer<NioSocketCha
 	@Resource
 	private FriendPullHandler friendPullHandler;
 
-
 	public WebSocketChannelInitializer(@Nullable SslContext sslCtx, EventExecutorGroup processorGroup) {
 		this.sslCtx = sslCtx;
 		this.processorGroup = processorGroup;

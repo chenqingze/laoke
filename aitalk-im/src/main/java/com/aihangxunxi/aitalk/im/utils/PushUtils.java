@@ -82,7 +82,7 @@ public class PushUtils {
 
 		Groups groups = groupRepository.queryGroupInfo(mucId);
 		String title = groups.getName();
-		String senderName = groupMemberRepository.queryGroupMemberDisplayName(userId, senderId, msgId);
+		String senderName = groupMemberRepository.queryGroupMemberDisplayName(userId, senderId, mucId);
 
 		String content = switchContent(msgType, msgContent, senderName);
 		pushNotify(registrationId, deviceType, msgType, content, title, msgId, mucId);

@@ -14,27 +14,27 @@ import java.util.List;
 @Component
 public class GroupAssembler {
 
-    public Message QueryUserGroupsBuilder(String userId, long sessionId, List<Groups> list) {
-        List<Group> groups = new ArrayList<>();
+	public Message QueryUserGroupsBuilder(String userId, long sessionId, List<Groups> list) {
+		List<Group> groups = new ArrayList<>();
 
-        for (int i = 0; i < list.size(); i++) {
-            Groups group = list.get(i);
-            groups.add(Group.newBuilder().setGroupNo(group.getGroupNo()).setId(group.getId().toHexString())
-                    .setPinyin(group.getPinyin()).setName(group.getName()).setNotice(group.getNotice())
-                    .setOwner(group.getOwner().toString()).setHeader(group.getHeader())
-                    .setSetting(
-                            buildGroupSetting(group.getGroupSetting().getIsMute(), group.getGroupSetting().getIsMute(), group.getGroupSetting().getIsTop()))
-                    .build());
-        }
+		for (int i = 0; i < list.size(); i++) {
+			Groups group = list.get(i);
+			groups.add(Group.newBuilder().setGroupNo(group.getGroupNo()).setId(group.getId().toHexString())
+					.setPinyin(group.getPinyin()).setName(group.getName()).setNotice(group.getNotice())
+					.setOwner(group.getOwner().toString()).setHeader(group.getHeader())
+					.setSetting(buildGroupSetting(group.getGroupSetting().getIsMute(),
+							group.getGroupSetting().getIsMute(), group.getGroupSetting().getIsTop()))
+					.build());
+		}
 
-        return Message.newBuilder().setOpCode(OpCode.QUERY_USER_GROUP_ACK).setSeq(sessionId)
-                .setQueryUserGroupAck(QueryUserGroupsAck.newBuilder().setUserId(userId).addAllGroups(groups).build())
-                .build();
+		return Message.newBuilder().setOpCode(OpCode.QUERY_USER_GROUP_ACK).setSeq(sessionId)
+				.setQueryUserGroupAck(QueryUserGroupsAck.newBuilder().setUserId(userId).addAllGroups(groups).build())
+				.build();
 
-    }
+	}
 
-    public GroupSetting buildGroupSetting(boolean isMute, boolean isConfirmJoin, boolean isTop) {
-        return GroupSetting.newBuilder().setIsConfirmJoin(isConfirmJoin).setIsMute(isMute).setIsTop(isTop).build();
-    }
+	public GroupSetting buildGroupSetting(boolean isMute, boolean isConfirmJoin, boolean isTop) {
+		return GroupSetting.newBuilder().setIsConfirmJoin(isConfirmJoin).setIsMute(isMute).setIsTop(isTop).build();
+	}
 
 }
