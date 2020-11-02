@@ -3,6 +3,8 @@ package com.aihangxunxi.aitalk.storage.model;
 import com.aihangxunxi.aitalk.storage.constant.DeviceIdiom;
 import com.aihangxunxi.aitalk.storage.constant.DevicePlatform;
 import com.aihangxunxi.aitalk.storage.constant.Gender;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import org.bson.codecs.pojo.annotations.BsonId;
 import org.bson.types.ObjectId;
 
@@ -16,6 +18,8 @@ public class User extends BaseModel {
 
 	@BsonId
 	private ObjectId id;
+
+	private String idStr;
 
 	private Long userId;
 
@@ -68,6 +72,15 @@ public class User extends BaseModel {
 
 		private Long lastAckMsgTime;
 
+	}
+
+	@JsonSerialize(using = ToStringSerializer.class)
+	public String getIdStr() {
+		return idStr;
+	}
+
+	public void setIdStr(String idStr) {
+		this.idStr = idStr;
 	}
 
 	public ObjectId getId() {

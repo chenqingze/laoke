@@ -6,7 +6,7 @@ package com.aihangxunxi.aitalk.storage.constant;
  */
 public enum ConversationType {
 
-	P2P, MUC, NOTIFICATION, CHATROOM, TEAM;
+	P2P, MUC, NOTIFICATION, CHATROOM, TEAM, CONSULT;
 
 	public static ConversationType codeOf(int code) {
 		for (ConversationType conversationType : values()) {

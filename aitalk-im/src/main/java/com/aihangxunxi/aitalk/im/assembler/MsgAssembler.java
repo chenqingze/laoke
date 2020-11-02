@@ -61,6 +61,16 @@ public class MsgAssembler {
 				.build();
 		return msgAck;
 	}
+	public Message convertConsultMgsHistToMessage(MsgHist msgHist, long seq) {
+		Message msgAck = Message.newBuilder().setOpCode(OpCode.CONSULT_MSG_ACK).setSeq(seq)
+				.setMsgAck(MsgAck.newBuilder().setMsgId(msgHist.getMsgId().toHexString())
+						.setSenderId(msgHist.getSenderId().toHexString())
+						.setConversationType(com.aihangxunxi.aitalk.im.protocol.buffers.ConversationType
+								.forNumber(msgHist.getConversationType().ordinal()))
+						.setCreatedAt(msgHist.getCreatedAt()).build())
+				.build();
+		return msgAck;
+	}
 
 	public MucHist convertToMucHist(Message message) {
 		MsgRequest msgRequest = message.getMsgRequest();
