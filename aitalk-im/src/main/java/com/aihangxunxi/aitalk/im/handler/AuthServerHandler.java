@@ -16,6 +16,7 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -87,7 +88,8 @@ public final class AuthServerHandler extends ChannelInboundHandlerAdapter {
 			list.stream().forEach(groupMember -> {
 				groupManager.addChannel(groupMember.getGroupId().toString(), ctx.channel());
 			});
-			Message message = authAssembler.authAckBuilder(((Message) msg).getSeq(), ctx.channel().id().asLongText(),
+			// ctx.channel().id().asLongText()
+			Message message = authAssembler.authAckBuilder(((Message) msg).getSeq(), user.getId().toHexString(),
 					result);
 			ctx.writeAndFlush(message);
 		}
