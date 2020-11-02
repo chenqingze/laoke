@@ -2,7 +2,6 @@ package com.aihangxunxi.aitalk.storage.repository;
 
 import com.aihangxunxi.aitalk.storage.constant.Gender;
 import com.aihangxunxi.aitalk.storage.model.User;
-import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.conversions.Bson;
@@ -11,7 +10,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.ui.ModelMap;
 
 import javax.annotation.Resource;
-
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import static com.mongodb.client.model.Filters.and;
@@ -70,6 +70,22 @@ public class UserRepository {
 		Bson bson1 = and(set("deviceCode", deviceCode), set("deviceplatform", deviceType));
 		mongoCollection.updateOne(bson, bson1);
 		return false;
+	}
+
+	// 更新用户资料
+	public boolean updateUserProfile(String userId, String profilePhoto, String nickname) {
+		MongoCollection<User> mongoCollection = aitalkDb.getCollection("user", User.class);
+
+		Bson bson = eq(new ObjectId(userId));
+		Bson bson1 = set("nickname", nickname);
+		Bson bson2 = set("header", profilePhoto);
+		List<Bson> list = new ArrayList<>();
+		list.add(bson1);
+		list.add(bson2);
+
+		mongoCollection.updateOne(bson, list);
+
+		return true;
 	}
 
 }

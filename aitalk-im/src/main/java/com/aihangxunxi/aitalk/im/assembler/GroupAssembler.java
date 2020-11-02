@@ -22,8 +22,8 @@ public class GroupAssembler {
 			groups.add(Group.newBuilder().setGroupNo(group.getGroupNo()).setId(group.getId().toHexString())
 					.setPinyin(group.getPinyin()).setName(group.getName()).setNotice(group.getNotice())
 					.setOwner(group.getOwner().toString()).setHeader(group.getHeader())
-					.setSetting(
-							buildGroupSetting(group.getGroupSetting().getIsMute(), group.getGroupSetting().getIsMute()))
+					.setSetting(buildGroupSetting(group.getGroupSetting().getIsMute(),
+							group.getGroupSetting().getIsMute(), group.getGroupSetting().getIsTop()))
 					.build());
 		}
 
@@ -33,8 +33,8 @@ public class GroupAssembler {
 
 	}
 
-	public GroupSetting buildGroupSetting(boolean isMute, boolean isConfirmJoin) {
-		return GroupSetting.newBuilder().setIsConfirmJoin(isConfirmJoin).setIsMute(isMute).build();
+	public GroupSetting buildGroupSetting(boolean isMute, boolean isConfirmJoin, boolean isTop) {
+		return GroupSetting.newBuilder().setIsConfirmJoin(isConfirmJoin).setIsMute(isMute).setIsTop(isTop).build();
 	}
 
 }

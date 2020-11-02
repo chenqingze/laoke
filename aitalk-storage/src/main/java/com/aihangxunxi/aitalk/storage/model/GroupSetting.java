@@ -6,6 +6,8 @@ public class GroupSetting {
 
 	private boolean isConfirmJoin;
 
+	private boolean isTop;
+
 	public boolean getIsMute() {
 		return isMute;
 	}
@@ -20,6 +22,14 @@ public class GroupSetting {
 
 	public void setIsConfirmJoin(boolean confirmJoin) {
 		isConfirmJoin = confirmJoin;
+	}
+
+	public boolean getIsTop() {
+		return isTop;
+	}
+
+	public void setIsTop(boolean top) {
+		isTop = top;
 	}
 
 }

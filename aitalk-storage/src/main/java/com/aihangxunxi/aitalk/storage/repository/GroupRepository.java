@@ -68,6 +68,8 @@ public class GroupRepository {
 		list.stream().forEach((g -> {
 			Bson bson1 = eq(g.getGroupId());
 			Groups group = groupMongoCollection.find(bson1).first();
+			group.getGroupSetting().setIsTop(g.isTop());
+
 			group.setPinyin(PinYinUtil.getPingYin(group.getName()));
 			groups.add(group);
 		}));

@@ -111,6 +111,8 @@ public final class AuthServerHandler extends ChannelInboundHandlerAdapter {
 		channel.attr(ChannelConstant.DEVICE_CODE_ATTRIBUTE_KEY).set(user.getDeviceCode());
 		channel.attr(ChannelConstant.DEVICE_IDIOM_ATTRIBUTE_KEY).set(user.getDeviceIdiom());
 		channel.attr(ChannelConstant.DEVICE_PLATFORM_ATTRIBUTE_KEY).set(user.getDevicePlatform());
+		channel.attr(ChannelConstant.USER_NICKNAME_ATTRIBUTE_KEY).set(user.getNickname());
+		channel.attr(ChannelConstant.USER_PROFILE_PHOTO_ATTRIBUTE_KEY).set(user.getHeader());
 		return channel;
 	}
 
