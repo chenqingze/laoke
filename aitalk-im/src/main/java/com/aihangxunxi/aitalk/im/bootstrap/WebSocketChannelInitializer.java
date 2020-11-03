@@ -130,6 +130,9 @@ public class WebSocketChannelInitializer extends ChannelInitializer<NioSocketCha
     @Resource
     private BindUserDeviceHandler bindUserDeviceHandler;
 
+    @Resource
+    private ConsultChatHandler consultChatHandler;
+
     public WebSocketChannelInitializer(@Nullable SslContext sslCtx, EventExecutorGroup processorGroup) {
         this.sslCtx = sslCtx;
         this.processorGroup = processorGroup;
@@ -201,6 +204,11 @@ public class WebSocketChannelInitializer extends ChannelInitializer<NioSocketCha
         pipeline.addLast("updateUserHeaderHandler", updateUserHeaderHandler);
         pipeline.addLast("bindUserDeviceHandler", bindUserDeviceHandler);
 
+
+
+
+
+        pipeline.addLast("consultChatHandler", consultChatHandler);
         pipeline.addLast("p2pChatHandler", p2P2ChatHandler);
         pipeline.addLast("friendPullHandler", friendPullHandler);
 

@@ -29,4 +29,11 @@ public class UserServiceImpl implements UserService {
 		return userRepository.updateDeviceInfo(userId, deviceCode, deviceType);
 	}
 
+	@Override
+	public User getUserByUserId(Long userId) {
+		User user = userRepository.getUserByUserId(userId);
+		user.setIdStr(user.getId().toString());
+		return user;
+	}
+
 }
