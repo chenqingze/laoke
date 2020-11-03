@@ -84,6 +84,8 @@ message Message {
     UpdateUserProfileRequest update_user_profile_request = 55;
     UpdateUserProfileAck update_user_profile_ack = 56;
 
+    BindUserDeviceRequest bind_user_device_request = 57;
+
     //------------------------------------------好友及好友邀请---------------------------------------------------
 
     InvitationRequestRequest invitation_request_request = 1001;

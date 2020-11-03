@@ -16,3 +16,9 @@ message Pong {
 // 断开连接
 message Disconnect {
 }
+
+message BindUserDeviceRequest{
+  string device_code = 1;
+  string device_type = 2;
+  string device_idiom = 3;
+}

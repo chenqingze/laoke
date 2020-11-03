@@ -67,7 +67,7 @@ public class UserRepository {
 	public boolean updateDeviceInfo(Long userId, String deviceCode, String deviceType) {
 		MongoCollection<User> mongoCollection = aitalkDb.getCollection("user", User.class);
 		Bson bson = eq("userId", userId);
-		Bson bson1 = and(set("deviceCode", deviceCode), set("deviceplatform", deviceType));
+		Bson bson1 = and(set("deviceCode", deviceCode), set("devicePlatform", deviceType));
 		mongoCollection.updateOne(bson, bson1);
 		return false;
 	}
