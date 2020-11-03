@@ -17,23 +17,25 @@ import javax.annotation.Resource;
 @ChannelHandler.Sharable
 public class BindUserDeviceHandler extends ChannelInboundHandlerAdapter {
 
-    @Resource
-    private UserRepository userRepository;
+	@Resource
+	private UserRepository userRepository;
 
-    @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        if (msg instanceof Message && ((Message) msg).getOpCode() == OpCode.BIND_USER_DEVICE_REQUEST) {
+	@Override
+	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+		if (msg instanceof Message && ((Message) msg).getOpCode() == OpCode.BIND_USER_DEVICE_REQUEST) {
 
-            String userId = ctx.channel().attr(ChannelConstant.USER_ID_ATTRIBUTE_KEY).get();
+			String userId = ctx.channel().attr(ChannelConstant.USER_ID_ATTRIBUTE_KEY).get();
 
-            String deviceCode = ((Message) msg).getBindUserDeviceRequest().getDeviceCode();
-            String deviceType = ((Message) msg).getBindUserDeviceRequest().getDeviceType();
-            String deviceIdiom = ((Message) msg).getBindUserDeviceRequest().getDeviceIdiom();
+			String deviceCode = ((Message) msg).getBindUserDeviceRequest().getDeviceCode();
+			String deviceType = ((Message) msg).getBindUserDeviceRequest().getDeviceType();
+			String deviceIdiom = ((Message) msg).getBindUserDeviceRequest().getDeviceIdiom();
 
-            User user = userRepository.getUserById(new ObjectId(userId));
-            this.userRepository.updateDeviceInfo(user.getUserId(), deviceCode, deviceType);
-        } else {
-            ctx.fireChannelRead(msg);
-        }
-    }
+			User user = userRepository.getUserById(new ObjectId(userId));
+			this.userRepository.updateDeviceInfo(user.getUserId(), deviceCode, deviceType);
+		}
+		else {
+			ctx.fireChannelRead(msg);
+		}
+	}
+
 }
