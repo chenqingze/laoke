@@ -70,11 +70,11 @@ public class ConsultChatHandler extends ChannelInboundHandlerAdapter {
                 ctx.writeAndFlush(msgAck);
 
                 // 发送给被咨询者 咨询方向进行反转
-                msgHist.setConsultDirection(getConsultDirection(msgHist.getConsultDirection()));
+                 msgHist.setConsultDirection(getConsultDirection(msgHist.getConsultDirection()));
                 Channel addresseeChannel = channelManager.findChannelByUserId(msgHist.getReceiverId().toHexString());
                 if (addresseeChannel != null) {
                     MsgReadNotify msgReadNotify = msgAssembler.buildMsgReadNotify(msgHist);
-                    Message message = Message.newBuilder().setOpCode(OpCode.MSG_READ_NOTIFY)
+                    Message message = Message.newBuilder().setOpCode(OpCode.CONSULT_MSG_READ_NOTIFY)
                             .setMsgReadNotify(msgReadNotify).build();
                     addresseeChannel.writeAndFlush(message);
                 } else {
@@ -91,17 +91,19 @@ public class ConsultChatHandler extends ChannelInboundHandlerAdapter {
 
 //  反转咨询方向
     private ConsultDirection getConsultDirection(ConsultDirection consultDirection) {
-        ConsultDirection consultDirectionR = null;
+        ConsultDirection consultDirectionR;
         switch (consultDirection) {
             case PSO:
-                consultDirectionR = SPI;
+                consultDirectionR = ConsultDirection.SPI;
                 break;
             case PPO:
-                consultDirectionR = PPI;
+                consultDirectionR = ConsultDirection.PPI;
                 break;
             case SPO:
-                consultDirectionR = PSI;
+                consultDirectionR = ConsultDirection.PSI;
                 break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + consultDirection);
         }
         return consultDirectionR;
     }
