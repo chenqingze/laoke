@@ -12,4 +12,6 @@ public interface UserService {
 
 	boolean updateDeviceInfo(Long userId, String deviceCode, String deviceType);
 
+	User getUserByUserId(Long userId);
+
 }

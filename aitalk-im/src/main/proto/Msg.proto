@@ -18,10 +18,11 @@ message MsgRequest {
   string sender_id = 10; // 追加 发送方id 用于判断群聊成员是否在群中
   string msg_direction = 11; // 方向
   string sender_name = 12;// 发送者名
+  string consult_direction = 13; // 咨询方向
 }
 
 enum ConversationType{
-  P2P = 0 ;MUC = 1; NOTIFICATION = 2; CHATROOM = 3; TEAM = 4;
+  P2P = 0 ;MUC = 1; NOTIFICATION = 2; CHATROOM = 3; TEAM = 4; CONSULT = 5;
 }
 
 enum MsgStatus{
@@ -116,6 +117,7 @@ message MsgReadNotify {
   string sender_id = 10; // 追加 发送方id 用于判断群聊成员是否在群中
   uint64 created_at = 11;
   uint64 updated_at = 12;
+  string consult_direction = 13;  // 咨询方向
 
 }
 

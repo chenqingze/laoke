@@ -1,6 +1,7 @@
 package com.aihangxunxi.aitalk.im.assembler;
 
 import com.aihangxunxi.aitalk.im.protocol.buffers.*;
+import com.aihangxunxi.aitalk.storage.constant.ConsultDirection;
 import com.aihangxunxi.aitalk.storage.constant.ConversationType;
 import com.aihangxunxi.aitalk.storage.constant.MsgStatus;
 import com.aihangxunxi.aitalk.storage.constant.MsgType;
@@ -38,7 +39,7 @@ public class MsgAssembler {
 				.setConversationType(msgHist.getConversationType().ordinal())
 				.setMsgStatus(msgHist.getMsgStatus().ordinal()).setMsgType(msgHist.getMsgType().ordinal())
 				.setContent(msgHist.getContent()).setCreatedAt(msgHist.getCreatedAt())
-				.setUpdatedAt(msgHist.getUpdatedAt()).build();
+				.setConsultDirection(msgHist.getConsultDirection().name()).setUpdatedAt(msgHist.getUpdatedAt()).build();
 		return msgReadNotify;
 	}
 
@@ -48,6 +49,7 @@ public class MsgAssembler {
 		msgHist.setReceiverId(new ObjectId(msgRequest.getConversationId()));
 		msgHist.setContent(msgRequest.getContent());
 		msgHist.setMsgType(MsgType.codeOf(msgRequest.getMsgType().getNumber()));
+		msgHist.setConsultDirection(ConsultDirection.valueOf(msgRequest.getConsultDirection()));
 		return msgHist;
 	}
 
