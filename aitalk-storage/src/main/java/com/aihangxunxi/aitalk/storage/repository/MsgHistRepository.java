@@ -40,4 +40,10 @@ public class MsgHistRepository {
 
 	}
 
+	public boolean saveOfflineMsgHist(MsgHist msgHist) {
+		MongoCollection<MsgHist> mongoCollection = aitalkDb.getCollection("offlineMsg", MsgHist.class);
+		InsertOneResult result = mongoCollection.insertOne(msgHist);
+		return true;
+	}
+
 }
