@@ -36,4 +36,19 @@ public class UserServiceImpl implements UserService {
 		return user;
 	}
 
+	@Override
+	public boolean regUser(Long userId, String nickname, String header) {
+		return userRepository.regUser(userId, nickname, header);
+	}
+
+	@Override
+	public boolean regStoreUser(Long userId, String nickname, String header) {
+		return userRepository.regStoreUser(userId, nickname, header);
+	}
+
+	@Override
+	public boolean cancelUser(Long userId) {
+		return userRepository.cancelUser(userId);
+	}
+
 }

@@ -1,8 +1,6 @@
 package com.aihangxunxi.aitalk.storage.model;
 
-import com.aihangxunxi.aitalk.storage.constant.DeviceIdiom;
-import com.aihangxunxi.aitalk.storage.constant.DevicePlatform;
-import com.aihangxunxi.aitalk.storage.constant.Gender;
+import com.aihangxunxi.aitalk.storage.constant.*;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import org.bson.codecs.pojo.annotations.BsonId;
@@ -42,6 +40,10 @@ public class User extends BaseModel {
 	private String header;
 
 	private String pinyin;
+
+	private UserType userType;
+
+	private UserStatus userStatus;
 
 	public String getPinyin() {
 		return pinyin;
@@ -161,6 +163,22 @@ public class User extends BaseModel {
 
 	public void setDevicePlatform(DevicePlatform devicePlatform) {
 		this.devicePlatform = devicePlatform;
+	}
+
+	public UserType getUserType() {
+		return userType;
+	}
+
+	public void setUserType(UserType userType) {
+		this.userType = userType;
+	}
+
+	public UserStatus getUserStatus() {
+		return userStatus;
+	}
+
+	public void setUserStatus(UserStatus userStatus) {
+		this.userStatus = userStatus;
 	}
 
 }

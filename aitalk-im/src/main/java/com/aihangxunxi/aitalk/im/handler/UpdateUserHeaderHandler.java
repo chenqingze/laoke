@@ -28,8 +28,8 @@ public class UpdateUserHeaderHandler extends ChannelInboundHandlerAdapter {
 			String nickname = ((Message) msg).getUpdateUserProfileRequest().getNickname();
 			String header = ((Message) msg).getUpdateUserProfileRequest().getProfileHeader();
 			String userId = ctx.channel().attr(ChannelConstant.USER_ID_ATTRIBUTE_KEY).get();
-
-			userRepository.updateUserProfile(userId, header, nickname);
+			String userType = ((Message) msg).getUpdateUserProfileRequest().getUserType();
+			userRepository.updateUserProfile(userId, header, nickname, userType);
 
 			Message ack = Message.newBuilder().setUpdateUserProfileAck(
 					UpdateUserProfileAck.newBuilder().setUserId(userId).setMessage("修改成功").setSuccess("ok").build())

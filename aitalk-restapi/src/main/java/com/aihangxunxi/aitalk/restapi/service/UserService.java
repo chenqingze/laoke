@@ -14,4 +14,10 @@ public interface UserService {
 
 	User getUserByUserId(Long userId);
 
+	boolean regUser(Long userId, String nickname, String header);
+
+	boolean regStoreUser(Long userId, String nickname, String header);
+
+	boolean cancelUser(Long userId);
+
 }
