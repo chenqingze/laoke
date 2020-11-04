@@ -86,6 +86,9 @@ message Message {
 
     BindUserDeviceRequest bind_user_device_request = 57;
 
+    WithdrawConsultRequest withdraw_consult_request = 500;
+
+    WithdrawConsultAck withdraw_consult_ack = 501;
     //------------------------------------------好友及好友邀请---------------------------------------------------
 
     InvitationRequestRequest invitation_request_request = 1001;

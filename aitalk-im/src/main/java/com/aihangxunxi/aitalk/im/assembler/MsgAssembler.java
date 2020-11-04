@@ -40,7 +40,8 @@ public class MsgAssembler {
 				.setConversationType(msgHist.getConversationType().ordinal())
 				.setMsgStatus(msgHist.getMsgStatus().ordinal()).setMsgType(msgHist.getMsgType().ordinal())
 				.setContent(msgHist.getContent()).setCreatedAt(msgHist.getCreatedAt())
-				.setConsultDirection(msgHist.getConsultDirection().name()).setUpdatedAt(msgHist.getUpdatedAt()).build();
+				.setConsultDirection(msgHist.getConsultDirection().name()).setTime(new Date().getTime())
+				.setUpdatedAt(msgHist.getUpdatedAt()).build();
 		return msgReadNotify;
 	}
 

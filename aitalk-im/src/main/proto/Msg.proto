@@ -111,7 +111,7 @@ message MsgReadNotify {
   uint32 msg_type = 5; // 消息附件
   string msg_attachStr = 6; // 消息附件json
   string content = 7; // 消息内容
-  uint32 time = 8; // 发送时间
+  uint64 time = 8; // 发送时间
   string extend_data = 9; // 扩展字段
 
   string sender_id = 10; // 追加 发送方id 用于判断群聊成员是否在群中
@@ -214,6 +214,19 @@ message UpdateUserProfileAck{
   string user_id = 1;
   string message = 2;
   string success = 3;
+}
+// 撤回咨询消息发送
+message WithdrawConsultRequest{
+  string msg_id = 1;
+  string conversation_id = 2;
+  string success = 3;
+  string message = 4;
+}
+// 撤回咨询消息回执
+message WithdrawConsultAck{
+  string msg_id = 1;
+  string success = 2;
+  string message = 3;
 }
 message SendSystemInfoRequest{
   string msg_id = 1;
