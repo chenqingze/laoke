@@ -54,20 +54,23 @@ public class MsgAssembler {
 		msgHist.setConsultDirection(ConsultDirection.valueOf(msgRequest.getConsultDirection()));
 		return msgHist;
 	}
+
 	public SendSystemInfoRequest buildSendSystemInfoRequest(SystemInfo info) {
 		SendSystemInfoRequest request = SendSystemInfoRequest.newBuilder().setMsgId(info.getId().toHexString())
-				.setReceiverId(info.getReceiverId().toString())
-				.setOrderId(info.getOrderId()).setTitle(info.getTitle()).setContent(info.getContent())
-				.setImagePath(info.getImagePath()).setType(info.getType()).setCreatedAt(info.getCreatedAt())
-				.setUpdatedAt(info.getUpdatedAt()).setStatus(info.getStatus()).build();
+				.setReceiverId(info.getReceiverId().toString()).setOrderId(info.getOrderId()).setTitle(info.getTitle())
+				.setContent(info.getContent()).setImagePath(info.getImagePath()).setType(info.getType())
+				.setCreatedAt(info.getCreatedAt()).setUpdatedAt(info.getUpdatedAt()).setStatus(info.getStatus())
+				.build();
 		return request;
 	}
+
 	public SystemInfo convertMsgRequestToSystemInfo(Message message) {
 		MsgRequest msgRequest = message.getMsgRequest();
 		SystemInfo systemInfo = new SystemInfo();
 		systemInfo.setId(new ObjectId(msgRequest.getMsgId()));
 		return systemInfo;
 	}
+
 	public Message convertMgsHistToMessage(MsgHist msgHist, long seq) {
 		Message msgAck = Message.newBuilder().setOpCode(OpCode.MSG_ACK).setSeq(seq)
 				.setMsgAck(MsgAck.newBuilder().setMsgId(msgHist.getMsgId().toHexString())

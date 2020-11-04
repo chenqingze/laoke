@@ -207,7 +207,7 @@ public class WebSocketChannelInitializer extends ChannelInitializer<NioSocketCha
 		pipeline.addLast("updateUserProfileHandler", updateUserProfileHandler);
 		pipeline.addLast("bindUserDeviceHandler", bindUserDeviceHandler);
 
-		pipeline.addLast("withdrawConsultMsgHandler",withdrawConsultMsgHandler);
+		pipeline.addLast("withdrawConsultMsgHandler", withdrawConsultMsgHandler);
 		pipeline.addLast("consultChatHandler", consultChatHandler);
 		pipeline.addLast("p2pChatHandler", p2P2ChatHandler);
 		pipeline.addLast("friendPullHandler", friendPullHandler);
