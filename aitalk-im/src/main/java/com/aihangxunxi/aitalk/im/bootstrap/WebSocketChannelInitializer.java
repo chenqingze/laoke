@@ -122,7 +122,7 @@ public class WebSocketChannelInitializer extends ChannelInitializer<NioSocketCha
 	private PullMucMemberHandler pullMucMemberHandler;
 
 	@Resource
-	private UpdateUserHeaderHandler updateUserHeaderHandler;
+	private UpdateUserProfileHandler updateUserProfileHandler;
 
 	@Resource
 	private FriendPullHandler friendPullHandler;
@@ -201,7 +201,7 @@ public class WebSocketChannelInitializer extends ChannelInitializer<NioSocketCha
 		pipeline.addLast("initMucHistHandler", initMucHistHandler);
 		pipeline.addLast("mucReadNotifyHandler", mucReadNotifyHandler);
 		pipeline.addLast("withdrawGroupMsgHandler", withdrawGroupMsgHandler);
-		pipeline.addLast("updateUserHeaderHandler", updateUserHeaderHandler);
+		pipeline.addLast("updateUserProfileHandler", updateUserProfileHandler);
 		pipeline.addLast("bindUserDeviceHandler", bindUserDeviceHandler);
 
 		pipeline.addLast("consultChatHandler", consultChatHandler);

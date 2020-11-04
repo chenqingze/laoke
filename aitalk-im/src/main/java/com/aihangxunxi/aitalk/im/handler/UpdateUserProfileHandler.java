@@ -17,7 +17,7 @@ import javax.annotation.Resource;
  */
 @Component
 @ChannelHandler.Sharable
-public class UpdateUserHeaderHandler extends ChannelInboundHandlerAdapter {
+public class UpdateUserProfileHandler extends ChannelInboundHandlerAdapter {
 
 	@Resource
 	private UserRepository userRepository;
