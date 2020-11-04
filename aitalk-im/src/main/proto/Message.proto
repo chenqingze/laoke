@@ -103,6 +103,6 @@ message Message {
 
     MsgReadNotify msg_read_notify = 1101;
     MsgReadAck msg_read_ack = 1102;
-
+    SendSystemInfoRequest send_system_info_request = 1105;
   }
 }

@@ -215,3 +215,15 @@ message UpdateUserProfileAck{
   string message = 2;
   string success = 3;
 }
+message SendSystemInfoRequest{
+  string msg_id = 1;
+  string order_id = 2;
+  string receiver_id = 3;
+  string title = 4;
+  string content = 5;
+  string image_path = 6;
+  string type = 7;
+  uint64 created_at = 8;
+  uint64 updated_at = 9;
+  string status = 10;
+}
