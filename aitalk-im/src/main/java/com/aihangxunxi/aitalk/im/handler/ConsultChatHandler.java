@@ -81,7 +81,8 @@ public class ConsultChatHandler extends ChannelInboundHandlerAdapter {
 					addresseeChannel.writeAndFlush(message);
 				}
 				else {
-					// todo: 如果对方不在 处理
+					// 如果对方不在线 将消息存储至离线表
+					msgHistRepository.saveOfflineMsgHist(msgHist);
 				}
 
 			}
