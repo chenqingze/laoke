@@ -105,11 +105,24 @@ public class UserController {
      * @param userId
      * @return
      */
-    @GetMapping("query")
-    public ResponseEntity<ModelMap> queryUser(@RequestParam("userId") Long userId) {
+    @GetMapping("query/{userType}/{userId}")
+    public ResponseEntity<ModelMap> queryUser(@PathVariable("userType") String userType, @PathVariable("userId") Long userId) {
 
         ModelMap map = new ModelMap();
+        map.put("user", userService.queryUserByType(userType, userId));
+        return ResponseEntity.status(HttpStatus.OK).body(map);
+    }
 
+    /**
+     * 清空用户jpush code
+     *
+     * @param userId
+     * @return
+     */
+    @PutMapping("cancel-bind/{userId}")
+    public ResponseEntity<ModelMap> cancelBindJPush(@PathVariable("userId") Long userId) {
+        ModelMap map = new ModelMap();
+        map.put("success", userService.cancelBindJPush(userId));
         return ResponseEntity.status(HttpStatus.OK).body(map);
     }
 
