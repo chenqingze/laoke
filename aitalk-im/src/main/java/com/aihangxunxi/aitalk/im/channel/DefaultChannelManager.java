@@ -41,7 +41,7 @@ public class DefaultChannelManager implements ChannelManager {
 
 	@Override
 	public void removeChannelByUserId(String userId) {
-		if (userId != null && !userId.isEmpty()){
+		if (userId != null && !userId.isEmpty()) {
 			localChannelCache.invalidate(userId);
 		}
 	}

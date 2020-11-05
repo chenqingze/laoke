@@ -37,7 +37,8 @@ public class WithdrawConsultMsgHandler extends ChannelInboundHandlerAdapter {
 			msgHistRepository.withdrawConsultMsg(msgId);
 
 			Message ack = Message.newBuilder().setSeq(((Message) msg).getSeq()).setOpCode(OpCode.WITHDRAW_CONSULT_ACK)
-					.setWithdrawConsultAck(WithdrawConsultAck.newBuilder().setMsgId(msgId).setSuccess("ok").build())
+					.setWithdrawConsultAck(WithdrawConsultAck.newBuilder().setMsgId(msgId)
+							.setConversationId(receiverId.toString()).setSuccess("ok").build())
 					.build();
 			ctx.writeAndFlush(ack);
 			// 发送给被咨询者 咨询方向进行反转

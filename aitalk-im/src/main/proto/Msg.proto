@@ -219,14 +219,16 @@ message UpdateUserProfileAck{
 message WithdrawConsultRequest{
   string msg_id = 1;
   string conversation_id = 2;
-  string success = 3;
-  string message = 4;
+  string consult_direction = 3;
+  string success = 4;
+  string message = 5;
 }
 // 撤回咨询消息回执
 message WithdrawConsultAck{
   string msg_id = 1;
-  string success = 2;
-  string message = 3;
+  string conversation_id = 2;
+  string success = 3;
+  string message = 4;
 }
 message SendSystemInfoRequest{
   string msg_id = 1;
