@@ -51,12 +51,19 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.OK).body(map);
 	}
 
-	// 更具用户Id 获取用户详情
 	// 根据用户查询
 	@GetMapping("getUser/{userId}")
 	public ResponseEntity<ModelMap> getUserByUserId(@PathVariable("userId") Long userId) {
 		ModelMap map = new ModelMap();
 		map.put("user", userService.getUserByUserId(userId));
+		return ResponseEntity.status(HttpStatus.OK).body(map);
+	}
+
+	// 更具id 获取用户信息
+	@GetMapping("getUserById/{id}")
+	public ResponseEntity<ModelMap> getUserById(@PathVariable("id") String id) {
+		ModelMap map = new ModelMap();
+		map.put("user", userService.getUserByObjectId(id));
 		return ResponseEntity.status(HttpStatus.OK).body(map);
 	}
 
