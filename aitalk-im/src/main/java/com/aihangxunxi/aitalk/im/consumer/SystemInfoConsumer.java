@@ -19,6 +19,9 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.TimeoutException;
 
 /**
@@ -49,7 +52,11 @@ public class SystemInfoConsumer {
             // 创建连接
             ConnectionFactory factory = new ConnectionFactory();
             // todo: 正确的地址
-            factory.setHost("localhost");
+            factory.setHost("192.168.30.153");
+            factory.setPort(5672);
+            factory.setUsername("guest");
+            factory.setPassword("guest");
+            factory.setUri("amqp://guest:guest@192.168.30.153:5672");
             Connection connection = factory.newConnection();
             // 创建channel
             Channel rabbitMqChannel = connection.createChannel();
@@ -57,10 +64,9 @@ public class SystemInfoConsumer {
             // 绑定队列,并回调处理收到的消息
             rabbitMqChannel.basicConsume(QUEUE_NAME, true, systemInfoCallback(), consumerTag -> {
             });
-        } catch (IOException | TimeoutException e) {
+        } catch (IOException | TimeoutException | NoSuchAlgorithmException | KeyManagementException | URISyntaxException e) {
             e.printStackTrace();
         }
-
 
     }
 
