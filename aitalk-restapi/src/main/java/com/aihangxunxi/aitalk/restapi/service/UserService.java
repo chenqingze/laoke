@@ -20,4 +20,8 @@ public interface UserService {
 
 	boolean cancelUser(Long userId);
 
+	boolean cancelBindJPush(Long userId);
+
+	User queryUserByType(String userType, Long userId);
+
 }

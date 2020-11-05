@@ -6,6 +6,7 @@ import com.aihangxunxi.aitalk.storage.model.MucHist;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.result.InsertOneResult;
+import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.ObjectUtils;
@@ -43,6 +44,15 @@ public class MsgHistRepository {
 	public boolean saveOfflineMsgHist(MsgHist msgHist) {
 		MongoCollection<MsgHist> mongoCollection = aitalkDb.getCollection("offlineMsg", MsgHist.class);
 		InsertOneResult result = mongoCollection.insertOne(msgHist);
+		return true;
+	}
+
+	// 撤回咨询消息
+	public boolean withdrawConsultMsg(String msgId) {
+		MongoCollection<MucHist> mongoCollection = aitalkDb.getCollection("msgHist", MucHist.class);
+		Bson bson = eq(new ObjectId(msgId));
+		Bson bson1 = set("msgStatus", MsgStatus.WITHDRAW);
+		mongoCollection.updateOne(bson, bson1);
 		return true;
 	}
 

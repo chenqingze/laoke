@@ -51,4 +51,14 @@ public class UserServiceImpl implements UserService {
 		return userRepository.cancelUser(userId);
 	}
 
+	@Override
+	public boolean cancelBindJPush(Long userId) {
+		return userRepository.cancelBindJPush(userId);
+	}
+
+	@Override
+	public User queryUserByType(String userType, Long userId) {
+		return userRepository.queryUserByType(userType, userId);
+	}
+
 }

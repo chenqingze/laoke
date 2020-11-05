@@ -65,6 +65,7 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
 			String token = request.getHeader("Authorization");
 			LoginUserResponseRedisEntity redisEntity = (LoginUserResponseRedisEntity) authRedisTemplate.opsForValue()
 					.get(RedisKeyConstants.ACCESS_TOKEN + token);
+
 			if (redisEntity == null) {
 				redisEntity = (LoginUserResponseRedisEntity) authRedisTemplate.opsForValue()
 						.get(RedisKeyConstants.MIN_PROGRAM_ACCESS_TOKEN + token);

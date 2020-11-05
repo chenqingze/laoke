@@ -68,6 +68,19 @@ public class LoginUserResponseRedisEntity implements Serializable {
 	 */
 	private long expiresIn;
 
+	/**
+	 * 是否有推广关系
+	 */
+	private boolean isExtension;
+
+	public boolean isExtension() {
+		return isExtension;
+	}
+
+	public void setExtension(boolean extension) {
+		isExtension = extension;
+	}
+
 	public String getUserId() {
 		return userId;
 	}
