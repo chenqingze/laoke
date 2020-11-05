@@ -32,7 +32,7 @@ import java.util.concurrent.TimeoutException;
  * @Author: suguodong Date: 2020/11/4 17:48
  * @Version: 3.0
  */
-@Component
+// @Component
 public class SystemInfoConsumer {
 
 	private static final Logger logger = LoggerFactory.getLogger(SystemInfoConsumer.class);

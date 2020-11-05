@@ -24,4 +24,6 @@ public interface UserService {
 
 	User queryUserByType(String userType, Long userId);
 
+	Object getUserByObjectId(String id);
+
 }

@@ -3,6 +3,7 @@ package com.aihangxunxi.aitalk.restapi.service.impl;
 import com.aihangxunxi.aitalk.restapi.service.UserService;
 import com.aihangxunxi.aitalk.storage.model.User;
 import com.aihangxunxi.aitalk.storage.repository.UserRepository;
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -59,6 +60,11 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User queryUserByType(String userType, Long userId) {
 		return userRepository.queryUserByType(userType, userId);
+	}
+
+	@Override
+	public Object getUserByObjectId(String id) {
+		return userRepository.getUserById(new ObjectId(id));
 	}
 
 }
