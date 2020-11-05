@@ -3,117 +3,118 @@ package com.aihangxunxi.aitalk.storage.model;
 import org.bson.types.ObjectId;
 
 /**
- * @Author: suguodong
- * Date:  2020/11/4 16:42
+ * @Author: suguodong Date: 2020/11/4 16:42
  * @Version: 3.0
  */
 public class SystemInfo {
-    private ObjectId id;
 
-    // 订单id或者预购单id
-    private String orderId;
+	private ObjectId id;
 
-    // 接受人 userId
-    private Long receiverId;
+	// 订单id或者预购单id
+	private String orderId;
 
-    // 标题
-    private String title;
+	// 接受人 userId
+	private Long receiverId;
 
-    // 内容
-    private String content;
+	// 标题
+	private String title;
 
-    // 图片地址 oss
-    private String imagePath;
+	// 内容
+	private String content;
 
-    // 类型
-    private String type;
+	// 图片地址 oss
+	private String imagePath;
 
-    // 创建时间
-    private Long createdAt;
+	// 类型
+	private String type;
 
-    // 修改时间
-    private Long updatedAt;
+	// 创建时间
+	private Long createdAt;
 
-    // 消息状态
-    private String status;
+	// 修改时间
+	private Long updatedAt;
 
-    public ObjectId getId() {
-        return id;
-    }
+	// 消息状态
+	private String status;
 
-    public void setId(ObjectId id) {
-        this.id = id;
-    }
+	public ObjectId getId() {
+		return id;
+	}
 
-    public String getOrderId() {
-        return orderId;
-    }
+	public void setId(ObjectId id) {
+		this.id = id;
+	}
 
-    public void setOrderId(String orderId) {
-        this.orderId = orderId;
-    }
+	public String getOrderId() {
+		return orderId;
+	}
 
-    public Long getReceiverId() {
-        return receiverId;
-    }
+	public void setOrderId(String orderId) {
+		this.orderId = orderId;
+	}
 
-    public void setReceiverId(Long receiverId) {
-        this.receiverId = receiverId;
-    }
+	public Long getReceiverId() {
+		return receiverId;
+	}
 
-    public String getTitle() {
-        return title;
-    }
+	public void setReceiverId(Long receiverId) {
+		this.receiverId = receiverId;
+	}
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+	public String getTitle() {
+		return title;
+	}
 
-    public String getContent() {
-        return content;
-    }
+	public void setTitle(String title) {
+		this.title = title;
+	}
 
-    public void setContent(String content) {
-        this.content = content;
-    }
+	public String getContent() {
+		return content;
+	}
 
-    public String getImagePath() {
-        return imagePath;
-    }
+	public void setContent(String content) {
+		this.content = content;
+	}
 
-    public void setImagePath(String imagePath) {
-        this.imagePath = imagePath;
-    }
+	public String getImagePath() {
+		return imagePath;
+	}
 
-    public String getType() {
-        return type;
-    }
+	public void setImagePath(String imagePath) {
+		this.imagePath = imagePath;
+	}
 
-    public void setType(String type) {
-        this.type = type;
-    }
+	public String getType() {
+		return type;
+	}
 
-    public Long getCreatedAt() {
-        return createdAt;
-    }
+	public void setType(String type) {
+		this.type = type;
+	}
 
-    public void setCreatedAt(Long createdAt) {
-        this.createdAt = createdAt;
-    }
+	public Long getCreatedAt() {
+		return createdAt;
+	}
 
-    public Long getUpdatedAt() {
-        return updatedAt;
-    }
+	public void setCreatedAt(Long createdAt) {
+		this.createdAt = createdAt;
+	}
 
-    public void setUpdatedAt(Long updatedAt) {
-        this.updatedAt = updatedAt;
-    }
+	public Long getUpdatedAt() {
+		return updatedAt;
+	}
 
-    public String getStatus() {
-        return status;
-    }
+	public void setUpdatedAt(Long updatedAt) {
+		this.updatedAt = updatedAt;
+	}
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
 }

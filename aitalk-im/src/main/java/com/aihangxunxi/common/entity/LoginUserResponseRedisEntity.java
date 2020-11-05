@@ -169,5 +169,4 @@ public class LoginUserResponseRedisEntity implements Serializable {
 		this.expiresIn = expiresIn;
 	}
 
-
 }

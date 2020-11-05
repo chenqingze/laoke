@@ -6,22 +6,22 @@ import java.util.Map;
 
 public interface UserService {
 
-    boolean saveUser(User user);
+	boolean saveUser(User user);
 
-    Map getUserById(Long userId);
+	Map getUserById(Long userId);
 
-    boolean updateDeviceInfo(Long userId, String deviceCode, String deviceType);
+	boolean updateDeviceInfo(Long userId, String deviceCode, String deviceType);
 
-    User getUserByUserId(Long userId);
+	User getUserByUserId(Long userId);
 
-    boolean regUser(Long userId, String nickname, String header);
+	boolean regUser(Long userId, String nickname, String header);
 
-    boolean regStoreUser(Long userId, String nickname, String header);
+	boolean regStoreUser(Long userId, String nickname, String header);
 
-    boolean cancelUser(Long userId);
+	boolean cancelUser(Long userId);
 
-    boolean cancelBindJPush(Long userId);
+	boolean cancelBindJPush(Long userId);
 
-    User queryUserByType(String userType, Long userId);
+	User queryUserByType(String userType, Long userId);
 
 }

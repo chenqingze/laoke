@@ -46,12 +46,14 @@ public class MsgHistRepository {
 		InsertOneResult result = mongoCollection.insertOne(msgHist);
 		return true;
 	}
-//   撤回咨询消息
-    public boolean withdrawConsultMsg(String msgId) {
+
+	// 撤回咨询消息
+	public boolean withdrawConsultMsg(String msgId) {
 		MongoCollection<MucHist> mongoCollection = aitalkDb.getCollection("msgHist", MucHist.class);
 		Bson bson = eq(new ObjectId(msgId));
 		Bson bson1 = set("msgStatus", MsgStatus.WITHDRAW);
 		mongoCollection.updateOne(bson, bson1);
 		return true;
-    }
+	}
+
 }

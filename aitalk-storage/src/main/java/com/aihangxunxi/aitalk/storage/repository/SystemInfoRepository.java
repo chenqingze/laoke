@@ -10,26 +10,27 @@ import org.springframework.stereotype.Repository;
 import javax.annotation.Resource;
 
 /**
- * @Author: suguodong
- * Date:  2020/11/4 16:45
+ * @Author: suguodong Date: 2020/11/4 16:45
  * @Version: 3.0
  */
 @Repository
 public class SystemInfoRepository {
-    @Resource
-    private MongoDatabase db;
 
-    public boolean saveSystemInfo(SystemInfo info) {
-        // 保存至主表
-        MongoCollection<SystemInfo> mongoCollection = db.getCollection("systemInfo", SystemInfo.class);
-        InsertOneResult result = mongoCollection.insertOne(info);
-        return true;
-    }
+	@Resource
+	private MongoDatabase db;
 
-    public boolean saveOfflineSystemInfo(SystemInfo info) {
-        // 保存至离线系统通知
-        MongoCollection<SystemInfo> mongoCollection = db.getCollection("offlineSystemInfo", SystemInfo.class);
-        InsertOneResult result = mongoCollection.insertOne(info);
-        return true;
-    }
+	public boolean saveSystemInfo(SystemInfo info) {
+		// 保存至主表
+		MongoCollection<SystemInfo> mongoCollection = db.getCollection("systemInfo", SystemInfo.class);
+		InsertOneResult result = mongoCollection.insertOne(info);
+		return true;
+	}
+
+	public boolean saveOfflineSystemInfo(SystemInfo info) {
+		// 保存至离线系统通知
+		MongoCollection<SystemInfo> mongoCollection = db.getCollection("offlineSystemInfo", SystemInfo.class);
+		InsertOneResult result = mongoCollection.insertOne(info);
+		return true;
+	}
+
 }
