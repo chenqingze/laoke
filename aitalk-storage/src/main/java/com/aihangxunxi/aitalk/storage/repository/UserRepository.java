@@ -136,4 +136,19 @@ public class UserRepository {
         return true;
     }
 
+    // 取消绑定
+    public boolean cancelBindJPush(Long userId) {
+        MongoCollection<User> mongoCollection = aitalkDb.getCollection("user", User.class);
+        Bson bson = eq("userId", userId);
+        Bson bson1 = set("deviceCode", "");
+        mongoCollection.findOneAndUpdate(bson, bson1);
+        return true;
+    }
+
+    // 根据用户类型获取用户
+    public User queryUserByType(String userType, Long userId) {
+        MongoCollection<User> mongoCollection = aitalkDb.getCollection("user", User.class);
+        Bson bson = and(eq("userId", userId), eq("userType", UserType.valueOf(userType.toUpperCase())));
+        return mongoCollection.find(bson).first();
+    }
 }
