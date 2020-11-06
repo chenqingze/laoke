@@ -32,16 +32,16 @@ import java.util.concurrent.TimeoutException;
  * @Author: suguodong Date: 2020/11/4 17:48
  * @Version: 3.0
  */
-// @Component
+ @Component
 public class SystemInfoConsumer {
 
 	private static final Logger logger = LoggerFactory.getLogger(SystemInfoConsumer.class);
 
-	private final static String EXCHANGE_NAME = "SYSTEMINFO";
+	private final static String EXCHANGE_NAME = "SYSTEM_INFO";
 
-	private final static String TOPIC = "SYSTEMINFO";
+	private final static String TOPIC = "SYSTEM_INFO";
 
-	private final static String QUEUE_NAME = "SYSTEMINFO";
+	private final static String QUEUE_NAME = "SYSTEM_INFO";
 	@Resource
 	private UserRepository userRepository;
 	@Resource
@@ -91,11 +91,13 @@ public class SystemInfoConsumer {
 			systemInfo.setContent((String) map.get("content"));
 			systemInfo.setImagePath((String) map.get("imagePath"));
 			systemInfo.setType((String) map.get("type"));
-			systemInfo.setCreatedAt((Long) map.get("createdAt"));
-			systemInfo.setUpdatedAt((Long) map.get("updateAt"));
-			systemInfo.setStatus((String) map.get("status"));
+			long time = System.currentTimeMillis();
+			long time2 = System.currentTimeMillis();
+			systemInfo.setCreatedAt(time);
+			systemInfo.setUpdatedAt(time2);
+			systemInfo.setStatus("true");
 			User user = userRepository.getUserByUserId(systemInfo.getReceiverId());
-//			systemInfoRepository.saveSystemInfo(systemInfo);
+			systemInfoRepository.saveSystemInfo(systemInfo);
 			systemInfo.setId(new ObjectId());
 			io.netty.channel.Channel channel = channelManager
 					.findChannelByUserId(user.getId().toHexString());
@@ -109,15 +111,6 @@ public class SystemInfoConsumer {
 //				systemInfoRepository.saveOfflineSystemInfo(systemInfo);
 				System.out.println("反反复复付付付付付付付付付付付付付付付付付付付付付");
 			}
-			// // todo:构建要发送的信息内容
-			// Message message= Message.newBuilder().build();
-			// // todo:发送消息的channel并发送消息
-			// // eg: userId demo
-			// String userId = "ffsfdsfdsfsddf";
-			// io.netty.channel.Channel
-			// nettyChannel=channelManager.findChannelByUserId(userId);
-			// nettyChannel.writeAndFlush(message);
-
 		};
 	}
 
