@@ -180,4 +180,23 @@ public class UserRepository {
             return true;
         }
     }
+
+    /**
+     * 查询用户是否有效
+     *
+     * @return
+     */
+    public boolean checkoutUserIsFreeze(Long userId, String userType) {
+        MongoCollection<User> mongoCollection = aitalkDb.getCollection("user", User.class);
+        Bson bson = and(eq("userId", userId), eq("userType", userType));
+        long count = mongoCollection.countDocuments(bson);
+        if (count > 0) {
+            User user = mongoCollection.find(bson).first();
+            return user.getUserStatus() == UserStatus.EFFECTIVE;
+        } else {
+            return false;
+        }
+
+    }
+
 }
