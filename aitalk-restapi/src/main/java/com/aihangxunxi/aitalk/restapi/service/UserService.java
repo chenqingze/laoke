@@ -22,6 +22,8 @@ public interface UserService {
 
 	boolean cancelBindJPush(Long userId);
 
+	boolean freezeUser(Long userId, String userType);
+
 	User queryUserByType(String userType, Long userId);
 
 	Object getUserByObjectId(String id);

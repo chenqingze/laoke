@@ -67,4 +67,9 @@ public class UserServiceImpl implements UserService {
 		return userRepository.getUserById(new ObjectId(id));
 	}
 
+	@Override
+	public boolean freezeUser(Long userId, String userType) {
+		return userRepository.freezeUser(userId, userType);
+	}
+
 }

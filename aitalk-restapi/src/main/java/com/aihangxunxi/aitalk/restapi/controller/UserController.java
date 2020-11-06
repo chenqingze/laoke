@@ -129,4 +129,17 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.OK).body(map);
 	}
 
+	/**
+	 * 冻结用户
+	 * @param userId
+	 * @return
+	 */
+	@PutMapping("freeze")
+	public ResponseEntity<ModelMap> freezeUser(@RequestParam("userId") Long userId,
+			@RequestParam("userType") String userType) {
+		ModelMap map = new ModelMap();
+		map.put("success", userService.freezeUser(userId, userType));
+		return ResponseEntity.status(HttpStatus.OK).body(map);
+	}
+
 }

@@ -8,7 +8,7 @@ package com.aihangxunxi.aitalk.storage.constant;
  */
 public enum UserStatus {
 
-	EFFECTIVE, CANCEL;
+	EFFECTIVE, CANCEL, FREEZE;
 
 	public static UserStatus codeOf(int code) {
 		for (UserStatus userStatus : values()) {

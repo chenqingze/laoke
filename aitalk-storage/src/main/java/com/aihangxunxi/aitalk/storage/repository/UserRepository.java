@@ -94,18 +94,27 @@ public class UserRepository {
 	// 注册用户
 	public boolean regUser(Long userId, String nickname, String header) {
 		MongoCollection<User> mongoCollection = aitalkDb.getCollection("user", User.class);
-		User user = new User();
-		user.setHeader(header);
-		user.setNickname(nickname);
-		user.setUserId(userId);
-		user.setGender(Gender.MALE);
-		user.setDeviceCode("");
-		user.setUserType(UserType.PERSONAL);
-		user.setUserStatus(UserStatus.EFFECTIVE);
-		user.setDevicePlatform(DevicePlatform.UNKNOWN);
-		user.setDeviceIdiom(DeviceIdiom.PHONE);
-		mongoCollection.insertOne(user);
-		return true;
+
+		Bson queryBson = eq("userId", userId);
+		long count = mongoCollection.countDocuments(queryBson);
+		if (count == 0) {
+			User user = new User();
+			user.setHeader(header);
+			user.setNickname(nickname);
+			user.setUserId(userId);
+			user.setGender(Gender.MALE);
+			user.setDeviceCode("");
+			user.setUserType(UserType.PERSONAL);
+			user.setUserStatus(UserStatus.EFFECTIVE);
+			user.setDevicePlatform(DevicePlatform.UNKNOWN);
+			user.setDeviceIdiom(DeviceIdiom.PHONE);
+			mongoCollection.insertOne(user);
+			return true;
+		}
+		else {
+			return false;
+		}
+
 	}
 
 	// 注册店铺用户
@@ -150,6 +159,45 @@ public class UserRepository {
 		MongoCollection<User> mongoCollection = aitalkDb.getCollection("user", User.class);
 		Bson bson = and(eq("userId", userId), eq("userType", UserType.valueOf(userType.toUpperCase())));
 		return mongoCollection.find(bson).first();
+	}
+
+	/**
+	 * 禁用用户
+	 * @return
+	 */
+	public boolean freezeUser(Long userId, String userType) {
+		MongoCollection<User> mongoCollection = aitalkDb.getCollection("user", User.class);
+
+		if (userType.equals("PERSONAL")) {
+			Bson bson = eq("userId", userId);
+			Bson bson1 = set("status", UserStatus.FREEZE);
+			mongoCollection.updateMany(bson, bson1);
+			return true;
+		}
+		else {
+			Bson bson = and(eq("userId", userId), eq("userType", UserType.STORE));
+			Bson bson1 = set("status", UserStatus.FREEZE);
+			mongoCollection.updateMany(bson, bson1);
+			return true;
+		}
+	}
+
+	/**
+	 * 查询用户是否有效
+	 * @return
+	 */
+	public boolean checkoutUserIsFreeze(Long userId, String userType) {
+		MongoCollection<User> mongoCollection = aitalkDb.getCollection("user", User.class);
+		Bson bson = and(eq("userId", userId), eq("userType", userType));
+		long count = mongoCollection.countDocuments(bson);
+		if (count > 0) {
+			User user = mongoCollection.find(bson).first();
+			return user.getUserStatus() == UserStatus.EFFECTIVE;
+		}
+		else {
+			return false;
+		}
+
 	}
 
 }

@@ -2,8 +2,8 @@ package com.aihangxunxi.aitalk.restapi.interceptor;
 
 import com.aihangxunxi.aitalk.restapi.constant.RedisKeyConstants;
 import com.aihangxunxi.aitalk.restapi.context.AihangPrincipal;
-import com.aihangxunxi.common.entity.LoginUserResponseRedisEntity;
 import com.aihangxunxi.aitalk.restapi.context.SecurityPrincipalContext;
+import com.aihangxunxi.common.entity.LoginUserResponseRedisEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -50,6 +50,14 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
 			// todo 注释掉
 			if ("OPTIONS".equals(request.getMethod().toUpperCase())) {
 				response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+				return true;
+			}
+
+			boolean regReq = request.getRequestURI().contains("user/reg");
+			boolean storeReg = request.getRequestURI().contains("user/store-reg");
+			boolean cancelReq = request.getRequestURI().contains("user/cancel");
+			boolean cancelBindReq = request.getRequestURI().contains("user/cancel-bind");
+			if (regReq || storeReg || cancelReq || cancelBindReq) {
 				return true;
 			}
 			// feign跨服调用白名单url不拦截

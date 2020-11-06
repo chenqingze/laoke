@@ -34,11 +34,13 @@ public class WithdrawConsultMsgHandler extends ChannelInboundHandlerAdapter {
 			String msgId = ((Message) msg).getWithdrawConsultRequest().getMsgId();
 			// 接受者ID
 			ObjectId receiverId = new ObjectId(((Message) msg).getWithdrawConsultRequest().getConversationId());
+			String consultDirection = ((Message) msg).getWithdrawConsultRequest().getConsultDirection();
 			msgHistRepository.withdrawConsultMsg(msgId);
 
 			Message ack = Message.newBuilder().setSeq(((Message) msg).getSeq()).setOpCode(OpCode.WITHDRAW_CONSULT_ACK)
-					.setWithdrawConsultAck(WithdrawConsultAck.newBuilder().setMsgId(msgId)
-							.setConversationId(receiverId.toString()).setSuccess("ok").build())
+					.setWithdrawConsultAck(
+							WithdrawConsultAck.newBuilder().setMsgId(msgId).setConversationId(receiverId.toString())
+									.setConsultDirection(consultDirection).setSuccess("ok").build())
 					.build();
 			ctx.writeAndFlush(ack);
 			// 发送给被咨询者 咨询方向进行反转
