@@ -32,7 +32,7 @@ import java.util.concurrent.TimeoutException;
  * @Author: suguodong Date: 2020/11/4 17:48
  * @Version: 3.0
  */
- @Component
+@Component
 public class SystemInfoConsumer {
 
 	private static final Logger logger = LoggerFactory.getLogger(SystemInfoConsumer.class);
@@ -42,8 +42,10 @@ public class SystemInfoConsumer {
 	private final static String TOPIC = "SYSTEM_INFO";
 
 	private final static String QUEUE_NAME = "SYSTEM_INFO";
+
 	@Resource
 	private UserRepository userRepository;
+
 	@Resource
 	private MsgAssembler msgAssembler;
 
@@ -55,28 +57,29 @@ public class SystemInfoConsumer {
 
 	public SystemInfoConsumer() {
 
-        try {
-            // 创建连接
+		try {
+			// 创建连接
 			System.out.println("----------消费--------------------------启动的时候就走了");
-            ConnectionFactory factory = new ConnectionFactory();
-            // todo: 正确的地址
-            factory.setHost("192.168.100.242");
-            factory.setPort(8101);
-            factory.setUsername("ahy");
-            factory.setPassword("ahy");
-//            factory.setUri("amqp://guest:guest@192.168.30.153:5672");
-            Connection connection = factory.newConnection();
-            // 创建channel
-            Channel rabbitMqChannel = connection.createChannel();
-            rabbitMqChannel.exchangeDeclare(EXCHANGE_NAME, "topic", true);
-            // 绑定队列,并回调处理收到的消息
-            rabbitMqChannel.basicConsume(QUEUE_NAME, true, systemInfoCallback(), consumerTag -> {
-            });
-        } catch (IOException | TimeoutException e) {
-            e.printStackTrace();
-        }
+			ConnectionFactory factory = new ConnectionFactory();
+			// todo: 正确的地址
+			factory.setHost("192.168.100.242");
+			factory.setPort(8101);
+			factory.setUsername("ahy");
+			factory.setPassword("ahy");
+			// factory.setUri("amqp://guest:guest@192.168.30.153:5672");
+			Connection connection = factory.newConnection();
+			// 创建channel
+			Channel rabbitMqChannel = connection.createChannel();
+			rabbitMqChannel.exchangeDeclare(EXCHANGE_NAME, "topic", true);
+			// 绑定队列,并回调处理收到的消息
+			rabbitMqChannel.basicConsume(QUEUE_NAME, true, systemInfoCallback(), consumerTag -> {
+			});
+		}
+		catch (IOException | TimeoutException e) {
+			e.printStackTrace();
+		}
 
-    }
+	}
 
 	// 回调 todo:处理接收到的数据
 	private DeliverCallback systemInfoCallback() {
@@ -97,10 +100,9 @@ public class SystemInfoConsumer {
 			systemInfo.setUpdatedAt(time2);
 			systemInfo.setStatus("true");
 			User user = userRepository.getUserByUserId(systemInfo.getReceiverId());
-//			systemInfoRepository.saveSystemInfo(systemInfo);
+			// systemInfoRepository.saveSystemInfo(systemInfo);
 			systemInfo.setId(new ObjectId());
-			io.netty.channel.Channel channel = channelManager
-					.findChannelByUserId(user.getId().toHexString());
+			io.netty.channel.Channel channel = channelManager.findChannelByUserId(user.getId().toHexString());
 			if (channel != null) {
 				SendSystemInfoRequest sendSystemInfoRequest = msgAssembler.buildSendSystemInfoRequest(systemInfo);
 				Message message = Message.newBuilder().setOpCode(OpCode.SYSTEM_INFO_NOTIFY)
@@ -108,7 +110,7 @@ public class SystemInfoConsumer {
 				channel.writeAndFlush(message);
 			}
 			else {
-//				systemInfoRepository.saveOfflineSystemInfo(systemInfo);
+				// systemInfoRepository.saveOfflineSystemInfo(systemInfo);
 				System.out.println("反反复复付付付付付付付付付付付付付付付付付付付付付");
 			}
 		};
