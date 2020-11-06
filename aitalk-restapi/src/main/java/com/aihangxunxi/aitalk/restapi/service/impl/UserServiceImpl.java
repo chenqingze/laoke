@@ -12,59 +12,63 @@ import java.util.Map;
 @Service
 public class UserServiceImpl implements UserService {
 
-	@Resource
-	private UserRepository userRepository;
+    @Resource
+    private UserRepository userRepository;
 
-	@Override
-	public boolean saveUser(User user) {
-		return userRepository.saveUser(user);
-	}
+    @Override
+    public boolean saveUser(User user) {
+        return userRepository.saveUser(user);
+    }
 
-	@Override
-	public Map getUserById(Long userId) {
-		return userRepository.queryUserById(userId);
-	}
+    @Override
+    public Map getUserById(Long userId) {
+        return userRepository.queryUserById(userId);
+    }
 
-	@Override
-	public boolean updateDeviceInfo(Long userId, String deviceCode, String deviceType) {
-		return userRepository.updateDeviceInfo(userId, deviceCode, deviceType);
-	}
+    @Override
+    public boolean updateDeviceInfo(Long userId, String deviceCode, String deviceType) {
+        return userRepository.updateDeviceInfo(userId, deviceCode, deviceType);
+    }
 
-	@Override
-	public User getUserByUserId(Long userId) {
-		User user = userRepository.getUserByUserId(userId);
-		user.setIdStr(user.getId().toString());
-		return user;
-	}
+    @Override
+    public User getUserByUserId(Long userId) {
+        User user = userRepository.getUserByUserId(userId);
+        user.setIdStr(user.getId().toString());
+        return user;
+    }
 
-	@Override
-	public boolean regUser(Long userId, String nickname, String header) {
-		return userRepository.regUser(userId, nickname, header);
-	}
+    @Override
+    public boolean regUser(Long userId, String nickname, String header) {
+        return userRepository.regUser(userId, nickname, header);
+    }
 
-	@Override
-	public boolean regStoreUser(Long userId, String nickname, String header) {
-		return userRepository.regStoreUser(userId, nickname, header);
-	}
+    @Override
+    public boolean regStoreUser(Long userId, String nickname, String header) {
+        return userRepository.regStoreUser(userId, nickname, header);
+    }
 
-	@Override
-	public boolean cancelUser(Long userId) {
-		return userRepository.cancelUser(userId);
-	}
+    @Override
+    public boolean cancelUser(Long userId) {
+        return userRepository.cancelUser(userId);
+    }
 
-	@Override
-	public boolean cancelBindJPush(Long userId) {
-		return userRepository.cancelBindJPush(userId);
-	}
+    @Override
+    public boolean cancelBindJPush(Long userId) {
+        return userRepository.cancelBindJPush(userId);
+    }
 
-	@Override
-	public User queryUserByType(String userType, Long userId) {
-		return userRepository.queryUserByType(userType, userId);
-	}
+    @Override
+    public User queryUserByType(String userType, Long userId) {
+        return userRepository.queryUserByType(userType, userId);
+    }
 
-	@Override
-	public Object getUserByObjectId(String id) {
-		return userRepository.getUserById(new ObjectId(id));
-	}
+    @Override
+    public Object getUserByObjectId(String id) {
+        return userRepository.getUserById(new ObjectId(id));
+    }
 
+    @Override
+    public boolean freezeUser(Long userId, String userType) {
+        return userRepository.freezeUser(userId, userType);
+    }
 }

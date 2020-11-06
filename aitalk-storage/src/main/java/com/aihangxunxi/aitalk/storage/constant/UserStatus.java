@@ -8,15 +8,15 @@ package com.aihangxunxi.aitalk.storage.constant;
  */
 public enum UserStatus {
 
-	EFFECTIVE, CANCEL;
+    EFFECTIVE, CANCEL, FREEZE;
 
-	public static UserStatus codeOf(int code) {
-		for (UserStatus userStatus : values()) {
-			if (userStatus.ordinal() == code) {
-				return userStatus;
-			}
-		}
-		throw new RuntimeException("没找到对应的枚举");
-	}
+    public static UserStatus codeOf(int code) {
+        for (UserStatus userStatus : values()) {
+            if (userStatus.ordinal() == code) {
+                return userStatus;
+            }
+        }
+        throw new RuntimeException("没找到对应的枚举");
+    }
 
 }
