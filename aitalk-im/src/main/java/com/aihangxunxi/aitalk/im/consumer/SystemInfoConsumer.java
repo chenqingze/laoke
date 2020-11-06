@@ -97,7 +97,7 @@ public class SystemInfoConsumer {
 			systemInfo.setUpdatedAt(time2);
 			systemInfo.setStatus("true");
 			User user = userRepository.getUserByUserId(systemInfo.getReceiverId());
-			systemInfoRepository.saveSystemInfo(systemInfo);
+//			systemInfoRepository.saveSystemInfo(systemInfo);
 			systemInfo.setId(new ObjectId());
 			io.netty.channel.Channel channel = channelManager
 					.findChannelByUserId(user.getId().toHexString());
