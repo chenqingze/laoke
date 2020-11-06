@@ -142,4 +142,15 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.OK).body(map);
 	}
 
+	/**
+	 * 查询用户是否被冻结 UserIsFreeze
+	 */
+	@GetMapping("getUserIsFreeze")
+	public ResponseEntity<ModelMap> getUserIsFreeze(@RequestParam("userId") Long userId,
+			@RequestParam("userType") String userType) {
+		ModelMap map = new ModelMap();
+		map.put("success", userService.getUserIsFreeze(userId, userType));
+		return ResponseEntity.status(HttpStatus.OK).body(map);
+	}
+
 }

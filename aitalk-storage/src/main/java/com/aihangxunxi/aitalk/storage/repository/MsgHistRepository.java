@@ -13,10 +13,12 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Filters.*;
 import static com.mongodb.client.model.Updates.set;
 
 @Repository
@@ -53,6 +55,30 @@ public class MsgHistRepository {
 		Bson bson = eq(new ObjectId(msgId));
 		Bson bson1 = set("msgStatus", MsgStatus.WITHDRAW);
 		mongoCollection.updateOne(bson, bson1);
+		return true;
+	}
+
+	// //
+	// public List<MsgHist> getOfflineLastMsg(ObjectId receiverId, String
+	// consultDirection) {
+	// MongoCollection<MsgHist> mongoCollection = aitalkDb.getCollection("offlineMsg",
+	// MsgHist.class);
+	// Bson bson = and(eq("receiverId", receiverId), eq("consultDirection", "PSI"));
+	// return mongoCollection.find(bson).into(new ArrayList<>());
+	// }
+
+	// 根据receiverId获取离线消息并将其删除
+	public List<MsgHist> getOfflineMsg(ObjectId receiverId) {
+		MongoCollection<MsgHist> mongoCollection = aitalkDb.getCollection("offlineMsg", MsgHist.class);
+		Bson bson = eq("receiverId", receiverId);
+		return mongoCollection.find(bson).into(new ArrayList<>());
+	}
+
+	// 根据receiverId 删除离线消息
+	public boolean deleteOfflineMsg(ObjectId receiverId) {
+		MongoCollection<MsgHist> mongoCollection = aitalkDb.getCollection("offlineMsg", MsgHist.class);
+		Bson bson = eq("receiverId", receiverId);
+		mongoCollection.deleteMany(bson);
 		return true;
 	}
 
