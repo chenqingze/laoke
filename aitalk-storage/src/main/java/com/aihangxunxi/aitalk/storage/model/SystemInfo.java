@@ -2,11 +2,13 @@ package com.aihangxunxi.aitalk.storage.model;
 
 import org.bson.types.ObjectId;
 
+import java.io.Serializable;
+
 /**
  * @Author: suguodong Date: 2020/11/4 16:42
  * @Version: 3.0
  */
-public class SystemInfo {
+public class SystemInfo implements Serializable {
 
 	private ObjectId id;
 
