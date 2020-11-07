@@ -31,7 +31,7 @@ public class MsgHisServiceImpl implements MsgHisService {
 		List<OfflineMsg> offlineMsg = msgHistRepository.getOfflineMsg(new ObjectId(id));
 		if (offlineMsg != null && !offlineMsg.isEmpty()) {
 			// 将类型转换成Int
-			for(OfflineMsg msg : offlineMsg) {
+			for (OfflineMsg msg : offlineMsg) {
 				msg.setMsgStatusInt(msg.getMsgStatus().ordinal());
 				msg.setConversationTypeInt(msg.getConversationType().ordinal());
 				msg.setMsgTypeInt(msg.getMsgType().ordinal());
