@@ -16,7 +16,6 @@ public class MsgHist extends Msg {
 
 	private ObjectId receiverId;// 消息接收方
 
-	@JsonSerialize(using = ToStringSerializer.class)
 	public ObjectId getSenderId() {
 		return senderId;
 	}
@@ -25,7 +24,6 @@ public class MsgHist extends Msg {
 		this.senderId = senderId;
 	}
 
-	@JsonSerialize(using = ToStringSerializer.class)
 	public ObjectId getReceiverId() {
 		return receiverId;
 	}

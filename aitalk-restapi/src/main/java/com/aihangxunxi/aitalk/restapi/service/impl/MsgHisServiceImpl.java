@@ -2,6 +2,7 @@ package com.aihangxunxi.aitalk.restapi.service.impl;
 
 import com.aihangxunxi.aitalk.restapi.service.MsgHisService;
 import com.aihangxunxi.aitalk.storage.model.MsgHist;
+import com.aihangxunxi.aitalk.storage.model.OfflineMsg;
 import com.aihangxunxi.aitalk.storage.repository.MsgHistRepository;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
@@ -25,10 +26,16 @@ public class MsgHisServiceImpl implements MsgHisService {
 	 * @return
 	 */
 	@Override
-	public List<MsgHist> getOfflineMsg(String id) {
+	public List<OfflineMsg> getOfflineMsg(String id) {
 		// 获取符合条件的 未读消息 offlineMsg
-		List<MsgHist> offlineMsg = msgHistRepository.getOfflineMsg(new ObjectId(id));
+		List<OfflineMsg> offlineMsg = msgHistRepository.getOfflineMsg(new ObjectId(id));
 		if (offlineMsg != null && !offlineMsg.isEmpty()) {
+			// 将类型转换成Int
+			for(OfflineMsg msg : offlineMsg) {
+				msg.setMsgStatusInt(msg.getMsgStatus().ordinal());
+				msg.setConversationTypeInt(msg.getConversationType().ordinal());
+				msg.setMsgTypeInt(msg.getMsgType().ordinal());
+			}
 			msgHistRepository.deleteOfflineMsg(new ObjectId(id));
 		}
 		return offlineMsg;
