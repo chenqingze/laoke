@@ -3,20 +3,20 @@ package com.aihangxunxi.aitalk.storage.repository;
 import com.aihangxunxi.aitalk.storage.constant.MsgStatus;
 import com.aihangxunxi.aitalk.storage.model.MsgHist;
 import com.aihangxunxi.aitalk.storage.model.MucHist;
+import com.aihangxunxi.aitalk.storage.model.OfflineMsg;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.result.InsertOneResult;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Repository;
-import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
-import java.util.Objects;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
-import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Filters.*;
 import static com.mongodb.client.model.Updates.set;
 
 @Repository
@@ -53,6 +53,30 @@ public class MsgHistRepository {
 		Bson bson = eq(new ObjectId(msgId));
 		Bson bson1 = set("msgStatus", MsgStatus.WITHDRAW);
 		mongoCollection.updateOne(bson, bson1);
+		return true;
+	}
+
+	// //
+	// public List<MsgHist> getOfflineLastMsg(ObjectId receiverId, String
+	// consultDirection) {
+	// MongoCollection<MsgHist> mongoCollection = aitalkDb.getCollection("offlineMsg",
+	// MsgHist.class);
+	// Bson bson = and(eq("receiverId", receiverId), eq("consultDirection", "PSI"));
+	// return mongoCollection.find(bson).into(new ArrayList<>());
+	// }
+
+	// 根据receiverId获取离线消息并将其删除
+	public List<OfflineMsg> getOfflineMsg(ObjectId receiverId) {
+		MongoCollection<OfflineMsg> mongoCollection = aitalkDb.getCollection("offlineMsg", OfflineMsg.class);
+		Bson bson = eq("receiverId", receiverId);
+		return mongoCollection.find(bson).into(new ArrayList<>());
+	}
+
+	// 根据receiverId 删除离线消息
+	public boolean deleteOfflineMsg(ObjectId receiverId) {
+		MongoCollection<MsgHist> mongoCollection = aitalkDb.getCollection("offlineMsg", MsgHist.class);
+		Bson bson = eq("receiverId", receiverId);
+		mongoCollection.deleteMany(bson);
 		return true;
 	}
 

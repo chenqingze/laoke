@@ -2,6 +2,8 @@ package com.aihangxunxi.aitalk.storage.model;
 
 import com.aihangxunxi.aitalk.storage.constant.*;
 import com.aihangxunxi.aitalk.storage.model.attachment.MsgAttachment;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import org.bson.codecs.pojo.annotations.BsonId;
 import org.bson.types.ObjectId;
 
@@ -40,6 +42,7 @@ public abstract class Msg extends BaseModel {
 
 	private ConsultDirection consultDirection;// 咨询方向
 
+	@JsonSerialize(using = ToStringSerializer.class)
 	public ObjectId getMsgId() {
 		return msgId;
 	}

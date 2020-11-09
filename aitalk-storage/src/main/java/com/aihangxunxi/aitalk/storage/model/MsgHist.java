@@ -1,5 +1,7 @@
 package com.aihangxunxi.aitalk.storage.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import org.bson.types.ObjectId;
 
 /**
