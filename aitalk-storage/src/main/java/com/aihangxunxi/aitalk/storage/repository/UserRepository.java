@@ -57,9 +57,15 @@ public class UserRepository {
         return user;
     }
 
+//    public User getUserByUserId(Long userId) {
+//        MongoCollection<User> mongoCollection = aitalkDb.getCollection("user", User.class);
+//        User user = mongoCollection.find(eq("userId", userId), User.class).first();
+//        return user;
+//    }
     public User getUserByUserId(Long userId) {
         MongoCollection<User> mongoCollection = aitalkDb.getCollection("user", User.class);
-        User user = mongoCollection.find(eq("userId", userId), User.class).first();
+        Bson bson = and(eq("userId", userId), eq("userType", "PERSONAL"));
+        User user = mongoCollection.find(bson, User.class).first();
         return user;
     }
 
