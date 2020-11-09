@@ -192,10 +192,10 @@ public class UserRepository {
 	 * 查询用户是否有效
 	 * @return
 	 */
-	public boolean checkoutUserIsFreeze(String uId) {
-		MongoCollection<User> mongoCollection = aitalkDb.getCollection("user", User.class);
-		Bson bson = eq(new ObjectId(uId));
-		long count = mongoCollection.countDocuments(bson);
+    public boolean checkoutUserIsFreeze(Long userId, String userType) {
+        MongoCollection<User> mongoCollection = aitalkDb.getCollection("user", User.class);
+        Bson bson = and(eq("userId", userId), eq("userType", userType));
+        long count = mongoCollection.countDocuments(bson);
 		if (count > 0) {
 			User user = mongoCollection.find(bson).first();
 			return user.getUserStatus() == UserStatus.EFFECTIVE;

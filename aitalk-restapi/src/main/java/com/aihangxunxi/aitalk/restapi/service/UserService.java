@@ -28,6 +28,6 @@ public interface UserService {
 
 	Object getUserByObjectId(String id);
 
-	boolean getUserIsFreeze(String uId);
+	boolean getUserIsFreeze(Long userId, String userType);
 
 }
