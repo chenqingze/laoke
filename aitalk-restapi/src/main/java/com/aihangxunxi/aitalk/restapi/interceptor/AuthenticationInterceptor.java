@@ -57,7 +57,8 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
 			boolean storeReg = request.getRequestURI().contains("user/store-reg");
 			boolean cancelReq = request.getRequestURI().contains("user/cancel");
 			boolean cancelBindReq = request.getRequestURI().contains("user/cancel-bind");
-			if (regReq || storeReg || cancelReq || cancelBindReq) {
+			boolean freezeUser = request.getRequestURI().contains("user/freeze");
+			if (regReq || storeReg || cancelReq || cancelBindReq || freezeUser) {
 				return true;
 			}
 			// feign跨服调用白名单url不拦截
