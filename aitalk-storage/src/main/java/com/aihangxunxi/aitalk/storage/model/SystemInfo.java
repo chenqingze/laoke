@@ -18,6 +18,9 @@ public class SystemInfo implements Serializable {
 	// 接受人 userId
 	private Long receiverId;
 
+	// 接受人 在mongo  user中的id
+	private String userId;
+
 	// 标题
 	private String title;
 
@@ -38,6 +41,14 @@ public class SystemInfo implements Serializable {
 
 	// 消息状态
 	private String status;
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
 
 	public ObjectId getId() {
 		return id;
