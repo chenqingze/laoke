@@ -42,19 +42,17 @@ public enum MsgType {
 
 	REPLY, // 回复16
 
-	INFROM, // 回复17
+	AT, // @某人17
 
-	AT, // @某人18
+	PREORDER, // 预购单18
 
-	PREORDER, // 预购单19
+	DELIVERY, // 配送19
 
-	DELIVERY, // 配送20
+	DYNAMIC, // 动态 20
 
-	DYNAMIC, // 动态 21
+	DISCOUNTGOODS, // 折扣商品(自营) 21
 
-	DISCOUNTGOODS, // 折扣商品(自营) 22
-
-	SECKILLGOODS, // 秒杀商品(自营) 23
+	SECKILLGOODS, // 秒杀商品(自营) 22
 
 	AVCHAT, // 音视频通话
 
