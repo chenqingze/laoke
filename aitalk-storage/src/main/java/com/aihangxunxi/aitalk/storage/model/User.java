@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class User extends BaseModel {
 
-	@BsonId
+	@JsonSerialize(using = ToStringSerializer.class)
 	private ObjectId id;
 
 	private String idStr;
