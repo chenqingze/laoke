@@ -79,17 +79,20 @@ enum MsgType{
 
   DYNAMIC = 20; // 动态 20
 
-  AVCHAT = 21; // 音视频通话
+  DISCOUNTGOODS = 21; // 自营折扣商品
 
-  TIP = 22; // 提醒消息
+  SECKILLGOODS = 22; // 自营秒杀商品
 
-  ROBOT = 23; // 机器人消息
+  AVCHAT = 23; // 音视频通话
 
-  CUSTOM = 24; // 自定义消息
+  TIP = 24; // 提醒消息
 
-  UNDEF = 25; // UNKNOWN
+  ROBOT = 25; // 机器人消息
+
+  CUSTOM = 26; // 自定义消息
+
+  UNDEF = 27; // UNKNOWN
 }
-
 // 消息发送请求收到确认
 message MsgAck {
   string msg_id = 1; // 消息id
