@@ -59,7 +59,6 @@ public class SystemInfoConsumer {
 
 		try {
 			// 创建连接
-			System.out.println("----------消费--------------------------启动的时候就走了");
 			ConnectionFactory factory = new ConnectionFactory();
 			// todo: 正确的地址
 			factory.setHost("192.168.100.242");
@@ -70,7 +69,16 @@ public class SystemInfoConsumer {
 			Connection connection = factory.newConnection();
 			// 创建channel
 			Channel rabbitMqChannel = connection.createChannel();
+			// 声明交换机
 			rabbitMqChannel.exchangeDeclare(EXCHANGE_NAME, "topic", true);
+			// 声明队列
+			/*
+			 * 参数1:队列名称 参数2:是否定义持久化队列(true 消息会持久化保存到服务器上) 参数3:是否独占本连接 参数4:是否在不使用的时候队列自动删除
+			 * 参数5:其他参数
+			 */
+			rabbitMqChannel.queueDeclare(QUEUE_NAME, true, false, false, null);
+			// 队列绑定到交换机上
+			// rabbitMqChannel.queueBind(QUEUE_NAME,EXCHANGE_NAME,TOPIC);
 			// 绑定队列,并回调处理收到的消息
 			rabbitMqChannel.basicConsume(QUEUE_NAME, true, systemInfoCallback(), consumerTag -> {
 			});
@@ -100,8 +108,8 @@ public class SystemInfoConsumer {
 			systemInfo.setUpdatedAt(time2);
 			systemInfo.setStatus("true");
 			User user = userRepository.getUserByUserId(systemInfo.getReceiverId());
-			// systemInfoRepository.saveSystemInfo(systemInfo);
 			systemInfo.setId(new ObjectId());
+			systemInfoRepository.saveSystemInfo(systemInfo);
 			io.netty.channel.Channel channel = channelManager.findChannelByUserId(user.getId().toHexString());
 			if (channel != null) {
 				SendSystemInfoRequest sendSystemInfoRequest = msgAssembler.buildSendSystemInfoRequest(systemInfo);
@@ -110,8 +118,8 @@ public class SystemInfoConsumer {
 				channel.writeAndFlush(message);
 			}
 			else {
-				// systemInfoRepository.saveOfflineSystemInfo(systemInfo);
-				System.out.println("反反复复付付付付付付付付付付付付付付付付付付付付付");
+				systemInfoRepository.saveOfflineSystemInfo(systemInfo);
+				System.out.println("----获取链接失败,保存至离线消息offlineSystemInfo----");
 			}
 		};
 	}
