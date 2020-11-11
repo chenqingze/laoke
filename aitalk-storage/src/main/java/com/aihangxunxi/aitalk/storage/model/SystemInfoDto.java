@@ -8,9 +8,9 @@ import java.io.Serializable;
  * @Author: suguodong Date: 2020/11/4 16:42
  * @Version: 3.0
  */
-public class SystemInfo implements Serializable {
+public class SystemInfoDto implements Serializable {
 
-	private ObjectId id;
+	private String id;
 
 	// 订单id或者预购单id
 	private String orderId;
@@ -50,11 +50,11 @@ public class SystemInfo implements Serializable {
 		this.userId = userId;
 	}
 
-	public ObjectId getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(ObjectId id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
