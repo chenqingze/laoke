@@ -13,62 +13,60 @@ import javax.annotation.Resource;
 @RequestMapping("/fans")
 public class FansController {
 
+	@Resource
+	private FansService fansService;
 
-    @Resource
-    private FansService fansService;
+	/**
+	 * 获取粉丝列表
+	 * @param aihangPrincipal
+	 * @return
+	 */
+	@GetMapping("query")
+	public ResponseEntity<ModelMap> queryFansList(AihangPrincipal aihangPrincipal) {
+		ModelMap map = new ModelMap();
+		map.put("list", fansService.queryFans(aihangPrincipal.getUserId()));
+		return ResponseEntity.status(HttpStatus.OK).body(map);
+	}
 
-    /**
-     * 获取粉丝列表
-     *
-     * @param aihangPrincipal
-     * @return
-     */
-    @GetMapping("query")
-    public ResponseEntity<ModelMap> queryFansList(AihangPrincipal aihangPrincipal) {
-        ModelMap map = new ModelMap();
-        map.put("list", fansService.queryFans(aihangPrincipal.getUserId()));
-        return ResponseEntity.status(HttpStatus.OK).body(map);
-    }
+	/**
+	 * 关注
+	 * @param storeId
+	 * @param aihangPrincipal
+	 * @return
+	 */
+	@PostMapping("follow/{storeId}")
+	public ResponseEntity<ModelMap> followStore(@PathVariable("storeId") Long storeId,
+			AihangPrincipal aihangPrincipal) {
+		ModelMap map = new ModelMap();
+		map.put("success", fansService.followStore(storeId, aihangPrincipal.getUserId()));
+		return ResponseEntity.status(HttpStatus.OK).body(map);
+	}
 
-    /**
-     * 关注
-     *
-     * @param storeId
-     * @param aihangPrincipal
-     * @return
-     */
-    @PostMapping("follow/{storeId}")
-    public ResponseEntity<ModelMap> followStore(@PathVariable("storeId") Long storeId, AihangPrincipal aihangPrincipal) {
-        ModelMap map = new ModelMap();
-        map.put("success", fansService.followStore(storeId, aihangPrincipal.getUserId()));
-        return ResponseEntity.status(HttpStatus.OK).body(map);
-    }
+	/**
+	 * 取消关注
+	 * @param storeId
+	 * @param aihangPrincipal
+	 * @return
+	 */
+	@PostMapping("cancelFollow/{storeId}")
+	public ResponseEntity<ModelMap> cancelFollow(@PathVariable("storeId") Long storeId,
+			AihangPrincipal aihangPrincipal) {
+		ModelMap map = new ModelMap();
+		map.put("success", fansService.cancelFollow(storeId, aihangPrincipal.getUserId()));
+		return ResponseEntity.status(HttpStatus.OK).body(map);
+	}
 
-    /**
-     * 取消关注
-     *
-     * @param storeId
-     * @param aihangPrincipal
-     * @return
-     */
-    @PostMapping("cancelFollow/{storeId}")
-    public ResponseEntity<ModelMap> cancelFollow(@PathVariable("storeId") Long storeId, AihangPrincipal aihangPrincipal) {
-        ModelMap map = new ModelMap();
-        map.put("success", fansService.cancelFollow(storeId, aihangPrincipal.getUserId()));
-        return ResponseEntity.status(HttpStatus.OK).body(map);
-    }
+	/**
+	 * 获取是否已经关注
+	 * @param storeId
+	 * @param aihangPrincipal
+	 * @return
+	 */
+	@PostMapping("followed/{storeId}")
+	public ResponseEntity<ModelMap> followed(@PathVariable("storeId") Long storeId, AihangPrincipal aihangPrincipal) {
+		ModelMap map = new ModelMap();
+		map.put("follow", fansService.followed(storeId, aihangPrincipal.getUserId()));
+		return ResponseEntity.status(HttpStatus.OK).body(map);
+	}
 
-    /**
-     * 获取是否已经关注
-     *
-     * @param storeId
-     * @param aihangPrincipal
-     * @return
-     */
-    @PostMapping("followed/{storeId}")
-    public ResponseEntity<ModelMap> followed(@PathVariable("storeId") Long storeId, AihangPrincipal aihangPrincipal) {
-        ModelMap map = new ModelMap();
-        map.put("follow", fansService.followed(storeId, aihangPrincipal.getUserId()));
-        return ResponseEntity.status(HttpStatus.OK).body(map);
-    }
 }

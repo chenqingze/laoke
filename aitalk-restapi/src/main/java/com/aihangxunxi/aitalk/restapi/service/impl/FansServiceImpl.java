@@ -11,26 +11,27 @@ import java.util.List;
 @Service
 public class FansServiceImpl implements FansService {
 
-    @Resource
-    private FansRepository fansRepository;
+	@Resource
+	private FansRepository fansRepository;
 
-    @Override
-    public List<Fans> queryFans(Long userId) {
-        return fansRepository.queryFans(userId);
-    }
+	@Override
+	public List<Fans> queryFans(Long userId) {
+		return fansRepository.queryFans(userId);
+	}
 
-    @Override
-    public boolean followStore(Long storeId, Long userId) {
-        return fansRepository.follow(storeId, userId);
-    }
+	@Override
+	public boolean followStore(Long storeId, Long userId) {
+		return fansRepository.follow(storeId, userId);
+	}
 
-    @Override
-    public boolean cancelFollow(Long storeId, Long userId) {
-        return fansRepository.cancelFollow(storeId, userId);
-    }
+	@Override
+	public boolean cancelFollow(Long storeId, Long userId) {
+		return fansRepository.cancelFollow(storeId, userId);
+	}
 
-    @Override
-    public boolean followed(Long storeId, Long userId) {
-        return fansRepository.followed(storeId, userId);
-    }
+	@Override
+	public boolean followed(Long storeId, Long userId) {
+		return fansRepository.followed(storeId, userId);
+	}
+
 }
