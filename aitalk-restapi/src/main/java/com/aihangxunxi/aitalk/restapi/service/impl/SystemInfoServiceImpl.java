@@ -14,23 +14,22 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /**
- * @Author: suguodong
- * Date:  2020/11/10 15:45
+ * @Author: suguodong Date: 2020/11/10 15:45
  * @Version: 3.0
  */
 @Service
 public class SystemInfoServiceImpl implements SystemInfoService {
 
-    @Autowired
-    private SystemInfoRepository systemInfoRepository;
+	@Autowired
+	private SystemInfoRepository systemInfoRepository;
 
-    @Resource
-    private UserRepository userRepository;
+	@Resource
+	private UserRepository userRepository;
 
+	@Override
+	public List<SystemInfoDto> getSystemMsg(String id) {
+		List<SystemInfoDto> offlineMsg = systemInfoRepository.getOfflineMsg(id);
+		return offlineMsg;
+	}
 
-    @Override
-    public List<SystemInfoDto> getSystemMsg(String id) {
-        List<SystemInfoDto> offlineMsg = systemInfoRepository.getOfflineMsg(id);
-        return  offlineMsg;
-    }
 }

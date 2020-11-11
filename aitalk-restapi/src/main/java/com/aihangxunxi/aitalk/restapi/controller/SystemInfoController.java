@@ -13,25 +13,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.annotation.Resource;
 
 /**
- * @Author: suguodong
- * Date:  2020/11/10 15:42
+ * @Author: suguodong Date: 2020/11/10 15:42
  * @Version: 3.0
  */
 @Controller
 @RequestMapping("systemInfo")
 public class SystemInfoController {
 
-    @Resource
-    private SystemInfoService systeminfoService;
+	@Resource
+	private SystemInfoService systeminfoService;
 
+	// 登录后获取未读取的离线消息
+	@GetMapping("getOfflineMsg/{id}")
+	public ResponseEntity<ModelMap> getOfflineMsg(@PathVariable("id") String id) {
+		ModelMap map = new ModelMap();
+		map.put("msgList", systeminfoService.getSystemMsg(id));
+		return ResponseEntity.status(HttpStatus.OK).body(map);
 
-    // 登录后获取未读取的离线消息
-    @GetMapping("getOfflineMsg/{id}")
-    public ResponseEntity<ModelMap> getOfflineMsg(@PathVariable("id") String id) {
-        ModelMap map = new ModelMap();
-        map.put("msgList", systeminfoService.getSystemMsg(id));
-        return ResponseEntity.status(HttpStatus.OK).body(map);
-
-    }
+	}
 
 }
