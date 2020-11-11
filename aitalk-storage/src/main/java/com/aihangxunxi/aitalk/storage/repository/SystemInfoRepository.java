@@ -42,9 +42,11 @@ public class SystemInfoRepository {
 	public List<SystemInfoDto> getOfflineMsg(String receiverId) {
 		MongoCollection<SystemInfo> mongoCollection = db.getCollection("offlineSystemInfo", SystemInfo.class);
 		List<SystemInfoDto> list = new ArrayList<>();
-//		Bson bson = eq("receiverId", Long.parseLong(receiverId));
-//		ArrayList<SystemInfo> into = mongoCollection.find(bson).into(new ArrayList<>());
-		ArrayList<SystemInfo> result = mongoCollection.find(and(eq("receiverId", Long.parseLong(receiverId)))).into(new ArrayList<>());
+		// Bson bson = eq("receiverId", Long.parseLong(receiverId));
+		// ArrayList<SystemInfo> into = mongoCollection.find(bson).into(new
+		// ArrayList<>());
+		ArrayList<SystemInfo> result = mongoCollection.find(and(eq("receiverId", Long.parseLong(receiverId))))
+				.into(new ArrayList<>());
 		if (result != null && result.size() > 0) {
 			for (int i = 0; i < result.size(); i++) {
 				SystemInfoDto dto = new SystemInfoDto();
@@ -67,4 +69,5 @@ public class SystemInfoRepository {
 		return list;
 		// return into;
 	}
+
 }

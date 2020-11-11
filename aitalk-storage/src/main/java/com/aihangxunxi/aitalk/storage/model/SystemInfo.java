@@ -18,7 +18,7 @@ public class SystemInfo implements Serializable {
 	// 接受人 userId
 	private Long receiverId;
 
-	// 接受人 在mongo  user中的id
+	// 接受人 在mongo user中的id
 	private String userId;
 
 	// 标题
