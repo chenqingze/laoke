@@ -71,8 +71,12 @@ public class DefaultChannelManager implements ChannelManager {
 	@Override
 	public void kickUser(String userId) {
 		Channel channel = this.findChannelByUserId(userId);
-		this.removeChannel(channel);
-		channel.close();
+		if (channel != null) {
+			this.removeChannelByUserId(userId);
+//			 this.removeChannel(channel);
+			channel.close();
+		}
+
 	}
 
 	@Override
