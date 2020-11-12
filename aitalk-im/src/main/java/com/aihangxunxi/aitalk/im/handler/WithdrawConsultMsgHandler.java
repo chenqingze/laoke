@@ -54,11 +54,12 @@ public class WithdrawConsultMsgHandler extends ChannelInboundHandlerAdapter {
 			Channel addresseeChannel = channelManager.findChannelByUserId(receiverId.toHexString());
 			String userObjectId = ctx.channel().attr(ChannelConstant.USER_ID_ATTRIBUTE_KEY).get();
 			User user = userRepository.getUserById(new ObjectId(userObjectId));
+
 			// 发送对方请求
 			Message request = Message.newBuilder().setSeq(((Message) msg).getSeq()).setOpCode(OpCode.WITHDRAW_CONSULT_REQUEST)
 					.setWithdrawConsultRequest(
 							WithdrawConsultRequest.newBuilder().setMsgId(msgId).setConversationId(user.getId().toHexString())
-									.setConsultDirection(consultDirection).setSuccess("ok").build())
+									.setConsultDirection(getConsultDirection(consultDirection)).setSuccess("ok").build())
 					.build();
 			if (addresseeChannel != null) {
 				addresseeChannel.writeAndFlush(request);
@@ -70,6 +71,25 @@ public class WithdrawConsultMsgHandler extends ChannelInboundHandlerAdapter {
 		else {
 			ctx.fireChannelRead(msg);
 		}
+	}
+
+	// 反转咨询方向
+	private String getConsultDirection(String consultDirection) {
+		String consultDirectionR;
+		switch (consultDirection) {
+			case "PSO":
+				consultDirectionR = "SPI";
+				break;
+			case "PPO":
+				consultDirectionR = "PPI";
+				break;
+			case "SPO":
+				consultDirectionR = "PSI";
+				break;
+			default:
+				throw new IllegalStateException("UnConsultDirection value: " + consultDirection);
+		}
+		return consultDirectionR;
 	}
 
 }
