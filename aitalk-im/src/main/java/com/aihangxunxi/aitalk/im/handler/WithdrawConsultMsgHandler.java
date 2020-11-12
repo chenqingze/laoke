@@ -56,10 +56,11 @@ public class WithdrawConsultMsgHandler extends ChannelInboundHandlerAdapter {
 			User user = userRepository.getUserById(new ObjectId(userObjectId));
 
 			// 发送对方请求
-			Message request = Message.newBuilder().setSeq(((Message) msg).getSeq()).setOpCode(OpCode.WITHDRAW_CONSULT_REQUEST)
-					.setWithdrawConsultRequest(
-							WithdrawConsultRequest.newBuilder().setMsgId(msgId).setConversationId(user.getId().toHexString())
-									.setConsultDirection(getConsultDirection(consultDirection)).setSuccess("ok").build())
+			Message request = Message.newBuilder().setSeq(((Message) msg).getSeq())
+					.setOpCode(OpCode.WITHDRAW_CONSULT_REQUEST)
+					.setWithdrawConsultRequest(WithdrawConsultRequest.newBuilder().setMsgId(msgId)
+							.setConversationId(user.getId().toHexString())
+							.setConsultDirection(getConsultDirection(consultDirection)).setSuccess("ok").build())
 					.build();
 			if (addresseeChannel != null) {
 				addresseeChannel.writeAndFlush(request);
@@ -77,17 +78,17 @@ public class WithdrawConsultMsgHandler extends ChannelInboundHandlerAdapter {
 	private String getConsultDirection(String consultDirection) {
 		String consultDirectionR;
 		switch (consultDirection) {
-			case "PSO":
-				consultDirectionR = "SPI";
-				break;
-			case "PPO":
-				consultDirectionR = "PPI";
-				break;
-			case "SPO":
-				consultDirectionR = "PSI";
-				break;
-			default:
-				throw new IllegalStateException("UnConsultDirection value: " + consultDirection);
+		case "PSO":
+			consultDirectionR = "SPI";
+			break;
+		case "PPO":
+			consultDirectionR = "PPI";
+			break;
+		case "SPO":
+			consultDirectionR = "PSI";
+			break;
+		default:
+			throw new IllegalStateException("UnConsultDirection value: " + consultDirection);
 		}
 		return consultDirectionR;
 	}
