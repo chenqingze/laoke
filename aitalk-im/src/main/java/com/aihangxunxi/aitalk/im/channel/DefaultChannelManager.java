@@ -73,7 +73,7 @@ public class DefaultChannelManager implements ChannelManager {
 		Channel channel = this.findChannelByUserId(userId);
 		if (channel != null) {
 			this.removeChannelByUserId(userId);
-//			 this.removeChannel(channel);
+			// this.removeChannel(channel);
 			channel.close();
 		}
 
