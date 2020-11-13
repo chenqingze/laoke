@@ -106,7 +106,7 @@ public class SystemInfoConsumer {
 			long time2 = System.currentTimeMillis();
 			systemInfo.setCreatedAt(time);
 			systemInfo.setUpdatedAt(time2);
-			systemInfo.setStatus("true");
+			systemInfo.setStatus("no");
 			User user = userRepository.getUserByUserId(systemInfo.getReceiverId());
 			systemInfo.setId(new ObjectId());
 			systemInfo.setUserId(user.getId().toHexString());
