@@ -212,7 +212,7 @@ message UpdateUserProfileRequest{
   string user_id = 1;
   string profile_header = 2;
   string nickname = 3;
-  string userType = 4;
+  string user_type = 4;
 }
 message UpdateUserProfileAck{
   string user_id = 1;
