@@ -1,8 +1,11 @@
 package com.aihangxunxi.aitalk.im.handler;
 
+import com.aihangxunxi.aitalk.im.channel.ChannelConstant;
 import com.aihangxunxi.aitalk.im.channel.ChannelManager;
 import com.aihangxunxi.aitalk.im.protocol.buffers.*;
+import com.aihangxunxi.aitalk.storage.model.User;
 import com.aihangxunxi.aitalk.storage.repository.MsgHistRepository;
+import com.aihangxunxi.aitalk.storage.repository.UserRepository;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -28,6 +31,9 @@ public class WithdrawConsultMsgHandler extends ChannelInboundHandlerAdapter {
 	@Resource
 	private MsgHistRepository msgHistRepository;
 
+	@Resource
+	private UserRepository userRepository;
+
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 		if (msg instanceof Message && ((Message) msg).getOpCode() == OpCode.WITHDRAW_CONSULT_REQUEST) {
@@ -43,10 +49,21 @@ public class WithdrawConsultMsgHandler extends ChannelInboundHandlerAdapter {
 									.setConsultDirection(consultDirection).setSuccess("ok").build())
 					.build();
 			ctx.writeAndFlush(ack);
+
 			// 发送给被咨询者 咨询方向进行反转
 			Channel addresseeChannel = channelManager.findChannelByUserId(receiverId.toHexString());
+			String userObjectId = ctx.channel().attr(ChannelConstant.USER_ID_ATTRIBUTE_KEY).get();
+			User user = userRepository.getUserById(new ObjectId(userObjectId));
+
+			// 发送对方请求
+			Message request = Message.newBuilder().setSeq(((Message) msg).getSeq())
+					.setOpCode(OpCode.WITHDRAW_CONSULT_REQUEST)
+					.setWithdrawConsultRequest(WithdrawConsultRequest.newBuilder().setMsgId(msgId)
+							.setConversationId(user.getId().toHexString())
+							.setConsultDirection(getConsultDirection(consultDirection)).setSuccess("ok").build())
+					.build();
 			if (addresseeChannel != null) {
-				addresseeChannel.writeAndFlush(ack);
+				addresseeChannel.writeAndFlush(request);
 			}
 			else {
 				// todo:撤回的时候 如果对方不在线
@@ -55,6 +72,25 @@ public class WithdrawConsultMsgHandler extends ChannelInboundHandlerAdapter {
 		else {
 			ctx.fireChannelRead(msg);
 		}
+	}
+
+	// 反转咨询方向
+	private String getConsultDirection(String consultDirection) {
+		String consultDirectionR;
+		switch (consultDirection) {
+		case "PSO":
+			consultDirectionR = "SPI";
+			break;
+		case "PPO":
+			consultDirectionR = "PPI";
+			break;
+		case "SPO":
+			consultDirectionR = "PSI";
+			break;
+		default:
+			throw new IllegalStateException("UnConsultDirection value: " + consultDirection);
+		}
+		return consultDirectionR;
 	}
 
 }

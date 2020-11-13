@@ -78,8 +78,10 @@ public final class AuthServerHandler extends ChannelInboundHandlerAdapter {
 			}
 			User user = userRepository.getUserByUserId(Long.parseLong(redisEntity.getUserId()));
 
-			if (true) {
+			if (user != null) {
 				result = true;
+				// 如果用户channel已存在，先剔除 todo:后面考虑多设备登录的清空
+				channelManager.kickUser(user.getId().toHexString());
 				channelManager.addChannel(this.channelProcess(ctx, user));
 				ctx.pipeline().remove(this);
 			}
