@@ -67,6 +67,8 @@ public class WithdrawConsultMsgHandler extends ChannelInboundHandlerAdapter {
 			}
 			else {
 				// todo:撤回的时候 如果对方不在线
+				// 查询离线消息 将离线消息改为对方撤回了一条消息
+				msgHistRepository.withdrawConsultOfflienMsg(msgId);
 			}
 		}
 		else {

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,8 +52,12 @@ public class MsgHistRepository {
 	public boolean withdrawConsultMsg(String msgId) {
 		MongoCollection<MucHist> mongoCollection = aitalkDb.getCollection("msgHist", MucHist.class);
 		Bson bson = eq(new ObjectId(msgId));
-		Bson bson1 = set("msgStatus", MsgStatus.WITHDRAW);
-		mongoCollection.updateOne(bson, bson1);
+
+		List<Bson> list = new ArrayList<>();
+		list.add(set("msgStatus", MsgStatus.WITHDRAW));
+		list.add(set("content", "对方撤回了一条消息"));
+		list.add(set("revokeAt", new Date().getTime()));
+		mongoCollection.updateOne(bson, list);
 		return true;
 	}
 
@@ -80,4 +85,16 @@ public class MsgHistRepository {
 		return true;
 	}
 
+	// 撤回离线消息中数据
+    public boolean withdrawConsultOfflienMsg(String msgId) {
+		MongoCollection<OfflineMsg> mongoCollection = aitalkDb.getCollection("offlineMsg", OfflineMsg.class);
+		Bson bson = eq(new ObjectId(msgId));
+
+		List<Bson> list = new ArrayList<>();
+		list.add(set("msgStatus", MsgStatus.WITHDRAW));
+		list.add(set("content", "对方撤回了一条消息"));
+		list.add(set("revokeAt", new Date().getTime()));
+		mongoCollection.updateOne(bson, list);
+		return true;
+    }
 }
