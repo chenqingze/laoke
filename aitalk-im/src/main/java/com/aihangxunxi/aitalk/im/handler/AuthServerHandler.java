@@ -57,7 +57,7 @@ public final class AuthServerHandler extends ChannelInboundHandlerAdapter {
 	private UserRepository userRepository;
 
 	@Override
-	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+	public void channelRead(ChannelHandlerContext ctx, Object msg) {
 		logger.debug(msg.toString());
 		boolean result = false;
 		if (msg instanceof Message && ((Message) msg).getOpCode() == OpCode.AUTH_REQUEST) {
@@ -80,8 +80,7 @@ public final class AuthServerHandler extends ChannelInboundHandlerAdapter {
 
 			if (user != null) {
 				result = true;
-				// 如果用户channel已存在，先剔除 todo:后面考虑多设备登录的清空
-				channelManager.kickUser(user.getId().toHexString());
+				// todo:后面考虑多设备登录的清空
 				channelManager.addChannel(this.channelProcess(ctx, user));
 				ctx.pipeline().remove(this);
 			}
