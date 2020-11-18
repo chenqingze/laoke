@@ -8,6 +8,8 @@ public class Fans {
 
 	private String profile_photo;
 
+	private String pinyin;
+
 	public Long getUserId() {
 		return userId;
 	}
@@ -32,4 +34,11 @@ public class Fans {
 		this.profile_photo = profile_photo;
 	}
 
+	public String getPinyin() {
+		return pinyin;
+	}
+
+	public void setPinyin(String pinyin) {
+		this.pinyin = pinyin;
+	}
 }
