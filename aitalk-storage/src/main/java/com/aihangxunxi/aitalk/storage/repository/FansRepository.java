@@ -42,6 +42,7 @@ public class FansRepository {
 				String pinyin = PinYinUtil.getPingYin(user.getNickname()).substring(0, 1);
 				fans.setNickname(user.getNickname());
 				fans.setPinyin(pinyin);
+				fans.setId(user.getId().toHexString());
 				fans.setProfile_photo(user.getHeader());
 				fansList.add(fans);
 			}

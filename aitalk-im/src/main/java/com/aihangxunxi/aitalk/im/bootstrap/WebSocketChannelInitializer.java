@@ -150,7 +150,7 @@ public class WebSocketChannelInitializer extends ChannelInitializer<NioSocketCha
 		}
 
 		/* 通信超时处理 */
-		 pipeline.addLast("readTimeoutHandler", new ReadTimeoutHandler(READ_IDEL_TIME_OUT));
+		pipeline.addLast("readTimeoutHandler", new ReadTimeoutHandler(READ_IDEL_TIME_OUT));
 
 		/* HTTP协议相关处理 */
 		// http编解码器
@@ -182,35 +182,36 @@ public class WebSocketChannelInitializer extends ChannelInitializer<NioSocketCha
 		/* 业务处理器 */
 		// 认证处理
 		pipeline.addLast("authServerHandler", authServerHandler);
-//		pipeline.addLast("queryUserGroupsHandler", queryUserGroupsHandler);
-//		pipeline.addLast("invitationRequestHandler", invitationRequestHandler);
-//		pipeline.addLast("invitationAcceptHandler", invitationAcceptHandler);
-//		pipeline.addLast("invitationDeclinedHandler", invitationDeclinedHandler);
-//		pipeline.addLast("groupMessageHandler", groupMessageHandler);
-//		pipeline.addLast("invitationUserJoinGroupHandler", invitationUserJoinGroupHandler);
-//		pipeline.addLast("askFroJoinGroupHandler", askFroJoinGroupHandler);
-//		pipeline.addLast("createMucHandler", createMucHandler);
-//		pipeline.addLast("removeGroupMemberHandler", removeGroupMemberHandler);
-//		pipeline.addLast("editGroupNameHandler", editGroupNameHandler);
-//		pipeline.addLast("editGroupNoticeHandler", editGroupNoticeHandler);
-//		pipeline.addLast("changeMucMuteHandler", changeMucMuteHandler);
-//		pipeline.addLast("changeMucJoinConfirmHandler", changeMucJoinConfirmHandler);
-//		pipeline.addLast("exitGroupHandler", exitGroupHandler);
-//		pipeline.addLast("accessUserJoinMucHandler", accessUserJoinMucHandler);
-//		pipeline.addLast("refuseUserJoinMucHandler", refuseUserJoinMucHandler);
+		// pipeline.addLast("queryUserGroupsHandler", queryUserGroupsHandler);
+		// pipeline.addLast("invitationRequestHandler", invitationRequestHandler);
+		// pipeline.addLast("invitationAcceptHandler", invitationAcceptHandler);
+		// pipeline.addLast("invitationDeclinedHandler", invitationDeclinedHandler);
+		// pipeline.addLast("groupMessageHandler", groupMessageHandler);
+		// pipeline.addLast("invitationUserJoinGroupHandler",
+		// invitationUserJoinGroupHandler);
+		// pipeline.addLast("askFroJoinGroupHandler", askFroJoinGroupHandler);
+		// pipeline.addLast("createMucHandler", createMucHandler);
+		// pipeline.addLast("removeGroupMemberHandler", removeGroupMemberHandler);
+		// pipeline.addLast("editGroupNameHandler", editGroupNameHandler);
+		// pipeline.addLast("editGroupNoticeHandler", editGroupNoticeHandler);
+		// pipeline.addLast("changeMucMuteHandler", changeMucMuteHandler);
+		// pipeline.addLast("changeMucJoinConfirmHandler", changeMucJoinConfirmHandler);
+		// pipeline.addLast("exitGroupHandler", exitGroupHandler);
+		// pipeline.addLast("accessUserJoinMucHandler", accessUserJoinMucHandler);
+		// pipeline.addLast("refuseUserJoinMucHandler", refuseUserJoinMucHandler);
 		pipeline.addLast("queryFansHandler", queryFansHandler);
-//		pipeline.addLast("pullMucMemberHandler", pullMucMemberHandler);
+		// pipeline.addLast("pullMucMemberHandler", pullMucMemberHandler);
 
-//		pipeline.addLast("initMucHistHandler", initMucHistHandler);
-//		pipeline.addLast("mucReadNotifyHandler", mucReadNotifyHandler);
-//		pipeline.addLast("withdrawGroupMsgHandler", withdrawGroupMsgHandler);
+		// pipeline.addLast("initMucHistHandler", initMucHistHandler);
+		// pipeline.addLast("mucReadNotifyHandler", mucReadNotifyHandler);
+		// pipeline.addLast("withdrawGroupMsgHandler", withdrawGroupMsgHandler);
 		pipeline.addLast("updateUserProfileHandler", updateUserProfileHandler);
 		pipeline.addLast("bindUserDeviceHandler", bindUserDeviceHandler);
 
 		pipeline.addLast("withdrawConsultMsgHandler", withdrawConsultMsgHandler);
 		pipeline.addLast("consultChatHandler", consultChatHandler);
-//		pipeline.addLast("p2pChatHandler", p2P2ChatHandler);
-//		pipeline.addLast("friendPullHandler", friendPullHandler);
+		// pipeline.addLast("p2pChatHandler", p2P2ChatHandler);
+		// pipeline.addLast("friendPullHandler", friendPullHandler);
 
 		// todo：其他业务处理器放到这里
 		// pipeline.addLast(processorGroup, "queryUserGroupsHandler",

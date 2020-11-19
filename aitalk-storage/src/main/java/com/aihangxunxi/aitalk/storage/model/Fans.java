@@ -2,6 +2,8 @@ package com.aihangxunxi.aitalk.storage.model;
 
 public class Fans {
 
+	private String id;
+
 	private Long userId;
 
 	private String nickname;
@@ -42,4 +44,11 @@ public class Fans {
 		this.pinyin = pinyin;
 	}
 
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
 }
