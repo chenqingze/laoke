@@ -51,4 +51,5 @@ public class Fans {
 	public void setId(String id) {
 		this.id = id;
 	}
+
 }
