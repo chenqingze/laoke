@@ -86,7 +86,7 @@ public class MsgHistRepository {
 	}
 
 	// 撤回离线消息中数据
-    public boolean withdrawConsultOfflienMsg(String msgId) {
+	public boolean withdrawConsultOfflienMsg(String msgId) {
 		MongoCollection<OfflineMsg> mongoCollection = aitalkDb.getCollection("offlineMsg", OfflineMsg.class);
 		Bson bson = eq(new ObjectId(msgId));
 
@@ -96,5 +96,6 @@ public class MsgHistRepository {
 		list.add(set("revokeAt", new Date().getTime()));
 		mongoCollection.updateOne(bson, list);
 		return true;
-    }
+	}
+
 }

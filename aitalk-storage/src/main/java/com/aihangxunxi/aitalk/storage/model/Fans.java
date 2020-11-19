@@ -41,4 +41,5 @@ public class Fans {
 	public void setPinyin(String pinyin) {
 		this.pinyin = pinyin;
 	}
+
 }
