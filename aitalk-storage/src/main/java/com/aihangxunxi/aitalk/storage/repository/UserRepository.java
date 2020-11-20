@@ -151,7 +151,13 @@ public class UserRepository {
 	public boolean cancelUser(Long userId) {
 		MongoCollection<User> mongoCollection = aitalkDb.getCollection("user", User.class);
 		Bson bson = eq("userId", userId);
-		mongoCollection.deleteMany(bson);
+
+		List<Bson> list = new ArrayList<>();
+		Bson bson1 = set("header", "assets/msg_default.png");
+		Bson bson2 = set("nickname", "该用户已注销");
+		list.add(bson1);
+		list.add(bson2);
+		mongoCollection.updateMany(bson, list);
 		return true;
 	}
 
