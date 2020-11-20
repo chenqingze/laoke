@@ -98,4 +98,10 @@ public class MsgHistRepository {
 		return true;
 	}
 
+	public boolean deleteOfflineMsgById(ObjectId id) {
+		MongoCollection<OfflineMsg> mongoCollection = aitalkDb.getCollection("offlineMsg", OfflineMsg.class);
+		Bson bson = eq("_id", id);
+		mongoCollection.deleteMany(bson);
+		return true;
+	}
 }
