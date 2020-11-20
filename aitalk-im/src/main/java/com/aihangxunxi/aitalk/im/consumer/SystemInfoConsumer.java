@@ -119,10 +119,31 @@ public class SystemInfoConsumer {
 				channel.writeAndFlush(message);
 			}
 			else {
-				systemInfoRepository.saveOfflineSystemInfo(systemInfo);
-				System.out.println("----获取链接失败,保存至离线消息offlineSystemInfo----");
+				logger.debug("第一次获取链接失败----尝试再次获取");
+				// 未获取到链接,再尝试2次, 实在获取不到,则存入离线库
+				if (getChannel(user.getId().toHexString()) == null) {
+					logger.debug("第二次获取链接失败----尝试再次获取");
+					if (getChannel(user.getId().toHexString()) == null) {
+						systemInfoRepository.saveOfflineSystemInfo(systemInfo);
+						logger.debug("----第三次获取链接失败,保存至离线消息offlineSystemInfo----");
+					} else  {
+						SendSystemInfoRequest sendSystemInfoRequest = msgAssembler.buildSendSystemInfoRequest(systemInfo);
+						Message message = Message.newBuilder().setOpCode(OpCode.SYSTEM_INFO_NOTIFY)
+								.setSendSystemInfoRequest(sendSystemInfoRequest).build();
+						channel.writeAndFlush(message);
+					}
+				} else  {
+					SendSystemInfoRequest sendSystemInfoRequest = msgAssembler.buildSendSystemInfoRequest(systemInfo);
+					Message message = Message.newBuilder().setOpCode(OpCode.SYSTEM_INFO_NOTIFY)
+							.setSendSystemInfoRequest(sendSystemInfoRequest).build();
+					channel.writeAndFlush(message);
+				}
 			}
 		};
+	}
+
+	io.netty.channel.Channel getChannel (String userId) {
+		return channelManager.findChannelByUserId(userId);
 	}
 
 }
