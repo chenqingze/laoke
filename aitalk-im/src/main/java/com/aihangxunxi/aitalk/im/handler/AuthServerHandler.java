@@ -7,23 +7,17 @@ import com.aihangxunxi.aitalk.im.constant.RedisKeyConstants;
 import com.aihangxunxi.aitalk.im.manager.GroupManager;
 import com.aihangxunxi.aitalk.im.protocol.buffers.Message;
 import com.aihangxunxi.aitalk.im.protocol.buffers.OpCode;
-import com.aihangxunxi.aitalk.storage.model.GroupMember;
 import com.aihangxunxi.aitalk.storage.model.User;
 import com.aihangxunxi.aitalk.storage.repository.GroupMemberRepository;
 import com.aihangxunxi.aitalk.storage.repository.UserRepository;
 import com.aihangxunxi.common.entity.LoginUserResponseRedisEntity;
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelHandler;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
-import org.bson.types.ObjectId;
+import io.netty.channel.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * 建立连接登录/认证操作
@@ -60,10 +54,10 @@ public final class AuthServerHandler extends ChannelInboundHandlerAdapter {
 	public void channelRead(ChannelHandlerContext ctx, Object msg) {
 		logger.debug(msg.toString());
 		boolean result = false;
+		String userId = "";
 		if (msg instanceof Message && ((Message) msg).getOpCode() == OpCode.AUTH_REQUEST) {
 			String token = ((Message) msg).getAuthRequest().getToken();
 			// todo:验证token合法性,并获取用户信息
-
 			LoginUserResponseRedisEntity redisEntity = (LoginUserResponseRedisEntity) authRedisTemplate.opsForValue()
 					.get(RedisKeyConstants.ACCESS_TOKEN + token);
 			if (logger.isDebugEnabled()) {
@@ -76,23 +70,25 @@ public final class AuthServerHandler extends ChannelInboundHandlerAdapter {
 			if (logger.isDebugEnabled()) {
 				logger.debug(">>>> Redis 获取数据成功！{}", redisEntity);
 			}
-			User user = userRepository.getUserByUserId(Long.parseLong(redisEntity.getUserId()));
-
-			if (user != null) {
-				result = true;
-				// todo:后面考虑多设备登录的清空
-				channelManager.addChannel(this.channelProcess(ctx, user));
-				ctx.pipeline().remove(this);
+			if (redisEntity != null) {
+				User user = userRepository.getUserByUserId(Long.parseLong(redisEntity.getUserId()));
+				if (user != null) {
+					result = true;
+					userId=user.getId().toHexString();
+					// todo:后面考虑多设备登录的清空
+					channelManager.addChannel(this.channelProcess(ctx, user));
+					ctx.pipeline().remove(this);
+				}
 			}
-			// todo 获取用户所在的群 并将用户的channel加入到groupManager
-			List<GroupMember> list = groupMemberRepository.queryUsersGroup(Long.parseLong(redisEntity.getUserId()));
-			list.stream().forEach(groupMember -> {
-				groupManager.addChannel(groupMember.getGroupId().toString(), ctx.channel());
-			});
 			// ctx.channel().id().asLongText()
-			Message message = authAssembler.authAckBuilder(((Message) msg).getSeq(), user.getId().toHexString(),
-					result);
-			ctx.writeAndFlush(message);
+			Message message = authAssembler.authAckBuilder(((Message) msg).getSeq(), userId, result);
+			ctx.writeAndFlush(message).addListener(ChannelFutureListener.CLOSE);;
+			// todo 获取用户所在的群 并将用户的channel加入到groupManager
+//			List<GroupMember> list = groupMemberRepository.queryUsersGroup(Long.parseLong(redisEntity.getUserId()));
+//			list.stream().forEach(groupMember -> {
+//				groupManager.addChannel(groupMember.getGroupId().toString(), ctx.channel());
+//			});
+
 		}
 		else {
 			ctx.close();
