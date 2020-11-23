@@ -12,9 +12,29 @@ import org.bson.types.ObjectId;
  */
 public class MsgHist extends Msg {
 
-	private ObjectId senderId;// 消息发送方
+	private ObjectId senderId;	// 消息发送方
 
 	private ObjectId receiverId;// 消息接收方
+
+	private  String userId;		// 被咨询放UserId
+
+	private String nikeName;	// 被咨询放昵称
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public String getNikeName() {
+		return nikeName;
+	}
+
+	public void setNikeName(String nikeName) {
+		this.nikeName = nikeName;
+	}
 
 	public ObjectId getSenderId() {
 		return senderId;

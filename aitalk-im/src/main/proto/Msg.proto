@@ -19,6 +19,8 @@ message MsgRequest {
   string msg_direction = 11; // 方向
   string sender_name = 12;// 发送者名
   string consult_direction = 13; // 咨询方向
+  string user_id = 14; // 咨询着userId
+  string nick_name = 15; // 咨询着昵称
 }
 
 enum ConversationType{
@@ -122,6 +124,8 @@ message MsgReadNotify {
   uint64 created_at = 11;
   uint64 updated_at = 12;
   string consult_direction = 13;  // 咨询方向
+  string user_id = 14; // 发送人userId
+  string nick_name = 15; // 发送人昵称
 
 }
 

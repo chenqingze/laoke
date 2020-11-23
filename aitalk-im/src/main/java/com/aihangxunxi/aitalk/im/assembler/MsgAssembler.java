@@ -39,9 +39,9 @@ public class MsgAssembler {
 				.setConversationId(msgHist.getReceiverId().toHexString())
 				.setConversationType(msgHist.getConversationType().ordinal())
 				.setMsgStatus(msgHist.getMsgStatus().ordinal()).setMsgType(msgHist.getMsgType().ordinal())
-				.setContent(msgHist.getContent()).setCreatedAt(msgHist.getCreatedAt())
-				.setConsultDirection(msgHist.getConsultDirection().name()).setTime(new Date().getTime())
-				.setUpdatedAt(msgHist.getUpdatedAt()).build();
+				.setContent(msgHist.getContent()).setCreatedAt(msgHist.getCreatedAt()).setUserId(msgHist.getUserId())
+				.setNickName(msgHist.getNikeName()).setConsultDirection(msgHist.getConsultDirection().name())
+				.setTime(new Date().getTime()).setUpdatedAt(msgHist.getUpdatedAt()).build();
 		return msgReadNotify;
 	}
 
@@ -52,6 +52,8 @@ public class MsgAssembler {
 		msgHist.setContent(msgRequest.getContent());
 		msgHist.setMsgType(MsgType.codeOf(msgRequest.getMsgType().getNumber()));
 		msgHist.setConsultDirection(ConsultDirection.valueOf(msgRequest.getConsultDirection()));
+		msgHist.setUserId(msgRequest.getUserId());
+		msgHist.setNikeName(msgRequest.getNickName());
 		return msgHist;
 	}
 

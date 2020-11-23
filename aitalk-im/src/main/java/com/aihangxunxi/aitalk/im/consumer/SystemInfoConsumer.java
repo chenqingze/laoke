@@ -126,13 +126,16 @@ public class SystemInfoConsumer {
 					if (getChannel(user.getId().toHexString()) == null) {
 						systemInfoRepository.saveOfflineSystemInfo(systemInfo);
 						logger.debug("----第三次获取链接失败,保存至离线消息offlineSystemInfo----");
-					} else  {
-						SendSystemInfoRequest sendSystemInfoRequest = msgAssembler.buildSendSystemInfoRequest(systemInfo);
+					}
+					else {
+						SendSystemInfoRequest sendSystemInfoRequest = msgAssembler
+								.buildSendSystemInfoRequest(systemInfo);
 						Message message = Message.newBuilder().setOpCode(OpCode.SYSTEM_INFO_NOTIFY)
 								.setSendSystemInfoRequest(sendSystemInfoRequest).build();
 						channel.writeAndFlush(message);
 					}
-				} else  {
+				}
+				else {
 					SendSystemInfoRequest sendSystemInfoRequest = msgAssembler.buildSendSystemInfoRequest(systemInfo);
 					Message message = Message.newBuilder().setOpCode(OpCode.SYSTEM_INFO_NOTIFY)
 							.setSendSystemInfoRequest(sendSystemInfoRequest).build();
@@ -142,7 +145,7 @@ public class SystemInfoConsumer {
 		};
 	}
 
-	io.netty.channel.Channel getChannel (String userId) {
+	io.netty.channel.Channel getChannel(String userId) {
 		return channelManager.findChannelByUserId(userId);
 	}
 
