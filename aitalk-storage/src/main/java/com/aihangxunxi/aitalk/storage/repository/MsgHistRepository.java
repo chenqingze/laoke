@@ -104,4 +104,5 @@ public class MsgHistRepository {
 		mongoCollection.deleteMany(bson);
 		return true;
 	}
+
 }

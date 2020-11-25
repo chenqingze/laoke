@@ -155,8 +155,10 @@ public class UserRepository {
 		List<Bson> list = new ArrayList<>();
 		Bson bson1 = set("header", "assets/msg_default.png");
 		Bson bson2 = set("nickname", "该用户已注销");
+		Bson bson3 = set("userStatus", UserStatus.CANCEL);
 		list.add(bson1);
 		list.add(bson2);
+		list.add(bson3);
 		mongoCollection.updateMany(bson, list);
 		return true;
 	}
