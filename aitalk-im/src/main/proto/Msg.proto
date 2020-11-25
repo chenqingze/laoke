@@ -251,3 +251,6 @@ message SendSystemInfoRequest{
   uint64 updated_at = 9;
   string status = 10;
 }
+message SendSystemInfoAck{
+  string msg_id = 1;
+}

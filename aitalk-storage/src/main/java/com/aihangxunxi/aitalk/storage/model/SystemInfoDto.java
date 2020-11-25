@@ -10,7 +10,7 @@ import java.io.Serializable;
  */
 public class SystemInfoDto implements Serializable {
 
-	private String id;
+	private String msgId;
 
 	// 订单id或者预购单id
 	private String orderId;
@@ -50,12 +50,12 @@ public class SystemInfoDto implements Serializable {
 		this.userId = userId;
 	}
 
-	public String getId() {
-		return id;
+	public String getMsgId() {
+		return msgId;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setMsgId(String msgId) {
+		this.msgId = msgId;
 	}
 
 	public String getOrderId() {

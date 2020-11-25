@@ -10,7 +10,7 @@ import java.io.Serializable;
  */
 public class SystemInfo implements Serializable {
 
-	private ObjectId id;
+	private ObjectId msgId;
 
 	// 订单id或者预购单id
 	private String orderId;
@@ -50,12 +50,12 @@ public class SystemInfo implements Serializable {
 		this.userId = userId;
 	}
 
-	public ObjectId getId() {
-		return id;
+	public ObjectId getMsgId() {
+		return msgId;
 	}
 
-	public void setId(ObjectId id) {
-		this.id = id;
+	public void setMsgId(ObjectId msgId) {
+		this.msgId = msgId;
 	}
 
 	public String getOrderId() {

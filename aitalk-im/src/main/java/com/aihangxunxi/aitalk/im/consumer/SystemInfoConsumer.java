@@ -18,6 +18,7 @@ import com.rabbitmq.client.DeliverCallback;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -55,16 +56,18 @@ public class SystemInfoConsumer {
 	@Resource
 	private ChannelManager channelManager;
 
-	public SystemInfoConsumer() {
+	public SystemInfoConsumer(@Value("${server.rabbitMq.host}")String host,
+							  @Value("${server.rabbitMq.port}")String port,@Value("${server.rabbitMq.userName}")String userName,
+							  @Value("${server.rabbitMq.password}")String password) {
 
 		try {
 			// 创建连接
 			ConnectionFactory factory = new ConnectionFactory();
 			// todo: 正确的地址
-			factory.setHost("192.168.100.242");
-			factory.setPort(8101);
-			factory.setUsername("ahy");
-			factory.setPassword("ahy");
+			factory.setHost(host);
+			factory.setPort(Integer.parseInt(port));
+			factory.setUsername(userName);
+			factory.setPassword(password);
 			// factory.setUri("amqp://guest:guest@192.168.30.153:5672");
 			Connection connection = factory.newConnection();
 			// 创建channel
@@ -108,7 +111,7 @@ public class SystemInfoConsumer {
 			systemInfo.setUpdatedAt(time2);
 			systemInfo.setStatus("no");
 			User user = userRepository.getUserByUserId(systemInfo.getReceiverId());
-			systemInfo.setId(new ObjectId());
+			systemInfo.setMsgId(new ObjectId());
 			systemInfo.setUserId(user.getId().toHexString());
 			systemInfoRepository.saveSystemInfo(systemInfo);
 			io.netty.channel.Channel channel = channelManager.findChannelByUserId(user.getId().toHexString());
@@ -118,35 +121,8 @@ public class SystemInfoConsumer {
 						.setSendSystemInfoRequest(sendSystemInfoRequest).build();
 				channel.writeAndFlush(message);
 			}
-			else {
-				logger.debug("第一次获取链接失败----尝试再次获取");
-				// 未获取到链接,再尝试2次, 实在获取不到,则存入离线库
-				if (getChannel(user.getId().toHexString()) == null) {
-					logger.debug("第二次获取链接失败----尝试再次获取");
-					if (getChannel(user.getId().toHexString()) == null) {
-						systemInfoRepository.saveOfflineSystemInfo(systemInfo);
-						logger.debug("----第三次获取链接失败,保存至离线消息offlineSystemInfo----");
-					}
-					else {
-						SendSystemInfoRequest sendSystemInfoRequest = msgAssembler
-								.buildSendSystemInfoRequest(systemInfo);
-						Message message = Message.newBuilder().setOpCode(OpCode.SYSTEM_INFO_NOTIFY)
-								.setSendSystemInfoRequest(sendSystemInfoRequest).build();
-						channel.writeAndFlush(message);
-					}
-				}
-				else {
-					SendSystemInfoRequest sendSystemInfoRequest = msgAssembler.buildSendSystemInfoRequest(systemInfo);
-					Message message = Message.newBuilder().setOpCode(OpCode.SYSTEM_INFO_NOTIFY)
-							.setSendSystemInfoRequest(sendSystemInfoRequest).build();
-					channel.writeAndFlush(message);
-				}
-			}
+			// 暂时保存至离线消息库
+			systemInfoRepository.saveOfflineSystemInfo(systemInfo);
 		};
 	}
-
-	io.netty.channel.Channel getChannel(String userId) {
-		return channelManager.findChannelByUserId(userId);
-	}
-
 }

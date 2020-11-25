@@ -38,7 +38,12 @@ public class SystemInfoRepository {
 		InsertOneResult result = mongoCollection.insertOne(info);
 		return true;
 	}
-
+	public boolean deleteOfflineMsgById(ObjectId id) {
+		MongoCollection<SystemInfo> mongoCollection = db.getCollection("offlineSystemInfo", SystemInfo.class);
+		Bson bson = eq("msgId", id);
+		mongoCollection.deleteMany(bson);
+		return true;
+	}
 	public List<SystemInfoDto> getOfflineMsg(String receiverId) {
 		MongoCollection<SystemInfo> mongoCollection = db.getCollection("offlineSystemInfo", SystemInfo.class);
 		List<SystemInfoDto> list = new ArrayList<>();
@@ -50,7 +55,7 @@ public class SystemInfoRepository {
 		if (result != null && result.size() > 0) {
 			for (int i = 0; i < result.size(); i++) {
 				SystemInfoDto dto = new SystemInfoDto();
-				dto.setId(result.get(i).getId().toHexString());
+				dto.setMsgId(result.get(i).getMsgId().toHexString());
 				dto.setOrderId(result.get(i).getOrderId());
 				dto.setReceiverId(result.get(i).getReceiverId());
 				dto.setUserId(result.get(i).getUserId());
