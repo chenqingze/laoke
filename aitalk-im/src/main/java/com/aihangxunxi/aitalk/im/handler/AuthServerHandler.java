@@ -88,7 +88,7 @@ public final class AuthServerHandler extends ChannelInboundHandlerAdapter {
 			}
 			else {
 				Message message = authAssembler.authAckBuilder(((Message) msg).getSeq(), userId, result);
-//				ctx.writeAndFlush(message);
+				// ctx.writeAndFlush(message);
 				ctx.writeAndFlush(message).addListener(ChannelFutureListener.CLOSE);
 			}
 			// ctx.channel().id().asLongText()
