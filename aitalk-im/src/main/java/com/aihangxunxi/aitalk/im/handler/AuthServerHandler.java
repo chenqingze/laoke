@@ -78,12 +78,20 @@ public final class AuthServerHandler extends ChannelInboundHandlerAdapter {
 					// todo:后面考虑多设备登录的清空
 					channelManager.addChannel(this.channelProcess(ctx, user));
 					ctx.pipeline().remove(this);
+					Message message = authAssembler.authAckBuilder(((Message) msg).getSeq(), userId, result);
+					ctx.writeAndFlush(message);
+				}
+				else {
+					Message message = authAssembler.authAckBuilder(((Message) msg).getSeq(), userId, result);
+					ctx.writeAndFlush(message).addListener(ChannelFutureListener.CLOSE);
 				}
 			}
+			else {
+				Message message = authAssembler.authAckBuilder(((Message) msg).getSeq(), userId, result);
+//				ctx.writeAndFlush(message);
+				ctx.writeAndFlush(message).addListener(ChannelFutureListener.CLOSE);
+			}
 			// ctx.channel().id().asLongText()
-			Message message = authAssembler.authAckBuilder(((Message) msg).getSeq(), userId, result);
-			ctx.writeAndFlush(message);
-			// ctx.writeAndFlush(message).addListener(ChannelFutureListener.CLOSE);
 
 			// todo 获取用户所在的群 并将用户的channel加入到groupManager
 			// List<GroupMember> list =
