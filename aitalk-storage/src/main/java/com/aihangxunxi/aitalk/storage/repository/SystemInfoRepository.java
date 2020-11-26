@@ -38,12 +38,14 @@ public class SystemInfoRepository {
 		InsertOneResult result = mongoCollection.insertOne(info);
 		return true;
 	}
+
 	public boolean deleteOfflineMsgById(ObjectId id) {
 		MongoCollection<SystemInfo> mongoCollection = db.getCollection("offlineSystemInfo", SystemInfo.class);
 		Bson bson = eq("msgId", id);
 		mongoCollection.deleteMany(bson);
 		return true;
 	}
+
 	public List<SystemInfoDto> getOfflineMsg(String receiverId) {
 		MongoCollection<SystemInfo> mongoCollection = db.getCollection("offlineSystemInfo", SystemInfo.class);
 		List<SystemInfoDto> list = new ArrayList<>();
