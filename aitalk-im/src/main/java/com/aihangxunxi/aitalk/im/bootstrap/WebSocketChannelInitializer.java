@@ -143,6 +143,9 @@ public class WebSocketChannelInitializer extends ChannelInitializer<NioSocketCha
 	@Resource
 	private SystemInfoAckHandler systemInfoAckHandler;
 
+	@Resource
+	private HeartServiceHandler heartServiceHandler;
+
 	public WebSocketChannelInitializer(@Nullable SslContext sslCtx, EventExecutorGroup processorGroup) {
 		this.sslCtx = sslCtx;
 		this.processorGroup = processorGroup;
@@ -157,6 +160,7 @@ public class WebSocketChannelInitializer extends ChannelInitializer<NioSocketCha
 
 		/* 通信超时处理 */
 		pipeline.addLast("readTimeoutHandler", new ReadTimeoutHandler(READ_IDEL_TIME_OUT));
+		pipeline.addLast("heartServiceHandler", heartServiceHandler);
 
 		/* HTTP协议相关处理 */
 		// http编解码器
