@@ -41,6 +41,7 @@ public class WithdrawConsultMsgHandler extends ChannelInboundHandlerAdapter {
 			// 接受者ID
 			ObjectId receiverId = new ObjectId(((Message) msg).getWithdrawConsultRequest().getConversationId());
 			String consultDirection = ((Message) msg).getWithdrawConsultRequest().getConsultDirection();
+			// 修改消息历史表
 			msgHistRepository.withdrawConsultMsg(msgId);
 
 			Message ack = Message.newBuilder().setSeq(((Message) msg).getSeq()).setOpCode(OpCode.WITHDRAW_CONSULT_ACK)
@@ -56,17 +57,19 @@ public class WithdrawConsultMsgHandler extends ChannelInboundHandlerAdapter {
 			User user = userRepository.getUserById(new ObjectId(userObjectId));
 
 			// 发送对方请求
-			Message request = Message.newBuilder().setSeq(((Message) msg).getSeq())
-					.setOpCode(OpCode.WITHDRAW_CONSULT_REQUEST)
-					.setWithdrawConsultRequest(WithdrawConsultRequest.newBuilder().setMsgId(msgId)
-							.setConversationId(user.getId().toHexString())
+			Message recevie = Message.newBuilder().setSeq(((Message) msg).getSeq())
+					.setOpCode(OpCode.RECEIVE_WITHDRAW_MSG)
+					.setRecevieWithdrawMsg(RecevieWithdrawMsg.newBuilder().setMsgId(msgId)
+							.setSenderId(user.getId().toHexString())
 							.setConsultDirection(getConsultDirection(consultDirection)).setSuccess("ok").build())
 					.build();
+
 			if (addresseeChannel != null) {
-				addresseeChannel.writeAndFlush(request);
+				addresseeChannel.writeAndFlush(recevie);
 			}
-			// 查询离线消息 将离线消息改为对方撤回了一条消息
-			msgHistRepository.withdrawConsultOfflienMsg(msgId);
+
+			// 查询离线消息表中是否存在，存在修改并存在则插入，（从消息历史表中获取）
+			msgHistRepository.editOfflienMsg(msgId);
 		}
 		else {
 			ctx.fireChannelRead(msg);

@@ -141,10 +141,13 @@ public class WebSocketChannelInitializer extends ChannelInitializer<NioSocketCha
 	private WithdrawConsultMsgHandler withdrawConsultMsgHandler;
 
 	@Resource
-	private SystemInfoAckHandler systemInfoAckHandler;
+	private RecevireWithdawMsgAckHandler recevireWithdawMsgAckHandler;
 
 	@Resource
-	private HeartServiceHandler heartServiceHandler;
+	private SystemInfoAckHandler systemInfoAckHandler;
+
+//	@Resource
+//	private HeartServiceHandler heartServiceHandler;
 
 	public WebSocketChannelInitializer(@Nullable SslContext sslCtx, EventExecutorGroup processorGroup) {
 		this.sslCtx = sslCtx;
@@ -160,7 +163,6 @@ public class WebSocketChannelInitializer extends ChannelInitializer<NioSocketCha
 
 		/* 通信超时处理 */
 		pipeline.addLast("readTimeoutHandler", new ReadTimeoutHandler(READ_IDEL_TIME_OUT));
-		pipeline.addLast("heartServiceHandler", heartServiceHandler);
 
 		/* HTTP协议相关处理 */
 		// http编解码器
@@ -188,6 +190,7 @@ public class WebSocketChannelInitializer extends ChannelInitializer<NioSocketCha
 		pipeline.addLast(new ProtobufVarint32LengthFieldPrepender());
 		// ProtobufEncoder增加此解码器会报错
 		// pipeline.addLast(new ProtobufEncoder());
+		pipeline.addLast("heartServiceHandler", new HeartServiceHandler());
 
 		/* 业务处理器 */
 		// 认证处理
@@ -219,6 +222,7 @@ public class WebSocketChannelInitializer extends ChannelInitializer<NioSocketCha
 		pipeline.addLast("bindUserDeviceHandler", bindUserDeviceHandler);
 
 		pipeline.addLast("withdrawConsultMsgHandler", withdrawConsultMsgHandler);
+		pipeline.addLast("recevireWithdawMsgAckHandler", recevireWithdawMsgAckHandler);
 		pipeline.addLast("consultChatHandler", consultChatHandler);
 		pipeline.addLast("consultReadAckHandler", consultReadAckHandler);
 		pipeline.addLast("systemInfoAckHandler", systemInfoAckHandler);

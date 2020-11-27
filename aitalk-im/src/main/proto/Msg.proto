@@ -239,6 +239,22 @@ message WithdrawConsultAck{
   string success = 4;
   string message = 5;
 }
+// 接收撤回消息
+message RecevieWithdrawMsg{
+  string msg_id = 1;      // 消息ID
+  string sender_id = 2;   // 消息发送人ID
+  string consult_direction = 3; // 方向
+  string success = 4;
+  string message = 5;
+}
+// 接收撤回消息回执
+message RecevieWithdrawMsgAck{
+  string msg_id = 1;      // 消息ID
+  string sender_id = 2;   // 消息发送人ID
+}
+// 处理完离线消息相应后端处理
+message OfflineMsgResbonse{
+}
 message SendSystemInfoRequest{
   string msg_id = 1;
   string order_id = 2;
