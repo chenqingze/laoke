@@ -32,11 +32,11 @@ public class SystemInfoConsumer {
 
     private static final Logger logger = LoggerFactory.getLogger(SystemInfoConsumer.class);
 
-    private final static String EXCHANGE_NAME = "SYSTEM_INFO";
+    private final static String EXCHANGE_NAME = "SYSTEM_INFO_82";
 
-    private final static String TOPIC = "SYSTEM_INFO";
+    private final static String TOPIC = "SYSTEM_INFO_82";
 
-    private final static String QUEUE_NAME = "SYSTEM_INFO";
+    private final static String QUEUE_NAME = "SYSTEM_INFO_82";
 
     @Resource
     private UserRepository userRepository;

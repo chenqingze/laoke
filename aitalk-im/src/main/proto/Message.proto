@@ -25,7 +25,7 @@ message Message {
     AuthAck auth_ack = 12;
     Ping ping = 13;
     //    Pong pong = 14;
-    //    Disconnect disconnect = 15;
+    Disconnect disconnect = 15;
 
     // 消息相关21～50
     MsgRequest msg_request = 20;

@@ -13,15 +13,14 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 
 /**
+ * 消息撤回回执
+ *
  * @Author guoyongsheng Data: 2020/11/27
  * @Version 3.0
  */
 @Component
 @ChannelHandler.Sharable
 public class RecevireWithdawMsgAckHandler extends ChannelInboundHandlerAdapter {
-
-	@Resource
-	private ChannelManager channelManager;
 
 	@Resource
 	private MsgHistRepository msgHistRepository;

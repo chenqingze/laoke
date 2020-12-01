@@ -6,6 +6,7 @@ import com.aihangxunxi.aitalk.im.channel.ChannelManager;
 import com.aihangxunxi.aitalk.im.constant.RedisKeyConstants;
 import com.aihangxunxi.aitalk.im.manager.GroupManager;
 import com.aihangxunxi.aitalk.im.protocol.buffers.Message;
+import com.aihangxunxi.aitalk.im.protocol.buffers.MsgReadNotify;
 import com.aihangxunxi.aitalk.im.protocol.buffers.OpCode;
 import com.aihangxunxi.aitalk.storage.model.User;
 import com.aihangxunxi.aitalk.storage.repository.GroupMemberRepository;
@@ -75,6 +76,13 @@ public final class AuthServerHandler extends ChannelInboundHandlerAdapter {
 				if (user != null) {
 					result = true;
 					userId = user.getId().toHexString();
+
+					Channel Channel = channelManager.findChannelByUserId(userId);
+					if (Channel != null) {
+						Message message = Message.newBuilder().setOpCode(OpCode.DISCONNECT_REQUEST).build();
+						Channel.writeAndFlush(message);
+					}
+
 					// todo:后面考虑多设备登录的清空
 					channelManager.addChannel(this.channelProcess(ctx, user));
 					ctx.pipeline().remove(this);
