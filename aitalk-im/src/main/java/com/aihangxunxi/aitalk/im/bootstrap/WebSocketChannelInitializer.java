@@ -146,8 +146,8 @@ public class WebSocketChannelInitializer extends ChannelInitializer<NioSocketCha
 	@Resource
 	private SystemInfoAckHandler systemInfoAckHandler;
 
-//	@Resource
-//	private HeartServiceHandler heartServiceHandler;
+	// @Resource
+	// private HeartServiceHandler heartServiceHandler;
 
 	public WebSocketChannelInitializer(@Nullable SslContext sslCtx, EventExecutorGroup processorGroup) {
 		this.sslCtx = sslCtx;

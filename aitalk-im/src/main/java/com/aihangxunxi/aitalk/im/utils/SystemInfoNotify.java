@@ -16,28 +16,28 @@ import javax.annotation.Resource;
 @Component
 public class SystemInfoNotify {
 
-    private static final Logger logger = LoggerFactory.getLogger(SystemInfoNotify.class);
+	private static final Logger logger = LoggerFactory.getLogger(SystemInfoNotify.class);
 
+	@Resource
+	private ChannelManager channelManager;
 
-    @Resource
-    private ChannelManager channelManager;
+	@Resource
+	private MsgAssembler msgAssembler;
 
-    @Resource
-    private MsgAssembler msgAssembler;
+	public boolean sendSystemNotify(String uId, SystemInfo systemInfo) {
+		logger.info("111111111111111111111111111111111111111111111");
+		logger.info(uId);
+		logger.info("111111111111111111111111111111111111111111111");
+		logger.info("111111111111111111111111111111111111111111111");
+		logger.info("111111111111111111111111111111111111111111111");
+		Channel addresseeChannel = channelManager.findChannelByUserId(uId);
+		if (addresseeChannel != null) {
+			SendSystemInfoRequest sendSystemInfoRequest = msgAssembler.buildSendSystemInfoRequest(systemInfo);
+			Message message = Message.newBuilder().setOpCode(OpCode.SYSTEM_INFO_NOTIFY)
+					.setSendSystemInfoRequest(sendSystemInfoRequest).build();
+			addresseeChannel.writeAndFlush(message);
+		}
+		return true;
+	}
 
-    public boolean sendSystemNotify(String uId, SystemInfo systemInfo) {
-        logger.info("111111111111111111111111111111111111111111111");
-        logger.info(uId);
-        logger.info("111111111111111111111111111111111111111111111");
-        logger.info("111111111111111111111111111111111111111111111");
-        logger.info("111111111111111111111111111111111111111111111");
-        Channel addresseeChannel = channelManager.findChannelByUserId(uId);
-        if (addresseeChannel != null) {
-            SendSystemInfoRequest sendSystemInfoRequest = msgAssembler.buildSendSystemInfoRequest(systemInfo);
-            Message message = Message.newBuilder().setOpCode(OpCode.SYSTEM_INFO_NOTIFY)
-                    .setSendSystemInfoRequest(sendSystemInfoRequest).build();
-            addresseeChannel.writeAndFlush(message);
-        }
-        return true;
-    }
 }

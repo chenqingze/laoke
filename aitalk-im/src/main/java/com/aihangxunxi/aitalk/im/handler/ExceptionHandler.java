@@ -46,7 +46,7 @@ public class ExceptionHandler extends ChannelDuplexHandler {
 		if (ctx.channel().isActive()) {
 			ctx.close();
 		}
- 		logger.warn("发生异常，关闭channel。异常信息：{}", cause.getMessage());
+		logger.warn("发生异常，关闭channel。异常信息：{}", cause.getMessage());
 		cause.printStackTrace();
 	}
 
