@@ -188,13 +188,13 @@ public class UserRepository {
 
 		if (userType.equals("PERSONAL")) {
 			Bson bson = eq("userId", userId);
-			Bson bson1 = set("status", UserStatus.FREEZE);
+			Bson bson1 = set("userStatus", UserStatus.FREEZE);
 			mongoCollection.updateMany(bson, bson1);
 			return true;
 		}
 		else {
 			Bson bson = and(eq("userId", userId), eq("userType", UserType.STORE));
-			Bson bson1 = set("status", UserStatus.FREEZE);
+			Bson bson1 = set("userStatus", UserStatus.FREEZE);
 			mongoCollection.updateMany(bson, bson1);
 			return true;
 		}
