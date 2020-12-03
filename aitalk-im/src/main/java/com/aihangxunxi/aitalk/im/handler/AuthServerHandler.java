@@ -52,7 +52,7 @@ public final class AuthServerHandler extends ChannelInboundHandlerAdapter {
 	private UserRepository userRepository;
 
 	@Override
-	public void channelRead(ChannelHandlerContext ctx, Object msg) {
+	public void channelRead(ChannelHandlerContext ctx, Object msg) throws InterruptedException {
 		logger.debug(msg.toString());
 		Channel currentChannel;
 		Channel oldChannel;
@@ -80,12 +80,14 @@ public final class AuthServerHandler extends ChannelInboundHandlerAdapter {
 					userId = user.getId().toHexString();
 					currentChannel = this.channelProcess(ctx, user);
 					oldChannel = channelManager.findChannelByUserId(userId);
-					if (oldChannel != null && !oldChannel.attr(ChannelConstant.DEVICE_CODE_ATTRIBUTE_KEY).get()
-							.toLowerCase().equals(ctx.channel().attr(ChannelConstant.DEVICE_CODE_ATTRIBUTE_KEY).get()
-									.toLowerCase())) {
-						channelManager.removeChannel(oldChannel);
-						Message message = Message.newBuilder().setOpCode(OpCode.DISCONNECT_REQUEST).build();
-						oldChannel.writeAndFlush(message);
+					if (oldChannel != null) {
+						if (!oldChannel.attr(ChannelConstant.DEVICE_CODE_ATTRIBUTE_KEY).get().toLowerCase().equals(
+								ctx.channel().attr(ChannelConstant.DEVICE_CODE_ATTRIBUTE_KEY).get().toLowerCase())) {
+							Message message = Message.newBuilder().setOpCode(OpCode.DISCONNECT_REQUEST).build();
+							oldChannel.writeAndFlush(message);
+							oldChannel.attr(ChannelConstant.IS_OLD_CHANNEL_ATTRIBUTE_KEY).set(Boolean.TRUE);
+						}
+						oldChannel.close();
 					}
 
 					// todo:后面考虑多设备登录的清空
@@ -135,6 +137,7 @@ public final class AuthServerHandler extends ChannelInboundHandlerAdapter {
 		channel.attr(ChannelConstant.DEVICE_PLATFORM_ATTRIBUTE_KEY).set(user.getDevicePlatform());
 		channel.attr(ChannelConstant.USER_NICKNAME_ATTRIBUTE_KEY).set(user.getNickname());
 		channel.attr(ChannelConstant.USER_PROFILE_PHOTO_ATTRIBUTE_KEY).set(user.getHeader());
+		channel.attr(ChannelConstant.IS_OLD_CHANNEL_ATTRIBUTE_KEY).set(Boolean.FALSE);
 		return channel;
 	}
 
