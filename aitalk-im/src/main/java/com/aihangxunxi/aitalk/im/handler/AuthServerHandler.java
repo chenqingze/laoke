@@ -54,6 +54,8 @@ public final class AuthServerHandler extends ChannelInboundHandlerAdapter {
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) {
 		logger.debug(msg.toString());
+		Channel currentChannel;
+		Channel oldChannel;
 		boolean result = false;
 		String userId = "";
 		if (msg instanceof Message && ((Message) msg).getOpCode() == OpCode.AUTH_REQUEST) {
@@ -76,15 +78,18 @@ public final class AuthServerHandler extends ChannelInboundHandlerAdapter {
 				if (user != null) {
 					result = true;
 					userId = user.getId().toHexString();
-
-					Channel Channel = channelManager.findChannelByUserId(userId);
-					if (Channel != null) {
+					currentChannel = this.channelProcess(ctx, user);
+					oldChannel = channelManager.findChannelByUserId(userId);
+					if (oldChannel != null && !oldChannel.attr(ChannelConstant.DEVICE_CODE_ATTRIBUTE_KEY).get()
+							.toLowerCase().equals(ctx.channel().attr(ChannelConstant.DEVICE_CODE_ATTRIBUTE_KEY).get()
+									.toLowerCase())) {
+						channelManager.removeChannel(oldChannel);
 						Message message = Message.newBuilder().setOpCode(OpCode.DISCONNECT_REQUEST).build();
-						Channel.writeAndFlush(message);
+						oldChannel.writeAndFlush(message);
 					}
 
 					// todo:后面考虑多设备登录的清空
-					channelManager.addChannel(this.channelProcess(ctx, user));
+					channelManager.addChannel(currentChannel);
 					ctx.pipeline().remove(this);
 					Message message = authAssembler.authAckBuilder(((Message) msg).getSeq(), userId, result);
 					ctx.writeAndFlush(message);
