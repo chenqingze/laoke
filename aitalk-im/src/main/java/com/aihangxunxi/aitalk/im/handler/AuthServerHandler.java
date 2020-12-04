@@ -60,6 +60,7 @@ public final class AuthServerHandler extends ChannelInboundHandlerAdapter {
 		String userId = "";
 		if (msg instanceof Message && ((Message) msg).getOpCode() == OpCode.AUTH_REQUEST) {
 			String token = ((Message) msg).getAuthRequest().getToken();
+			String deviceCode = ((Message) msg).getAuthRequest().getDeviceCode();
 			// todo:验证token合法性,并获取用户信息
 			LoginUserResponseRedisEntity redisEntity = (LoginUserResponseRedisEntity) authRedisTemplate.opsForValue()
 					.get(RedisKeyConstants.ACCESS_TOKEN + token);
@@ -85,8 +86,8 @@ public final class AuthServerHandler extends ChannelInboundHandlerAdapter {
 								ctx.channel().attr(ChannelConstant.DEVICE_CODE_ATTRIBUTE_KEY).get().toLowerCase())) {
 							Message message = Message.newBuilder().setOpCode(OpCode.DISCONNECT_REQUEST).build();
 							oldChannel.writeAndFlush(message);
-							oldChannel.attr(ChannelConstant.IS_OLD_CHANNEL_ATTRIBUTE_KEY).set(Boolean.TRUE);
 						}
+						oldChannel.attr(ChannelConstant.IS_OLD_CHANNEL_ATTRIBUTE_KEY).set(Boolean.TRUE);
 						oldChannel.close();
 					}
 
