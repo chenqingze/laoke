@@ -83,7 +83,9 @@ public final class AuthServerHandler extends ChannelInboundHandlerAdapter {
 					oldChannel = channelManager.findChannelByUserId(userId);
 					if (oldChannel != null) {
 						if (!oldChannel.attr(ChannelConstant.DEVICE_CODE_ATTRIBUTE_KEY).get().toLowerCase().equals(
-								ctx.channel().attr(ChannelConstant.DEVICE_CODE_ATTRIBUTE_KEY).get().toLowerCase())) {
+								ctx.channel().attr(ChannelConstant.DEVICE_CODE_ATTRIBUTE_KEY).get().toLowerCase())
+								|| oldChannel.attr(ChannelConstant.DEVICE_CODE_ATTRIBUTE_KEY).get().toLowerCase()
+										.equals(deviceCode)) {
 							Message message = Message.newBuilder().setOpCode(OpCode.DISCONNECT_REQUEST).build();
 							oldChannel.writeAndFlush(message);
 						}
