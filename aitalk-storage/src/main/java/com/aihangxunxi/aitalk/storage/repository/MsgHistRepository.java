@@ -1,5 +1,6 @@
 package com.aihangxunxi.aitalk.storage.repository;
 
+import com.aihangxunxi.aitalk.storage.constant.ConsultDirection;
 import com.aihangxunxi.aitalk.storage.constant.MsgStatus;
 import com.aihangxunxi.aitalk.storage.model.MsgHist;
 import com.aihangxunxi.aitalk.storage.model.MucHist;
@@ -126,9 +127,31 @@ public class MsgHistRepository {
 			withdrawConsultOfflienMsg(msgId);
 		}
 		else {
-			saveOfflineMsgHist(getMsgHistById(new ObjectId(msgId)));
+			MsgHist msgHist = getMsgHistById(new ObjectId(msgId));
+			// 将方向进行发转
+			msgHist.setConsultDirection(getConsultDirection(msgHist.getConsultDirection()));
+			saveOfflineMsgHist(msgHist);
 		}
 
+	}
+
+	// 反转咨询方向
+	private ConsultDirection getConsultDirection(ConsultDirection consultDirection) {
+		ConsultDirection consultDirectionR;
+		switch (consultDirection) {
+		case PSO:
+			consultDirectionR = ConsultDirection.SPI;
+			break;
+		case PPO:
+			consultDirectionR = ConsultDirection.PPI;
+			break;
+		case SPO:
+			consultDirectionR = ConsultDirection.PSI;
+			break;
+		default:
+			throw new IllegalStateException("Unexpected value: " + consultDirection);
+		}
+		return consultDirectionR;
 	}
 
 }
