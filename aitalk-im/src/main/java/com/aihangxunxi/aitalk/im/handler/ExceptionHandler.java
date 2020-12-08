@@ -32,7 +32,9 @@ public class ExceptionHandler extends ChannelDuplexHandler {
 			logger.debug("channel 缓存大小:{}", channelManager.getLocalChannelCacheSize());
 			logger.debug("用户多客户端session集合缓存 大小:{}", channelManager.getLocalChannelCacheSize());
 		}
-		if (!ctx.channel().attr(ChannelConstant.IS_OLD_CHANNEL_ATTRIBUTE_KEY).get()){
+		Channel channel = ctx.channel();
+		if (channel.hasAttr(ChannelConstant.IS_OLD_CHANNEL_ATTRIBUTE_KEY)
+				&& !channel.attr(ChannelConstant.IS_OLD_CHANNEL_ATTRIBUTE_KEY).get()) {
 			channelManager.removeChannel(ctx);
 		}
 	}
