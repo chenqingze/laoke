@@ -51,4 +51,5 @@ public final class ChannelConstant {
 
 	public static final AttributeKey<Boolean> IS_OLD_CHANNEL_ATTRIBUTE_KEY = AttributeKey
 			.newInstance(IS_OLD_CHANNEL_KEY);
+
 }
