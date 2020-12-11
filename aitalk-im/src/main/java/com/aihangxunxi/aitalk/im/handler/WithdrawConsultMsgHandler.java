@@ -10,6 +10,7 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.util.ReferenceCountUtil;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Component;
 
@@ -37,39 +38,43 @@ public class WithdrawConsultMsgHandler extends ChannelInboundHandlerAdapter {
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 		if (msg instanceof Message && ((Message) msg).getOpCode() == OpCode.WITHDRAW_CONSULT_REQUEST) {
-			String msgId = ((Message) msg).getWithdrawConsultRequest().getMsgId();
-			// 接受者ID
-			ObjectId receiverId = new ObjectId(((Message) msg).getWithdrawConsultRequest().getConversationId());
-			String consultDirection = ((Message) msg).getWithdrawConsultRequest().getConsultDirection();
-			// 修改消息历史表
-			msgHistRepository.withdrawConsultMsg(msgId);
+			try{
+				String msgId = ((Message) msg).getWithdrawConsultRequest().getMsgId();
+				// 接受者ID
+				ObjectId receiverId = new ObjectId(((Message) msg).getWithdrawConsultRequest().getConversationId());
+				String consultDirection = ((Message) msg).getWithdrawConsultRequest().getConsultDirection();
+				// 修改消息历史表
+				msgHistRepository.withdrawConsultMsg(msgId);
 
-			Message ack = Message.newBuilder().setSeq(((Message) msg).getSeq()).setOpCode(OpCode.WITHDRAW_CONSULT_ACK)
-					.setWithdrawConsultAck(
-							WithdrawConsultAck.newBuilder().setMsgId(msgId).setConversationId(receiverId.toString())
-									.setConsultDirection(consultDirection).setSuccess("ok").build())
-					.build();
-			ctx.writeAndFlush(ack);
+				Message ack = Message.newBuilder().setSeq(((Message) msg).getSeq()).setOpCode(OpCode.WITHDRAW_CONSULT_ACK)
+						.setWithdrawConsultAck(
+								WithdrawConsultAck.newBuilder().setMsgId(msgId).setConversationId(receiverId.toString())
+										.setConsultDirection(consultDirection).setSuccess("ok").build())
+						.build();
+				ctx.writeAndFlush(ack);
 
-			// 发送给被咨询者 咨询方向进行反转
-			Channel addresseeChannel = channelManager.findChannelByUserId(receiverId.toHexString());
-			String userObjectId = ctx.channel().attr(ChannelConstant.USER_ID_ATTRIBUTE_KEY).get();
-			User user = userRepository.getUserById(new ObjectId(userObjectId));
+				// 发送给被咨询者 咨询方向进行反转
+				Channel addresseeChannel = channelManager.findChannelByUserId(receiverId.toHexString());
+				String userObjectId = ctx.channel().attr(ChannelConstant.USER_ID_ATTRIBUTE_KEY).get();
+				User user = userRepository.getUserById(new ObjectId(userObjectId));
 
-			// 发送对方请求
-			Message recevie = Message.newBuilder().setSeq(((Message) msg).getSeq())
-					.setOpCode(OpCode.RECEIVE_WITHDRAW_MSG)
-					.setRecevieWithdrawMsg(RecevieWithdrawMsg.newBuilder().setMsgId(msgId)
-							.setSenderId(user.getId().toHexString())
-							.setConsultDirection(getConsultDirection(consultDirection)).setSuccess("ok").build())
-					.build();
+				// 发送对方请求
+				Message recevie = Message.newBuilder().setSeq(((Message) msg).getSeq())
+						.setOpCode(OpCode.RECEIVE_WITHDRAW_MSG)
+						.setRecevieWithdrawMsg(RecevieWithdrawMsg.newBuilder().setMsgId(msgId)
+								.setSenderId(user.getId().toHexString())
+								.setConsultDirection(getConsultDirection(consultDirection)).setSuccess("ok").build())
+						.build();
 
-			if (addresseeChannel != null) {
-				addresseeChannel.writeAndFlush(recevie);
+				if (addresseeChannel != null) {
+					addresseeChannel.writeAndFlush(recevie);
+				}
+
+				// 查询离线消息表中是否存在，存在修改并存在则插入，（从消息历史表中获取）
+				msgHistRepository.editOfflienMsg(msgId);
+			} finally{
+				ReferenceCountUtil.release(msg);
 			}
-
-			// 查询离线消息表中是否存在，存在修改并存在则插入，（从消息历史表中获取）
-			msgHistRepository.editOfflienMsg(msgId);
 		}
 		else {
 			ctx.fireChannelRead(msg);
