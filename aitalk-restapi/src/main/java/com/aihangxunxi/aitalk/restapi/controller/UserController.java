@@ -166,4 +166,15 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.OK).body(map);
 	}
 
+	/**
+	 * 导入数据
+	 * @return
+	 */
+	@GetMapping("import")
+	public ResponseEntity<ModelMap> importUsers() {
+		ModelMap map = new ModelMap();
+		userService.importUsers();
+		return ResponseEntity.status(HttpStatus.OK).body(map);
+	}
+
 }

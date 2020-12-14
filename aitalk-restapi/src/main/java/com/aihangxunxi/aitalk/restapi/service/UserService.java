@@ -32,4 +32,6 @@ public interface UserService {
 
 	boolean getUserIsFreeze(Long userId, String userType);
 
+	boolean importUsers();
+
 }

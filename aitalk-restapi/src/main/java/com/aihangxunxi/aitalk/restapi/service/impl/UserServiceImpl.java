@@ -82,4 +82,9 @@ public class UserServiceImpl implements UserService {
 		return userRepository.effective(userId, userType);
 	}
 
+	@Override
+	public boolean importUsers() {
+		return userRepository.importUsers();
+	}
+
 }

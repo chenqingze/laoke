@@ -37,82 +37,86 @@ import static com.aihangxunxi.aitalk.storage.constant.ConsultDirection.*;
 @ChannelHandler.Sharable
 public class ConsultChatHandler extends ChannelInboundHandlerAdapter {
 
-    private static final Logger logger = LoggerFactory.getLogger(P2PChatHandler.class);
+	private static final Logger logger = LoggerFactory.getLogger(P2PChatHandler.class);
 
-    @Resource
-    private ChannelManager channelManager;
+	@Resource
+	private ChannelManager channelManager;
 
-    @Resource
-    private MsgHistRepository msgHistRepository;
+	@Resource
+	private MsgHistRepository msgHistRepository;
 
-    @Resource
-    private UserRepository userRepository;
+	@Resource
+	private UserRepository userRepository;
 
-    @Resource
-    private MsgAssembler msgAssembler;
+	@Resource
+	private MsgAssembler msgAssembler;
 
-    @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        if (msg instanceof Message && ((Message) msg).getOpCode() == OpCode.MSG_REQUEST) {
-            try {
-                if (ConversationType.CONSULT.ordinal() == ((Message) msg).getMsgRequest().getConversationType()
-                        .getNumber()) {
-                    String userObjectId = ctx.channel().attr(ChannelConstant.USER_ID_ATTRIBUTE_KEY).get();
+	@Override
+	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+		if (msg instanceof Message && ((Message) msg).getOpCode() == OpCode.MSG_REQUEST) {
+			try {
+				if (ConversationType.CONSULT.ordinal() == ((Message) msg).getMsgRequest().getConversationType()
+						.getNumber()) {
+					String userObjectId = ctx.channel().attr(ChannelConstant.USER_ID_ATTRIBUTE_KEY).get();
 
-                    User user = userRepository.getUserById(new ObjectId(userObjectId));
+					User user = userRepository.getUserById(new ObjectId(userObjectId));
 
-                    MsgHist msgHist = msgAssembler.convertMsgRequestToMsgHist((Message) msg);
-                    msgHist.setSenderId(user.getId());
-                    msgHist.setMsgStatus(MsgStatus.SUCCESS);
-                    msgHist.setConversationType(ConversationType.CONSULT);
-                    long currentTimeMillis = System.currentTimeMillis();
-                    msgHist.setCreatedAt(currentTimeMillis);
-                    msgHist.setUpdatedAt(currentTimeMillis);
-                    msgHistRepository.saveMsgHist(msgHist);
+					MsgHist msgHist = msgAssembler.convertMsgRequestToMsgHist((Message) msg);
+					msgHist.setSenderId(user.getId());
+					msgHist.setMsgStatus(MsgStatus.SUCCESS);
+					msgHist.setConversationType(ConversationType.CONSULT);
+					long currentTimeMillis = System.currentTimeMillis();
+					msgHist.setCreatedAt(currentTimeMillis);
+					msgHist.setUpdatedAt(currentTimeMillis);
+					msgHistRepository.saveMsgHist(msgHist);
 
-                    Message msgAck = msgAssembler.convertMgsHistToMessage(msgHist, ((Message) msg).getSeq());
-                    ctx.writeAndFlush(msgAck);
+					Message msgAck = msgAssembler.convertMgsHistToMessage(msgHist, ((Message) msg).getSeq());
+					ctx.writeAndFlush(msgAck);
 
-                    // 发送给被咨询者 咨询方向进行反转
-                    msgHist.setConsultDirection(getConsultDirection(msgHist.getConsultDirection()));
-                    Channel addresseeChannel = channelManager.findChannelByUserId(msgHist.getReceiverId().toHexString());
-                    if (addresseeChannel != null) {
-                        MsgReadNotify msgReadNotify = msgAssembler.buildMsgReadNotify(msgHist);
-                        Message message = Message.newBuilder().setOpCode(OpCode.CONSULT_MSG_READ_NOTIFY)
-                                .setMsgReadNotify(msgReadNotify).build();
-                        addresseeChannel.writeAndFlush(message);
-                    }
-                    // 将消息存暂储至离线表中
-                    msgHistRepository.saveOfflineMsgHist(msgHist);
+					// 发送给被咨询者 咨询方向进行反转
+					msgHist.setConsultDirection(getConsultDirection(msgHist.getConsultDirection()));
+					Channel addresseeChannel = channelManager
+							.findChannelByUserId(msgHist.getReceiverId().toHexString());
+					if (addresseeChannel != null) {
+						MsgReadNotify msgReadNotify = msgAssembler.buildMsgReadNotify(msgHist);
+						Message message = Message.newBuilder().setOpCode(OpCode.CONSULT_MSG_READ_NOTIFY)
+								.setMsgReadNotify(msgReadNotify).build();
+						addresseeChannel.writeAndFlush(message);
+					}
+					// 将消息存暂储至离线表中
+					msgHistRepository.saveOfflineMsgHist(msgHist);
 
-                } else {
-                    ctx.fireChannelRead(msg);
-                }
-            } finally {
-                ReferenceCountUtil.release(msg);
-            }
-        } else {
-            ctx.fireChannelRead(msg);
-        }
-    }
+				}
+				else {
+					ctx.fireChannelRead(msg);
+				}
+			}
+			finally {
+				ReferenceCountUtil.release(msg);
+			}
+		}
+		else {
+			ctx.fireChannelRead(msg);
+		}
+	}
 
-    // 反转咨询方向
-    private ConsultDirection getConsultDirection(ConsultDirection consultDirection) {
-        ConsultDirection consultDirectionR;
-        switch (consultDirection) {
-            case PSO:
-                consultDirectionR = ConsultDirection.SPI;
-                break;
-            case PPO:
-                consultDirectionR = ConsultDirection.PPI;
-                break;
-            case SPO:
-                consultDirectionR = ConsultDirection.PSI;
-                break;
-            default:
-                throw new IllegalStateException("Unexpected value: " + consultDirection);
-        }
-        return consultDirectionR;
-    }
+	// 反转咨询方向
+	private ConsultDirection getConsultDirection(ConsultDirection consultDirection) {
+		ConsultDirection consultDirectionR;
+		switch (consultDirection) {
+		case PSO:
+			consultDirectionR = ConsultDirection.SPI;
+			break;
+		case PPO:
+			consultDirectionR = ConsultDirection.PPI;
+			break;
+		case SPO:
+			consultDirectionR = ConsultDirection.PSI;
+			break;
+		default:
+			throw new IllegalStateException("Unexpected value: " + consultDirection);
+		}
+		return consultDirectionR;
+	}
 
 }
