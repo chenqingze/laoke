@@ -6,6 +6,7 @@ import com.aihangxunxi.aitalk.im.channel.ChannelManager;
 import com.aihangxunxi.aitalk.im.constant.RedisKeyConstants;
 import com.aihangxunxi.aitalk.im.manager.GroupManager;
 import com.aihangxunxi.aitalk.im.protocol.buffers.Message;
+import com.aihangxunxi.aitalk.im.protocol.buffers.MsgReadNotify;
 import com.aihangxunxi.aitalk.im.protocol.buffers.OpCode;
 import com.aihangxunxi.aitalk.storage.model.User;
 import com.aihangxunxi.aitalk.storage.repository.GroupMemberRepository;
@@ -51,12 +52,15 @@ public final class AuthServerHandler extends ChannelInboundHandlerAdapter {
 	private UserRepository userRepository;
 
 	@Override
-	public void channelRead(ChannelHandlerContext ctx, Object msg) {
+	public void channelRead(ChannelHandlerContext ctx, Object msg) throws InterruptedException {
 		logger.debug(msg.toString());
+		Channel currentChannel;
+		Channel oldChannel;
 		boolean result = false;
 		String userId = "";
 		if (msg instanceof Message && ((Message) msg).getOpCode() == OpCode.AUTH_REQUEST) {
 			String token = ((Message) msg).getAuthRequest().getToken();
+			String deviceCode = ((Message) msg).getAuthRequest().getDeviceCode();
 			// todo:验证token合法性,并获取用户信息
 			LoginUserResponseRedisEntity redisEntity = (LoginUserResponseRedisEntity) authRedisTemplate.opsForValue()
 					.get(RedisKeyConstants.ACCESS_TOKEN + token);
@@ -75,8 +79,22 @@ public final class AuthServerHandler extends ChannelInboundHandlerAdapter {
 				if (user != null) {
 					result = true;
 					userId = user.getId().toHexString();
+					currentChannel = this.channelProcess(ctx, user);
+					oldChannel = channelManager.findChannelByUserId(userId);
+					if (oldChannel != null) {
+						if (!oldChannel.attr(ChannelConstant.DEVICE_CODE_ATTRIBUTE_KEY).get().toLowerCase().equals(
+								ctx.channel().attr(ChannelConstant.DEVICE_CODE_ATTRIBUTE_KEY).get().toLowerCase())
+								|| !oldChannel.attr(ChannelConstant.DEVICE_CODE_ATTRIBUTE_KEY).get().toLowerCase()
+										.equals(deviceCode)) {
+							Message message = Message.newBuilder().setOpCode(OpCode.DISCONNECT_REQUEST).build();
+							oldChannel.writeAndFlush(message);
+						}
+						oldChannel.attr(ChannelConstant.IS_OLD_CHANNEL_ATTRIBUTE_KEY).set(Boolean.TRUE);
+						oldChannel.close();
+					}
+
 					// todo:后面考虑多设备登录的清空
-					channelManager.addChannel(this.channelProcess(ctx, user));
+					channelManager.addChannel(currentChannel);
 					ctx.pipeline().remove(this);
 					Message message = authAssembler.authAckBuilder(((Message) msg).getSeq(), userId, result);
 					ctx.writeAndFlush(message);
@@ -122,6 +140,7 @@ public final class AuthServerHandler extends ChannelInboundHandlerAdapter {
 		channel.attr(ChannelConstant.DEVICE_PLATFORM_ATTRIBUTE_KEY).set(user.getDevicePlatform());
 		channel.attr(ChannelConstant.USER_NICKNAME_ATTRIBUTE_KEY).set(user.getNickname());
 		channel.attr(ChannelConstant.USER_PROFILE_PHOTO_ATTRIBUTE_KEY).set(user.getHeader());
+		channel.attr(ChannelConstant.IS_OLD_CHANNEL_ATTRIBUTE_KEY).set(Boolean.FALSE);
 		return channel;
 	}
 

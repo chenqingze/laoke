@@ -32,6 +32,8 @@ public final class ChannelConstant {
 
 	private static final String USER_NICKNAME_KEY = "user_nickname";
 
+	private static final String IS_OLD_CHANNEL_KEY = "is_old_channel";
+
 	public static final AttributeKey<String> USER_ID_ATTRIBUTE_KEY = AttributeKey.newInstance(USER_ID_KEY);
 
 	public static final AttributeKey<String> DEVICE_CODE_ATTRIBUTE_KEY = AttributeKey.newInstance(DEVICE_CODE_KEY);
@@ -46,5 +48,8 @@ public final class ChannelConstant {
 
 	public static final AttributeKey<DevicePlatform> DEVICE_PLATFORM_ATTRIBUTE_KEY = AttributeKey
 			.newInstance(DEVICE_PLATFORM_KEY);
+
+	public static final AttributeKey<Boolean> IS_OLD_CHANNEL_ATTRIBUTE_KEY = AttributeKey
+			.newInstance(IS_OLD_CHANNEL_KEY);
 
 }

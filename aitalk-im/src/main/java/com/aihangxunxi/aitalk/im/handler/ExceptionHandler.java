@@ -1,5 +1,6 @@
 package com.aihangxunxi.aitalk.im.handler;
 
+import com.aihangxunxi.aitalk.im.channel.ChannelConstant;
 import com.aihangxunxi.aitalk.im.channel.ChannelManager;
 import io.netty.channel.*;
 import org.slf4j.Logger;
@@ -31,21 +32,23 @@ public class ExceptionHandler extends ChannelDuplexHandler {
 			logger.debug("channel 缓存大小:{}", channelManager.getLocalChannelCacheSize());
 			logger.debug("用户多客户端session集合缓存 大小:{}", channelManager.getLocalChannelCacheSize());
 		}
-		channelManager.removeChannel(ctx);
+		Channel channel = ctx.channel();
+		if (channel.hasAttr(ChannelConstant.IS_OLD_CHANNEL_ATTRIBUTE_KEY)
+				&& !channel.attr(ChannelConstant.IS_OLD_CHANNEL_ATTRIBUTE_KEY).get()) {
+			channelManager.removeChannel(ctx);
+		}
+	}
+
+	@Override
+	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
 		if (logger.isDebugEnabled()) {
 			logger.debug("handler removed");
 			logger.debug("channel 缓存大小:{}", channelManager.getLocalChannelCacheSize());
 			logger.debug("channel 状态:{}", ctx);
 			logger.debug("用户多客户端session集合缓存 大小:{}", channelManager.getLocalChannelCacheSize());
 		}
-	}
-
-	@Override
-	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
 		// Uncaught exceptions from inbound handlers will propagate up to this handler
-		if (ctx.channel().isActive()) {
-			ctx.close();
-		}
+		ctx.close();
 		logger.warn("发生异常，关闭channel。异常信息：{}", cause.getMessage());
 		cause.printStackTrace();
 	}

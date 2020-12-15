@@ -41,7 +41,6 @@ public class ClusterAitalkChannel implements AitalkChannel {
 			}
 		}
 		// todo:存入数据库
-
 	}
 
 	@Override

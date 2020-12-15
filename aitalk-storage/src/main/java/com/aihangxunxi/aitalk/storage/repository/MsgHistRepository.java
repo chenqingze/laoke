@@ -1,9 +1,11 @@
 package com.aihangxunxi.aitalk.storage.repository;
 
+import com.aihangxunxi.aitalk.storage.constant.ConsultDirection;
 import com.aihangxunxi.aitalk.storage.constant.MsgStatus;
 import com.aihangxunxi.aitalk.storage.model.MsgHist;
 import com.aihangxunxi.aitalk.storage.model.MucHist;
 import com.aihangxunxi.aitalk.storage.model.OfflineMsg;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.result.InsertOneResult;
@@ -103,6 +105,53 @@ public class MsgHistRepository {
 		Bson bson = eq("_id", id);
 		mongoCollection.deleteMany(bson);
 		return true;
+	}
+
+	public MsgHist getMsgHistById(ObjectId id) {
+		MongoCollection<MsgHist> mongoCollection = aitalkDb.getCollection("msgHist", MsgHist.class);
+		Bson bson = eq("_id", id);
+		return mongoCollection.find(bson).first();
+	}
+
+	// 根据msgId 查询离线消息
+	public boolean getOfflentMsgById(ObjectId id) {
+		MongoCollection<OfflineMsg> mongoCollection = aitalkDb.getCollection("offlineMsg", OfflineMsg.class);
+		Bson bson = eq("_id", id);
+		return mongoCollection.countDocuments(bson) > 0;
+	}
+
+	// 编辑离线消息
+	public void editOfflienMsg(String msgId) {
+		if (getOfflentMsgById(new ObjectId(msgId))) {
+			// 消息列表存在直接修改
+			withdrawConsultOfflienMsg(msgId);
+		}
+		else {
+			MsgHist msgHist = getMsgHistById(new ObjectId(msgId));
+			// 将方向进行发转
+			msgHist.setConsultDirection(getConsultDirection(msgHist.getConsultDirection()));
+			saveOfflineMsgHist(msgHist);
+		}
+
+	}
+
+	// 反转咨询方向
+	private ConsultDirection getConsultDirection(ConsultDirection consultDirection) {
+		ConsultDirection consultDirectionR;
+		switch (consultDirection) {
+		case PSO:
+			consultDirectionR = ConsultDirection.SPI;
+			break;
+		case PPO:
+			consultDirectionR = ConsultDirection.PPI;
+			break;
+		case SPO:
+			consultDirectionR = ConsultDirection.PSI;
+			break;
+		default:
+			throw new IllegalStateException("Unexpected value: " + consultDirection);
+		}
+		return consultDirectionR;
 	}
 
 }

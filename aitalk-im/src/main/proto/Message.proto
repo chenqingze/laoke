@@ -23,9 +23,9 @@ message Message {
     // 连接相关11～20
     AuthRequest auth_request = 11;
     AuthAck auth_ack = 12;
-    //    Ping ping = 13;
+    Ping ping = 13;
     //    Pong pong = 14;
-    //    Disconnect disconnect = 15;
+    Disconnect disconnect = 15;
 
     // 消息相关21～50
     MsgRequest msg_request = 20;
@@ -89,6 +89,10 @@ message Message {
     WithdrawConsultRequest withdraw_consult_request = 500;
 
     WithdrawConsultAck withdraw_consult_ack = 501;
+
+    RecevieWithdrawMsg recevie_withdraw_msg = 505;
+
+    RecevieWithdrawMsgAck recevie_withdraw_msg_ack = 506;
     //------------------------------------------好友及好友邀请---------------------------------------------------
 
     InvitationRequestRequest invitation_request_request = 1001;

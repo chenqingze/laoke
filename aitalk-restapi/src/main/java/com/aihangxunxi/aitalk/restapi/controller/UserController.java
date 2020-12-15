@@ -143,6 +143,19 @@ public class UserController {
 	}
 
 	/**
+	 * 解冻用户
+	 * @param userId
+	 * @return
+	 */
+	@PutMapping("effective")
+	public ResponseEntity<ModelMap> effectiveUser(@RequestParam("userId") Long userId,
+			@RequestParam("userType") String userType) {
+		ModelMap map = new ModelMap();
+		map.put("success", userService.effective(userId, userType));
+		return ResponseEntity.status(HttpStatus.OK).body(map);
+	}
+
+	/**
 	 * 查询用户是否被冻结 UserIsFreeze
 	 */
 	@GetMapping("getUserIsFreeze")
@@ -150,6 +163,17 @@ public class UserController {
 			@RequestParam("userType") String userType) {
 		ModelMap map = new ModelMap();
 		map.put("success", userService.getUserIsFreeze(userId, userType));
+		return ResponseEntity.status(HttpStatus.OK).body(map);
+	}
+
+	/**
+	 * 导入数据
+	 * @return
+	 */
+	@GetMapping("import")
+	public ResponseEntity<ModelMap> importUsers() {
+		ModelMap map = new ModelMap();
+		userService.importUsers();
 		return ResponseEntity.status(HttpStatus.OK).body(map);
 	}
 

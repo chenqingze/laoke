@@ -24,10 +24,14 @@ public interface UserService {
 
 	boolean freezeUser(Long userId, String userType);
 
+	boolean effective(Long userId, String userType);
+
 	User queryUserByType(String userType, Long userId);
 
 	Object getUserByObjectId(String id);
 
 	boolean getUserIsFreeze(Long userId, String userType);
+
+	boolean importUsers();
 
 }

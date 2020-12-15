@@ -2,10 +2,8 @@ package com.aihangxunxi.aitalk.im.consumer;
 
 import com.aihangxunxi.aitalk.im.assembler.MsgAssembler;
 import com.aihangxunxi.aitalk.im.channel.ChannelManager;
-import com.aihangxunxi.aitalk.im.protocol.buffers.Message;
-import com.aihangxunxi.aitalk.im.protocol.buffers.OpCode;
-import com.aihangxunxi.aitalk.im.protocol.buffers.SendSystemInfoRequest;
 import com.aihangxunxi.aitalk.im.utils.ObjectUtil;
+import com.aihangxunxi.aitalk.im.utils.SystemInfoNotify;
 import com.aihangxunxi.aitalk.storage.model.SystemInfo;
 import com.aihangxunxi.aitalk.storage.model.User;
 import com.aihangxunxi.aitalk.storage.repository.SystemInfoRepository;
@@ -52,9 +50,12 @@ public class SystemInfoConsumer {
 	@Resource
 	private ChannelManager channelManager;
 
-	public SystemInfoConsumer(@Value("${server.rabbitMq.host}")String host,
-							  @Value("${server.rabbitMq.port}")String port,@Value("${server.rabbitMq.userName}")String userName,
-							  @Value("${server.rabbitMq.password}")String password) {
+	@Resource
+	private SystemInfoNotify systemInfoNotify;
+
+	public SystemInfoConsumer(@Value("${server.rabbitMq.host}") String host,
+			@Value("${server.rabbitMq.port}") String port, @Value("${server.rabbitMq.userName}") String userName,
+			@Value("${server.rabbitMq.password}") String password) {
 
 		try {
 			// 创建连接
@@ -114,15 +115,10 @@ public class SystemInfoConsumer {
 			}
 			systemInfo.setUserId(user.getId().toHexString());
 			systemInfoRepository.saveSystemInfo(systemInfo);
-			io.netty.channel.Channel channel = channelManager.findChannelByUserId(user.getId().toHexString());
-			if (channel != null) {
-				SendSystemInfoRequest sendSystemInfoRequest = msgAssembler.buildSendSystemInfoRequest(systemInfo);
-				Message message = Message.newBuilder().setOpCode(OpCode.SYSTEM_INFO_NOTIFY)
-						.setSendSystemInfoRequest(sendSystemInfoRequest).build();
-				channel.writeAndFlush(message);
-			}
+			systemInfoNotify.sendSystemNotify(user.getId().toHexString(), systemInfo);
 			// 暂时保存至离线消息库
 			systemInfoRepository.saveOfflineSystemInfo(systemInfo);
 		};
 	}
+
 }
