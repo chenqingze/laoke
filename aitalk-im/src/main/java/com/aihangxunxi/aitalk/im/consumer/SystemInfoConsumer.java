@@ -10,7 +10,6 @@ import com.aihangxunxi.aitalk.storage.model.SystemInfo;
 import com.aihangxunxi.aitalk.storage.model.User;
 import com.aihangxunxi.aitalk.storage.repository.SystemInfoRepository;
 import com.aihangxunxi.aitalk.storage.repository.UserRepository;
-import com.github.benmanes.caffeine.cache.Cache;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
@@ -23,9 +22,6 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 import java.util.concurrent.TimeoutException;
 
@@ -112,6 +108,10 @@ public class SystemInfoConsumer {
 			systemInfo.setStatus("no");
 			User user = userRepository.getUserByUserId(systemInfo.getReceiverId());
 			systemInfo.setMsgId(new ObjectId());
+			if(user == null) {
+				logger.info("---------------根据userId没有获取到用户信息--------------userId是>>>>>>{}", map.get("receiverId"));
+				return;
+			}
 			systemInfo.setUserId(user.getId().toHexString());
 			systemInfoRepository.saveSystemInfo(systemInfo);
 			io.netty.channel.Channel channel = channelManager.findChannelByUserId(user.getId().toHexString());
