@@ -32,11 +32,11 @@ public class SystemInfoConsumer {
 
 	private static final Logger logger = LoggerFactory.getLogger(SystemInfoConsumer.class);
 
-	private final static String EXCHANGE_NAME = "SYSTEM_INFO";
+	private final static String EXCHANGE_NAME = "SYSTEM_INFO_TEST";
 
 	private final static String TOPIC = "SYSTEM_INFO";
 
-	private final static String QUEUE_NAME = "SYSTEM_INFO";
+	private final static String QUEUE_NAME = "SYSTEM_INFO_TEST";
 
 	@Resource
 	private UserRepository userRepository;
@@ -99,8 +99,10 @@ public class SystemInfoConsumer {
 			systemInfo.setOrderId(map.get("orderId").toString());
 			systemInfo.setReceiverId((Long) (map.get("receiverId")));
 			systemInfo.setTitle((String) map.get("title"));
-			systemInfo.setContent((String) map.get("content"));
-			systemInfo.setImagePath((String) map.get("imagePath"));
+			if (map.get("content") != null)
+			    systemInfo.setContent((String) map.get("content"));
+			if (map.get("imagePath") != null)
+				systemInfo.setImagePath((String) map.get("imagePath"));
 			systemInfo.setType((String) map.get("type"));
 			long time = System.currentTimeMillis();
 			long time2 = System.currentTimeMillis();
