@@ -38,7 +38,7 @@ public class WithdrawConsultMsgHandler extends ChannelInboundHandlerAdapter {
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 		if (msg instanceof Message && ((Message) msg).getOpCode() == OpCode.WITHDRAW_CONSULT_REQUEST) {
-			try{
+			try {
 				String msgId = ((Message) msg).getWithdrawConsultRequest().getMsgId();
 				// 接受者ID
 				ObjectId receiverId = new ObjectId(((Message) msg).getWithdrawConsultRequest().getConversationId());
@@ -46,7 +46,8 @@ public class WithdrawConsultMsgHandler extends ChannelInboundHandlerAdapter {
 				// 修改消息历史表
 				msgHistRepository.withdrawConsultMsg(msgId);
 
-				Message ack = Message.newBuilder().setSeq(((Message) msg).getSeq()).setOpCode(OpCode.WITHDRAW_CONSULT_ACK)
+				Message ack = Message.newBuilder().setSeq(((Message) msg).getSeq())
+						.setOpCode(OpCode.WITHDRAW_CONSULT_ACK)
 						.setWithdrawConsultAck(
 								WithdrawConsultAck.newBuilder().setMsgId(msgId).setConversationId(receiverId.toString())
 										.setConsultDirection(consultDirection).setSuccess("ok").build())
@@ -72,7 +73,8 @@ public class WithdrawConsultMsgHandler extends ChannelInboundHandlerAdapter {
 
 				// 查询离线消息表中是否存在，存在修改并存在则插入，（从消息历史表中获取）
 				msgHistRepository.editOfflienMsg(msgId);
-			} finally{
+			}
+			finally {
 				ReferenceCountUtil.release(msg);
 			}
 		}
