@@ -100,7 +100,7 @@ public class SystemInfoConsumer {
 			systemInfo.setReceiverId((Long) (map.get("receiverId")));
 			systemInfo.setTitle((String) map.get("title"));
 			if (map.get("content") != null)
-			    systemInfo.setContent((String) map.get("content"));
+				systemInfo.setContent((String) map.get("content"));
 			if (map.get("imagePath") != null)
 				systemInfo.setImagePath((String) map.get("imagePath"));
 			systemInfo.setType((String) map.get("type"));
@@ -111,7 +111,7 @@ public class SystemInfoConsumer {
 			systemInfo.setStatus("no");
 			User user = userRepository.getUserByUserId(systemInfo.getReceiverId());
 			systemInfo.setMsgId(new ObjectId());
-			if(user == null) {
+			if (user == null) {
 				logger.info("---------------根据userId没有获取到用户信息--------------userId是>>>>>>{}", map.get("receiverId"));
 				return;
 			}

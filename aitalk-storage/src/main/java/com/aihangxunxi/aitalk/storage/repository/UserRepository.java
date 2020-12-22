@@ -257,18 +257,16 @@ public class UserRepository {
 				UserDTO.class);
 		List<UserDTO> users = mongoCollection.find().into(new ArrayList());
 		for (int i = 0; i < users.size(); i++) {
-			 importUser(users.get(i).getUserId(), users.get(i).getNickname(),
-			 users.get(i).getProfile());
+			importUser(users.get(i).getUserId(), users.get(i).getNickname(), users.get(i).getProfile());
 			UserRedisEntity u = (UserRedisEntity) authRedisTemplate.opsForValue()
 					.get("user:" + users.get(i).getUserId());
 			System.out.println(i);
 			if (u != null) {
 				System.out.println(u.toString());
-				 if (u.getStoreRedisEntity() != null) {
-				 importStoreUser(users.get(i).getUserId(),
-				 u.getStoreRedisEntity().getStoreName(),
-				 u.getStoreRedisEntity().getStoreHeadPortrait());
-				 }
+				if (u.getStoreRedisEntity() != null) {
+					importStoreUser(users.get(i).getUserId(), u.getStoreRedisEntity().getStoreName(),
+							u.getStoreRedisEntity().getStoreHeadPortrait());
+				}
 			}
 		}
 		MongoCollection<ConcernStore> mongoCollection1 = mongoClient.getDatabase("aihang3")
@@ -276,7 +274,7 @@ public class UserRepository {
 		List<ConcernStore> list = mongoCollection1.find().into(new ArrayList<>());
 		list.stream().forEach(concernStore -> {
 			System.out.println(concernStore.getUser_id() + "::::" + concernStore.getStore_id());
-			 follow(concernStore.getUser_id(), concernStore.getStore_id());
+			follow(concernStore.getUser_id(), concernStore.getStore_id());
 		});
 		return true;
 	}
