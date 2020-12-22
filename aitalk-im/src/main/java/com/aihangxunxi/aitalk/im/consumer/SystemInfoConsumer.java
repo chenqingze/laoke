@@ -99,8 +99,10 @@ public class SystemInfoConsumer {
 			systemInfo.setOrderId(map.get("orderId").toString());
 			systemInfo.setReceiverId((Long) (map.get("receiverId")));
 			systemInfo.setTitle((String) map.get("title"));
-			systemInfo.setContent((String) map.get("content"));
-			systemInfo.setImagePath((String) map.get("imagePath"));
+			if (map.get("content") != null)
+			    systemInfo.setContent((String) map.get("content"));
+			if (map.get("imagePath") != null)
+				systemInfo.setImagePath((String) map.get("imagePath"));
 			systemInfo.setType((String) map.get("type"));
 			long time = System.currentTimeMillis();
 			long time2 = System.currentTimeMillis();
@@ -109,6 +111,10 @@ public class SystemInfoConsumer {
 			systemInfo.setStatus("no");
 			User user = userRepository.getUserByUserId(systemInfo.getReceiverId());
 			systemInfo.setMsgId(new ObjectId());
+			if(user == null) {
+				logger.info("---------------根据userId没有获取到用户信息--------------userId是>>>>>>{}", map.get("receiverId"));
+				return;
+			}
 			systemInfo.setUserId(user.getId().toHexString());
 			systemInfoRepository.saveSystemInfo(systemInfo);
 			systemInfoNotify.sendSystemNotify(user.getId().toHexString(), systemInfo);
