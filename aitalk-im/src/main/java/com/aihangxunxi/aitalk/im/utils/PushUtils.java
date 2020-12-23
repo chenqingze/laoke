@@ -4,7 +4,6 @@ import cn.jiguang.common.resp.APIConnectionException;
 import cn.jiguang.common.resp.APIRequestException;
 import cn.jpush.api.JPushClient;
 import cn.jpush.api.push.PushResult;
-import cn.jpush.api.push.model.Message;
 import cn.jpush.api.push.model.Options;
 import cn.jpush.api.push.model.Platform;
 import cn.jpush.api.push.model.PushPayload;
@@ -94,6 +93,7 @@ public class PushUtils {
 	// 根据类型返回推送内容
 	public String switchContent(String msgType, String content, String senderName) throws JsonProcessingException {
 		String msgBody = "";
+		logger.info("msgType:" + msgType, "content:" + content);
 		switch (msgType) {
 		case "0":
 		case "17":
@@ -172,6 +172,7 @@ public class PushUtils {
 			msgBody = "[折扣商品]";
 			break;
 		}
+		logger.info(msgBody);
 		return msgBody;
 	}
 
@@ -263,7 +264,8 @@ public class PushUtils {
 	 * @param args
 	 */
 	public void pushMsg(String title, String content, String deviceCode, String deviceType, String... args) {
-		if ("android".equals(deviceType)) {
+		logger.info("发送了：" + title + "," + content + "," + deviceCode);
+		if ("android".equals(deviceType.toLowerCase())) {
 			JPushClient jpushClient = new JPushClient(MASTER_SECRET, APP_KEY);
 			Map<String, Map<String, String>> map = new HashMap<>();
 			Map<String, String> secondary = new HashMap<>();
@@ -274,11 +276,13 @@ public class PushUtils {
 			map.put("oppo", secondary);
 			map.put("vivo", secondary);
 			PushPayload payload = PushPayload.newBuilder().setPlatform(Platform.android())// 指定android平台的用户
+					// .setAudience(Audience.all())//你项目中的所有用户
 					.setAudience(Audience.registrationId(deviceCode))// registrationId指定用户
-					.setMessage(Message.newBuilder().build())
+					// .setNotification(Notification.android(msg, title, null))
 					.setNotification(Notification.newBuilder()
 							.addPlatformNotification(AndroidNotification.newBuilder().setTitle(title).setAlert(content)
-									.setCategory("social").setPriority(0).setAlertType(7).build())
+									.setCategory("social").addExtra("name", title).addExtra("receiverType", "consult")
+									.setPriority(0).setAlertType(7).build())
 							.build())
 					// 发送内容
 					.setOptions(Options.newBuilder().setTimeToLive(60).setApnsProduction(true).setThirdPartyChannel(map)
@@ -288,6 +292,10 @@ public class PushUtils {
 					.build();
 			try {
 				PushResult pu = jpushClient.sendPush(payload);
+
+				if (pu.statusCode == 0) {
+					logger.info("发送了一条消息");
+				}
 				System.out.println(pu);
 			}
 			catch (APIConnectionException e) {

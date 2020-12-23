@@ -10,12 +10,10 @@ import com.aihangxunxi.aitalk.im.utils.PushUtils;
 import com.aihangxunxi.aitalk.storage.constant.ConsultDirection;
 import com.aihangxunxi.aitalk.storage.constant.ConversationType;
 import com.aihangxunxi.aitalk.storage.constant.MsgStatus;
-import com.aihangxunxi.aitalk.storage.model.At;
 import com.aihangxunxi.aitalk.storage.model.MsgHist;
 import com.aihangxunxi.aitalk.storage.model.User;
 import com.aihangxunxi.aitalk.storage.repository.MsgHistRepository;
 import com.aihangxunxi.aitalk.storage.repository.UserRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -27,8 +25,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-
-import static com.aihangxunxi.aitalk.storage.constant.ConsultDirection.*;
 
 /**
  * @Author guoyongsheng Data: 2020/11/2
@@ -90,7 +86,7 @@ public class ConsultChatHandler extends ChannelInboundHandlerAdapter {
 					else {
 						// 获取接受者用户详情
 						User receiver = this.userRepository.getUserById(msgHist.getReceiverId());
-						String content = this.pushUtils.switchContent(msgHist.getMsgType().toString(),
+						String content = this.pushUtils.switchContent(String.valueOf(msgHist.getMsgType().ordinal()),
 								msgHist.getContent(), receiver.getNickname());
 						// 对方不在线 走极光推动
 						this.pushUtils.pushMsg(receiver.getNickname(), content, receiver.getDeviceCode(),
