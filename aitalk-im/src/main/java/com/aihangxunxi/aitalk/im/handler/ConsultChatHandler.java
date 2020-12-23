@@ -87,9 +87,9 @@ public class ConsultChatHandler extends ChannelInboundHandlerAdapter {
 						// 获取接受者用户详情
 						User receiver = this.userRepository.getUserById(msgHist.getReceiverId());
 						String content = this.pushUtils.switchContent(String.valueOf(msgHist.getMsgType().ordinal()),
-								msgHist.getContent(), receiver.getNickname());
+								msgHist.getContent(), user.getNickname());
 						// 对方不在线 走极光推动
-						this.pushUtils.pushMsg(receiver.getNickname(), content, receiver.getDeviceCode(),
+						this.pushUtils.pushMsg(user.getNickname(), content, receiver.getDeviceCode(),
 								receiver.getDevicePlatform().toString());
 					}
 					// 将消息存暂储至离线表中
