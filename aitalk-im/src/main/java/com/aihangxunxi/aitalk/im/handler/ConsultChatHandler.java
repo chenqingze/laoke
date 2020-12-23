@@ -6,6 +6,7 @@ import com.aihangxunxi.aitalk.im.channel.ChannelManager;
 import com.aihangxunxi.aitalk.im.protocol.buffers.Message;
 import com.aihangxunxi.aitalk.im.protocol.buffers.MsgReadNotify;
 import com.aihangxunxi.aitalk.im.protocol.buffers.OpCode;
+import com.aihangxunxi.aitalk.im.utils.PushUtils;
 import com.aihangxunxi.aitalk.storage.constant.ConsultDirection;
 import com.aihangxunxi.aitalk.storage.constant.ConversationType;
 import com.aihangxunxi.aitalk.storage.constant.MsgStatus;
@@ -51,6 +52,9 @@ public class ConsultChatHandler extends ChannelInboundHandlerAdapter {
 	@Resource
 	private MsgAssembler msgAssembler;
 
+	@Resource
+	private PushUtils pushUtils;
+
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 		if (msg instanceof Message && ((Message) msg).getOpCode() == OpCode.MSG_REQUEST) {
@@ -82,6 +86,12 @@ public class ConsultChatHandler extends ChannelInboundHandlerAdapter {
 						Message message = Message.newBuilder().setOpCode(OpCode.CONSULT_MSG_READ_NOTIFY)
 								.setMsgReadNotify(msgReadNotify).build();
 						addresseeChannel.writeAndFlush(message);
+					} else {
+						// 获取接受者用户详情
+						User receiver = this.userRepository.getUserById(msgHist.getReceiverId());
+						String content = this.pushUtils.switchContent(msgHist.getMsgType().toString(), msgHist.getContent(), receiver.getNickname());
+						// 对方不在线 走极光推动
+						this.pushUtils.pushMsg(receiver.getNickname(), content, receiver.getDeviceCode(), receiver.getDevicePlatform().toString());
 					}
 					// 将消息存暂储至离线表中
 					msgHistRepository.saveOfflineMsgHist(msgHist);

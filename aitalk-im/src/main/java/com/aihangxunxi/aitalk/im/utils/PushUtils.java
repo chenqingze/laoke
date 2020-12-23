@@ -89,7 +89,7 @@ public class PushUtils {
 	}
 
 	// 根据类型返回推送内容
-	private String switchContent(String msgType, String content, String senderName) throws JsonProcessingException {
+	public String switchContent(String msgType, String content, String senderName) throws JsonProcessingException {
 		String msgBody = "";
 		switch (msgType) {
 		case "0":
