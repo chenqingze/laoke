@@ -86,12 +86,15 @@ public class ConsultChatHandler extends ChannelInboundHandlerAdapter {
 						Message message = Message.newBuilder().setOpCode(OpCode.CONSULT_MSG_READ_NOTIFY)
 								.setMsgReadNotify(msgReadNotify).build();
 						addresseeChannel.writeAndFlush(message);
-					} else {
+					}
+					else {
 						// 获取接受者用户详情
 						User receiver = this.userRepository.getUserById(msgHist.getReceiverId());
-						String content = this.pushUtils.switchContent(msgHist.getMsgType().toString(), msgHist.getContent(), receiver.getNickname());
+						String content = this.pushUtils.switchContent(msgHist.getMsgType().toString(),
+								msgHist.getContent(), receiver.getNickname());
 						// 对方不在线 走极光推动
-						this.pushUtils.pushMsg(receiver.getNickname(), content, receiver.getDeviceCode(), receiver.getDevicePlatform().toString());
+						this.pushUtils.pushMsg(receiver.getNickname(), content, receiver.getDeviceCode(),
+								receiver.getDevicePlatform().toString());
 					}
 					// 将消息存暂储至离线表中
 					msgHistRepository.saveOfflineMsgHist(msgHist);

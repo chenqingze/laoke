@@ -34,9 +34,9 @@ import java.util.Map;
  * @Datetime 2020.10.30
  */
 @Component
-public class PushUtils {
+public class PushUtil {
 
-	private static final Logger logger = LoggerFactory.getLogger(PushUtils.class);
+	private static final Logger logger = LoggerFactory.getLogger(PushUtil.class);
 
 	@Resource
 	private UserRepository userRepository;

@@ -3,7 +3,7 @@ package com.aihangxunxi.aitalk.storage.repository;
 import com.aihangxunxi.aitalk.storage.constant.MsgStatus;
 import com.aihangxunxi.aitalk.storage.model.GroupMember;
 import com.aihangxunxi.aitalk.storage.model.MucHist;
-import com.aihangxunxi.aitalk.storage.utils.PushUtils;
+import com.aihangxunxi.aitalk.storage.utils.PushUtil;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.conversions.Bson;
@@ -22,13 +22,13 @@ import static com.mongodb.client.model.Updates.set;
 @Repository
 public class MucHistRepository {
 
-	private static final Logger logger = LoggerFactory.getLogger(PushUtils.class);
+	private static final Logger logger = LoggerFactory.getLogger(PushUtil.class);
 
 	@Resource
 	private MongoDatabase aitalkDb;
 
 	@Resource
-	private PushUtils pushUtils;
+	private PushUtil pushUtil;
 
 	// 保存群聊天记录
 	public boolean saveMucHist(MucHist mucHist) throws Exception {
@@ -42,7 +42,7 @@ public class MucHistRepository {
 		List<GroupMember> list = groupMemberMongoCollection.find(bson).into(new ArrayList<>());
 		list.stream().forEach(groupMember -> {
 			try {
-				pushUtils.pushMsg(groupMember.getUserId(), mucHist.getMsgId().toHexString(), mucHist.getContent(),
+				pushUtil.pushMsg(groupMember.getUserId(), mucHist.getMsgId().toHexString(), mucHist.getContent(),
 						String.valueOf(mucHist.getMsgType().ordinal()), mucHist.getSenderId(),
 						mucHist.getReceiverId().toHexString());
 			}
