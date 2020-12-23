@@ -235,7 +235,7 @@ public class PushUtils {
 											.addExtra("msgType", msgType).addExtra("groupId", groupId).build())
 									.build())
 					// todo： 生产环境发版需要将.setApnsProduction(true)
-					.setOptions(Options.newBuilder().setApnsProduction(false).setTimeToLive(60).build())
+					.setOptions(Options.newBuilder().setApnsProduction(true).setTimeToLive(60).build())
 					.setMessage(
 							cn.jpush.api.push.model.Message.newBuilder().setMsgContent(msgBody).setTitle(title).build())// 自定义信息
 					.build();
