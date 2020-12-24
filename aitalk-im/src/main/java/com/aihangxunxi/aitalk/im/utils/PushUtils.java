@@ -235,7 +235,7 @@ public class PushUtils {
 											.addExtra("msgType", msgType).addExtra("groupId", groupId).build())
 									.build())
 					// todo： 生产环境发版需要将.setApnsProduction(true)
-					.setOptions(Options.newBuilder().setApnsProduction(true).setTimeToLive(60).build())
+					.setOptions(Options.newBuilder().setApnsProduction(false).setTimeToLive(60).build())
 					.setMessage(
 							cn.jpush.api.push.model.Message.newBuilder().setMsgContent(msgBody).setTitle(title).build())// 自定义信息
 					.build();
@@ -310,14 +310,13 @@ public class PushUtils {
 			JPushClient jpushClient = new JPushClient(MASTER_SECRET, APP_KEY);
 			PushPayload payload = PushPayload.newBuilder().setPlatform(Platform.ios())// ios平台的用户
 					.setAudience(Audience.registrationId(deviceCode))// registrationId指定用户
-					.setNotification(
-							Notification.newBuilder()
-									.addPlatformNotification(IosNotification.newBuilder().setAlert(content).setBadge(0)
-											.setSound("default")// 这里是设置提示音(更多可以去官网看看)
-											.build())
+					.setNotification(Notification.newBuilder()
+							.addPlatformNotification(IosNotification.newBuilder().setAlert(title + ":" + content)
+									.setBadge(0).setSound("default")// 这里是设置提示音(更多可以去官网看看)
 									.build())
+							.build())
 					// todo： 生产环境发版需要将.setApnsProduction(true)
-					.setOptions(Options.newBuilder().setApnsProduction(true).setTimeToLive(60).build())
+					.setOptions(Options.newBuilder().setApnsProduction(false).setTimeToLive(60).build())
 					.setMessage(
 							cn.jpush.api.push.model.Message.newBuilder().setMsgContent(content).setTitle(title).build())// 自定义信息
 					.build();
