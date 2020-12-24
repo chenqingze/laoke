@@ -117,7 +117,7 @@ public class SystemInfoConsumer {
 			}
 			systemInfo.setUserId(user.getId().toHexString());
 			systemInfoRepository.saveSystemInfo(systemInfo);
-			systemInfoNotify.sendSystemNotify(user.getId().toHexString(), systemInfo);
+			systemInfoNotify.sendSystemNotify(user.getId().toHexString(), systemInfo, user);
 			// 暂时保存至离线消息库
 			systemInfoRepository.saveOfflineSystemInfo(systemInfo);
 		};

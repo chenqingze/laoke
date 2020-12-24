@@ -1,6 +1,7 @@
 package com.aihangxunxi.aitalk.im.utils;
 
 import com.aihangxunxi.aitalk.im.assembler.MsgAssembler;
+import com.aihangxunxi.aitalk.storage.model.User;
 import com.aihangxunxi.aitalk.im.channel.ChannelManager;
 import com.aihangxunxi.aitalk.im.protocol.buffers.Message;
 import com.aihangxunxi.aitalk.im.protocol.buffers.OpCode;
@@ -24,18 +25,19 @@ public class SystemInfoNotify {
 	@Resource
 	private MsgAssembler msgAssembler;
 
-	public boolean sendSystemNotify(String uId, SystemInfo systemInfo) {
-		logger.info("111111111111111111111111111111111111111111111");
+	@Resource
+	private PushUtils pushUtils;
+
+	public boolean sendSystemNotify(String uId, SystemInfo systemInfo, User user) {
 		logger.info(uId);
-		logger.info("111111111111111111111111111111111111111111111");
-		logger.info("111111111111111111111111111111111111111111111");
-		logger.info("111111111111111111111111111111111111111111111");
 		Channel addresseeChannel = channelManager.findChannelByUserId(uId);
 		if (addresseeChannel != null) {
 			SendSystemInfoRequest sendSystemInfoRequest = msgAssembler.buildSendSystemInfoRequest(systemInfo);
 			Message message = Message.newBuilder().setOpCode(OpCode.SYSTEM_INFO_NOTIFY)
 					.setSendSystemInfoRequest(sendSystemInfoRequest).build();
 			addresseeChannel.writeAndFlush(message);
+		} else {
+			this.pushUtils.pushMsg("爱航信息","[系统通知]"+ systemInfo.getContent(),user.getDeviceCode(),user.getDevicePlatform().toString());
 		}
 		return true;
 	}
