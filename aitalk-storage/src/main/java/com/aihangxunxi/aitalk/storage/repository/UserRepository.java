@@ -5,7 +5,7 @@ import com.aihangxunxi.aitalk.storage.model.ConcernStore;
 import com.aihangxunxi.aitalk.storage.model.Subscription;
 import com.aihangxunxi.aitalk.storage.model.User;
 import com.aihangxunxi.aitalk.storage.model.UserDTO;
-import com.aihangxunxi.common.entity.UserEntity;
+import com.aihangxunxi.common.entity.UserRedisEntity;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
@@ -266,7 +266,8 @@ public class UserRepository {
 		List<UserDTO> users = mongoCollection.find().into(new ArrayList());
 		for (int i = 0; i < users.size(); i++) {
 			importUser(users.get(i).getUserId(), users.get(i).getNickname(), users.get(i).getProfile());
-			UserEntity u = (UserEntity) authRedisTemplate.opsForValue().get("user:" + users.get(i).getUserId());
+			UserRedisEntity u = (UserRedisEntity) authRedisTemplate.opsForValue()
+					.get("user:" + users.get(i).getUserId());
 			System.out.println(i);
 			if (u != null) {
 				System.out.println(u.toString());

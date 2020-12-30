@@ -1,55 +1,35 @@
 package com.aihangxunxi.common.entity;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
- * redis存放的用户头像、昵称、店铺相关信息
+ * redis存放用户
  *
- * @author wangchaochao
- * @version 3.0 2020/4/11
+ * @author liuzx
+ * @version 3.0 2020/4/16
  */
+
 public class UserRedisEntity implements Serializable {
 
-	/**
-	 * userId
-	 */
 	private Long userId;
 
-	/**
-	 * 用户头像
-	 */
-	private String userHeadPortrait;
+	private String headImgPath;
 
-	/**
-	 * 用户昵称
-	 */
-	private String userNickname;
+	private String nickname;
 
-	/**
-	 * 用户手机号
-	 */
 	private String phone;
 
-	/**
-	 * 实名状态
-	 */
 	private String certificationReal;
 
-	/**
-	 * 用户状态
-	 */
+	private String certificationStore;
+
+	private String certificationBarter;
+
 	private String userStatus;
 
-	/**
-	 * 店铺信息
-	 */
-	private StoreRedisEntity storeRedisEntity;
+	private String value;
 
-	/**
-	 * 用户的身份
-	 */
-	private List<UserIdentityEntity> userIdentityEntities;
+	private String remark;
 
 	public Long getUserId() {
 		return userId;
@@ -59,44 +39,20 @@ public class UserRedisEntity implements Serializable {
 		this.userId = userId;
 	}
 
-	public String getCertificationReal() {
-		return certificationReal;
+	public String getHeadImgPath() {
+		return headImgPath;
 	}
 
-	public void setCertificationReal(String certificationReal) {
-		this.certificationReal = certificationReal;
+	public void setHeadImgPath(String headImgPath) {
+		this.headImgPath = headImgPath;
 	}
 
-	public String getUserHeadPortrait() {
-		return userHeadPortrait;
+	public String getNickname() {
+		return nickname;
 	}
 
-	public void setUserHeadPortrait(String userHeadPortrait) {
-		this.userHeadPortrait = userHeadPortrait;
-	}
-
-	public String getUserNickname() {
-		return userNickname;
-	}
-
-	public void setUserNickname(String userNickname) {
-		this.userNickname = userNickname;
-	}
-
-	public StoreRedisEntity getStoreRedisEntity() {
-		return storeRedisEntity;
-	}
-
-	public void setStoreRedisEntity(StoreRedisEntity storeRedisEntity) {
-		this.storeRedisEntity = storeRedisEntity;
-	}
-
-	public List<UserIdentityEntity> getUserIdentityEntities() {
-		return userIdentityEntities;
-	}
-
-	public void setUserIdentityEntities(List<UserIdentityEntity> userIdentityEntities) {
-		this.userIdentityEntities = userIdentityEntities;
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
 	}
 
 	public String getPhone() {
@@ -107,12 +63,52 @@ public class UserRedisEntity implements Serializable {
 		this.phone = phone;
 	}
 
+	public String getCertificationReal() {
+		return certificationReal;
+	}
+
+	public void setCertificationReal(String certificationReal) {
+		this.certificationReal = certificationReal;
+	}
+
+	public String getCertificationStore() {
+		return certificationStore;
+	}
+
+	public void setCertificationStore(String certificationStore) {
+		this.certificationStore = certificationStore;
+	}
+
+	public String getCertificationBarter() {
+		return certificationBarter;
+	}
+
+	public void setCertificationBarter(String certificationBarter) {
+		this.certificationBarter = certificationBarter;
+	}
+
 	public String getUserStatus() {
 		return userStatus;
 	}
 
 	public void setUserStatus(String userStatus) {
 		this.userStatus = userStatus;
+	}
+
+	public String getValue() {
+		return value;
+	}
+
+	public void setValue(String value) {
+		this.value = value;
+	}
+
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
 	}
 
 }
