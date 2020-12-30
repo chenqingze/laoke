@@ -36,8 +36,10 @@ public class SystemInfoNotify {
 			Message message = Message.newBuilder().setOpCode(OpCode.SYSTEM_INFO_NOTIFY)
 					.setSendSystemInfoRequest(sendSystemInfoRequest).build();
 			addresseeChannel.writeAndFlush(message);
-		} else {
-			this.pushUtils.pushMsg("爱航信息","[系统通知]"+ systemInfo.getContent(),user.getDeviceCode(),user.getDevicePlatform().toString());
+		}
+		else {
+			this.pushUtils.pushMsg("爱航信息", "[系统通知]" + systemInfo.getContent(), user.getDeviceCode(),
+					user.getDevicePlatform().toString());
 		}
 		return true;
 	}
