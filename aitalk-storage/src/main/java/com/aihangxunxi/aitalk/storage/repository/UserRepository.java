@@ -71,8 +71,22 @@ public class UserRepository {
 	// }
 	public User getUserByUserId(Long userId) {
 		MongoCollection<User> mongoCollection = aitalkDb.getCollection("user", User.class);
-		Bson bson = and(eq("userId", userId), eq("userType", "PERSONAL"));
-		User user = mongoCollection.find(bson, User.class).first();
+		User user = new User();
+		if (userId.equals(Long.parseLong("4330998946162008243"))) {
+			Bson bson = and(eq("userId", userId), eq("userType", "STORE"));
+			user = mongoCollection.find(bson, User.class).first();
+			// UserRedisEntity u = (UserRedisEntity)
+			// authRedisTemplate.opsForValue().get("user:" + userId);
+			// user.setPhone(u.getPhone());
+		}
+		else {
+			Bson bson = and(eq("userId", userId), eq("userType", "PERSONAL"));
+			user = mongoCollection.find(bson, User.class).first();
+			// UserRedisEntity u = (UserRedisEntity)
+			// authRedisTemplate.opsForValue().get("user:" + userId);
+			// user.setPhone(u.getPhone());
+		}
+
 		return user;
 	}
 

@@ -2,7 +2,11 @@ package com.aihangxunxi.aitalk.im.handler;
 
 import com.aihangxunxi.aitalk.im.channel.ChannelConstant;
 import com.aihangxunxi.aitalk.im.channel.ChannelManager;
-import com.aihangxunxi.aitalk.im.protocol.buffers.*;
+import com.aihangxunxi.aitalk.im.protocol.buffers.Message;
+import com.aihangxunxi.aitalk.im.protocol.buffers.OpCode;
+import com.aihangxunxi.aitalk.im.protocol.buffers.RecevieWithdrawMsg;
+import com.aihangxunxi.aitalk.im.protocol.buffers.WithdrawConsultAck;
+import com.aihangxunxi.aitalk.im.utils.PushUtils;
 import com.aihangxunxi.aitalk.storage.model.User;
 import com.aihangxunxi.aitalk.storage.repository.MsgHistRepository;
 import com.aihangxunxi.aitalk.storage.repository.UserRepository;
@@ -34,6 +38,9 @@ public class WithdrawConsultMsgHandler extends ChannelInboundHandlerAdapter {
 
 	@Resource
 	private UserRepository userRepository;
+
+	@Resource
+	private PushUtils pushUtils;
 
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
@@ -73,6 +80,14 @@ public class WithdrawConsultMsgHandler extends ChannelInboundHandlerAdapter {
 
 				// 查询离线消息表中是否存在，存在修改并存在则插入，（从消息历史表中获取）
 				msgHistRepository.editOfflienMsg(msgId);
+
+				String senderName = msgHistRepository.querySenderNicknameByMsgId(msgId);
+				// 获取发送者昵称
+				if (user.getDeviceCode() != null && !user.getDeviceCode().isEmpty()) {
+					pushUtils.pushMsg(senderName, "对方撤回了一条消息", user.getDeviceCode(),
+							user.getDevicePlatform().toString());
+				}
+
 			}
 			finally {
 				ReferenceCountUtil.release(msg);

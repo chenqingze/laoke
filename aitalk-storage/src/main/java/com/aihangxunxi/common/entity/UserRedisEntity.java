@@ -27,6 +27,8 @@ public class UserRedisEntity implements Serializable {
 
 	private String userStatus;
 
+	private String autograph;
+
 	private String value;
 
 	private String remark;
@@ -109,6 +111,14 @@ public class UserRedisEntity implements Serializable {
 
 	public void setRemark(String remark) {
 		this.remark = remark;
+	}
+
+	public String getAutograph() {
+		return autograph;
+	}
+
+	public void setAutograph(String autograph) {
+		this.autograph = autograph;
 	}
 
 }

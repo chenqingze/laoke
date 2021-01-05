@@ -5,7 +5,7 @@ import com.aihangxunxi.aitalk.storage.constant.MsgStatus;
 import com.aihangxunxi.aitalk.storage.model.MsgHist;
 import com.aihangxunxi.aitalk.storage.model.MucHist;
 import com.aihangxunxi.aitalk.storage.model.OfflineMsg;
-import com.mongodb.client.FindIterable;
+import com.aihangxunxi.aitalk.storage.model.User;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.result.InsertOneResult;
@@ -19,7 +19,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import static com.mongodb.client.model.Filters.*;
+import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Updates.set;
 
 @Repository
@@ -61,6 +61,28 @@ public class MsgHistRepository {
 		list.add(set("revokeAt", new Date().getTime()));
 		mongoCollection.updateOne(bson, list);
 		return true;
+	}
+
+	// 根据消息id 获取昵称
+	public String querySenderNicknameByMsgId(String msgId) {
+		if (getOfflentMsgById(new ObjectId(msgId))) {
+			// 当前为离线消息
+			MongoCollection<OfflineMsg> mongoCollection = aitalkDb.getCollection("offlineMsg", OfflineMsg.class);
+			Bson bson = eq(new ObjectId(msgId));
+			OfflineMsg offlineMsg = mongoCollection.find(bson).first();
+			MongoCollection<User> userMongoCollection = aitalkDb.getCollection("user", User.class);
+			User user = userMongoCollection.find(eq(offlineMsg.getSenderId())).first();
+			return user.getNickname();
+		}
+		else {
+			// 当前为在线消息
+			MongoCollection<MsgHist> mongoCollection = aitalkDb.getCollection("msgHist", MsgHist.class);
+			Bson bson = eq(new ObjectId(msgId));
+			MsgHist msgHist = mongoCollection.find(bson).first();
+			MongoCollection<User> userMongoCollection = aitalkDb.getCollection("user", User.class);
+			User user = userMongoCollection.find(eq(msgHist.getSenderId())).first();
+			return user.getNickname();
+		}
 	}
 
 	// //
