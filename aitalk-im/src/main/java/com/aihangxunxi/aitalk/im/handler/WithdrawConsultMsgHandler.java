@@ -82,10 +82,16 @@ public class WithdrawConsultMsgHandler extends ChannelInboundHandlerAdapter {
 				msgHistRepository.editOfflienMsg(msgId);
 
 				String senderName = msgHistRepository.querySenderNicknameByMsgId(msgId);
+				User device = msgHistRepository.querySenderDeviceByMsgId(msgId);
+				System.out.println("开始进入推送");
+				System.out.println(user.getDeviceCode());
+				System.out.println(user.getDevicePlatform().name());
+
 				// 获取发送者昵称
-				if (user.getDeviceCode() != null && !user.getDeviceCode().isEmpty()) {
-					pushUtils.pushMsg(senderName, "对方撤回了一条消息", user.getDeviceCode(),
-							user.getDevicePlatform().toString());
+				if (device != null && device.getDeviceCode() != null && !device.getDeviceCode().isEmpty()) {
+					System.out.println(senderName);
+					pushUtils.pushMsg(senderName, "对方撤回了一条消息", device.getDeviceCode(),
+							device.getDevicePlatform().name());
 				}
 
 			}

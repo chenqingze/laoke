@@ -1,10 +1,11 @@
 package com.aihangxunxi.aitalk.storage.repository;
 
-import com.aihangxunxi.aitalk.storage.constant.UserType;
 import com.aihangxunxi.aitalk.storage.model.Fans;
 import com.aihangxunxi.aitalk.storage.model.Subscription;
+import com.aihangxunxi.aitalk.storage.model.SysUserConcern;
 import com.aihangxunxi.aitalk.storage.model.User;
 import com.aihangxunxi.aitalk.storage.utils.PinYinUtil;
+import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.conversions.Bson;
@@ -25,19 +26,25 @@ public class FansRepository {
 	@Resource
 	private MongoDatabase aitalkDb;
 
+	@Resource
+	private MongoClient mongoClient;
+
 	// 查询粉丝
 	public List<Fans> queryFans(Long userId) {
-		MongoCollection<Subscription> mongoCollection = aitalkDb.getCollection("subscription", Subscription.class);
+
+		MongoCollection<SysUserConcern> mongoCollection = mongoClient.getDatabase("aihang4")
+				.getCollection("sys_user_concern", SysUserConcern.class);
 		MongoCollection<User> userMongoCollection = aitalkDb.getCollection("user", User.class);
-		Bson bson = eq("subscriber", userId);
-		List<Subscription> list = mongoCollection.find(bson).into(new ArrayList<>());
+		Bson bson = eq("concerned_user_id", userId);
+		List<SysUserConcern> list = mongoCollection.find(bson).into(new ArrayList<>());
 		List<Fans> fansList = new ArrayList<>();
-		list.stream().forEach(subscription -> {
-			Fans fans = new Fans();
-			Long fansId = subscription.getPublisher();
-			fans.setUserId(fansId);
-			Bson bson1 = and(eq("userId", fansId), eq("userType", UserType.PERSONAL));
+
+		list.stream().forEach((f) -> {
+			Long fansId = f.getUser_id();
+			Bson bson1 = and(eq("userId", fansId), eq("userType", "PERSONAL"));
 			User user = userMongoCollection.find(bson1).first();
+			Fans fans = new Fans();
+			fans.setUserId(fansId);
 			if (user != null) {
 				String pinyin = PinYinUtil.getPingYin(user.getNickname()).substring(0, 1);
 				fans.setNickname(user.getNickname());

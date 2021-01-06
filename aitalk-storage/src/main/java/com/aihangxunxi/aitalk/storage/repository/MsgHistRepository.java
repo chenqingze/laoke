@@ -85,6 +85,28 @@ public class MsgHistRepository {
 		}
 	}
 
+	// 根据消息id 获取昵称
+	public User querySenderDeviceByMsgId(String msgId) {
+		if (getOfflentMsgById(new ObjectId(msgId))) {
+			// 当前为离线消息
+			MongoCollection<OfflineMsg> mongoCollection = aitalkDb.getCollection("offlineMsg", OfflineMsg.class);
+			Bson bson = eq(new ObjectId(msgId));
+			OfflineMsg offlineMsg = mongoCollection.find(bson).first();
+			MongoCollection<User> userMongoCollection = aitalkDb.getCollection("user", User.class);
+			User user = userMongoCollection.find(eq(offlineMsg.getReceiverId())).first();
+			return user;
+		}
+		else {
+			// 当前为在线消息
+			MongoCollection<MsgHist> mongoCollection = aitalkDb.getCollection("msgHist", MsgHist.class);
+			Bson bson = eq(new ObjectId(msgId));
+			MsgHist msgHist = mongoCollection.find(bson).first();
+			MongoCollection<User> userMongoCollection = aitalkDb.getCollection("user", User.class);
+			User user = userMongoCollection.find(eq(msgHist.getReceiverId())).first();
+			return user;
+		}
+	}
+
 	// //
 	// public List<MsgHist> getOfflineLastMsg(ObjectId receiverId, String
 	// consultDirection) {
