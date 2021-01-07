@@ -11,22 +11,28 @@ import cn.jpush.api.push.model.audience.Audience;
 import cn.jpush.api.push.model.notification.AndroidNotification;
 import cn.jpush.api.push.model.notification.IosNotification;
 import cn.jpush.api.push.model.notification.Notification;
-import com.aihangxunxi.aitalk.storage.model.At;
-import com.aihangxunxi.aitalk.storage.model.Groups;
-import com.aihangxunxi.aitalk.storage.model.User;
+import com.aihangxunxi.aitalk.storage.model.*;
 import com.aihangxunxi.aitalk.storage.repository.GroupMemberRepository;
 import com.aihangxunxi.aitalk.storage.repository.GroupRepository;
 import com.aihangxunxi.aitalk.storage.repository.UserRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.JsonObject;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import org.bson.conversions.Bson;
+import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import javax.management.Query;
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Updates.set;
 
 /**
  * 推送类
@@ -53,6 +59,9 @@ public class PushUtils {
 
 	// 极光相关设置
 	private static String MASTER_SECRET = "ff067553661b490a34ddfb0b";
+
+	@Resource
+	private MongoDatabase aitalkDb;
 
 	/**
 	 * 推送消息
@@ -262,25 +271,112 @@ public class PushUtils {
 	 * @param content
 	 * @param deviceCode
 	 * @param deviceType
-	 * @param args
+	 * @param msgId
 	 */
-	public void pushMsg(String title, String content, String deviceCode, String deviceType, String... args) {
+	public void pushMsg(String title, String content, String deviceCode, String deviceType, String msgId) {
 		logger.info("发送了：" + title + "," + content + "," + deviceCode);
 		if ("android".equals(deviceType.toLowerCase())) {
 			JPushClient jpushClient = new JPushClient(MASTER_SECRET, APP_KEY);
-			// Map<String, Map<String, String>> map = new HashMap<>();
-			// Map<String, String> secondary = new HashMap<>();
-			// secondary.put("distribution", "secondary_push");
-			//
-			// Map<String, String> vivo = new HashMap<>();
-			// vivo.put("distribution", "secondary_push");
-			// vivo.put("classification", "1");
-			//
-			// map.put("xiaomi", secondary);
-			// map.put("huawei", secondary);
-			// map.put("meizu", secondary);
-			// map.put("oppo", secondary);
-			// map.put("vivo", vivo);
+
+			Map<String, JsonObject> jsonObjectMap = new HashMap<>();
+			JsonObject jsonObject = new JsonObject();
+			jsonObject.addProperty("distribution", "secondary_push");
+			JsonObject vivo = new JsonObject();
+			vivo.addProperty("distribution", "secondary_push");
+			vivo.addProperty("classification", 1);
+
+			jsonObjectMap.put("xiaomi", jsonObject);
+			jsonObjectMap.put("huawei", jsonObject);
+			jsonObjectMap.put("meizu", jsonObject);
+			jsonObjectMap.put("oppo", jsonObject);
+			jsonObjectMap.put("vivo", vivo);
+
+			PushPayload payload = PushPayload.newBuilder().setPlatform(Platform.android())// 指定android平台的用户
+					.setAudience(Audience.registrationId(deviceCode))// registrationId指定用户
+					.setNotification(Notification.newBuilder()
+							.addPlatformNotification(AndroidNotification.newBuilder().setTitle(title).setAlert(content)
+									.setCategory("social").addExtra("name", title).addExtra("receiverType", "consult")
+									.setPriority(0).setAlertType(7).build())
+							.build())
+					// 发送内容
+					.setOptions(Options.newBuilder().setTimeToLive(60).setApnsProduction(true)
+							.setThirdPartyChannelV2(jsonObjectMap).build())
+					// 这里是指定开发环境,不用设置也没关系
+					.setMessage(cn.jpush.api.push.model.Message.content(content))// 自定义信息
+					.build();
+			try {
+				PushResult pu = jpushClient.sendPush(payload);
+
+				if (pu.statusCode == 0) {
+					logger.info("发送了一条消息");
+					Long pushMsgId = pu.msg_id;
+					Bson bson = eq(new ObjectId(msgId));
+					Bson bson1 = set("pushMsgId", pushMsgId);
+					MongoCollection<MsgHist> collection = aitalkDb.getCollection("msgHist", MsgHist.class);
+					collection.findOneAndUpdate(bson, bson1);
+				}
+
+			}
+			catch (APIConnectionException e) {
+				e.printStackTrace();
+			}
+			catch (APIRequestException e) {
+				e.printStackTrace();
+			}
+		}
+		else {
+			// IOS
+			JPushClient jpushClient = new JPushClient(MASTER_SECRET, APP_KEY);
+			PushPayload payload = PushPayload.newBuilder().setPlatform(Platform.ios())// ios平台的用户
+					.setAudience(Audience.registrationId(deviceCode))// registrationId指定用户
+					.setNotification(Notification.newBuilder()
+							.addPlatformNotification(IosNotification.newBuilder().setAlert(title + ":" + content)
+									.setBadge(0).setSound("default")// 这里是设置提示音(更多可以去官网看看)
+									.build())
+							.build())
+					// todo： 生产环境发版需要将.setApnsProduction(true)
+					.setOptions(Options.newBuilder().setApnsProduction(false).setTimeToLive(60).build())
+					.setMessage(
+							cn.jpush.api.push.model.Message.newBuilder().setMsgContent(content).setTitle(title).build())// 自定义信息
+					.build();
+			try {
+				PushResult pu = jpushClient.sendPush(payload);
+
+				if (pu.statusCode == 0) {
+					logger.info("发送了一条消息");
+					Long pushMsgId = pu.msg_id;
+					Bson bson = eq(new ObjectId(msgId));
+					Bson bson1 = set("pushMsgId", pushMsgId);
+					MongoCollection<MsgHist> collection = aitalkDb.getCollection("msgHist", MsgHist.class);
+					collection.findOneAndUpdate(bson, bson1);
+				}
+			}
+			catch (APIConnectionException e) {
+				e.printStackTrace();
+			}
+			catch (APIRequestException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	/**
+	 * 极光推送
+	 * @param title
+	 * @param content
+	 * @param deviceCode
+	 * @param deviceType
+	 * @param msgId
+	 */
+	public void pushWithDrawMsg(String title, String content, String deviceCode, String deviceType, String msgId) {
+		MongoCollection<MsgHist> offlineMsgMongoCollection = aitalkDb.getCollection("msgHist", MsgHist.class);
+		Bson bson = eq(new ObjectId(msgId));
+		MsgHist offlineMsg = offlineMsgMongoCollection.find(bson).first();
+		Long pushId = offlineMsg.getPushMsgId();
+
+		logger.info("发送了：" + title + "," + content + "," + deviceCode);
+		if ("android".equals(deviceType.toLowerCase())) {
+			JPushClient jpushClient = new JPushClient(MASTER_SECRET, APP_KEY);
 
 			Map<String, JsonObject> jsonObjectMap = new HashMap<>();
 			JsonObject jsonObject = new JsonObject();
@@ -305,7 +401,7 @@ public class PushUtils {
 									.setPriority(0).setAlertType(7).build())
 							.build())
 					// 发送内容
-					.setOptions(Options.newBuilder().setTimeToLive(60).setApnsProduction(true)
+					.setOptions(Options.newBuilder().setTimeToLive(60).setApnsProduction(true).setOverrideMsgId(pushId)
 							.setThirdPartyChannelV2(jsonObjectMap).build())
 					// 这里是指定开发环境,不用设置也没关系
 					.setMessage(cn.jpush.api.push.model.Message.content(content))// 自定义信息
@@ -316,9 +412,7 @@ public class PushUtils {
 				if (pu.statusCode == 0) {
 					logger.info("发送了一条消息");
 				}
-				System.out.println(pu);
 
-				// todo 获取极光msgId来更新本地库 达到撤回覆盖效果
 			}
 			catch (APIConnectionException e) {
 				e.printStackTrace();
@@ -338,7 +432,8 @@ public class PushUtils {
 									.build())
 							.build())
 					// todo： 生产环境发版需要将.setApnsProduction(true)
-					.setOptions(Options.newBuilder().setApnsProduction(false).setTimeToLive(60).build())
+					.setOptions(Options.newBuilder().setApnsProduction(false).setTimeToLive(60).setOverrideMsgId(pushId)
+							.build())
 					.setMessage(
 							cn.jpush.api.push.model.Message.newBuilder().setMsgContent(content).setTitle(title).build())// 自定义信息
 					.build();

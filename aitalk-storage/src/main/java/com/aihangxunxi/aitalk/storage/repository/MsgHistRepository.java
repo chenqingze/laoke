@@ -28,11 +28,11 @@ public class MsgHistRepository {
 	@Resource
 	private MongoDatabase aitalkDb;
 
-	public boolean saveMsgHist(MsgHist msgHist) {
+	public String saveMsgHist(MsgHist msgHist) {
 		// 保存至主表
 		MongoCollection<MsgHist> mongoCollection = aitalkDb.getCollection("msgHist", MsgHist.class);
 		InsertOneResult result = mongoCollection.insertOne(msgHist);
-		return true;
+		return result.getInsertedId().asObjectId().getValue().toString();
 	}
 
 	public void updateMsgStatusByMsgId(ObjectId msgId, MsgStatus msgStatus) {

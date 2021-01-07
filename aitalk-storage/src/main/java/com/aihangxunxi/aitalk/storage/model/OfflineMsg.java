@@ -23,6 +23,9 @@ public class OfflineMsg extends Msg {
 
 	private Integer conversationTypeInt;
 
+	// 极光推送id
+	private Long pushMsgId;
+
 	@JsonSerialize(using = ToStringSerializer.class)
 	public ObjectId getSenderId() {
 		return senderId;
@@ -63,6 +66,14 @@ public class OfflineMsg extends Msg {
 
 	public void setConversationTypeInt(Integer conversationTypeInt) {
 		this.conversationTypeInt = conversationTypeInt;
+	}
+
+	public Long getPushMsgId() {
+		return pushMsgId;
+	}
+
+	public void setPushMsgId(Long pushMsgId) {
+		this.pushMsgId = pushMsgId;
 	}
 
 }

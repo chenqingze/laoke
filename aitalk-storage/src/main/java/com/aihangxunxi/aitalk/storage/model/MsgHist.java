@@ -20,6 +20,9 @@ public class MsgHist extends Msg {
 
 	private String nikeName; // 被咨询放昵称
 
+	// 极光推送id
+	private Long pushMsgId;
+
 	public String getUserId() {
 		return userId;
 	}
@@ -50,6 +53,14 @@ public class MsgHist extends Msg {
 
 	public void setReceiverId(ObjectId receiverId) {
 		this.receiverId = receiverId;
+	}
+
+	public Long getPushMsgId() {
+		return pushMsgId;
+	}
+
+	public void setPushMsgId(Long pushMsgId) {
+		this.pushMsgId = pushMsgId;
 	}
 
 }

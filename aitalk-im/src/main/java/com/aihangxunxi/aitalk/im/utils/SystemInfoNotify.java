@@ -39,7 +39,7 @@ public class SystemInfoNotify {
 		}
 		else {
 			this.pushUtils.pushMsg("爱航信息", "[系统通知]" + systemInfo.getContent(), user.getDeviceCode(),
-					user.getDevicePlatform().toString());
+					user.getDevicePlatform().toString(), null);
 		}
 		return true;
 	}

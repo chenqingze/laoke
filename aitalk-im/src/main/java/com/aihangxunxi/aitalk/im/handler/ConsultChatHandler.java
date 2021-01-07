@@ -68,7 +68,7 @@ public class ConsultChatHandler extends ChannelInboundHandlerAdapter {
 					long currentTimeMillis = System.currentTimeMillis();
 					msgHist.setCreatedAt(currentTimeMillis);
 					msgHist.setUpdatedAt(currentTimeMillis);
-					msgHistRepository.saveMsgHist(msgHist);
+					String msgId = msgHistRepository.saveMsgHist(msgHist);
 
 					Message msgAck = msgAssembler.convertMgsHistToMessage(msgHist, ((Message) msg).getSeq());
 					ctx.writeAndFlush(msgAck);
@@ -90,7 +90,7 @@ public class ConsultChatHandler extends ChannelInboundHandlerAdapter {
 								msgHist.getContent(), user.getNickname());
 						// 对方不在线 走极光推动
 						this.pushUtils.pushMsg(user.getNickname(), content, receiver.getDeviceCode(),
-								receiver.getDevicePlatform().toString());
+								receiver.getDevicePlatform().toString(), msgId);
 					}
 					// 将消息存暂储至离线表中
 					msgHistRepository.saveOfflineMsgHist(msgHist);
