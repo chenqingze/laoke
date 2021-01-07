@@ -19,6 +19,7 @@ import com.aihangxunxi.aitalk.storage.repository.GroupRepository;
 import com.aihangxunxi.aitalk.storage.repository.UserRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.JsonObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -267,14 +268,33 @@ public class PushUtils {
 		logger.info("发送了：" + title + "," + content + "," + deviceCode);
 		if ("android".equals(deviceType.toLowerCase())) {
 			JPushClient jpushClient = new JPushClient(MASTER_SECRET, APP_KEY);
-			Map<String, Map<String, String>> map = new HashMap<>();
-			Map<String, String> secondary = new HashMap<>();
-			secondary.put("distribution", "secondary_push");
-			map.put("xiaomi", secondary);
-			map.put("huawei", secondary);
-			map.put("meizu", secondary);
-			map.put("oppo", secondary);
-			map.put("vivo", secondary);
+			// Map<String, Map<String, String>> map = new HashMap<>();
+			// Map<String, String> secondary = new HashMap<>();
+			// secondary.put("distribution", "secondary_push");
+			//
+			// Map<String, String> vivo = new HashMap<>();
+			// vivo.put("distribution", "secondary_push");
+			// vivo.put("classification", "1");
+			//
+			// map.put("xiaomi", secondary);
+			// map.put("huawei", secondary);
+			// map.put("meizu", secondary);
+			// map.put("oppo", secondary);
+			// map.put("vivo", vivo);
+
+			Map<String, JsonObject> jsonObjectMap = new HashMap<>();
+			JsonObject jsonObject = new JsonObject();
+			jsonObject.addProperty("distribution", "secondary_push");
+			JsonObject vivo = new JsonObject();
+			vivo.addProperty("distribution", "secondary_push");
+			vivo.addProperty("classification", 1);
+
+			jsonObjectMap.put("xiaomi", jsonObject);
+			jsonObjectMap.put("huawei", jsonObject);
+			jsonObjectMap.put("meizu", jsonObject);
+			jsonObjectMap.put("oppo", jsonObject);
+			jsonObjectMap.put("vivo", vivo);
+
 			PushPayload payload = PushPayload.newBuilder().setPlatform(Platform.android())// 指定android平台的用户
 					// .setAudience(Audience.all())//你项目中的所有用户
 					.setAudience(Audience.registrationId(deviceCode))// registrationId指定用户
@@ -285,8 +305,8 @@ public class PushUtils {
 									.setPriority(0).setAlertType(7).build())
 							.build())
 					// 发送内容
-					.setOptions(Options.newBuilder().setTimeToLive(60).setApnsProduction(true).setThirdPartyChannel(map)
-							.build())
+					.setOptions(Options.newBuilder().setTimeToLive(60).setApnsProduction(true)
+							.setThirdPartyChannelV2(jsonObjectMap).build())
 					// 这里是指定开发环境,不用设置也没关系
 					.setMessage(cn.jpush.api.push.model.Message.content(content))// 自定义信息
 					.build();
@@ -297,6 +317,8 @@ public class PushUtils {
 					logger.info("发送了一条消息");
 				}
 				System.out.println(pu);
+
+				// todo 获取极光msgId来更新本地库 达到撤回覆盖效果
 			}
 			catch (APIConnectionException e) {
 				e.printStackTrace();

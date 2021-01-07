@@ -54,6 +54,8 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public boolean cancelBindJPush(Long userId) {
+		System.out.println("开始取消绑定啦");
+		System.out.println("userId：" + userId);
 		return userRepository.cancelBindJPush(userId);
 	}
 
