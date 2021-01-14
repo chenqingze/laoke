@@ -130,4 +130,5 @@ public class UserRedisEntity implements Serializable {
 	public void setBarterQualificationTypeName(String barterQualificationTypeName) {
 		this.barterQualificationTypeName = barterQualificationTypeName;
 	}
+
 }
