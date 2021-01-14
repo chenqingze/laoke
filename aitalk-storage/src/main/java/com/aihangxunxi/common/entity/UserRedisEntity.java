@@ -13,9 +13,9 @@ public class UserRedisEntity implements Serializable {
 
 	private Long userId;
 
-	private String headImgPath;
+	private String userHeadPortrait;
 
-	private String nickname;
+	private String userNickname;
 
 	private String phone;
 
@@ -29,9 +29,11 @@ public class UserRedisEntity implements Serializable {
 
 	private String autograph;
 
-	private String value;
+	private String barterQualificationType;
 
-	private String remark;
+	private String barterQualificationTypeIcon;
+
+	private String barterQualificationTypeName;
 
 	public Long getUserId() {
 		return userId;
@@ -41,20 +43,20 @@ public class UserRedisEntity implements Serializable {
 		this.userId = userId;
 	}
 
-	public String getHeadImgPath() {
-		return headImgPath;
+	public String getUserHeadPortrait() {
+		return userHeadPortrait;
 	}
 
-	public void setHeadImgPath(String headImgPath) {
-		this.headImgPath = headImgPath;
+	public void setUserHeadPortrait(String userHeadPortrait) {
+		this.userHeadPortrait = userHeadPortrait;
 	}
 
-	public String getNickname() {
-		return nickname;
+	public String getUserNickname() {
+		return userNickname;
 	}
 
-	public void setNickname(String nickname) {
-		this.nickname = nickname;
+	public void setUserNickname(String userNickname) {
+		this.userNickname = userNickname;
 	}
 
 	public String getPhone() {
@@ -97,22 +99,6 @@ public class UserRedisEntity implements Serializable {
 		this.userStatus = userStatus;
 	}
 
-	public String getValue() {
-		return value;
-	}
-
-	public void setValue(String value) {
-		this.value = value;
-	}
-
-	public String getRemark() {
-		return remark;
-	}
-
-	public void setRemark(String remark) {
-		this.remark = remark;
-	}
-
 	public String getAutograph() {
 		return autograph;
 	}
@@ -121,4 +107,27 @@ public class UserRedisEntity implements Serializable {
 		this.autograph = autograph;
 	}
 
+	public String getBarterQualificationType() {
+		return barterQualificationType;
+	}
+
+	public void setBarterQualificationType(String barterQualificationType) {
+		this.barterQualificationType = barterQualificationType;
+	}
+
+	public String getBarterQualificationTypeIcon() {
+		return barterQualificationTypeIcon;
+	}
+
+	public void setBarterQualificationTypeIcon(String barterQualificationTypeIcon) {
+		this.barterQualificationTypeIcon = barterQualificationTypeIcon;
+	}
+
+	public String getBarterQualificationTypeName() {
+		return barterQualificationTypeName;
+	}
+
+	public void setBarterQualificationTypeName(String barterQualificationTypeName) {
+		this.barterQualificationTypeName = barterQualificationTypeName;
+	}
 }

@@ -283,26 +283,11 @@ public class UserRepository {
 
             System.out.println(i);
             if (u != null) {
-                importUser(users.get(i).getUserId(), u.getNickname(), u.getHeadImgPath());
+                importUser(users.get(i).getUserId(), u.getUserNickname(), u.getUserHeadPortrait());
                 System.out.println(u.toString());
-                // if (u.getStoreRedisEntity() != null) {
-                // importStoreUser(users.get(i).getUserId(),
-                // u.getStoreRedisEntity().getStoreName(),
-                // u.getStoreRedisEntity().getStoreHeadPortrait());
-                // }
             }
         }
 
-
-        //"deviceCode" : "",
-        //    "deviceIdiom" : "PHONE",
-        //    "devicePlatform" : "UNKNOWN",
-        //    "gender" : "MALE",
-        //    "header" : "info-app-3.043309989461620082431604563951002.jpg?9110",
-        //    "nickname" : "爱航",
-        //    "userId" : NumberLong(4330998946162008243),
-        //    "userStatus" : "EFFECTIVE",
-        //    "userType" : "STORE"
 
         importStoreUser(Long.parseLong("4330998946162008243"), "爱航", "info-app-3.043309989461620082431604563951002.jpg?9110");
 
