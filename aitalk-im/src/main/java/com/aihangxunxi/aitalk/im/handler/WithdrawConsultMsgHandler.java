@@ -30,97 +30,97 @@ import javax.annotation.Resource;
 @ChannelHandler.Sharable
 public class WithdrawConsultMsgHandler extends ChannelInboundHandlerAdapter {
 
-	@Resource
-	private ChannelManager channelManager;
+    @Resource
+    private ChannelManager channelManager;
 
-	@Resource
-	private MsgHistRepository msgHistRepository;
+    @Resource
+    private MsgHistRepository msgHistRepository;
 
-	@Resource
-	private UserRepository userRepository;
+    @Resource
+    private UserRepository userRepository;
 
-	@Resource
-	private PushUtils pushUtils;
+    @Resource
+    private PushUtils pushUtils;
 
-	@Override
-	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-		if (msg instanceof Message && ((Message) msg).getOpCode() == OpCode.WITHDRAW_CONSULT_REQUEST) {
-			try {
-				String msgId = ((Message) msg).getWithdrawConsultRequest().getMsgId();
-				// 接受者ID
-				ObjectId receiverId = new ObjectId(((Message) msg).getWithdrawConsultRequest().getConversationId());
-				String consultDirection = ((Message) msg).getWithdrawConsultRequest().getConsultDirection();
-				// 修改消息历史表
-				msgHistRepository.withdrawConsultMsg(msgId);
+    @Override
+    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+        if (msg instanceof Message && ((Message) msg).getOpCode() == OpCode.WITHDRAW_CONSULT_REQUEST) {
+            try {
+                String msgId = ((Message) msg).getWithdrawConsultRequest().getMsgId();
+                // 接受者ID
+                ObjectId receiverId = new ObjectId(((Message) msg).getWithdrawConsultRequest().getConversationId());
+                String consultDirection = ((Message) msg).getWithdrawConsultRequest().getConsultDirection();
+                // 修改消息历史表
+                msgHistRepository.withdrawConsultMsg(msgId);
 
-				Message ack = Message.newBuilder().setSeq(((Message) msg).getSeq())
-						.setOpCode(OpCode.WITHDRAW_CONSULT_ACK)
-						.setWithdrawConsultAck(
-								WithdrawConsultAck.newBuilder().setMsgId(msgId).setConversationId(receiverId.toString())
-										.setConsultDirection(consultDirection).setSuccess("ok").build())
-						.build();
-				ctx.writeAndFlush(ack);
+                Message ack = Message.newBuilder().setSeq(((Message) msg).getSeq())
+                        .setOpCode(OpCode.WITHDRAW_CONSULT_ACK)
+                        .setWithdrawConsultAck(
+                                WithdrawConsultAck.newBuilder().setMsgId(msgId).setConversationId(receiverId.toString())
+                                        .setConsultDirection(consultDirection).setSuccess("ok").build())
+                        .build();
+                ctx.writeAndFlush(ack);
 
-				// 发送给被咨询者 咨询方向进行反转
-				Channel addresseeChannel = channelManager.findChannelByUserId(receiverId.toHexString());
-				String userObjectId = ctx.channel().attr(ChannelConstant.USER_ID_ATTRIBUTE_KEY).get();
-				User user = userRepository.getUserById(new ObjectId(userObjectId));
+                // 发送给被咨询者 咨询方向进行反转
+                Channel addresseeChannel = channelManager.findChannelByUserId(receiverId.toHexString());
+                String userObjectId = ctx.channel().attr(ChannelConstant.USER_ID_ATTRIBUTE_KEY).get();
+                User user = userRepository.getUserById(new ObjectId(userObjectId));
 
-				// 发送对方请求
-				Message recevie = Message.newBuilder().setSeq(((Message) msg).getSeq())
-						.setOpCode(OpCode.RECEIVE_WITHDRAW_MSG)
-						.setRecevieWithdrawMsg(RecevieWithdrawMsg.newBuilder().setMsgId(msgId)
-								.setSenderId(user.getId().toHexString())
-								.setConsultDirection(getConsultDirection(consultDirection)).setSuccess("ok").build())
-						.build();
+                // 发送对方请求
+                Message recevie = Message.newBuilder().setSeq(((Message) msg).getSeq())
+                        .setOpCode(OpCode.RECEIVE_WITHDRAW_MSG)
+                        .setRecevieWithdrawMsg(RecevieWithdrawMsg.newBuilder().setMsgId(msgId)
+                                .setSenderId(user.getId().toHexString())
+                                .setConsultDirection(getConsultDirection(consultDirection)).setSuccess("ok").build())
+                        .build();
 
-				if (addresseeChannel != null) {
-					addresseeChannel.writeAndFlush(recevie);
-				}
+                if (addresseeChannel != null) {
+                    addresseeChannel.writeAndFlush(recevie);
+                }
 
-				// 查询离线消息表中是否存在，存在修改并存在则插入，（从消息历史表中获取）
-				msgHistRepository.editOfflienMsg(msgId);
+                // 查询离线消息表中是否存在，存在修改并存在则插入，（从消息历史表中获取）
+                msgHistRepository.editOfflienMsg(msgId);
 
-				String senderName = msgHistRepository.querySenderNicknameByMsgId(msgId);
-				User device = msgHistRepository.querySenderDeviceByMsgId(msgId);
-				System.out.println("开始进入推送");
-				System.out.println(user.getDeviceCode());
-				System.out.println(user.getDevicePlatform().name());
+                String senderName = msgHistRepository.querySenderNicknameByMsgId(msgId);
+                User device = msgHistRepository.querySenderDeviceByMsgId(msgId);
+                System.out.println("开始进入推送");
+                System.out.println(user.getDeviceCode());
+                System.out.println(user.getDevicePlatform().name());
 
-				// 获取发送者昵称
-				if (device != null && device.getDeviceCode() != null && !device.getDeviceCode().isEmpty()) {
-					System.out.println(senderName);
-					pushUtils.pushWithDrawMsg(senderName, "对方撤回了一条消息", device.getDeviceCode(),
-							device.getDevicePlatform().name(), msgId);
-				}
+                // 获取发送者昵称
+                if (addresseeChannel == null) {
+                    if (device != null && device.getDeviceCode() != null && !device.getDeviceCode().isEmpty()) {
+                        System.out.println(senderName);
+                        pushUtils.pushWithDrawMsg(senderName, "对方撤回了一条消息", device.getDeviceCode(),
+                                device.getDevicePlatform().name(), msgId);
+                    }
+                }
 
-			}
-			finally {
-				ReferenceCountUtil.release(msg);
-			}
-		}
-		else {
-			ctx.fireChannelRead(msg);
-		}
-	}
+            } finally {
+                ReferenceCountUtil.release(msg);
+            }
+        } else {
+            ctx.fireChannelRead(msg);
+        }
+    }
 
-	// 反转咨询方向
-	private String getConsultDirection(String consultDirection) {
-		String consultDirectionR;
-		switch (consultDirection) {
-		case "PSO":
-			consultDirectionR = "SPI";
-			break;
-		case "PPO":
-			consultDirectionR = "PPI";
-			break;
-		case "SPO":
-			consultDirectionR = "PSI";
-			break;
-		default:
-			throw new IllegalStateException("UnConsultDirection value: " + consultDirection);
-		}
-		return consultDirectionR;
-	}
+    // 反转咨询方向
+    private String getConsultDirection(String consultDirection) {
+        String consultDirectionR;
+        switch (consultDirection) {
+            case "PSO":
+                consultDirectionR = "SPI";
+                break;
+            case "PPO":
+                consultDirectionR = "PPI";
+                break;
+            case "SPO":
+                consultDirectionR = "PSI";
+                break;
+            default:
+                throw new IllegalStateException("UnConsultDirection value: " + consultDirection);
+        }
+        return consultDirectionR;
+    }
 
 }
