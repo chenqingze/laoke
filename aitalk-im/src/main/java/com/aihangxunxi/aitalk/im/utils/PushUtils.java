@@ -346,11 +346,13 @@ public class PushUtils {
 
 				if (pu.statusCode == 0) {
 					logger.info("发送了一条消息");
-					Long pushMsgId = pu.msg_id;
-					Bson bson = eq(new ObjectId(msgId));
-					Bson bson1 = set("pushMsgId", pushMsgId);
-					MongoCollection<MsgHist> collection = aitalkDb.getCollection("msgHist", MsgHist.class);
-					collection.findOneAndUpdate(bson, bson1);
+					if (msgId != null) {
+						Long pushMsgId = pu.msg_id;
+						Bson bson = eq(new ObjectId(msgId));
+						Bson bson1 = set("pushMsgId", pushMsgId);
+						MongoCollection<MsgHist> collection = aitalkDb.getCollection("msgHist", MsgHist.class);
+						collection.findOneAndUpdate(bson, bson1);
+					}
 				}
 			}
 			catch (APIConnectionException e) {
