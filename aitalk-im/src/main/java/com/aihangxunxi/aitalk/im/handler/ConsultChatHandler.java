@@ -78,12 +78,14 @@ public class ConsultChatHandler extends ChannelInboundHandlerAdapter {
 					Channel addresseeChannel = channelManager
 							.findChannelByUserId(msgHist.getReceiverId().toHexString());
 					if (addresseeChannel != null) {
+						logger.info("在线");
 						MsgReadNotify msgReadNotify = msgAssembler.buildMsgReadNotify(msgHist);
 						Message message = Message.newBuilder().setOpCode(OpCode.CONSULT_MSG_READ_NOTIFY)
 								.setMsgReadNotify(msgReadNotify).build();
 						addresseeChannel.writeAndFlush(message);
 					}
 					else {
+						logger.info("不在线");
 						// 获取接受者用户详情
 						User receiver = this.userRepository.getUserById(msgHist.getReceiverId());
 						String content = this.pushUtils.switchContent(String.valueOf(msgHist.getMsgType().ordinal()),
