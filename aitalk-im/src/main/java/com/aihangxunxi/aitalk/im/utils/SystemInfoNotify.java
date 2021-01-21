@@ -5,6 +5,7 @@ import com.aihangxunxi.aitalk.im.channel.ChannelManager;
 import com.aihangxunxi.aitalk.im.protocol.buffers.Message;
 import com.aihangxunxi.aitalk.im.protocol.buffers.OpCode;
 import com.aihangxunxi.aitalk.im.protocol.buffers.SendSystemInfoRequest;
+import com.aihangxunxi.aitalk.storage.constant.DevicePlatform;
 import com.aihangxunxi.aitalk.storage.model.SystemInfo;
 import com.aihangxunxi.aitalk.storage.model.User;
 import io.netty.channel.Channel;
@@ -38,6 +39,12 @@ public class SystemInfoNotify {
 			Message message = Message.newBuilder().setOpCode(OpCode.SYSTEM_INFO_NOTIFY)
 					.setSendSystemInfoRequest(sendSystemInfoRequest).build();
 			addresseeChannel.writeAndFlush(message);
+			// ios  不管是否在线,都发送极光推送
+			if (DevicePlatform.IOS.equals(user.getDevicePlatform())) {
+				logger.info("在线 并且是ios 发送极光");
+				this.pushUtils.pushMsg("爱航信息", "[系统通知]" + systemInfo.getContent(), user.getDeviceCode(),
+						user.getDevicePlatform().toString(), null);
+			}
 		}
 		else {
 			logger.info("不在线");
