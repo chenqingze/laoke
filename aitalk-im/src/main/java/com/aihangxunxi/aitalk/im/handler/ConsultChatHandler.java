@@ -72,6 +72,8 @@ public class ConsultChatHandler extends ChannelInboundHandlerAdapter {
 					String msgId = msgHistRepository.saveMsgHist(msgHist);
 
 					Message msgAck = msgAssembler.convertMgsHistToMessage(msgHist, ((Message) msg).getSeq());
+					// 将消息存暂储至离线表中
+					msgHistRepository.saveOfflineMsgHist(msgHist);
 					ctx.writeAndFlush(msgAck);
 
 					// 发送给被咨询者 咨询方向进行反转
@@ -100,9 +102,7 @@ public class ConsultChatHandler extends ChannelInboundHandlerAdapter {
 								this.pushUtils.pushMsg(user.getNickname(), content, receiver.getDeviceCode(),
 										receiver.getDevicePlatform().toString(), msgId);
 							}
-
 						}
-
 					}
 					else {
 
@@ -118,12 +118,8 @@ public class ConsultChatHandler extends ChannelInboundHandlerAdapter {
 							// 对方不在线 走极光推动
 							this.pushUtils.pushMsg(user.getNickname(), content, receiver.getDeviceCode(),
 									receiver.getDevicePlatform().toString(), msgId);
-
 						}
 					}
-					// 将消息存暂储至离线表中
-					msgHistRepository.saveOfflineMsgHist(msgHist);
-
 				}
 				else {
 					ctx.fireChannelRead(msg);
