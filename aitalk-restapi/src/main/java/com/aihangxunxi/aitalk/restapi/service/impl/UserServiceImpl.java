@@ -92,17 +92,17 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public boolean disturb(Long userId, Long currentUser) {
+	public boolean disturb(String userId, String currentUser) {
 		return userRepository.disturb(userId, currentUser);
 	}
 
 	@Override
-	public boolean cancelDisturb(Long userId, Long currentUser) {
+	public boolean cancelDisturb(String userId, String currentUser) {
 		return userRepository.cancelDisturb(userId, currentUser);
 	}
 
 	@Override
-	public boolean getDisturb(Long userId, Long currentUser) {
+	public boolean getDisturb(String userId, String currentUser) {
 		return userRepository.getDisturb(userId, currentUser);
 	}
 
