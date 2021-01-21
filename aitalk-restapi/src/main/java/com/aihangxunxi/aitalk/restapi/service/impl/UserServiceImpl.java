@@ -98,9 +98,15 @@ public class UserServiceImpl implements UserService {
     public boolean cancelDisturb(Long userId, Long currentUser) {
         return userRepository.cancelDisturb(userId, currentUser);
     }
+
     @Override
     public boolean getDisturb(Long userId, Long currentUser) {
         return userRepository.getDisturb(userId, currentUser);
+    }
+
+    @Override
+    public boolean background(Long userId, boolean background) {
+        return userRepository.background(userId, background);
     }
 
 }

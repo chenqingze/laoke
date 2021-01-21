@@ -227,4 +227,12 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(map);
     }
 
+    @GetMapping("/background")
+    public ResponseEntity<ModelMap> background(@RequestParam("background") boolean background, AihangPrincipal aihangPrincipal) {
+        ModelMap map = new ModelMap();
+        map.put("success", userService.background(aihangPrincipal.getUserId(), background));
+
+        return ResponseEntity.status(HttpStatus.OK).body(map);
+    }
+
 }

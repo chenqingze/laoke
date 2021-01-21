@@ -39,4 +39,6 @@ public interface UserService {
     boolean cancelDisturb(Long userId, Long currentUser);
 
     boolean getDisturb(Long userId, Long currentUser);
+
+    boolean background(Long userId, boolean background);
 }

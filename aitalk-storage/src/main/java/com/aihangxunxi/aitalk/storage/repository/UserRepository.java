@@ -292,6 +292,15 @@ public class UserRepository {
 
     }
 
+    // IOS后台运行了
+    public boolean background(Long userId, boolean background) {
+        MongoCollection<User> mongoCollection = aitalkDb.getCollection("user", User.class);
+        Bson bson = eq("userId", userId);
+        Bson bson1 = set("background", background);
+        mongoCollection.updateMany(bson, bson1);
+        return true;
+    }
+
 
     @Resource
     private RedisTemplate<String, Object> authRedisTemplate;
