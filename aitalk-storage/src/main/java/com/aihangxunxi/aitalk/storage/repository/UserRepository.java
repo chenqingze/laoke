@@ -292,6 +292,14 @@ public class UserRepository {
 
     }
 
+    // 获取自己的所有免打扰
+    public List<Disturb> getDisturbs(Long userId) {
+        MongoCollection<Disturb> mongoCollection = aitalkDb.getCollection("disturb", Disturb.class);
+        Bson bson = eq("userId", userId);
+        return mongoCollection.find(bson).into(new ArrayList<>());
+    }
+
+
     // IOS后台运行了
     public boolean background(Long userId, boolean background) {
         MongoCollection<User> mongoCollection = aitalkDb.getCollection("user", User.class);

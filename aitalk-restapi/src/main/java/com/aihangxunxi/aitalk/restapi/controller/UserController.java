@@ -227,6 +227,20 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(map);
     }
 
+    /**
+     * 获取我自己的免打扰列表
+     *
+     * @param aihangPrincipal
+     * @return
+     */
+    @GetMapping("/disturbs/{userId}")
+    public ResponseEntity<ModelMap> getDisturbs(AihangPrincipal aihangPrincipal) {
+        ModelMap map = new ModelMap();
+
+        map.put("disturbs", userService.getDisturbs(aihangPrincipal.getUserId()));
+        return ResponseEntity.status(HttpStatus.OK).body(map);
+    }
+
     @GetMapping("/background")
     public ResponseEntity<ModelMap> background(@RequestParam("background") boolean background, AihangPrincipal aihangPrincipal) {
         ModelMap map = new ModelMap();

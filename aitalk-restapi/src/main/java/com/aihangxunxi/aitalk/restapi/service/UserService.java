@@ -1,7 +1,9 @@
 package com.aihangxunxi.aitalk.restapi.service;
 
+import com.aihangxunxi.aitalk.storage.model.Disturb;
 import com.aihangxunxi.aitalk.storage.model.User;
 
+import java.util.List;
 import java.util.Map;
 
 public interface UserService {
@@ -39,6 +41,8 @@ public interface UserService {
     boolean cancelDisturb(Long userId, Long currentUser);
 
     boolean getDisturb(Long userId, Long currentUser);
+
+    List<Disturb> getDisturbs(Long userId);
 
     boolean background(Long userId, boolean background);
 }

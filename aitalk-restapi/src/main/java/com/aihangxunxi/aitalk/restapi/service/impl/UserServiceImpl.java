@@ -1,12 +1,14 @@
 package com.aihangxunxi.aitalk.restapi.service.impl;
 
 import com.aihangxunxi.aitalk.restapi.service.UserService;
+import com.aihangxunxi.aitalk.storage.model.Disturb;
 import com.aihangxunxi.aitalk.storage.model.User;
 import com.aihangxunxi.aitalk.storage.repository.UserRepository;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -102,6 +104,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean getDisturb(Long userId, Long currentUser) {
         return userRepository.getDisturb(userId, currentUser);
+    }
+
+    @Override
+    public List<Disturb> getDisturbs(Long userId){
+        return userRepository.getDisturbs(userId);
     }
 
     @Override
