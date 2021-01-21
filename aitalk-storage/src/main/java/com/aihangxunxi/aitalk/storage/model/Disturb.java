@@ -2,33 +2,34 @@ package com.aihangxunxi.aitalk.storage.model;
 
 public class Disturb {
 
-    private Long userId;
+	private Long userId;
 
-    private Long currentUser;
+	private Long currentUser;
 
-    private Long createdAt;
+	private Long createdAt;
 
-    public Long getUserId() {
-        return userId;
-    }
+	public Long getUserId() {
+		return userId;
+	}
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
 
-    public Long getCurrentUser() {
-        return currentUser;
-    }
+	public Long getCurrentUser() {
+		return currentUser;
+	}
 
-    public void setCurrentUser(Long currentUser) {
-        this.currentUser = currentUser;
-    }
+	public void setCurrentUser(Long currentUser) {
+		this.currentUser = currentUser;
+	}
 
-    public Long getCreatedAt() {
-        return createdAt;
-    }
+	public Long getCreatedAt() {
+		return createdAt;
+	}
 
-    public void setCreatedAt(Long createdAt) {
-        this.createdAt = createdAt;
-    }
+	public void setCreatedAt(Long createdAt) {
+		this.createdAt = createdAt;
+	}
+
 }

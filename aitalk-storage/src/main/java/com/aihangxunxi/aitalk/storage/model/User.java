@@ -47,7 +47,6 @@ public class User extends BaseModel {
 
 	private boolean background;
 
-
 	public String getPinyin() {
 		return pinyin;
 	}
@@ -191,4 +190,5 @@ public class User extends BaseModel {
 	public void setBackground(boolean background) {
 		this.background = background;
 	}
+
 }

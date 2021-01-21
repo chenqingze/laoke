@@ -9,6 +9,7 @@ import com.aihangxunxi.aitalk.im.protocol.buffers.OpCode;
 import com.aihangxunxi.aitalk.im.utils.PushUtils;
 import com.aihangxunxi.aitalk.storage.constant.ConsultDirection;
 import com.aihangxunxi.aitalk.storage.constant.ConversationType;
+import com.aihangxunxi.aitalk.storage.constant.DevicePlatform;
 import com.aihangxunxi.aitalk.storage.constant.MsgStatus;
 import com.aihangxunxi.aitalk.storage.model.MsgHist;
 import com.aihangxunxi.aitalk.storage.model.User;
@@ -83,21 +84,53 @@ public class ConsultChatHandler extends ChannelInboundHandlerAdapter {
                         Message message = Message.newBuilder().setOpCode(OpCode.CONSULT_MSG_READ_NOTIFY)
                                 .setMsgReadNotify(msgReadNotify).build();
                         addresseeChannel.writeAndFlush(message);
-                    } else {
 
 
                         logger.info("不在线");
                         // 获取接受者用户详情
                         User receiver = this.userRepository.getUserById(msgHist.getReceiverId());
-                        // 验证免打扰
-                        if (!userRepository.getDisturb(receiver.getUserId(), user.getUserId())) {
-                            String content = this.pushUtils.switchContent(String.valueOf(msgHist.getMsgType().ordinal()),
-                                    msgHist.getContent(), user.getNickname());
-                            // 对方不在线 走极光推动
-                            this.pushUtils.pushMsg(user.getNickname(), content, receiver.getDeviceCode(),
-                                    receiver.getDevicePlatform().toString(), msgId);
+
+                        if (DevicePlatform.IOS.equals(receiver.getDevicePlatform())) {
+
+                            if (!userRepository.getDisturb(receiver.getUserId(), user.getUserId())) {
+                                String content = this.pushUtils.switchContent(
+                                        String.valueOf(msgHist.getMsgType().ordinal()), msgHist.getContent(),
+                                        user.getNickname());
+                                // 对方不在线 走极光推动
+                                this.pushUtils.pushMsg(user.getNickname(), content, receiver.getDeviceCode(),
+                                        receiver.getDevicePlatform().toString(), msgId);
+                            }
+
                         }
 
+                    } else {
+
+                        logger.info("不在线");
+                        // 获取接受者用户详情
+                        User receiver = this.userRepository.getUserById(msgHist.getReceiverId());
+
+                        if (DevicePlatform.IOS.equals(receiver.getDevicePlatform())) {
+
+                            if (!userRepository.getDisturb(receiver.getUserId(), user.getUserId())) {
+                                String content = this.pushUtils.switchContent(
+                                        String.valueOf(msgHist.getMsgType().ordinal()), msgHist.getContent(),
+                                        user.getNickname());
+                                // 对方不在线 走极光推动
+                                this.pushUtils.pushMsg(user.getNickname(), content, receiver.getDeviceCode(),
+                                        receiver.getDevicePlatform().toString(), msgId);
+                            }
+
+                        } else {
+                            // 验证免打扰
+                            if (!userRepository.getDisturb(receiver.getUserId(), user.getUserId())) {
+                                String content = this.pushUtils.switchContent(
+                                        String.valueOf(msgHist.getMsgType().ordinal()), msgHist.getContent(),
+                                        user.getNickname());
+                                // 对方不在线 走极光推动
+                                this.pushUtils.pushMsg(user.getNickname(), content, receiver.getDeviceCode(),
+                                        receiver.getDevicePlatform().toString(), msgId);
+                            }
+                        }
                     }
                     // 将消息存暂储至离线表中
                     msgHistRepository.saveOfflineMsgHist(msgHist);
