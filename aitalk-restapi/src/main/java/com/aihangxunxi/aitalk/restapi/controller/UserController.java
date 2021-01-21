@@ -233,7 +233,7 @@ public class UserController {
      * @param aihangPrincipal
      * @return
      */
-    @GetMapping("/disturbs/{userId}")
+    @GetMapping("/disturbs")
     public ResponseEntity<ModelMap> getDisturbs(AihangPrincipal aihangPrincipal) {
         ModelMap map = new ModelMap();
 
@@ -241,11 +241,17 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(map);
     }
 
+    /**
+     * 是否后台运行
+     *
+     * @param background
+     * @param aihangPrincipal
+     * @return
+     */
     @GetMapping("/background")
     public ResponseEntity<ModelMap> background(@RequestParam("background") boolean background, AihangPrincipal aihangPrincipal) {
         ModelMap map = new ModelMap();
         map.put("success", userService.background(aihangPrincipal.getUserId(), background));
-
         return ResponseEntity.status(HttpStatus.OK).body(map);
     }
 
