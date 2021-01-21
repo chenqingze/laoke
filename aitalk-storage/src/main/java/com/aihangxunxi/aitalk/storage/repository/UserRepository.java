@@ -366,6 +366,7 @@ public class UserRepository {
 			user.setUserStatus(UserStatus.EFFECTIVE);
 			user.setDevicePlatform(DevicePlatform.UNKNOWN);
 			user.setDeviceIdiom(DeviceIdiom.PHONE);
+			user.setBackground(false);
 			mongoCollection.insertOne(user);
 			return true;
 		}
