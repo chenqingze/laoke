@@ -16,7 +16,6 @@ public class Disturb {
 		this.createdAt = createdAt;
 	}
 
-
 	public String getUserId() {
 		return userId;
 	}
@@ -32,4 +31,5 @@ public class Disturb {
 	public void setCurrentUser(String currentUser) {
 		this.currentUser = currentUser;
 	}
+
 }

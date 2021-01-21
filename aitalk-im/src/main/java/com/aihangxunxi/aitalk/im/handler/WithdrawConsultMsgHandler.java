@@ -90,7 +90,7 @@ public class WithdrawConsultMsgHandler extends ChannelInboundHandlerAdapter {
 				// 获取发送者昵称
 				if (addresseeChannel == null) {
 
-					if (!userRepository.getDisturb(device.getUserId(), user.getUserId())) {
+					if (!userRepository.getDisturb(device.getId().toHexString(), user.getId().toHexString())) {
 						if (device != null && device.getDeviceCode() != null && !device.getDeviceCode().isEmpty()) {
 							System.out.println(senderName);
 							pushUtils.pushWithDrawMsg(senderName, "对方撤回了一条消息", device.getDeviceCode(),
