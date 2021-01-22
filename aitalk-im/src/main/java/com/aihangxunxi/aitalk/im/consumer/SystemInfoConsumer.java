@@ -115,11 +115,11 @@ public class SystemInfoConsumer {
 				logger.info("---------------根据userId没有获取到用户信息--------------userId是>>>>>>{}", map.get("receiverId"));
 				return;
 			}
+			// 暂时保存至离线消息库
+			systemInfoRepository.saveOfflineSystemInfo(systemInfo);
 			systemInfo.setUserId(user.getId().toHexString());
 			systemInfoRepository.saveSystemInfo(systemInfo);
 			systemInfoNotify.sendSystemNotify(user.getId().toHexString(), systemInfo, user);
-			// 暂时保存至离线消息库
-			systemInfoRepository.saveOfflineSystemInfo(systemInfo);
 		};
 	}
 
