@@ -39,7 +39,7 @@ public class SystemInfoNotify {
 			Message message = Message.newBuilder().setOpCode(OpCode.SYSTEM_INFO_NOTIFY)
 					.setSendSystemInfoRequest(sendSystemInfoRequest).build();
 			addresseeChannel.writeAndFlush(message);
-			// ios 是否后天运行  发送极光推送
+			// ios 是否后天运行 发送极光推送
 			if (user.isBackground()) {
 				if (DevicePlatform.IOS.equals(user.getDevicePlatform())) {
 					logger.info("在线 并且是ios 发送极光");

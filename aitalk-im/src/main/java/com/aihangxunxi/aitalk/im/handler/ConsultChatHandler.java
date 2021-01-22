@@ -95,8 +95,8 @@ public class ConsultChatHandler extends ChannelInboundHandlerAdapter {
 						if (receiver.isBackground()) {
 							if (DevicePlatform.IOS.equals(receiver.getDevicePlatform())) {
 
-								if (!userRepository.getDisturb(receiver.getId().toHexString(),
-										user.getId().toHexString())) {
+								if (!userRepository.getDisturb(user.getId().toHexString(),
+										receiver.getId().toHexString())) {
 									String content = this.pushUtils.switchContent(
 											String.valueOf(msgHist.getMsgType().ordinal()), msgHist.getContent(),
 											user.getNickname());
@@ -114,7 +114,7 @@ public class ConsultChatHandler extends ChannelInboundHandlerAdapter {
 						User receiver = this.userRepository.getUserById(msgHist.getReceiverId());
 
 						// 验证免打扰
-						if (!userRepository.getDisturb(receiver.getId().toHexString(), user.getId().toHexString())) {
+						if (!userRepository.getDisturb(user.getId().toHexString(), receiver.getId().toHexString())) {
 							String content = this.pushUtils.switchContent(
 									String.valueOf(msgHist.getMsgType().ordinal()), msgHist.getContent(),
 									user.getNickname());
