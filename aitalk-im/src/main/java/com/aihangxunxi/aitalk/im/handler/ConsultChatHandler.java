@@ -90,17 +90,18 @@ public class ConsultChatHandler extends ChannelInboundHandlerAdapter {
 						logger.info("不在线");
 						// 获取接受者用户详情
 						User receiver = this.userRepository.getUserById(msgHist.getReceiverId());
+						if (receiver.isBackground()) {
+							if (DevicePlatform.IOS.equals(receiver.getDevicePlatform())) {
 
-						if (DevicePlatform.IOS.equals(receiver.getDevicePlatform())) {
-
-							if (!userRepository.getDisturb(receiver.getId().toHexString(),
-									user.getId().toHexString())) {
-								String content = this.pushUtils.switchContent(
-										String.valueOf(msgHist.getMsgType().ordinal()), msgHist.getContent(),
-										user.getNickname());
-								// 对方不在线 走极光推动
-								this.pushUtils.pushMsg(user.getNickname(), content, receiver.getDeviceCode(),
-										receiver.getDevicePlatform().toString(), msgId);
+								if (!userRepository.getDisturb(receiver.getId().toHexString(),
+										user.getId().toHexString())) {
+									String content = this.pushUtils.switchContent(
+											String.valueOf(msgHist.getMsgType().ordinal()), msgHist.getContent(),
+											user.getNickname());
+									// 对方不在线 走极光推动
+									this.pushUtils.pushMsg(user.getNickname(), content, receiver.getDeviceCode(),
+											receiver.getDevicePlatform().toString(), msgId);
+								}
 							}
 						}
 					}

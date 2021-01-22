@@ -96,7 +96,7 @@ public final class AuthServerHandler extends ChannelInboundHandlerAdapter {
 					// todo:后面考虑多设备登录的清空
 					channelManager.addChannel(currentChannel);
 					ctx.pipeline().remove(this);
-					Message message = authAssembler.authAckBuilder(((Message) msg).getSeq(), userId, result);
+					Message message = authAssembler.authAckBuilder(((Message) msg).getSeq(), userId, true);
 					ctx.writeAndFlush(message);
 				}
 				else {
@@ -132,7 +132,7 @@ public final class AuthServerHandler extends ChannelInboundHandlerAdapter {
 	 * @param user
 	 * @return
 	 */
-	private Channel channelProcess(ChannelHandlerContext ctx, User user,String deviceCode) {
+	private Channel channelProcess(ChannelHandlerContext ctx, User user) {
 		Channel channel = ctx.channel();
 		channel.attr(ChannelConstant.USER_ID_ATTRIBUTE_KEY).set(user.getId().toHexString());
 		channel.attr(ChannelConstant.DEVICE_CODE_ATTRIBUTE_KEY).set(user.getDeviceCode());
