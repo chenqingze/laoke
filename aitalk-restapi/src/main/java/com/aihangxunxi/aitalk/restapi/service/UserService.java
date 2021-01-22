@@ -36,11 +36,11 @@ public interface UserService {
 
 	boolean importUsers();
 
-	boolean disturb(Long userId, Long currentUser);
+	boolean disturb(String userId, String currentUser);
 
-	boolean cancelDisturb(Long userId, Long currentUser);
+	boolean cancelDisturb(String userId, String currentUser);
 
-	boolean getDisturb(Long userId, Long currentUser);
+	boolean getDisturb(String userId, String currentUser);
 
 	List<Disturb> getDisturbs(Long userId);
 

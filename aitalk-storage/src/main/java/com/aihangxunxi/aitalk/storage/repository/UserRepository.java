@@ -268,7 +268,7 @@ public class UserRepository {
 
 	// 对某用户开启免打扰
 
-	public boolean disturb(Long userId, Long currentUser) {
+	public boolean disturb(String userId, String currentUser) {
 		MongoCollection<Disturb> mongoCollection = aitalkDb.getCollection("disturb", Disturb.class);
 		Disturb disturb = new Disturb();
 		disturb.setCreatedAt(new Date().getTime());
@@ -279,7 +279,7 @@ public class UserRepository {
 	}
 
 	// 对某用户取消免打扰
-	public boolean cancelDisturb(Long userId, Long currentUser) {
+	public boolean cancelDisturb(String userId, String currentUser) {
 		MongoCollection<Disturb> mongoCollection = aitalkDb.getCollection("disturb", Disturb.class);
 		Bson bson = and(eq("userId", userId), eq("currentUser", currentUser));
 		mongoCollection.deleteMany(bson);
@@ -287,7 +287,7 @@ public class UserRepository {
 	}
 
 	// 获取是否免打扰
-	public boolean getDisturb(Long userId, Long currentUser) {
+	public boolean getDisturb(String userId, String currentUser) {
 		MongoCollection<Disturb> mongoCollection = aitalkDb.getCollection("disturb", Disturb.class);
 		Bson bson = and(eq("userId", userId), eq("currentUser", currentUser));
 		return mongoCollection.countDocuments(bson) > 0;
@@ -297,7 +297,11 @@ public class UserRepository {
 	// 获取自己的所有免打扰
 	public List<Disturb> getDisturbs(Long userId) {
 		MongoCollection<Disturb> mongoCollection = aitalkDb.getCollection("disturb", Disturb.class);
-		Bson bson = eq("userId", userId);
+
+		MongoCollection<User> userMongoCollection = aitalkDb.getCollection("user", User.class);
+		User user = userMongoCollection.find(eq("userId", userId)).first();
+
+		Bson bson = eq("userId", user.getId().toHexString());
 		return mongoCollection.find(bson).into(new ArrayList<>());
 	}
 
@@ -362,6 +366,7 @@ public class UserRepository {
 			user.setUserStatus(UserStatus.EFFECTIVE);
 			user.setDevicePlatform(DevicePlatform.UNKNOWN);
 			user.setDeviceIdiom(DeviceIdiom.PHONE);
+			user.setBackground(false);
 			mongoCollection.insertOne(user);
 			return true;
 		}

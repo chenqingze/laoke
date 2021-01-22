@@ -180,40 +180,42 @@ public class UserController {
 	/**
 	 * 开启免打扰
 	 * @param userId
-	 * @param aihangPrincipal
+	 * @param currentUser
 	 * @return
 	 */
-	@PostMapping("disturb/{userId}")
-	public ResponseEntity<ModelMap> disturb(@PathVariable("userId") Long userId, AihangPrincipal aihangPrincipal) {
+	@PostMapping("disturb/{userId}/{currentUser}")
+	public ResponseEntity<ModelMap> disturb(@PathVariable("userId") String userId,
+			@PathVariable("currentUser") String currentUser) {
 		ModelMap map = new ModelMap();
-		map.put("success", userService.disturb(userId, aihangPrincipal.getUserId()));
+		map.put("success", userService.disturb(userId, currentUser));
 		return ResponseEntity.status(HttpStatus.OK).body(map);
 	}
 
 	/**
 	 * 取消免打扰
 	 * @param userId
-	 * @param aihangPrincipal
+	 * @param currentUser
 	 * @return
 	 */
-	@DeleteMapping("cancel-disturb/{userId}")
-	public ResponseEntity<ModelMap> cancelDisturb(@PathVariable("userId") Long userId,
-			AihangPrincipal aihangPrincipal) {
+	@DeleteMapping("cancel-disturb/{userId}/{currentUser}")
+	public ResponseEntity<ModelMap> cancelDisturb(@PathVariable("userId") String userId,
+			@PathVariable("currentUser") String currentUser) {
 		ModelMap map = new ModelMap();
-		map.put("success", userService.cancelDisturb(userId, aihangPrincipal.getUserId()));
+		map.put("success", userService.cancelDisturb(userId, currentUser));
 		return ResponseEntity.status(HttpStatus.OK).body(map);
 	}
 
 	/**
 	 * 获取是否免打扰
 	 * @param userId
-	 * @param aihangPrincipal
+	 * @param currentUser
 	 * @return
 	 */
-	@GetMapping("/disturb/{userId}")
-	public ResponseEntity<ModelMap> getDisturb(@PathVariable("userId") Long userId, AihangPrincipal aihangPrincipal) {
+	@GetMapping("/disturb/{userId}/{currentUser}")
+	public ResponseEntity<ModelMap> getDisturb(@PathVariable("userId") String userId,
+			@PathVariable("currentUser") String currentUser) {
 		ModelMap map = new ModelMap();
-		map.put("disturb", userService.getDisturb(userId, aihangPrincipal.getUserId()));
+		map.put("disturb", userService.getDisturb(userId, currentUser));
 		return ResponseEntity.status(HttpStatus.OK).body(map);
 	}
 

@@ -30,14 +30,15 @@ public class QueryFansHandler extends ChannelInboundHandlerAdapter {
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 		if (msg instanceof Message && ((Message) msg).getOpCode() == OpCode.QUERY_USER_FANS_LIST_REQUEST) {
-			String userId = ((Message) msg).getQueryFansRequest().getUserId();
-
-			List<Fans> list = fansRepository.queryFans(Long.parseLong(userId));
-			Message ack = Message.newBuilder().setOpCode(OpCode.QUERY_USER_FANS_LIST_ACK)
-					.setSeq(((Message) msg).getSeq())
-					.setQueryFansAck(QueryFansAck.newBuilder().addAllFans(fansAssembler.convertToMessage(list)).build())
-					.build();
-			ctx.writeAndFlush(ack);
+			// String userId = ((Message) msg).getQueryFansRequest().getUserId();
+			//
+			// List<Fans> list = fansRepository.queryFans(Long.parseLong(userId));
+			// Message ack =
+			// Message.newBuilder().setOpCode(OpCode.QUERY_USER_FANS_LIST_ACK)
+			// .setSeq(((Message) msg).getSeq())
+			// .setQueryFansAck(QueryFansAck.newBuilder().addAllFans(fansAssembler.convertToMessage(list)).build())
+			// .build();
+			// ctx.writeAndFlush(ack);
 
 		}
 		else {

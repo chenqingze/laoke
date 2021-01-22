@@ -96,7 +96,7 @@ public final class AuthServerHandler extends ChannelInboundHandlerAdapter {
 					// todo:后面考虑多设备登录的清空
 					channelManager.addChannel(currentChannel);
 					ctx.pipeline().remove(this);
-					Message message = authAssembler.authAckBuilder(((Message) msg).getSeq(), userId, result);
+					Message message = authAssembler.authAckBuilder(((Message) msg).getSeq(), userId, true);
 					ctx.writeAndFlush(message);
 				}
 				else {
