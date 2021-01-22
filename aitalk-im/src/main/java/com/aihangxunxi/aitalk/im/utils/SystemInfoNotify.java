@@ -39,11 +39,13 @@ public class SystemInfoNotify {
 			Message message = Message.newBuilder().setOpCode(OpCode.SYSTEM_INFO_NOTIFY)
 					.setSendSystemInfoRequest(sendSystemInfoRequest).build();
 			addresseeChannel.writeAndFlush(message);
-			// ios 不管是否在线,都发送极光推送
-			if (DevicePlatform.IOS.equals(user.getDevicePlatform())) {
-				logger.info("在线 并且是ios 发送极光");
-				this.pushUtils.pushMsg("爱航信息", "[系统通知]" + systemInfo.getContent(), user.getDeviceCode(),
-						user.getDevicePlatform().toString(), null);
+			// ios 是否后天运行  发送极光推送
+			if (user.isBackground()) {
+				if (DevicePlatform.IOS.equals(user.getDevicePlatform())) {
+					logger.info("在线 并且是ios 发送极光");
+					this.pushUtils.pushMsg("爱航信息", "[系统通知]" + systemInfo.getContent(), user.getDeviceCode(),
+							user.getDevicePlatform().toString(), null);
+				}
 			}
 		}
 		else {
