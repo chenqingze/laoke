@@ -20,6 +20,11 @@ public class FansServiceImpl implements FansService {
 	}
 
 	@Override
+	public List<Fans> queryFans(Long userId) {
+		return fansRepository.queryFansList(userId);
+	}
+
+	@Override
 	public boolean followStore(Long storeId, Long userId) {
 		return fansRepository.follow(storeId, userId);
 	}

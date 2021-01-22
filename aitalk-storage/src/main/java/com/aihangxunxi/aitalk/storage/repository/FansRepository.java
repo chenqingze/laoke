@@ -56,6 +56,38 @@ public class FansRepository {
 		return fansList;
 	}
 
+	// 查询粉丝
+	// 查询粉丝
+	public List<Fans> queryFansList(Long userId) {
+
+		MongoCollection<SysUserConcern> mongoCollection = mongoClient.getDatabase("aihang4")
+				.getCollection("sys_user_concern", SysUserConcern.class);
+		MongoCollection<User> userMongoCollection = aitalkDb.getCollection("user", User.class);
+		Bson bson = eq("concerned_user_id", userId);
+		List<SysUserConcern> list = mongoCollection.find(bson).into(new ArrayList<>());
+		List<Fans> fansList = new ArrayList<>();
+
+		list.stream().forEach((f) -> {
+			Long fansId = f.getUser_id();
+			Bson bson1 = and(eq("userId", fansId), eq("userType", "PERSONAL"));
+			User user = userMongoCollection.find(bson1).first();
+			Fans fans = new Fans();
+			fans.setUserId(fansId);
+			if (user != null) {
+				String pinyin = PinYinUtil.getPingYin(user.getNickname()).substring(0, 1);
+				fans.setNickname(user.getNickname());
+				fans.setPinyin(pinyin);
+				fans.setId(user.getId().toHexString());
+				fans.setProfile_photo(user.getHeader());
+				fansList.add(fans);
+			}
+
+		});
+
+		fansList.sort(Comparator.comparing(Fans::getPinyin));
+		return fansList;
+	}
+
 	// 关注
 	public boolean follow(Long storeId, Long userId) {
 		MongoCollection<User> userMongoCollection = aitalkDb.getCollection("user", User.class);

@@ -42,6 +42,20 @@ public class FansController {
 	}
 
 	/**
+	 * 获取全部粉丝
+	 * @param aihangPrincipal
+	 * @return
+	 */
+	@GetMapping("get/list")
+	public ResponseEntity<ModelMap> queryFans(AihangPrincipal aihangPrincipal) {
+		ModelMap map = new ModelMap();
+
+		List<Fans> list = fansService.queryFans(aihangPrincipal.getUserId());
+		map.put("list", list);
+		return ResponseEntity.status(HttpStatus.OK).body(map);
+	}
+
+	/**
 	 * 关注
 	 * @param storeId
 	 * @param userId
