@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface FansService {
 
-	List<Fans> queryFans(Long userId);
+	List<Fans> queryFans(Long userId, int offset, int limit);
 
 	boolean followStore(Long storeId, Long userId);
 

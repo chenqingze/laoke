@@ -15,8 +15,8 @@ public class FansServiceImpl implements FansService {
 	private FansRepository fansRepository;
 
 	@Override
-	public List<Fans> queryFans(Long userId) {
-		return fansRepository.queryFans(userId);
+	public List<Fans> queryFans(Long userId, int offset, int limit) {
+		return fansRepository.queryFans(userId, offset, limit);
 	}
 
 	@Override

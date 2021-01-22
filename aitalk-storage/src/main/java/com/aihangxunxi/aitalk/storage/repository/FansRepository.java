@@ -30,13 +30,13 @@ public class FansRepository {
 	private MongoClient mongoClient;
 
 	// 查询粉丝
-	public List<Fans> queryFans(Long userId) {
+	public List<Fans> queryFans(Long userId, int offset, int limit) {
 
 		MongoCollection<SysUserConcern> mongoCollection = mongoClient.getDatabase("aihang4")
 				.getCollection("sys_user_concern", SysUserConcern.class);
 		MongoCollection<User> userMongoCollection = aitalkDb.getCollection("user", User.class);
 		Bson bson = eq("concerned_user_id", userId);
-		List<SysUserConcern> list = mongoCollection.find(bson).into(new ArrayList<>());
+		List<SysUserConcern> list = mongoCollection.find(bson).limit(limit + 1).skip(offset).into(new ArrayList<>());
 		List<Fans> fansList = new ArrayList<>();
 
 		list.stream().forEach((f) -> {
@@ -46,17 +46,13 @@ public class FansRepository {
 			Fans fans = new Fans();
 			fans.setUserId(fansId);
 			if (user != null) {
-				String pinyin = PinYinUtil.getPingYin(user.getNickname()).substring(0, 1);
 				fans.setNickname(user.getNickname());
-				fans.setPinyin(pinyin);
 				fans.setId(user.getId().toHexString());
 				fans.setProfile_photo(user.getHeader());
 				fansList.add(fans);
 			}
 
 		});
-
-		fansList.sort(Comparator.comparing(Fans::getPinyin));
 		return fansList;
 	}
 
