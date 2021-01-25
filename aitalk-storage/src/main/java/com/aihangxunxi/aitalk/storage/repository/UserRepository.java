@@ -339,7 +339,7 @@ public class UserRepository {
 		importStoreUser(Long.parseLong("4330998946162008243"), "爱航",
 				"info-app-3.043309989461620082431604563951002.jpg?9110");
 
-		MongoCollection<ConcernStore> mongoCollection1 = mongoClient.getDatabase("aihang4")
+		MongoCollection<ConcernStore> mongoCollection1 = mongoClient.getDatabase("aihang3-prod")
 				.getCollection("concern_store_v330", ConcernStore.class);
 		List<ConcernStore> list = mongoCollection1.find().into(new ArrayList<>());
 		list.stream().forEach(concernStore -> {
