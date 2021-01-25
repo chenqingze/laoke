@@ -321,7 +321,7 @@ public class UserRepository {
 	private MongoClient mongoClient;
 
 	public boolean importUsers() {
-		MongoCollection<UserDTO> mongoCollection = mongoClient.getDatabase("aitalk-prod").getCollection("user",
+		MongoCollection<UserDTO> mongoCollection = mongoClient.getDatabase("aitalk").getCollection("user",
 				UserDTO.class);
 		List<UserDTO> users = mongoCollection.find().into(new ArrayList());
 		for (int i = 0; i < users.size(); i++) {
@@ -339,13 +339,15 @@ public class UserRepository {
 		importStoreUser(Long.parseLong("4330998946162008243"), "爱航",
 				"info-app-3.043309989461620082431604563951002.jpg?9110");
 
-		MongoCollection<ConcernStore> mongoCollection1 = mongoClient.getDatabase("aihang3-prod")
-				.getCollection("concern_store_v330", ConcernStore.class);
-		List<ConcernStore> list = mongoCollection1.find().into(new ArrayList<>());
-		list.stream().forEach(concernStore -> {
-			System.out.println(concernStore.getUser_id() + "::::" + concernStore.getStore_id());
-			follow(concernStore.getUser_id(), concernStore.getStore_id());
-		});
+		// MongoCollection<ConcernStore> mongoCollection1 =
+		// mongoClient.getDatabase("aihangvs")
+		// .getCollection("concern_store_v330", ConcernStore.class);
+		// List<ConcernStore> list = mongoCollection1.find().into(new ArrayList<>());
+		// list.stream().forEach(concernStore -> {
+		// System.out.println(concernStore.getUser_id() + "::::" +
+		// concernStore.getStore_id());
+		// follow(concernStore.getUser_id(), concernStore.getStore_id());
+		// });
 		return true;
 	}
 
@@ -387,10 +389,10 @@ public class UserRepository {
 		user.setNickname(nickname);
 		user.setUserId(userId);
 		user.setGender(Gender.MALE);
-		user.setDeviceCode(personalUser.getDeviceCode());
+		user.setDeviceCode("");
 		user.setUserType(UserType.STORE);
 		user.setUserStatus(UserStatus.EFFECTIVE);
-		user.setDevicePlatform(personalUser.getDevicePlatform());
+		user.setDevicePlatform(DevicePlatform.IOS);
 		user.setDeviceIdiom(DeviceIdiom.PHONE);
 		mongoCollection.insertOne(user);
 		return true;
