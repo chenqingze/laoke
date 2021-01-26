@@ -125,7 +125,7 @@ public class PushUtils {
 			msgBody = "[图片]";
 			break;
 		case "6":
-			msgBody = "[讯息]";
+			msgBody = "[吆喝]";
 			break;
 		case "7":
 			msgBody = "[团购]";
@@ -134,7 +134,7 @@ public class PushUtils {
 			msgBody = "[通知]";
 			break;
 		case "9":
-			msgBody = "[商品]";
+			msgBody = "[好物]";
 			break;
 		case "10":
 			msgBody = "[易货]";
