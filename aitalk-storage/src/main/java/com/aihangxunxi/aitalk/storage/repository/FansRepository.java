@@ -32,7 +32,7 @@ public class FansRepository {
 	// 查询粉丝
 	public List<Fans> queryFans(Long userId, int offset, int limit) {
 
-		MongoCollection<SysUserConcern> mongoCollection = mongoClient.getDatabase("aihang3")
+		MongoCollection<SysUserConcern> mongoCollection = mongoClient.getDatabase("aihang3-prod")
 				.getCollection("sys_user_concern", SysUserConcern.class);
 		MongoCollection<User> userMongoCollection = aitalkDb.getCollection("user", User.class);
 		Bson bson = eq("concerned_user_id", userId);
@@ -60,7 +60,7 @@ public class FansRepository {
 	// 查询粉丝
 	public List<Fans> queryFansList(Long userId) {
 
-		MongoCollection<SysUserConcern> mongoCollection = mongoClient.getDatabase("aihang3")
+		MongoCollection<SysUserConcern> mongoCollection = mongoClient.getDatabase("aihang3-prod")
 				.getCollection("sys_user_concern", SysUserConcern.class);
 		MongoCollection<User> userMongoCollection = aitalkDb.getCollection("user", User.class);
 		Bson bson = eq("concerned_user_id", userId);
