@@ -1,19 +1,26 @@
-aitalk 即时通讯
-# 打包
+# aitalk IM
+
+## 架构  
+【new edition】
+![image](https://github.com/chenqingze/laoke/raw/main/doc/design/Aitalk%20IM%20Architecture%20Design.png)
+【old edition】
+![image](https://github.com/chenqingze/laoke/blob/main/doc/design/%E5%8D%B3%E6%97%B6%E9%80%9A%E8%AE%AF%E6%9E%B6%E6%9E%84%E5%9B%BE.old.png)
+
+# package
 ```shell script
 mvn package [-Preview|-Pstaging|-Pproduction]
 ```
-# aitalk-im 启动
-#### maven 方式启动
+# aitalk-im startup
+#### maven startup
 ```shell script
 mvn exec:java -Dexec.mainClass="com.aihangxunxi.aitalk.im.AitalkImApp" -Pdevelop
 ```
-#### jar 包方式启动
+#### jar startup
 ```shell script
 java -jar aital-im.jar 
 ```
-##### 启动参数
-######  开启log4j2 全局异步日志输出
+##### start up param 
+######  cofnig log4j2 global Async Logger
 ```shell script
 -Dog4j2.contextSelector=org.apache.logging.log4j.core.async.AsyncLoggerContextSelector
 ```
@@ -28,8 +35,6 @@ java -jar aital-im.jar
 ## mongodb 参考
 http://mongodb.github.io/mongo-java-driver/4.1/driver/getting-started/quick-start-pojo/
 
-## 架构
-![image](doc/design/Aitalk IM Architecture Design.png)
 
 ## 功能列表  
 
